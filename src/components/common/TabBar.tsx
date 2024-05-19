@@ -3,7 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { TabContext } from '../../store/TabContext';
 
-const TabBar: React.FC = () => {
+interface TabBarProps {
+  readonly type: 'dong' | 'nari';
+}
+
+const TabBar = ({ type }: TabBarProps) => {
   const { setTabMenuState } = useContext(TabContext);
 
   const location = useLocation();
@@ -27,28 +31,28 @@ const TabBar: React.FC = () => {
       name: '홈',
       path: '/',
       icon: '/assets/tabIcon/home.svg',
-      iconActive: '/assets/tabIcon/home.svg',
+      iconActive: `/assets/tabIcon/home-active-${type}.svg`,
     },
     {
       id: 1,
       name: '채팅',
       path: '/chat',
       icon: '/assets/tabIcon/chat.svg',
-      iconActive: '/assets/tabIcon/chat.svg',
+      iconActive: `/assets/tabIcon/chat-active-${type}.svg`,
     },
     {
       id: 2,
       name: '게시판',
       path: '/community',
       icon: '/assets/tabIcon/community.svg',
-      iconActive: '/assets/tabIcon/community.svg',
+      iconActive: `/assets/tabIcon/community-active-${type}.svg`,
     },
     {
       id: 3,
       name: '내정보',
       path: '/mypage',
       icon: '/assets/tabIcon/mypage.svg',
-      iconActive: '/assets/tabIcon/mypage.svg',
+      iconActive: `/assets/tabIcon/mypage-active-${type}.svg`,
     },
   ];
 
@@ -71,7 +75,10 @@ const TabBar: React.FC = () => {
               src={currentPage === item.path ? item.iconActive : item.icon}
               alt={item.name}
             />
-            <Label color={currentPage === item.path ? '#FF625D' : '#8E8E8E'}>
+            <Label
+              active={currentPage === item.path ? 'active' : 'inactive'}
+              type={type}
+            >
               {item.name}
             </Label>
           </NavItem>
@@ -80,6 +87,11 @@ const TabBar: React.FC = () => {
     </StyledNav>
   );
 };
+
+interface LabelProps {
+  active: 'active' | 'inactive';
+  type: string;
+}
 
 const StyledNav = styled.nav`
   position: fixed;
@@ -97,23 +109,32 @@ const StyledNav = styled.nav`
 
 const WrapItem = styled.div`
   display: flex;
-  width: 90%;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 85px;
+  padding: 12px 0;
 `;
 
 const NavItem = styled(Link)`
-  text-align: center;
-  width: 100%;
-  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 50px;
+  height: 100%;
   text-decoration: none;
 
   img {
+    width: 30px;
     -webkit-tap-highlight-color: transparent;
   }
 `;
 
-const Label = styled.div`
-  color: ${(props) => props.color};
-  font-size: 1rem;
+const Label = styled.div<LabelProps>`
+  color: ${(props) =>
+    props.active === 'active' ? `var(--color-${props.type})` : 'black'};
+  font-size: 1.2rem;
+  font-weight: 800;
 `;
 
 export default TabBar;
