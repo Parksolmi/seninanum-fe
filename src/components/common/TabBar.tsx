@@ -33,22 +33,22 @@ const TabBar: React.FC = () => {
       id: 1,
       name: '채팅',
       path: '/chat',
-      icon: '/assets/tabIcon/home.svg',
-      iconActive: '/assets/tabIcon/home.svg',
+      icon: '/assets/tabIcon/chat.svg',
+      iconActive: '/assets/tabIcon/chat.svg',
     },
     {
       id: 2,
       name: '게시판',
       path: '/community',
-      icon: '/assets/tabIcon/home.svg',
-      iconActive: '/assets/tabIcon/home.svg',
+      icon: '/assets/tabIcon/community.svg',
+      iconActive: '/assets/tabIcon/community.svg',
     },
     {
       id: 3,
       name: '내정보',
       path: '/mypage',
-      icon: '/assets/tabIcon/home.svg',
-      iconActive: '/assets/tabIcon/home.svg',
+      icon: '/assets/tabIcon/mypage.svg',
+      iconActive: '/assets/tabIcon/mypage.svg',
     },
   ];
 
@@ -71,7 +71,7 @@ const TabBar: React.FC = () => {
               src={currentPage === item.path ? item.iconActive : item.icon}
               alt={item.name}
             />
-            <Label color={currentPage === item.path ? '#FF625D' : '#767676'}>
+            <Label color={currentPage === item.path ? '#FF625D' : '#8E8E8E'}>
               {item.name}
             </Label>
           </NavItem>
@@ -113,7 +113,7 @@ const NavItem = styled(Link)`
 
 const Label = styled.div`
   color: ${(props) => props.color};
-  font-size: 12px;
+  font-size: 1rem;
 `;
 
 export default TabBar;
