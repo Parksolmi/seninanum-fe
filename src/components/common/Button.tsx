@@ -1,24 +1,28 @@
 import styled from 'styled-components';
-const backgroundColor = {
-  dong: '#FF314A',
-  nari: '#FFAA0E',
-};
+
+// const backgroundColor = {
+//   dong: '#FF314A',
+//   nari: '#FFAA0E',
+// };
+
 interface ButtonProps {
-  // 동적으로 변경되는 버튼 텍스트
   children: string;
-  // 동적으로 변경되는 버튼 색
-  readonly varient: 'dong' | 'nari';
+  readonly type: 'dong' | 'nari';
 }
+
+const Button = ({ children, type }: ButtonProps) => {
+  return <StyledButton type={type}>{children}</StyledButton>;
+};
+
 const StyledButton = styled.button<ButtonProps>`
-  width: 328px;
+  width: 100%;
   height: 60px;
   color: #ffffff;
-  background-color: ${(props) => backgroundColor[props.varient]};
+  background-color: ${({ type }) =>
+    type === 'dong' ? 'var(--color-dong)' : 'var(--color-nari)'};
   text-align: center;
   border: none;
   border-radius: 10px;
 `;
-const Button = ({ children, varient }: ButtonProps) => {
-  return <StyledButton varient={varient}>{children}</StyledButton>;
-};
+
 export default Button;

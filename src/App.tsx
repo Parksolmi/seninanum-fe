@@ -1,4 +1,5 @@
-import './styles/reset.css';
+import ResetStyle from './styles/ResetStyle';
+import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import NavLayout from './layouts/NavLayout';
 import ChatIndexPage from './pages/chat/ChatIndexPage';
@@ -9,6 +10,8 @@ import MyIndexPage from './pages/mypage/MyIndexPage';
 const App: React.FC = () => {
   return (
     <>
+      <ResetStyle />
+      <GlobalStyle />
       <Routes>
         <Route element={<NavLayout />}>
           <Route path="/" element={<HomeIndexPage />} />
