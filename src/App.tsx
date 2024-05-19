@@ -1,31 +1,27 @@
-import './styles/reset.css';
-import React, { useState } from 'react';
-import CheckBox from './components/common/CheckBox';
+import ResetStyle from './styles/ResetStyle';
+import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import NavLayout from './layouts/NavLayout';
+import ChatIndexPage from './pages/chat/ChatIndexPage';
+import CommunityIndexPage from './pages/community/CommunityIndexPage';
+import HomeIndexPage from './pages/home/HomeIndexPage';
+import MyIndexPage from './pages/mypage/MyIndexPage';
 
-function App() {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
-  };
+const App: React.FC = () => {
   return (
     <>
-      <h1>시니나눔</h1>
-      <div>시니나눔</div>
-      <CheckBox
-        id="checkbox_labeled"
-        checked={isChecked}
-        onChange={onChange}
-        label="약관에 모두 동의"
-      />
-      {/* // <Routes>
-    //   <Route element={<NavLayout />}></Route>
-    //   //동백 //나리
-    // </Routes> */}
+      <ResetStyle />
+      <GlobalStyle />
+      <Routes>
+        <Route element={<NavLayout />}>
+          <Route path="/" element={<HomeIndexPage />} />
+          <Route path="/chat" element={<ChatIndexPage />} />
+          <Route path="/community" element={<CommunityIndexPage />} />
+          <Route path="/mypage" element={<MyIndexPage />} />
+        </Route>
+      </Routes>
     </>
   );
-}
+};
 
 export default App;
