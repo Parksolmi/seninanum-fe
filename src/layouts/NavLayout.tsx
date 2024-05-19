@@ -8,7 +8,7 @@ const NavLayout: React.FC = () => {
       <Padding>
         <Outlet />
       </Padding>
-      <TabBar />
+      <TabBar type={'dong'} />
     </>
   );
 };
