@@ -1,27 +1,24 @@
 import './styles/reset.css';
-import React, { useState } from 'react';
-import StyleButton from './components/common/Button';
 import { Route, Routes } from 'react-router-dom';
 import NavLayout from './layouts/NavLayout';
+import ChatIndexPage from './pages/chat/ChatIndexPage';
+import CommunityIndexPage from './pages/community/CommunityIndexPage';
+import HomeIndexPage from './pages/home/HomeIndexPage';
+import MyIndexPage from './pages/mypage/MyIndexPage';
 
-function App() {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
-  };
+const App: React.FC = () => {
   return (
     <>
-      <h1>시니나눔</h1>
-      <div>시니나눔</div>
-      <StyleButton children="다음" varient="dong" />
-
-      {/* // <Routes>
-    //   <Route element={<NavLayout />}></Route>
-    //   //동백 //나리
-    // </Routes> */}
+      <Routes>
+        <Route element={<NavLayout />}>
+          <Route path="/" element={<HomeIndexPage />} />
+          <Route path="/chat" element={<ChatIndexPage />} />
+          <Route path="/community" element={<CommunityIndexPage />} />
+          <Route path="/mypage" element={<MyIndexPage />} />
+        </Route>
+      </Routes>
     </>
   );
-}
+};
 
 export default App;
