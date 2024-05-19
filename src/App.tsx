@@ -1,19 +1,23 @@
-import './styles/reset.css';
-
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NavLayout from './layouts/NavLayout';
+import ChatIndexPage from './pages/chat/ChatIndexPage';
+import CommunityIndexPage from './pages/community/CommunityIndexPage';
+import HomeIndexPage from './pages/home/HomeIndexPage';
+import MyIndexPage from './pages/mypage/MyIndexPage';
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
-      <h1>시니나눔</h1>
-      <div>시니나눔</div>
-      {/* // <Routes>
-    //   <Route element={<NavLayout />}></Route>
-    //   //동백 //나리
-    // </Routes> */}
+      <Routes>
+        <Route element={<NavLayout />}>
+          <Route path="/" element={<HomeIndexPage />} />
+          <Route path="/chat" element={<ChatIndexPage />} />
+          <Route path="/community" element={<CommunityIndexPage />} />
+          <Route path="/mypage" element={<MyIndexPage />} />
+        </Route>
+      </Routes>
     </>
   );
-}
+};
 
 export default App;
