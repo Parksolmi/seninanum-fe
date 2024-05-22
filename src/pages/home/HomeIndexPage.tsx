@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Button from '../../components/common/Button';
-import Toggle from '../../components/signup/Toggle';
+// import Toggle from '../../components/signup/Toggle';
 import UserTypeButton from '../../components/signup/UserTypeButton';
 
 const HomeIndexPage: React.FC = () => {
-  const [toggleState, setToggleState] = useState<string>('');
+  // const [toggleState, setToggleState] = useState<string>('');
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const handleButtonClick = (name: string) => {
     setSelectedButton((prevSelectedButton) =>
@@ -25,7 +25,7 @@ const HomeIndexPage: React.FC = () => {
         onClick={handleButtonClick}
       ></UserTypeButton>
       <Button type="dong">버튼</Button>
-      <Toggle options={['남성', '여성']} setState={setToggleState} />
+      {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
     </>
   );
 };
