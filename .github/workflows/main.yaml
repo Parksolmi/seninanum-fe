@@ -6,31 +6,27 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     name: (MAIN)Auto Deploy to S3 Bucket & Cloudfront Invalidate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: git clone
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: Install dependencies
+      - name: npm install
         run: npm install
 
-      - name: Build static file
+      - name: npm build
         run: npm run build
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./build s3:seninanum
+      - name: deploy
+        env:
+          AWS_ACCESS_KEY_ID: '$'
+          AWS_SECRET_ACCESS_KEY: '$'
+        run: aws s3 cp --recursive --region ap-northeast-2 dist s3://seninanum
