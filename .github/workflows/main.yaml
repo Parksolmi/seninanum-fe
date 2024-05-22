@@ -6,35 +6,36 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     name: (MAIN)Auto Deploy to S3 Bucket & Cloudfront Invalidate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout codes
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: Install dependencies
+      - name: NPM install
         run: npm install
 
-      - name: Build project
-        run: |
-          npm run build
-        continue-on-error: true
+      - name: NPM Build
+        run: npm run build
 
-      - name: Check build output
-        run: |
-          echo "Listing contents of dist directory:"
-          ls -la dist
-
-      - name: Deploy to S3
-        if: success()
+      - name: Transfer to S3 for serving static
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 cp --recursive --region ap-northeast-2 dist s3://seninanum
+          SOURCE_DIR: 'build'
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
