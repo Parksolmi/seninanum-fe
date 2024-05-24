@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { types } from 'util';
 
 interface ButtonProps {
   types: string;
