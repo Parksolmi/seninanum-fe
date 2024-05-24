@@ -5,18 +5,26 @@ import filled from '../../assets/check-filled.svg';
 interface CheckboxProps {
   id: string;
   checked: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (checked: boolean) => void;
   label?: string | null;
 }
 
-const CheckBox = ({ id, checked, onChange, label }: CheckboxProps) => {
+const CheckBox: React.FC<CheckboxProps> = ({
+  id,
+  checked,
+  onChange,
+  label,
+}) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.checked);
+  };
   return (
     <CheckBoxContainer>
       <Checkbox checked={checked} htmlFor={id}>
         <HiddenCheckbox
           id={id}
           type="checkbox"
-          onChange={onChange}
+          onChange={handleChange}
           checked={checked}
         />
         <CheckIcon src={checked ? filled : empty} />
@@ -35,7 +43,6 @@ const Checkbox = styled.label<{ checked: Boolean }>`
   display: inline-block;
   width: 30px;
   height: 30px;
-  cursror: pointer;
   & > svg {
     ${empty}
   }

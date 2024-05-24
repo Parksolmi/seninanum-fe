@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { types } from 'util';
 
+// chilren: 버튼 텍스트
+// type: 동백 / 나리 / 비활성화
 interface ButtonProps {
   children: string;
-  readonly type: 'dong' | 'nari';
+  readonly type: string | null;
 }
 
 const Button = ({ children, type }: ButtonProps) => {
@@ -12,12 +15,20 @@ const Button = ({ children, type }: ButtonProps) => {
 const StyledButton = styled.button<ButtonProps>`
   width: 100%;
   height: 3.7rem;
-  color: #ffffff;
+  color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ type }) =>
-    type === 'dong' ? 'var(--color-dong)' : 'var(--color-nari)'};
+    type === null
+      ? 'var(--Base-Gray2, #EBECEB)'
+      : type === '동백'
+      ? 'var(--color-dong)'
+      : 'var(--color-nari)'};
   text-align: center;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
   border: none;
-  border-radius: 0.8rem;
+  border-radius: 0.625rem;
 `;
 
 export default Button;

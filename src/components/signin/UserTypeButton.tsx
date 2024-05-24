@@ -25,8 +25,8 @@ const UserTypeButton: React.FC<ButtonProps> = ({
       <Text1 setType={types}>{types}</Text1>
       <Text2>
         {types === '동백'
-          ? '재능을 공유하고 싶어요.'
-          : '재능을 공유받고 싶어요.'}
+          ? '재능을 \n공유하고 싶어요.'
+          : '재능을 \n공유받고 싶어요.'}
       </Text2>
       <Text3>
         {types === '동백'
@@ -39,6 +39,9 @@ const UserTypeButton: React.FC<ButtonProps> = ({
 
 const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
   display: flex;
+  margin-bottom: 0.94rem;
+  padding-top: 1.88rem;
+  padding-left: 0.81rem;
   flex-direction: column;
   width: 20.25rem;
   height: 10rem;
@@ -49,8 +52,8 @@ const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
       ? setType === '동백'
         ? '2px solid rgba(255, 49, 74, 0.7)'
         : '2px solid rgba(255, 170, 14, 0.70)'
-      : ''};
-  background: ${({ isSelected, setType }) =>
+      : 'var(--Base-White, #fff)'};
+  background-color: ${({ isSelected, setType }) =>
     isSelected
       ? setType === '동백'
         ? 'var(--Secondary-dong-2, #ffedf0)'
@@ -58,12 +61,6 @@ const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
       : 'var(--Base-White, #fff)'};
 
   box-shadow: 0px 1px 7.4px 3px rgba(150, 150, 150, 0.25);
-
-  /* &:active {
-    background: var(--Secondary-dong-2, #ffedf0);
-    border: 2px solid rgba(255, 49, 74, 0.7);
-    box-shadow: 0px 1px 5.1px 3px rgba(255, 49, 74, 0.2);
-  } */
 `;
 
 const Text1 = styled.div<{ setType: string }>`
@@ -72,6 +69,7 @@ const Text1 = styled.div<{ setType: string }>`
   height: 1.1875rem;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 0.81rem;
   flex-shrink: 0;
   color: ${({ setType }) =>
     setType === '동백'
@@ -90,6 +88,7 @@ const Text2 = styled.div`
   height: 3.375rem;
   flex-direction: column;
   justify-content: center;
+  white-space: pre-line;
   flex-shrink: 0;
   color: var(--Base-Black, #000);
   font-family: 'NanumSquare Neo';
