@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import Button from '../../components/common/Button';
-// import Toggle from '../../components/signup/Toggle';
+import styled from 'styled-components';
+import React, { useState } from 'react';
 import UserTypeButton from '../../components/signin/UserTypeButton';
+import Button from '../../components/common/Button';
 
-const HomeIndexPage: React.FC = () => {
-  // const [toggleState, setToggleState] = useState<string>('');
+const ChooseTypePage: React.FC = () => {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const handleButtonClick = (name: string) => {
     setSelectedButton((prevSelectedButton) =>
@@ -13,7 +12,7 @@ const HomeIndexPage: React.FC = () => {
   };
   return (
     <>
-      <h1>홈페이지</h1>
+      <Text1>어떤 유형으로 가입하시겠어요?</Text1>
       <UserTypeButton
         types="동백"
         isSelected={selectedButton === '동백'}
@@ -24,9 +23,21 @@ const HomeIndexPage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button type="dong">버튼</Button>
-      {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
+      <Button type={selectedButton}>다음</Button>
     </>
   );
 };
-export default HomeIndexPage;
+
+const Text1 = styled.div`
+  margin-top: 5.5rem;
+  margin-bottom: 3.5rem;
+  color: #000;
+  /* font-family: NanumSquare; */
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.0275rem;
+`;
+
+export default ChooseTypePage;
