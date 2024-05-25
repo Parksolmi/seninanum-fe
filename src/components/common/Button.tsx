@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 import { types } from 'util';
 
 // chilren: 버튼 텍스트
@@ -20,8 +21,8 @@ const StyledButton = styled.button<ButtonProps>`
     type === null
       ? 'var(--Base-Gray2, #EBECEB)'
       : type === '동백'
-      ? 'var(--color-dong)'
-      : 'var(--color-nari)'};
+      ? `var(--Primary-dong)`
+      : `var(--Primary-nari)`};
   text-align: center;
   font-size: 1.375rem;
   font-style: normal;
@@ -29,6 +30,7 @@ const StyledButton = styled.button<ButtonProps>`
   line-height: normal;
   border: none;
   border-radius: 0.625rem;
+  transition: background-color 0.5s ease;
 `;
 
 export default Button;

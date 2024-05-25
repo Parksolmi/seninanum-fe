@@ -1,6 +1,7 @@
 import ResetStyle from './styles/ResetStyle';
 import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
+import React from 'react';
 import NavLayout from './layouts/NavLayout';
 import ChatIndexPage from './pages/chat/ChatIndexPage';
 import CommunityIndexPage from './pages/community/CommunityIndexPage';
