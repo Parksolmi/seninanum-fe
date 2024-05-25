@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import empty from '../../assets/check-empty.svg';
-import filled from '../../assets/check-filled.svg';
+import React from 'react';
+// import empty from '../../assets/check-empty.svg';
+// import filled from '../../assets/check-filled.svg';
 
 interface CheckboxProps {
   id: string;
@@ -27,7 +28,7 @@ const CheckBox: React.FC<CheckboxProps> = ({
           onChange={handleChange}
           checked={checked}
         />
-        <CheckIcon src={checked ? filled : empty} />
+        {/* <CheckIcon src={checked ? filled : empty} /> */}
       </Checkbox>
       {label ? <Label htmlFor={id}>{label}</Label> : null}
     </CheckBoxContainer>
@@ -43,9 +44,9 @@ const Checkbox = styled.label<{ checked: Boolean }>`
   display: inline-block;
   width: 30px;
   height: 30px;
-  & > svg {
-    ${empty}
-  }
+  /* & > svg {
+    empty}
+  } */
 `;
 const CheckIcon = styled.img`
   width: 1.875rem;

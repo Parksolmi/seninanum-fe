@@ -12,7 +12,7 @@ const ChooseTypePage: React.FC = () => {
   };
   return (
     <>
-      <Text1>어떤 유형으로 가입하시겠어요?</Text1>
+      <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
         types="동백"
         isSelected={selectedButton === '동백'}
@@ -29,8 +29,7 @@ const ChooseTypePage: React.FC = () => {
     </>
   );
 };
-
-const Text1 = styled.div`
+const Title = styled.div`
   margin-top: 5.5rem;
   margin-bottom: 3.5rem;
   color: #000;

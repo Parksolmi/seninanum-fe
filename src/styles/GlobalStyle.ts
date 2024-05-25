@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     src: local('NanumSquareB'), local('NanumSquareB');
         font-style: normal;
         src: url(${NanumSquareB}) format('woff');
+    font-display: swap;
   }
   @font-face {
     font-family: Nanum_Square;
@@ -31,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
     src: local('NanumSquareR'), local('NanumSquareR');
         font-style: normal;
         src: url(${NanumSquareR}) format('woff');
+    font-display: swap;
   }
   @font-face {
     font-family: Nanum_Square;
@@ -39,6 +41,7 @@ const GlobalStyle = createGlobalStyle`
     src: local('NanumSquareL'), local('NanumSquareL');
         font-style: normal;
         src: url(${NanumSquareL}) format('woff');
+    font-display: swap;
   }
 
   *, body {
@@ -46,10 +49,15 @@ const GlobalStyle = createGlobalStyle`
     font-family: Nanum_Square;
     margin: 0 1.1rem;
   }
+  div{
+    font-family: Nanum_Square;
+  }
 
   :root {
     --Primary-dong: ${theme.colors.dong};
     --Primary-nari: ${theme.colors.nari};
+    --Secondary-dong-2: #FFEDF0;
+    --Secondary-nari-2: #FFF8E3;
     --Base-Deep-Gray: ${theme.colors.deepGray};
   }
 `;
