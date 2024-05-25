@@ -42,7 +42,7 @@ const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
   padding-top: 1.88rem;
   padding-left: 0.81rem;
   flex-direction: column;
-  width: 20.25rem;
+  width: 100%;
   height: 10rem;
   flex-shrink: 0;
   border-radius: 0.625rem;
