@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import { types } from 'util';
 
 // chilren: 버튼 텍스트
 // type: 동백 / 나리 / 비활성화

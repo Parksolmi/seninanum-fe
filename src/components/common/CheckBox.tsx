@@ -48,10 +48,6 @@ const Checkbox = styled.label<{ checked: Boolean }>`
     empty}
   } */
 `;
-const CheckIcon = styled.img`
-  width: 1.875rem;
-  height: 1.875rem;
-`;
 const HiddenCheckbox = styled.input`
   border: 0;
   clip: rect(0 0 0 0);
