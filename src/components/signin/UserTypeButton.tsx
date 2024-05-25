@@ -14,11 +14,11 @@ const UserTypeButton: React.FC<ButtonProps> = ({
 }: ButtonProps) => {
   return (
     <StyleBoxContainer
-      setType={types}
+      $setType={types}
       onClick={() => onClick(types)}
-      isSelected={isSelected}
+      $isSelected={isSelected}
     >
-      <UserType setType={types}>{types}</UserType>
+      <UserType $setType={types}>{types}</UserType>
       <Content>
         {types === '동백'
           ? '재능을 \n공유하고 싶어요.'
@@ -33,7 +33,10 @@ const UserTypeButton: React.FC<ButtonProps> = ({
   );
 };
 
-const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
+const StyleBoxContainer = styled.div<{
+  $isSelected: boolean;
+  $setType: string;
+}>`
   display: flex;
   margin-bottom: 0.94rem;
   padding-top: 1.88rem;
@@ -43,15 +46,15 @@ const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
   height: 10rem;
   flex-shrink: 0;
   border-radius: 0.625rem;
-  border: ${({ isSelected, setType }) =>
-    isSelected
-      ? setType === '동백'
+  border: ${({ $isSelected, $setType }) =>
+    $isSelected
+      ? $setType === '동백'
         ? '2px solid var(--Primary-dong)'
         : '2px solid var(--Primary-nari)'
       : `var(--Base-White)`};
-  background-color: ${({ isSelected, setType }) =>
-    isSelected
-      ? setType === '동백'
+  background-color: ${({ $isSelected, $setType }) =>
+    $isSelected
+      ? $setType === '동백'
         ? `var(--Secondary-dong-2)`
         : `var(--Secondary-nari-2)`
       : `var(--Base-White)`};
@@ -60,13 +63,13 @@ const StyleBoxContainer = styled.div<{ isSelected: boolean; setType: string }>`
   transition: background-color 0.5s ease;
 `;
 
-const UserType = styled.div<{ setType: string }>`
+const UserType = styled.div<{ $setType: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 0.81rem;
-  color: ${({ setType }) =>
-    setType === '동백' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
+  color: ${({ $setType }) =>
+    $setType === '동백' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
   font-size: 1.5rem;
   font-family: Nanum_Square;
   font-style: normal;

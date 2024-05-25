@@ -6,7 +6,6 @@ import Toggle from '../../components/signin/Toggle';
 
 const RegisterProfilePage: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>('');
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<Object>({
     nickname: '',
     gender: '',
@@ -23,12 +22,6 @@ const RegisterProfilePage: React.FC = () => {
   }, [selectedGender]);
 
   const isDisabled = Object.values(profileData).some((value) => value === '');
-
-  //확인용
-  useEffect(() => {
-    console.log(profileData);
-    console.log(isDisabled);
-  }, [profileData]);
 
   return (
     <>
