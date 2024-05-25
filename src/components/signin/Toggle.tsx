@@ -46,7 +46,7 @@ const ToggleContainer = styled.div`
 const Label = styled.label`
   font-size: 1.4rem;
   font-weight: 600;
-  font-family: NanumSquareB;
+  font-family: Nanum_Square;
 `;
 
 const WrapToggle = styled.div`
@@ -66,7 +66,7 @@ const ToggleOption = styled.div<ToggleActive>`
   padding: 10px 20px;
   font-size: 1.2rem;
   font-weight: 600;
-  font-family: NanumSquareB;
+  font-family: Nanum_Square;
   white-space: nowrap;
   border-color: ${({ $isActive }) =>
     $isActive ? 'var(--Primary-dong)' : 'black'};
