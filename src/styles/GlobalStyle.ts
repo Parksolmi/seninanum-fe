@@ -8,6 +8,7 @@ const theme = {
   colors: {
     dong: '#FF314A',
     nari: '#FFAA0E',
+    deepGray: '#5B5B5B',
   },
 };
 
@@ -17,18 +18,21 @@ const GlobalStyle = createGlobalStyle`
 
   @font-face {
     font-family: Nanum_Square;
+    font-style: normal;
     src: local('NanumSquareB'), local('NanumSquareB');
         font-style: normal;
         src: url(${NanumSquareB}) format('woff');
   }
   @font-face {
     font-family: Nanum_Square;
+    font-style: normal;
     src: local('NanumSquareR'), local('NanumSquareR');
         font-style: normal;
         src: url(${NanumSquareR}) format('woff');
   }
   @font-face {
     font-family: Nanum_Square;
+    font-style: normal;
     src: local('NanumSquareL'), local('NanumSquareL');
         font-style: normal;
         src: url(${NanumSquareL}) format('woff');
@@ -37,11 +41,13 @@ const GlobalStyle = createGlobalStyle`
   *, body {
     box-sizing: border-box;
     font-family: Nanum_Square;
+    margin: 0 1.1rem;
   }
 
   :root {
-    --color-dong: ${theme.colors.dong};
-    --color-nari: ${theme.colors.nari};
+    --Primary-dong: ${theme.colors.dong};
+    --Primary-nari: ${theme.colors.nari};
+    --Base-Deep-Gray: ${theme.colors.deepGray};
   }
 `;
 
