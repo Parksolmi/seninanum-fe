@@ -1,64 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Button from '../../components/common/Button';
 import InputText from '../../components/common/InputText';
 import Toggle from '../../components/signin/Toggle';
 
 const RegisterProfilePage: React.FC = () => {
-  const [selectedGender, setSelectedGender] = useState('');
-
-  useEffect(() => {
-    console.log(selectedGender);
-  }, [selectedGender]);
-
-  const [checkboxes, setCheckboxes] = useState({
-    selectAll: false,
-    option1: false,
-    option2: false,
+  const [selectedGender, setSelectedGender] = useState<string>('');
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const [profileData, setProfileData] = useState<Object>({
+    nickname: '',
+    gender: '',
+    birth: '',
   });
 
-  const handleSelectAllChange = (checked: boolean) => {
-    setCheckboxes({
-      selectAll: checked,
-      option1: checked,
-      option2: checked,
-    });
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOptionChange = (
-    option: 'option1' | 'option2',
-    checked: boolean
-  ) => {
-    setCheckboxes((prev) => {
-      const updatedCheckboxes = {
-        ...prev,
-        [option]: checked,
-        selectAll:
-          (checked && prev.option1 && prev.option2) ||
-          (!checked && !prev.option1 && !prev.option2)
-            ? checked
-            : prev.selectAll,
-      };
-      updatedCheckboxes.selectAll =
-        updatedCheckboxes.option1 && updatedCheckboxes.option2;
-      return updatedCheckboxes;
-    });
-  };
+  useEffect(() => {
+    setProfileData((prev) => ({ ...prev, gender: selectedGender }));
+  }, [selectedGender]);
+
+  const isDisabled = Object.values(profileData).some((value) => value === '');
+
+  //확인용
+  useEffect(() => {
+    console.log(profileData);
+    console.log(isDisabled);
+  }, [profileData]);
+
   return (
     <>
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
         <InputText
+          name="nickname"
+          onChange={handleOnChange}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
         ></InputText>
-
         <Toggle options={['남성', '여성']} setState={setSelectedGender} />
-
         <InputText
+          name="birth"
+          onChange={handleOnChange}
           label="출생년도"
           placeholder="태어나신 연도를 입력해주세요."
         ></InputText>
       </WrapFrom>
+      <WrapButton>
+        <Button disabled={isDisabled} type={'동백'}>
+          완료하기
+        </Button>
+      </WrapButton>
     </>
   );
 };
@@ -77,6 +71,12 @@ const WrapFrom = styled.form`
   flex-direction: column;
   gap: 2rem;
   margin-top: 4rem;
+`;
+const WrapButton = styled.div`
+  position: fixed;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 5rem;
 `;
 
 export default RegisterProfilePage;

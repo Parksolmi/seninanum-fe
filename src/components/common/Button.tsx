@@ -1,15 +1,19 @@
 import styled from 'styled-components';
-import { types } from 'util';
 
 // chilren: 버튼 텍스트
 // type: 동백 / 나리 / 비활성화
 interface ButtonProps {
   children: string;
+  disabled: boolean;
   readonly type: string | null;
 }
 
-const Button = ({ children, type }: ButtonProps) => {
-  return <StyledButton type={type}>{children}</StyledButton>;
+const Button = ({ children, disabled, type }: ButtonProps) => {
+  return (
+    <StyledButton disabled={disabled} type={type}>
+      {children}
+    </StyledButton>
+  );
 };
 
 const StyledButton = styled.button<ButtonProps>`
@@ -17,11 +21,7 @@ const StyledButton = styled.button<ButtonProps>`
   height: 3.7rem;
   color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ type }) =>
-    type === null
-      ? 'var(--Base-Gray2, #EBECEB)'
-      : type === '동백'
-      ? 'var(--color-dong)'
-      : 'var(--color-nari)'};
+    type === '동백' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
   text-align: center;
   font-size: 1.375rem;
   font-style: normal;
@@ -29,6 +29,11 @@ const StyledButton = styled.button<ButtonProps>`
   line-height: normal;
   border: none;
   border-radius: 0.625rem;
+
+  &:disabled {
+    background-color: #d9d9d9;
+    color: #333333;
+  }
 `;
 
 export default Button;

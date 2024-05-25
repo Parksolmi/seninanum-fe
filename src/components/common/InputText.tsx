@@ -3,13 +3,20 @@ import styled from 'styled-components';
 interface InputProps {
   label: string;
   placeholder: string;
+  name: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const InputText = ({ label, placeholder }: InputProps) => {
+const InputText = ({ label, placeholder, name, onChange }: InputProps) => {
   return (
     <InputContainer>
       <Label>{label}</Label>
-      <InputBox type="text" placeholder={placeholder}></InputBox>
+      <InputBox
+        name={name}
+        type="text"
+        placeholder={placeholder}
+        onChange={onChange}
+      ></InputBox>
     </InputContainer>
   );
 };
