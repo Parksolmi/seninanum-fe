@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <ResetStyle />
       <GlobalStyle />
       <Routes>
-        <Route path="/singnin" element={<ChooseTypePage />} />
+        <Route path="/signup" element={<ChooseTypePage />} />
         <Route path="/policy" element={<AgreePolicyPage />} />
         <Route element={<NavLayout />}>
           <Route path="/" element={<HomeIndexPage />} />

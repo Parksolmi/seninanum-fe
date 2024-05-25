@@ -74,11 +74,11 @@ const Text1 = styled.div<{ setType: string }>`
     setType === '동백'
       ? 'var(--Primary-dong, #ff314a)'
       : 'var(--Primary-nari, #FFAA0E)'};
-  font-family: 'NanumSquare Neo';
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  font-family: NanumSquareB;
 `;
 
 const Text2 = styled.div`
@@ -90,7 +90,6 @@ const Text2 = styled.div`
   white-space: pre-line;
   flex-shrink: 0;
   color: var(--Base-Black, #000);
-  font-family: 'NanumSquare Neo';
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 700;
@@ -104,8 +103,7 @@ const Text3 = styled.div`
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--Base-Deep-Gray, #5b5b5b);
-  font-family: 'NanumSquare Neo';
+  color: #5b5b5b;
   font-size: 1rem;
   font-style: normal;
   font-weight: 700;

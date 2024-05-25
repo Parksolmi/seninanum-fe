@@ -32,7 +32,6 @@ const Text1 = styled.div`
   margin-top: 5.5rem;
   margin-bottom: 3.5rem;
   color: #000;
-  /* font-family: NanumSquare; */
   font-size: 1.375rem;
   font-style: normal;
   font-weight: 800;

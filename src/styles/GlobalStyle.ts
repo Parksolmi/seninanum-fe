@@ -1,43 +1,53 @@
 import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
+import NanumSquareL from '../fonts/NanumSquareL.woff';
+import NanumSquareR from '../fonts/NanumSquareR.woff';
+import NanumSquareB from '../fonts/NanumSquareB.woff';
 
 const theme = {
   colors: {
     dong: '#FF314A',
     nari: '#FFAA0E',
-  },
-  fonts: {
-    code: "'Nanum Gothic Coding', monospace",
-  },
-  fontSizes: {
-    title: '44px',
-    subtitle: '32px',
-    tag: '26px',
-    larger: '20px',
-    text: '18px',
+    deepGray: '#5B5B5B',
   },
 };
 
 const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
+
+  ${reset}
+
+  @font-face {
+    font-family: Nanum_Square;
+    font-style: normal;
+    src: local('NanumSquareB'), local('NanumSquareB');
+        font-style: normal;
+        src: url(${NanumSquareB}) format('woff');
+  }
+  @font-face {
+    font-family: Nanum_Square;
+    font-style: normal;
+    src: local('NanumSquareR'), local('NanumSquareR');
+        font-style: normal;
+        src: url(${NanumSquareR}) format('woff');
+  }
+  @font-face {
+    font-family: Nanum_Square;
+    font-style: normal;
+    src: local('NanumSquareL'), local('NanumSquareL');
+        font-style: normal;
+        src: url(${NanumSquareL}) format('woff');
   }
 
-  body {
-    font-family: "Helvetica", "Arial", sans-serif;
-    line-height: 1.5;
+  *, body {
+    box-sizing: border-box;
+    font-family: Nanum_Square;
+    margin: 0 1.1rem;
   }
 
   :root {
-    --color-dong: ${theme.colors.dong};
-    --color-nari: ${theme.colors.nari};
-
-    --font-code: ${theme.fonts.code};
-
-    --font-size-title: ${theme.fontSizes.title};
-    --font-size-subtitle: ${theme.fontSizes.subtitle};
-    --font-size-tag: ${theme.fontSizes.tag};
-    --font-size-larger: ${theme.fontSizes.larger};
-    --font-size-text: ${theme.fontSizes.text};
+    --Primary-dong: ${theme.colors.dong};
+    --Primary-nari: ${theme.colors.nari};
+    --Base-Deep-Gray: ${theme.colors.deepGray};
   }
 `;
 
