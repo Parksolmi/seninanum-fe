@@ -20,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/signup/usertype" element={<ChooseTypePage />} />
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
+
         <Route element={<NavLayout />}>
           <Route path="/" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

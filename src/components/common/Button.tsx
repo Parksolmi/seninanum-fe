@@ -22,7 +22,11 @@ const StyledButton = styled.button<ButtonProps>`
   height: 3.7rem;
   color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ type }) =>
-    type === '동백' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
+    type !== null
+      ? type === '동백'
+        ? `var(--Primary-dong)`
+        : `var(--Primary-nari)`
+      : '#EBECEB'};
   text-align: center;
   font-size: 1.375rem;
   font-style: normal;
