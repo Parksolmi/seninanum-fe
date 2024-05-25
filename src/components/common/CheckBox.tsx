@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 import empty from '../../assets/check-empty.svg';
 import filled from '../../assets/check-filled.svg';
 
