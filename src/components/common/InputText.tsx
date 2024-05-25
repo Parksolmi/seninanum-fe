@@ -30,7 +30,7 @@ const InputContainer = styled.div`
 const Label = styled.label`
   font-size: 1.4rem;
   font-weight: 600;
-  font-family: NanumSquareB;
+  font-family: Nanum_Square;
 `;
 const InputBox = styled.input`
   width: 100%;
@@ -38,7 +38,7 @@ const InputBox = styled.input`
   border: 1px solid var(--Base-Deep-Gray);
   border-radius: 10px;
   font-weight: 700;
-  font-family: NanumSquareB;
+  font-family: Nanum_Square;
   font-size: 1.2rem;
   padding-left: 0.5rem;
 

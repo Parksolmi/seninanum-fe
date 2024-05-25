@@ -57,13 +57,14 @@ const HeaderText = styled.div`
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 0.03rem;
-  font-family: NanumSquareB;
+  font-family: Nanum_Square;
 `;
 const WrapFrom = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
   margin-top: 4rem;
+  font-family: Nanum_Square;
 `;
 const WrapButton = styled.div`
   position: fixed;

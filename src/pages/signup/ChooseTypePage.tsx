@@ -32,6 +32,7 @@ const ChooseTypePage: React.FC = () => {
     </>
   );
 };
+
 const Title = styled.div`
   margin-top: 5.5rem;
   margin-bottom: 3.5rem;

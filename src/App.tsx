@@ -1,4 +1,3 @@
-import ResetStyle from './styles/ResetStyle';
 import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import React from 'react';
@@ -14,7 +13,6 @@ import RegisterProfilePage from './pages/signup/RegisterProfilePage';
 const App: React.FC = () => {
   return (
     <>
-      <ResetStyle />
       <GlobalStyle />
       <Routes>
         <Route path="/signup/usertype" element={<ChooseTypePage />} />
