@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: Nanum_Square;
     font-style: normal;
+    line-height: 1;
     src: local('NanumSquareB'), local('NanumSquareB');
         font-style: normal;
         src: url(${NanumSquareB}) format('woff');
@@ -27,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: Nanum_Square;
     font-style: normal;
+    line-height: 1;
     src: local('NanumSquareR'), local('NanumSquareR');
         font-style: normal;
         src: url(${NanumSquareR}) format('woff');
@@ -35,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: Nanum_Square;
     font-style: normal;
+    line-height: 1;
     src: local('NanumSquareL'), local('NanumSquareL');
         font-style: normal;
         src: url(${NanumSquareL}) format('woff');

@@ -23,7 +23,9 @@ const ChooseTypePage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button type={selectedButton}>다음</Button>
+      <Button disabled type={selectedButton}>
+        다음
+      </Button>
     </>
   );
 };

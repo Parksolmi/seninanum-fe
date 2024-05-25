@@ -65,7 +65,6 @@ const UserType = styled.div<{ setType: string }>`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 0.81rem;
-  flex-shrink: 0;
   color: ${({ setType }) =>
     setType === '동백' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
   font-size: 1.5rem;
