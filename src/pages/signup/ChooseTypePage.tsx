@@ -10,6 +10,9 @@ const ChooseTypePage: React.FC = () => {
       prevSelectedButton === name ? null : name
     );
   };
+
+  const isDisabled = selectedButton === 'null';
+
   return (
     <>
       <Title>어떤 유형으로 가입하시겠어요?</Title>
@@ -23,7 +26,7 @@ const ChooseTypePage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button disabled type={selectedButton}>
+      <Button disabled={isDisabled} type={selectedButton}>
         다음
       </Button>
     </>
