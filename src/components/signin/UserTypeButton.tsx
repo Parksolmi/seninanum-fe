@@ -79,6 +79,7 @@ const UserType = styled.div<{ $setType: string }>`
 
 const Content = styled.div`
   display: flex;
+  margin-bottom: 0.4rem;
   flex-direction: column;
   justify-content: center;
   white-space: pre-line;

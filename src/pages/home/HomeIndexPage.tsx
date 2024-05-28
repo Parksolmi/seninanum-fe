@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../components/common/Button';
 // import Toggle from '../../components/signup/Toggle';
 import UserTypeButton from '../../components/signin/UserTypeButton';
@@ -24,7 +24,7 @@ const HomeIndexPage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button type="dong">버튼</Button>
+      {/* <Button type="dong">버튼</Button> */}
       {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
     </>
   );

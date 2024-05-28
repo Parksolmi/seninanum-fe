@@ -7,16 +7,23 @@ interface ButtonProps {
   children: string;
   disabled: boolean;
   readonly type: string | null;
+  onClick: () => void;
 }
 
-const Button = ({ children, disabled, type }: ButtonProps) => {
+const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
   return (
-    <StyledButton disabled={disabled} type={type}>
-      {children}
-    </StyledButton>
+    <ButtonContainer>
+      <StyledButton disabled={disabled} type={type} onClick={onClick}>
+        {children}
+      </StyledButton>
+    </ButtonContainer>
   );
 };
-
+const ButtonContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  position: relative;
+`;
 const StyledButton = styled.button<ButtonProps>`
   width: 100%;
   height: 3.7rem;
@@ -35,7 +42,7 @@ const StyledButton = styled.button<ButtonProps>`
   border: none;
   border-radius: 0.625rem;
   transition: background-color 0.5s ease;
-
+  position: absolute;
   &:disabled {
     background-color: #d9d9d9;
     color: #333333;

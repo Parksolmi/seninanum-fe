@@ -28,7 +28,13 @@ const CheckBox: React.FC<CheckboxProps> = ({
           onChange={handleChange}
           checked={checked}
         />
-        {/* <CheckIcon src={checked ? filled : empty} /> */}
+        <CheckIcon
+          src={
+            checked
+              ? process.env.PUBLIC_URL + '/assets/signIn/check-filled.svg'
+              : process.env.PUBLIC_URL + '/assets/signIn/check-empty.svg'
+          }
+        />
       </Checkbox>
       {label ? <Label htmlFor={id}>{label}</Label> : null}
     </CheckBoxContainer>
@@ -38,6 +44,7 @@ const CheckBox: React.FC<CheckboxProps> = ({
 const CheckBoxContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 1.81rem;
 `;
 // checked 상태에 따라 empty/filled.svg 변경
 const Checkbox = styled.label<{ checked: Boolean }>`
@@ -47,6 +54,11 @@ const Checkbox = styled.label<{ checked: Boolean }>`
   /* & > svg {
     empty}
   } */
+`;
+const CheckIcon = styled.img`
+  width: 1.875rem;
+  height: 1.875rem;
+  flex-shrink: 0;
 `;
 const HiddenCheckbox = styled.input`
   border: 0;
@@ -64,6 +76,14 @@ const Label = styled.label`
   display: inline-block;
   line-height: 16px;
   cursor: pointer;
+  margin-left: 0.38rem;
+  color: var(--Base-Black, #000);
+  font-family: Nanum_Square;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.025rem;
 `;
 
 export default CheckBox;
