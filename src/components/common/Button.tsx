@@ -12,18 +12,12 @@ interface ButtonProps {
 
 const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
   return (
-    <ButtonContainer>
-      <StyledButton disabled={disabled} type={type} onClick={onClick}>
-        {children}
-      </StyledButton>
-    </ButtonContainer>
+    <StyledButton disabled={disabled} type={type} onClick={onClick}>
+      {children}
+    </StyledButton>
   );
 };
-const ButtonContainer = styled.div`
-  width: 100%;
-  height: fit-content;
-  position: relative;
-`;
+
 const StyledButton = styled.button<ButtonProps>`
   width: 100%;
   height: 3.7rem;
@@ -42,7 +36,8 @@ const StyledButton = styled.button<ButtonProps>`
   border: none;
   border-radius: 0.625rem;
   transition: background-color 0.5s ease;
-  position: absolute;
+  position: sticky;
+
   &:disabled {
     background-color: #d9d9d9;
     color: #333333;

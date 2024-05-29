@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import UserTypeButton from '../../components/signin/UserTypeButton';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
 
 const ChooseTypePage: React.FC = () => {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
@@ -13,8 +12,6 @@ const ChooseTypePage: React.FC = () => {
   };
 
   const isDisabled = selectedButton === 'null';
-
-  const navigate = useNavigate();
   // 페이지 이동
   const onClickBtn = () => {
     // navigate('policy');

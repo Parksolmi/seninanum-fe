@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../components/common/Button';
 import InputText from '../../components/common/InputText';
 import Toggle from '../../components/signin/Toggle';
 import { useNavigate } from 'react-router-dom';
@@ -21,8 +20,9 @@ const RegisterProfilePage: React.FC = () => {
   useEffect(() => {
     setProfileData((prev) => ({ ...prev, gender: selectedGender }));
   }, [selectedGender]);
-
-  const isDisabled = Object.values(profileData).some((value) => value === '');
+  useEffect(() => {
+    console.log(profileData);
+  }, [profileData]);
 
   const navigate = useNavigate();
 

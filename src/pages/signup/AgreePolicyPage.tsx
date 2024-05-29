@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AgreePolicyPage: React.FC = () => {
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [checkboxes, setCheckboxes] = useState({
     selectAll: false,
     option1: false,
