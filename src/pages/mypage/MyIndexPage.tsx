@@ -1,3 +1,4 @@
+import React from 'react';
 const MyIndexPage: React.FC = () => {
   return <h1>마이페이지</h1>;
 };
