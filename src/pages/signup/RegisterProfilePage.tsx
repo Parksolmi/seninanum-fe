@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputText from '../../components/common/InputText';
 import Toggle from '../../components/signin/Toggle';
 import { useNavigate } from 'react-router-dom';
+import Button from '../../components/common/Button';
 
 const RegisterProfilePage: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>('');
@@ -12,6 +13,12 @@ const RegisterProfilePage: React.FC = () => {
     birth: '',
   });
 
+  const isDisabled = profileData === '';
+  // 페이지 이동
+  const onClickBtn = () => {
+    // navigate('policy');
+    window.location.href = '/';
+  };
   const handleOnChange = (e: any) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({ ...prev, [name]: value }));
@@ -55,9 +62,9 @@ const RegisterProfilePage: React.FC = () => {
         ></InputText>
       </WrapFrom>
       <WrapButton>
-        {/* <Button disabled={isDisabled} type={'동백'} onClick={}>
+        <Button disabled={isDisabled} type={'동백'} onClick={onClickBtn}>
           완료하기
-        </Button> */}
+        </Button>
       </WrapButton>
     </>
   );
