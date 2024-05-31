@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../components/common/Button';
 import InputText from '../../components/common/InputText';
 import Toggle from '../../components/signin/Toggle';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/common/Button';
 
 const RegisterProfilePage: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>('');
@@ -12,7 +13,13 @@ const RegisterProfilePage: React.FC = () => {
     birth: '',
   });
 
-  const handleOnChange = (e) => {
+  const isDisabled = profileData === '';
+  // 페이지 이동
+  const onClickBtn = () => {
+    // navigate('policy');
+    window.location.href = '/';
+  };
+  const handleOnChange = (e: any) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({ ...prev, [name]: value }));
   };
@@ -20,11 +27,24 @@ const RegisterProfilePage: React.FC = () => {
   useEffect(() => {
     setProfileData((prev) => ({ ...prev, gender: selectedGender }));
   }, [selectedGender]);
+  useEffect(() => {
+    console.log(profileData);
+  }, [profileData]);
 
-  const isDisabled = Object.values(profileData).some((value) => value === '');
+  const navigate = useNavigate();
+
+  const onClickBackBtn = () => {
+    navigate(-1);
+  };
 
   return (
     <>
+      <Back onClick={onClickBackBtn}>
+        <img
+          src={process.env.PUBLIC_URL + '/assets/signIn/back-icon.svg'}
+          alt=" "
+        />
+      </Back>
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
         <InputText
@@ -42,14 +62,23 @@ const RegisterProfilePage: React.FC = () => {
         ></InputText>
       </WrapFrom>
       <WrapButton>
-        <Button disabled={isDisabled} type={'동백'}>
+        <Button disabled={isDisabled} type={'동백'} onClick={onClickBtn}>
           완료하기
         </Button>
       </WrapButton>
     </>
   );
 };
-
+const Back = styled.div`
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  margin-top: 1.81rem;
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
 const HeaderText = styled.div`
   margin-top: 2.25rem;
   margin-bottom: 0.75rem;

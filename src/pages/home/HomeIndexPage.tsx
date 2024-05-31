@@ -1,7 +1,10 @@
-import { useState } from 'react';
-import Button from '../../components/common/Button';
+import React, { useState } from 'react';
 // import Toggle from '../../components/signup/Toggle';
 import UserTypeButton from '../../components/signin/UserTypeButton';
+import ApplyMyRecruit from '../../components/home/ApplyMyRecruit';
+import WriteRecruitButton from '../../components/common/WriteRecruitButton';
+import RecommendDongCard from './RecommendDongCard';
+import RecommendDongCardDetail from './RecommendDongCardDetail';
 
 const HomeIndexPage: React.FC = () => {
   // const [toggleState, setToggleState] = useState<string>('');
@@ -24,9 +27,17 @@ const HomeIndexPage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button type="dong">버튼</Button>
+      {/* <Button type="dong">버튼</Button> */}
       {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
+      <ApplyMyRecruit></ApplyMyRecruit>
+
+      <WriteRecruitButton></WriteRecruitButton>
+
+      <RecommendDongCard></RecommendDongCard>
+
+      <RecommendDongCardDetail></RecommendDongCardDetail>
     </>
   );
 };
+
 export default HomeIndexPage;

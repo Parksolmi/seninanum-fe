@@ -12,6 +12,11 @@ const ChooseTypePage: React.FC = () => {
   };
 
   const isDisabled = selectedButton === 'null';
+  // 페이지 이동
+  const onClickBtn = () => {
+    // navigate('policy');
+    window.location.href = '/signup/policy';
+  };
 
   return (
     <>
@@ -26,7 +31,8 @@ const ChooseTypePage: React.FC = () => {
         isSelected={selectedButton === '나리'}
         onClick={handleButtonClick}
       ></UserTypeButton>
-      <Button disabled={isDisabled} type={selectedButton}>
+      <div></div>
+      <Button disabled={isDisabled} type={selectedButton} onClick={onClickBtn}>
         다음
       </Button>
     </>
@@ -37,6 +43,7 @@ const Title = styled.div`
   margin-top: 5.5rem;
   margin-bottom: 3.5rem;
   color: #000;
+  font-family: Nanum_Square;
   font-size: 1.375rem;
   font-style: normal;
   font-weight: 800;
