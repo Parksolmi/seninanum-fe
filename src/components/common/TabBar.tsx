@@ -133,7 +133,7 @@ const NavItem = styled(Link)`
 
 const Label = styled.div<LabelProps>`
   color: ${(props) =>
-    props.active === 'active' ? `var(--color-${props.type})` : 'black'};
+    props.active === 'active' ? `var(--Primary-${props.type})` : 'black'};
   font-size: 1.2rem;
   font-weight: 800;
   white-space: nowrap;

@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
   *, body {
     box-sizing: border-box;
     font-family: 'Nanum_Square';
-    /* margin: 0 1.1rem; */
   }
 
   :root {
