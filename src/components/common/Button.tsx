@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 
 // chilren: 버튼 텍스트
-// type: 동백 / 나리 / 비활성화
+// type: dong / nari / 비활성화
 interface ButtonProps {
   children: string;
   disabled: boolean;
@@ -22,10 +22,7 @@ const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
 const WrapButton = styled.div`
   width: 100%;
   height: 3.7rem;
-  padding-right: 2rem;
   align-items: center;
-  position: fixed;
-  bottom: 4rem;
 `;
 const StyledButton = styled.button<ButtonProps>`
   width: 100%;

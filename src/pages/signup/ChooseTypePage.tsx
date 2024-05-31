@@ -19,26 +19,35 @@ const ChooseTypePage: React.FC = () => {
   };
 
   return (
-    <>
+    <WrapContent>
       <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
-        types="동백"
-        isSelected={selectedButton === '동백'}
+        types="dong"
+        isSelected={selectedButton === 'dong'}
         onClick={handleButtonClick}
       ></UserTypeButton>
       <UserTypeButton
-        types="나리"
-        isSelected={selectedButton === '나리'}
+        types="nari"
+        isSelected={selectedButton === 'nari'}
         onClick={handleButtonClick}
       ></UserTypeButton>
       <div></div>
-      <Button disabled={isDisabled} type={selectedButton} onClick={onClickBtn}>
-        다음
-      </Button>
-    </>
+      <WrapButton>
+        <Button
+          disabled={isDisabled}
+          type={selectedButton}
+          onClick={onClickBtn}
+        >
+          다음
+        </Button>
+      </WrapButton>
+    </WrapContent>
   );
 };
 
+const WrapContent = styled.div`
+  padding: 0 1.1rem;
+`;
 const Title = styled.div`
   margin-top: 5.5rem;
   margin-bottom: 3.5rem;
@@ -49,6 +58,12 @@ const Title = styled.div`
   font-weight: 800;
   line-height: normal;
   letter-spacing: 0.0275rem;
+`;
+const WrapButton = styled.div`
+  position: fixed;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 4rem;
 `;
 
 export default ChooseTypePage;

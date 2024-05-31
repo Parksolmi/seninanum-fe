@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const WriteRecruitButton: React.FC = () => {
+const ShortcutButton: React.FC = () => {
   return (
     <WrapButton>
       <ButtonText>구인글 작성하기</ButtonText>
@@ -41,4 +41,4 @@ const WriteIcon = styled.img`
   flex-shrink: 0;
 `;
 
-export default WriteRecruitButton;
+export default ShortcutButton;

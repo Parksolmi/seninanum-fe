@@ -18,14 +18,16 @@ const UserTypeButton: React.FC<ButtonProps> = ({
       onClick={() => onClick(types)}
       $isSelected={isSelected}
     >
-      <UserType $setType={types}>{types}</UserType>
+      <UserType $setType={types}>
+        {types !== null ? (types === 'dong' ? '동백' : '나리') : null}
+      </UserType>
       <Content>
-        {types === '동백'
+        {types === 'dong'
           ? '재능을 \n공유하고 싶어요.'
           : '재능을 \n공유받고 싶어요.'}
       </Content>
       <DetailContent>
-        {types === '동백'
+        {types === 'dong'
           ? '은퇴하신 시니어분들 대상이에요.'
           : '누구나 재능을 공유받을 수 있어요.'}
       </DetailContent>
@@ -48,13 +50,13 @@ const StyleBoxContainer = styled.div<{
   border-radius: 0.625rem;
   border: ${({ $isSelected, $setType }) =>
     $isSelected
-      ? $setType === '동백'
+      ? $setType === 'dong'
         ? '2px solid var(--Primary-dong)'
         : '2px solid var(--Primary-nari)'
       : `var(--Base-White)`};
   background-color: ${({ $isSelected, $setType }) =>
     $isSelected
-      ? $setType === '동백'
+      ? $setType === 'dong'
         ? `var(--Secondary-dong-2)`
         : `var(--Secondary-nari-2)`
       : `var(--Base-White)`};
@@ -69,7 +71,7 @@ const UserType = styled.div<{ $setType: string }>`
   justify-content: center;
   margin-bottom: 0.81rem;
   color: ${({ $setType }) =>
-    $setType === '동백' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
+    $setType === 'dong' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
   font-size: 1.5rem;
   font-family: Nanum_Square;
   font-style: normal;

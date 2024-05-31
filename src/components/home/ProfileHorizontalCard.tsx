@@ -3,30 +3,35 @@ import styled from 'styled-components';
 
 // interface
 
-const RecommendDongCard: React.FC = () => {
+const ProfileHorizontalCard: React.FC = () => {
   return (
     <WrapCard>
-      <ProfileImage
-        src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
-      ></ProfileImage>
-      <ProfileNameBox>
-        <ProfileNickname>닉네임</ProfileNickname>
-        <ProfileType>동백</ProfileType>
-        <ProfileBadge
-          src={process.env.PUBLIC_URL + '/assets/common/badge-dong.png'}
-        ></ProfileBadge>
-      </ProfileNameBox>
-      <TagContainer>
-        <AgeTag>
+      <TopBox>
+        <ProfileImage
+          src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
+        ></ProfileImage>
+        <IntroduceBox>
+          <ProfileNameBox>
+            <ProfileNickname>닉네임</ProfileNickname>
+            <ProfileType>동백</ProfileType>
+            <ProfileBadge
+              src={process.env.PUBLIC_URL + '/assets/common/badge-dong.png'}
+            ></ProfileBadge>
+          </ProfileNameBox>
+          <IntroduceText>"맡은 일은 성실하게 합니다."</IntroduceText>
+        </IntroduceBox>
+      </TopBox>
+      <BottomBox>
+        <Tag>
           <TagText>62세</TagText>
-        </AgeTag>
-        <GenderTag>
+        </Tag>
+        <Tag>
           <TagText>여자</TagText>
-        </GenderTag>
-      </TagContainer>
-      <CategoryWrapTag>
-        <TagText>교육·돌봄</TagText>
-      </CategoryWrapTag>
+        </Tag>
+        <Tag>
+          <TagText>교육·돌봄</TagText>
+        </Tag>
+      </BottomBox>
     </WrapCard>
   );
 };
@@ -36,40 +41,48 @@ const WrapCard = styled.div`
   margin-top: 4rem;
   margin-bottom: 4rem;
 
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+  padding-top: 0.8rem;
+  /* padding-bottom: 0.8rem; */
   display: flex;
   flex-direction: column;
   border-radius: 20px;
   width: 100%;
-  height: 14rem;
+  height: 8rem;
   flex-shrink: 0;
   fill: var(--Base-White, #fff);
   box-shadow: 0px 2px 6.3px rgba(150, 150, 150, 0.4);
+`;
+
+const TopBox = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const ProfileImage = styled.img`
   width: 3.75rem;
   height: 4rem;
   flex-shrink: 0;
-  margin-top: 1rem;
-  margin-left: 1.6rem;
-  margin-right: 1.6rem;
-  display: block;
-  margin: auto;
+  /* margin-top: 1rem; */
+  display: flex;
+`;
+
+const IntroduceBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.62rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const ProfileNameBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 0.4rem;
-  margin-bottom: 0.69rem;
-  align-items: center;
-  justify-content: center;
 `;
 
 const ProfileNickname = styled.div`
-  margin-right: 0.2rem;
+  margin-right: 0.38rem;
   color: #000;
   text-align: center;
   font-family: Nanum_Square;
@@ -96,13 +109,24 @@ const ProfileBadge = styled.img`
   flex-shrink: 0;
 `;
 
-const TagContainer = styled.div`
+const IntroduceText = styled.div`
+  margin-top: 0.3rem;
+  color: #000;
+  font-family: Nanum_Square;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
+const BottomBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.3rem;
+  margin-top: 0.2rem;
   width: 100%;
 `;
-const AgeTag = styled.div`
+
+const Tag = styled.div`
   flex: 1;
   height: 2.3rem;
   flex-shrink: 0;
@@ -110,17 +134,6 @@ const AgeTag = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 0.3rem;
-  border-radius: 0.5rem;
-  background: var(--Secondary-nari2, #ffebb2);
-`;
-const GenderTag = styled.div`
-  flex: 1;
-  width: 50%;
-  height: 2.3rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 0.5rem;
   background: var(--Secondary-nari2, #ffebb2);
 `;
@@ -132,21 +145,7 @@ const TagText = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-
   align-items: center;
 `;
 
-const CategoryWrapTag = styled.div`
-  width: 100%;
-  height: 2.3rem;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  background: var(--Secondary-nari2, #ffebb2);
-  margin-bottom: 1.1rem;
-`;
-
-export default RecommendDongCard;
+export default ProfileHorizontalCard;

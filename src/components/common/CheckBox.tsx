@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-// import empty from '../../assets/check-empty.svg';
-// import filled from '../../assets/check-filled.svg';
 
 interface CheckboxProps {
   id: string;
@@ -21,18 +19,19 @@ const CheckBox: React.FC<CheckboxProps> = ({
   };
   return (
     <CheckBoxContainer>
-      <Checkbox checked={checked} htmlFor={id}>
+      <Checkbox $checked={checked} htmlFor={id}>
         <HiddenCheckbox
           id={id}
           type="checkbox"
           onChange={handleChange}
-          checked={checked}
+          // $checked={checked}
         />
         <CheckIcon
+          alt="check"
           src={
             checked
-              ? process.env.PUBLIC_URL + '/assets/signIn/check-filled.svg'
-              : process.env.PUBLIC_URL + '/assets/signIn/check-empty.svg'
+              ? '/assets/signIn/check-filled.svg'
+              : '/assets/signIn/check-empty.svg'
           }
         />
       </Checkbox>
@@ -47,7 +46,7 @@ const CheckBoxContainer = styled.div`
   margin-bottom: 1.81rem;
 `;
 // checked 상태에 따라 empty/filled.svg 변경
-const Checkbox = styled.label<{ checked: Boolean }>`
+const Checkbox = styled.label<{ $checked: Boolean }>`
   display: inline-block;
   width: 30px;
   height: 30px;
