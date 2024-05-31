@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import ApplyMyRecruit from '../../components/home/ApplyMyRecruit';
+import ApplyMyRecruit from '../../components/home/MyRecruitProgress';
 import ShortcutButton from '../../components/common/ShortcutButton';
-import RecommendDongCard from './RecommendDongCard';
-import RecommendDongCardDetail from './RecommendDongCardDetail';
+import RecommendDongCard from '../../components/home/ProfileVerticalCard';
+import RecommendDongCardDetail from '../../components/home/ProdileHorizontalCard';
 
 const HomeIndexPage: React.FC = () => {
   return (

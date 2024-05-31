@@ -30,7 +30,7 @@ const StyledButton = styled.button<ButtonProps>`
   color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ type }) =>
     type !== null
-      ? type === 'dong'
+      ? type === '동백'
         ? `var(--Primary-dong)`
         : `var(--Primary-nari)`
       : '#EBECEB'};
