@@ -9,7 +9,10 @@ const HomeIndexPage: React.FC = () => {
   return (
     <WrapContent>
       <h1>홈페이지</h1>
-      <ApplyMyRecruit />
+      <ApplyMyRecruit
+        profileImage={process.env.PUBLIC_URL + '/assets/common/profile.png'}
+        applicantCount={3}
+      />
       <ShortcutButton />
       <RecommendDongCard />
       <RecommendDongCardDetail />

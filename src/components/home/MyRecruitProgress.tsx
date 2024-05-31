@@ -1,25 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// interface
+// 프로필이미지 URL, 지원자 수
+interface RecruitData {
+  profileImage: string;
+  applicantCount: number;
+}
 
-const ApplyMyRecruit: React.FC = () => {
+const ApplyMyRecruit: React.FC<RecruitData> = ({
+  profileImage,
+  applicantCount,
+}) => {
+  // 지원자 수 따라 프로필 이미지 증가
+  const profileImages = Array(applicantCount).fill(profileImage);
+
   return (
     <BoxContainer>
-      <ProfileBox>
-        <ProfileStyle>
-          <ProfileImage
-            src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
-          ></ProfileImage>
-          <ProfileHeartIcon
-            src={process.env.PUBLIC_URL + '/assets/common/heart-icon.svg'}
-          ></ProfileHeartIcon>
-        </ProfileStyle>
-      </ProfileBox>
+      {/* 구인글 지원한 동백이 0명인 경우 , 구인글을 작성하지 않은 나리인 경우-아직x */}
+      {applicantCount === 0 ? (
+        <ProfileBox>
+          <ApplyZero>나에게 맞는 동백 추천 보러가기</ApplyZero>
+        </ProfileBox>
+      ) : (
+        <ProfileBox>
+          {profileImages.map((image, index) => (
+            <ProfileStyle>
+              <ProfileImage
+                // src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
+                src={profileImage}
+              ></ProfileImage>
+              <ProfileHeartIcon
+                src={process.env.PUBLIC_URL + '/assets/common/heart-icon.svg'}
+              ></ProfileHeartIcon>
+            </ProfileStyle>
+          ))}
+        </ProfileBox>
+      )}
+
       <TextBox>
         <ApplyText>내 구인글에 지원한 동백님</ApplyText>
         <NumberTextBox>
-          <ApplyNumber>3명</ApplyNumber>
+          <ApplyNumber>{applicantCount}명</ApplyNumber>
           <MoreButtonBox>
             <MoreIcon
               src={process.env.PUBLIC_URL + '/assets/common/more-icon.svg'}
@@ -51,7 +72,19 @@ const ProfileBox = styled.div`
   background: #fff;
   padding: 0.5rem;
 `;
-
+const ApplyZero = styled.div`
+  width: 100%;
+  color: var(--Base-Deep-Gray, #5b5b5b);
+  font-family: Nanum_Square;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const ProfileStyle = styled.div`
   width: 3.0625rem;
   height: 3.39744rem;
