@@ -38,7 +38,7 @@ const RegisterProfilePage: React.FC = () => {
   };
 
   return (
-    <>
+    <WrapContent>
       <Back onClick={onClickBackBtn}>
         <img src={'/assets/signIn/back-icon.svg'} alt=" " />
       </Back>
@@ -63,9 +63,13 @@ const RegisterProfilePage: React.FC = () => {
           완료하기
         </Button>
       </WrapButton>
-    </>
+    </WrapContent>
   );
 };
+
+const WrapContent = styled.div`
+  padding: 0 1.1rem;
+`;
 const Back = styled.div`
   width: 25px;
   height: 25px;
@@ -96,7 +100,7 @@ const WrapButton = styled.div`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 5rem;
+  bottom: 4rem;
 `;
 
 export default RegisterProfilePage;

@@ -53,7 +53,7 @@ const AgreePolicyPage: React.FC = () => {
     navigate(-1);
   };
   return (
-    <>
+    <WrapContent>
       <Back onClick={onClickBackBtn}>
         <img src="/assets/signIn/back-icon.svg" alt="back" />
       </Back>
@@ -78,13 +78,18 @@ const AgreePolicyPage: React.FC = () => {
         checked={checkboxes.option2}
         onChange={(checked) => handleOptionChange('option2', checked)}
       />
-      <Button disabled={isDisabled} type="나리" onClick={onClickBtn}>
-        다음
-      </Button>
-    </>
+      <WrapButton>
+        <Button disabled={isDisabled} type="나리" onClick={onClickBtn}>
+          다음
+        </Button>
+      </WrapButton>
+    </WrapContent>
   );
 };
 
+const WrapContent = styled.div`
+  padding: 0 1.1rem;
+`;
 const Back = styled.div`
   width: 25px;
   height: 25px;
@@ -114,6 +119,12 @@ const Text2 = styled.div`
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.025rem;
+`;
+const WrapButton = styled.div`
+  position: fixed;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 4rem;
 `;
 
 export default AgreePolicyPage;

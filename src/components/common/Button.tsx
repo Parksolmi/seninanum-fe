@@ -22,10 +22,7 @@ const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
 const WrapButton = styled.div`
   width: 100%;
   height: 3.7rem;
-  padding-right: 2rem;
   align-items: center;
-  position: fixed;
-  bottom: 4rem;
 `;
 const StyledButton = styled.button<ButtonProps>`
   width: 100%;
