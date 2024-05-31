@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import Toggle from '../../components/signup/Toggle';
 import UserTypeButton from '../../components/signin/UserTypeButton';
 import ApplyMyRecruit from '../../components/home/ApplyMyRecruit';
-import WriteRecruitButton from '../../components/common/WriteRecruitButton';
+import ShortcutButton from '../../components/common/ShortcutButton';
 import RecommendDongCard from './RecommendDongCard';
 import RecommendDongCardDetail from './RecommendDongCardDetail';
 
@@ -31,7 +31,7 @@ const HomeIndexPage: React.FC = () => {
       {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
       <ApplyMyRecruit></ApplyMyRecruit>
 
-      <WriteRecruitButton></WriteRecruitButton>
+      <ShortcutButton></ShortcutButton>
 
       <RecommendDongCard></RecommendDongCard>
 
