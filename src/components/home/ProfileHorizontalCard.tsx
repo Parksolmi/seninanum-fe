@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // interface
 
-const RecommendDongCardDetail: React.FC = () => {
+const ProfileHorizontalCard: React.FC = () => {
   return (
     <WrapCard>
       <TopBox>
@@ -148,4 +148,4 @@ const TagText = styled.div`
   align-items: center;
 `;
 
-export default RecommendDongCardDetail;
+export default ProfileHorizontalCard;

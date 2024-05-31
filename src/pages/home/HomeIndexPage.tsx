@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ApplyMyRecruit from '../../components/home/MyRecruitProgress';
 import ShortcutButton from '../../components/common/ShortcutButton';
 import RecommendDongCard from '../../components/home/ProfileVerticalCard';
-import RecommendDongCardDetail from '../../components/home/ProdileHorizontalCard';
+import RecommendDongCardDetail from '../../components/home/ProfileHorizontalCard';
 
 const HomeIndexPage: React.FC = () => {
   return (

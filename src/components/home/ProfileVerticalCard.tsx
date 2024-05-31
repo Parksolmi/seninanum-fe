@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // interface
 
-const RecommendDongCard: React.FC = () => {
+const ProfileVerticalCard: React.FC = () => {
   return (
     <WrapCard>
       <ProfileImage
@@ -149,4 +149,4 @@ const CategoryWrapTag = styled.div`
   margin-bottom: 1.1rem;
 `;
 
-export default RecommendDongCard;
+export default ProfileVerticalCard;
