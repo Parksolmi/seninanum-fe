@@ -55,10 +55,7 @@ const AgreePolicyPage: React.FC = () => {
   return (
     <>
       <Back onClick={onClickBackBtn}>
-        <img
-          src={process.env.PUBLIC_URL + '/assets/signIn/back-icon.svg'}
-          alt=" "
-        />
+        <img src="/assets/signIn/back-icon.svg" alt="back" />
       </Back>
 
       <Text1>시니나눔이 처음이시네요!</Text1>
