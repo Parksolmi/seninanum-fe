@@ -29,8 +29,10 @@ const HomeIndexPage: React.FC = () => {
       ></UserTypeButton>
       {/* <Button type="dong">버튼</Button> */}
       {/* <Toggle options={['남성', '여성']} setState={setToggleState} /> */}
-      <ApplyMyRecruit></ApplyMyRecruit>
-
+      <ApplyMyRecruit
+        profileImage={process.env.PUBLIC_URL + '/assets/common/profile.png'}
+        applicantCount={3}
+      ></ApplyMyRecruit>
       <WriteRecruitButton></WriteRecruitButton>
 
       <RecommendDongCard></RecommendDongCard>
