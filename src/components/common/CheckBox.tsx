@@ -28,11 +28,7 @@ const CheckBox: React.FC<CheckboxProps> = ({
         />
         <CheckIcon
           alt="check"
-          src={
-            checked
-              ? '/assets/signIn/check-filled.svg'
-              : '/assets/signIn/check-empty.svg'
-          }
+          src={checked ? '/assets/check-filled.svg' : '/assets/check-empty.svg'}
         />
       </Checkbox>
       {label ? <Label htmlFor={id}>{label}</Label> : null}

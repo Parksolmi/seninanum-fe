@@ -40,10 +40,7 @@ const RegisterProfilePage: React.FC = () => {
   return (
     <>
       <Back onClick={onClickBackBtn}>
-        <img
-          src={process.env.PUBLIC_URL + '/assets/signIn/back-icon.svg'}
-          alt=" "
-        />
+        <img src={'/assets/back-icon.svg'} alt=" " />
       </Back>
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
