@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 
 // chilren: 버튼 텍스트
-// type: 동백 / 나리 / 비활성화
+// type: dong / nari / 비활성화
 interface ButtonProps {
   children: string;
   disabled: boolean;
@@ -30,7 +30,7 @@ const StyledButton = styled.button<ButtonProps>`
   color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ type }) =>
     type !== null
-      ? type === '동백'
+      ? type === 'dong'
         ? `var(--Primary-dong)`
         : `var(--Primary-nari)`
       : '#EBECEB'};

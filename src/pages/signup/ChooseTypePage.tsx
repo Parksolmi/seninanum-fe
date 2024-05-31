@@ -22,13 +22,13 @@ const ChooseTypePage: React.FC = () => {
     <WrapContent>
       <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
-        types="동백"
-        isSelected={selectedButton === '동백'}
+        types="dong"
+        isSelected={selectedButton === 'dong'}
         onClick={handleButtonClick}
       ></UserTypeButton>
       <UserTypeButton
-        types="나리"
-        isSelected={selectedButton === '나리'}
+        types="nari"
+        isSelected={selectedButton === 'nari'}
         onClick={handleButtonClick}
       ></UserTypeButton>
       <div></div>

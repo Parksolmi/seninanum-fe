@@ -79,7 +79,7 @@ const AgreePolicyPage: React.FC = () => {
         onChange={(checked) => handleOptionChange('option2', checked)}
       />
       <WrapButton>
-        <Button disabled={isDisabled} type="나리" onClick={onClickBtn}>
+        <Button disabled={isDisabled} type="nari" onClick={onClickBtn}>
           다음
         </Button>
       </WrapButton>
