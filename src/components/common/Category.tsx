@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface CategoryProps {
   label: string;
   list: string[];
-  onDelete: () => void;
 }
 
-const Category = ({ label, list, onDelete }: CategoryProps) => {
+const Category = ({ label, list }: CategoryProps) => {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   return (
     <>
       <Label>{label}</Label>
       <TagContainer>
-        {list.map((item) => (
-          <Tag>{item}</Tag>
+        {list.map((item, index) => (
+          <Tag
+            key={index}
+            onClick={() => {
+              setSelectedTags([...selectedTags, item]);
+              console.log(item);
+            }}
+            $isSelected={selectedTags.includes(item)}
+          >
+            {item}
+          </Tag>
         ))}
       </TagContainer>
     </>
@@ -33,7 +43,10 @@ const TagContainer = styled.div`
   gap: 10px;
 `;
 
-const Tag = styled.div`
+interface TagProps {
+  $isSelected: boolean;
+}
+const Tag = styled.div<TagProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,6 +57,14 @@ const Tag = styled.div`
   border-radius: 16px;
   border: 1px solid #8e8e8e;
   height: 55px;
+  transition: border 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+
+  ${({ $isSelected }) =>
+    $isSelected &&
+    `border: 2px solid var(--Primary-dong); 
+     color: var(--Primary-dong); 
+     font-weight: 700;
+    `}
 `;
 
 export default Category;
