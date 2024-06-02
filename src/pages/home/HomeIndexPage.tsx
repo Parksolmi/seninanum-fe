@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import SummaryCard from '../../components/common/SummaryCard';
 import CareerProfileProgress from '../../components/home/CareerProfileProgress';
 import ProgressBar from '../../components/common/ProgressBar';
-import InputPrice from '../../components/common/InputPrice';
 
 const HomeIndexPage: React.FC = () => {
   return (
@@ -18,7 +17,6 @@ const HomeIndexPage: React.FC = () => {
         fields={['교육', '예능', '디지털']}
       />
       <ProgressBar status={2} type={'dong'} />
-      <InputPrice></InputPrice>
     </WrapContent>
   );
 };
