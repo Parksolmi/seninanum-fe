@@ -2,30 +2,42 @@ import React from 'react';
 import styled from 'styled-components';
 
 // interface
+interface ProfileProps {
+  nickname: string;
+  types: string;
+  age: string;
+  gender: string;
+  tagText: string;
+}
 
-const ProfileVerticalCard: React.FC = () => {
+const ProfileVerticalCard = ({
+  nickname,
+  types,
+  age,
+  gender,
+  tagText,
+}: ProfileProps) => {
   return (
     <WrapCard>
       <ProfileImage
         src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
       ></ProfileImage>
       <ProfileNameBox>
-        <ProfileNickname>닉네임</ProfileNickname>
-        <ProfileType>동백</ProfileType>
+        <ProfileNickname>{nickname}</ProfileNickname>
+        <ProfileType>
+          {types !== null ? (types === 'dong' ? '동백' : '나리') : null}
+        </ProfileType>
         <ProfileBadge
           src={process.env.PUBLIC_URL + '/assets/common/badge-dong.png'}
         ></ProfileBadge>
       </ProfileNameBox>
       <TagContainer>
         <AgeTag>
-          <TagText>62세</TagText>
+          <TagText>{`${age} | ${gender}`}</TagText>
         </AgeTag>
-        <GenderTag>
-          <TagText>여자</TagText>
-        </GenderTag>
       </TagContainer>
       <CategoryWrapTag>
-        <TagText>교육·돌봄</TagText>
+        <TagText>{tagText}</TagText>
       </CategoryWrapTag>
     </WrapCard>
   );
@@ -57,6 +69,7 @@ const ProfileImage = styled.img`
   margin-right: 1.6rem;
   display: block;
   margin: auto;
+  border-radius: 100%;
 `;
 
 const ProfileNameBox = styled.div`
@@ -72,10 +85,10 @@ const ProfileNickname = styled.div`
   margin-right: 0.2rem;
   color: #000;
   text-align: center;
-  font-family: Nanum_Square;
-  font-size: 1.25rem;
+  font-family: NanumSquare;
+  font-size: 1.375rem;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
 `;
 
@@ -83,7 +96,7 @@ const ProfileType = styled.div`
   margin-right: 0.2rem;
   color: #000;
   text-align: center;
-  font-family: Nanum_Square;
+  font-family: NanumSquare;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
@@ -109,28 +122,15 @@ const AgeTag = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 0.3rem;
-  border-radius: 0.5rem;
-  background: var(--Secondary-nari2, #ffebb2);
-`;
-const GenderTag = styled.div`
-  flex: 1;
-  width: 50%;
-  height: 2.3rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  background: var(--Secondary-nari2, #ffebb2);
 `;
 
 const TagText = styled.div`
-  color: var(--Base-Black, #000);
-  font-family: Nanum_Square;
-  font-size: 1.375rem;
+  color: #000;
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   line-height: normal;
 
   align-items: center;
