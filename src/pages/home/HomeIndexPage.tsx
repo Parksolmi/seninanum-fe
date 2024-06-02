@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import CareerProfileProgress from '../../components/home/CareerProfileProgress';
 
 const HomeIndexPage: React.FC = () => {
-  return <WrapContent></WrapContent>;
+  return (
+    <WrapContent>
+      <CareerProfileProgress status={2} />
+    </WrapContent>
+  );
 };
 
 const WrapContent = styled.div`
