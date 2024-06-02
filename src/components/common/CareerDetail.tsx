@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface CareerDetailInput {
+interface CareerDetailProps {
   title: string;
   period: string;
   content: string;
@@ -13,7 +13,7 @@ const CareerDetail = ({
   period,
   content,
   onDelete,
-}: CareerDetailInput) => {
+}: CareerDetailProps) => {
   return (
     <InputContainer>
       <h1>{title}</h1>

@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import ApplyMyRecruit from '../../components/home/MyRecruitProgress';
-import ShortcutButton from '../../components/common/ShortcutButton';
-import RecommendDongCard from '../../components/home/ProfileVerticalCard';
-import RecommendDongCardDetail from '../../components/home/ProfileHorizontalCard';
 import CareerDetail from '../../components/common/CareerDetail';
+import Category from '../../components/common/Category';
+import ageState from '../../constants/ageState';
 
 const HomeIndexPage: React.FC = () => {
   const handleDelete = () => {
@@ -19,10 +17,11 @@ const HomeIndexPage: React.FC = () => {
         content="세부 업무 내용입니다."
         onDelete={handleDelete}
       />
-      <ApplyMyRecruit />
-      <ShortcutButton />
-      <RecommendDongCard />
-      <RecommendDongCardDetail />
+      <Category
+        label={ageState.label}
+        list={ageState.list}
+        onDelete={handleDelete}
+      />
     </WrapContent>
   );
 };
