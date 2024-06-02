@@ -30,7 +30,7 @@ const TabBar = ({ type }: TabBarProps) => {
     {
       id: 0,
       name: '홈',
-      path: '/',
+      path: '/home',
       icon: '/assets/tabIcon/home.svg',
       iconActive: `/assets/tabIcon/home-active-${type}.svg`,
     },
