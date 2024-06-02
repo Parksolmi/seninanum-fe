@@ -8,6 +8,7 @@ const HomeIndexPage: React.FC = () => {
     <WrapContent>
       <CareerProfileProgress status={0} />
       <SummaryCard
+        type="nari"
         nickname="닉네임"
         age="20대"
         method="비대면"

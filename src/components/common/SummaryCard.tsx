@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface SummaryCardProps {
   // profile: string;
+  type: string;
   nickname: string;
   age: string;
   method: string;
@@ -12,6 +13,7 @@ interface SummaryCardProps {
 
 const SummaryCard = ({
   // profile,
+  type,
   nickname,
   age,
   method,
@@ -24,8 +26,8 @@ const SummaryCard = ({
         <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
         <ProfileInfo>
           <p>
-            <strong>닉네임</strong> 나리{' '}
-            <Badge src="/assets/common/badge-nari.png" />
+            <strong>닉네임</strong> {type === 'nari' ? '나리' : '동백'}
+            <Badge src={`/assets/common/badge-${type}.png`} />
           </p>
           <span>20대 | 대면</span>
         </ProfileInfo>
@@ -36,7 +38,7 @@ const SummaryCard = ({
       </WrapContent>
       <WrapField>
         {fields.map((field) => (
-          <Field>{field}</Field>
+          <Field $type={type}>{field}</Field>
         ))}
       </WrapField>
     </InputContainer>
@@ -81,6 +83,7 @@ const ProfileInfo = styled.div`
 `;
 
 const Badge = styled.img`
+  margin-left: 0.2rem;
   width: 1.125rem;
 `;
 
@@ -102,10 +105,14 @@ const WrapField = styled.div`
   flex-direction: row;
   gap: 0.3rem;
 `;
-const Field = styled.div`
+interface fieldType {
+  $type: string;
+}
+const Field = styled.div<fieldType>`
   flex-grow: 1;
   border-radius: 0.5rem;
-  background: var(--Secondary-dong-2);
+  background: ${({ $type }) =>
+    $type === 'dong' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
   color: #414040;
   font-family: 'NanumSquareR';
   font-weight: 400;
