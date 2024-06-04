@@ -1,15 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { TabContext } from '../../store/TabContext';
+import TabMenu from '../../store/TabContext';
 
 interface TabBarProps {
   readonly type: 'dong' | 'nari';
 }
 
 const TabBar = ({ type }: TabBarProps) => {
-  const { setTabMenuState } = useContext(TabContext);
+  const { setTabMenuState } = TabMenu((state) => ({
+    setTabMenuState: state.setTabMenuState,
+  }));
 
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('/');
