@@ -26,7 +26,7 @@ const WrapButton = styled.div`
 `;
 
 interface styleButton {
-  $type: string;
+  $type: string | null;
 }
 const StyledButton = styled.button<styleButton>`
   width: 100%;

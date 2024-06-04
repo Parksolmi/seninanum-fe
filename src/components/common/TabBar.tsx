@@ -79,8 +79,8 @@ const TabBar = ({ type }: TabBarProps) => {
               alt={item.name}
             />
             <Label
-              active={currentPage === item.path ? 'active' : 'inactive'}
-              type={type}
+              $active={currentPage === item.path ? 'active' : 'inactive'}
+              $type={type}
             >
               {item.name}
             </Label>
@@ -92,8 +92,8 @@ const TabBar = ({ type }: TabBarProps) => {
 };
 
 interface LabelProps {
-  active: 'active' | 'inactive';
-  type: string;
+  $active: 'active' | 'inactive';
+  $type: string;
 }
 
 const StyledNav = styled.nav`
@@ -135,7 +135,7 @@ const NavItem = styled(Link)`
 
 const Label = styled.div<LabelProps>`
   color: ${(props) =>
-    props.active === 'active' ? `var(--Primary-${props.type})` : 'black'};
+    props.$active === 'active' ? `var(--Primary-${props.$type})` : 'black'};
   font-size: 1.2rem;
   font-weight: 800;
   white-space: nowrap;
