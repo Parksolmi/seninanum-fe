@@ -37,8 +37,10 @@ const SummaryCard = ({
         창업대회 공모전 피드백 및 도와주실 전문가 구합니다.
       </WrapContent>
       <WrapField>
-        {fields.map((field) => (
-          <Field $type={type}>{field}</Field>
+        {fields.map((field, index) => (
+          <Field key={index} $type={type}>
+            {field}
+          </Field>
         ))}
       </WrapField>
     </InputContainer>

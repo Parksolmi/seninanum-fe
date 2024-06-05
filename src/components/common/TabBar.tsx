@@ -1,15 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { TabContext } from '../../store/TabContext';
+import TabMenu from '../../store/TabContext';
 
 interface TabBarProps {
   readonly type: 'dong' | 'nari';
 }
 
 const TabBar = ({ type }: TabBarProps) => {
-  const { setTabMenuState } = useContext(TabContext);
+  const { setTabMenuState } = TabMenu((state) => ({
+    setTabMenuState: state.setTabMenuState,
+  }));
 
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('/');
@@ -30,7 +32,7 @@ const TabBar = ({ type }: TabBarProps) => {
     {
       id: 0,
       name: '홈',
-      path: '/',
+      path: '/home',
       icon: '/assets/tabIcon/home.svg',
       iconActive: `/assets/tabIcon/home-active-${type}.svg`,
     },
@@ -77,8 +79,8 @@ const TabBar = ({ type }: TabBarProps) => {
               alt={item.name}
             />
             <Label
-              active={currentPage === item.path ? 'active' : 'inactive'}
-              type={type}
+              $active={currentPage === item.path ? 'active' : 'inactive'}
+              $type={type}
             >
               {item.name}
             </Label>
@@ -90,8 +92,8 @@ const TabBar = ({ type }: TabBarProps) => {
 };
 
 interface LabelProps {
-  active: 'active' | 'inactive';
-  type: string;
+  $active: 'active' | 'inactive';
+  $type: string;
 }
 
 const StyledNav = styled.nav`
@@ -133,7 +135,7 @@ const NavItem = styled(Link)`
 
 const Label = styled.div<LabelProps>`
   color: ${(props) =>
-    props.active === 'active' ? `var(--Primary-${props.type})` : 'black'};
+    props.$active === 'active' ? `var(--Primary-${props.$type})` : 'black'};
   font-size: 1.2rem;
   font-weight: 800;
   white-space: nowrap;

@@ -13,7 +13,7 @@ interface ButtonProps {
 const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
   return (
     <WrapButton>
-      <StyledButton disabled={disabled} type={type} onClick={onClick}>
+      <StyledButton disabled={disabled} $type={type} onClick={onClick}>
         {children}
       </StyledButton>
     </WrapButton>
@@ -24,13 +24,17 @@ const WrapButton = styled.div`
   height: 3.7rem;
   align-items: center;
 `;
-const StyledButton = styled.button<ButtonProps>`
+
+interface styleButton {
+  $type: string | null;
+}
+const StyledButton = styled.button<styleButton>`
   width: 100%;
   height: 3.7rem;
-  color: ${({ type }) => (type === null ? '#5B5B5B' : '#ffffff')};
-  background-color: ${({ type }) =>
-    type !== null
-      ? type === '동백'
+  color: ${({ $type }) => ($type === null ? '#5B5B5B' : '#ffffff')};
+  background-color: ${({ $type }) =>
+    $type !== null
+      ? $type === '동백'
         ? `var(--Primary-dong)`
         : `var(--Primary-nari)`
       : '#EBECEB'};
