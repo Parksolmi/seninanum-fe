@@ -1,122 +1,162 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// 프로필이미지 URL, 지원자 수
+// 작성한 구인글 수, 지원자 수, 이번 달 등록된 구인글 수, 구인글 제목
 interface RecruitData {
-  profileImage: string;
+  myRecruit: number;
   applicantCount: number;
+  RecruitThisMonth: number;
+  recruitTitle: string;
 }
 
 const ApplyMyRecruit: React.FC<RecruitData> = ({
-  profileImage,
+  myRecruit,
   applicantCount,
+  RecruitThisMonth,
+  recruitTitle,
 }) => {
-  // 지원자 수 따라 프로필 이미지 증가
-  const profileImages = Array(applicantCount).fill(profileImage);
-
   return (
     <BoxContainer>
-      {/* 구인글 지원한 동백이 0명인 경우 , 구인글을 작성하지 않은 나리인 경우-아직x */}
-      {applicantCount === 0 ? (
-        <ProfileBox>
-          <ApplyZero>나에게 맞는 동백 추천 보러가기</ApplyZero>
-        </ProfileBox>
+      {/* 작성한 구인글이 없는 경우-> 구인글 작성하기 */}
+      {myRecruit === 0 ? (
+        <>
+          <ManagementBox>
+            <ProfileBox>
+              <MyRecruitManagementText>구인글 작성하기</MyRecruitManagementText>
+              <MoreIconBox>
+                <img
+                  src={
+                    process.env.PUBLIC_URL + 'assets/home/right-button-nari.svg'
+                  }
+                  alt="작성하기"
+                />
+              </MoreIconBox>
+            </ProfileBox>
+            <RecruitTitleText>
+              구인글을 작성하면 나에게 맞는 동백님을 추천받을 수 있어요!
+            </RecruitTitleText>
+          </ManagementBox>
+          <TextBox>
+            <ApplyText>이번 달 등록된 구인글 수</ApplyText>
+            <NumberTextBox>
+              <ApplyNumber>{RecruitThisMonth}개</ApplyNumber>
+              <MoreButtonBox>
+                <MoreIcon
+                  src={process.env.PUBLIC_URL + '/assets/common/more-icon.svg'}
+                ></MoreIcon>
+              </MoreButtonBox>
+            </NumberTextBox>
+          </TextBox>
+        </>
       ) : (
-        <ProfileBox>
-          {profileImages.map((image, index) => (
-            <ProfileStyle>
-              <ProfileImage
-                // src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
-                src={profileImage}
-              ></ProfileImage>
-              <ProfileHeartIcon
-                src={process.env.PUBLIC_URL + '/assets/common/heart-icon.svg'}
-              ></ProfileHeartIcon>
-            </ProfileStyle>
-          ))}
-        </ProfileBox>
+        <>
+          <ManagementBox>
+            <ProfileBox>
+              <MyRecruitManagementText>내 구인글 관리</MyRecruitManagementText>
+              <MoreIconBox>
+                <img
+                  src={
+                    process.env.PUBLIC_URL + 'assets/home/right-button-nari.svg'
+                  }
+                  alt="더보기"
+                />
+              </MoreIconBox>
+            </ProfileBox>
+            <RecruitTitleText>{recruitTitle}</RecruitTitleText>
+          </ManagementBox>
+          <TextBox>
+            <ApplyText>내 구인글에 지원한 동백님</ApplyText>
+            <NumberTextBox>
+              <ApplyNumber>{applicantCount}명</ApplyNumber>
+            </NumberTextBox>
+          </TextBox>
+        </>
       )}
-
-      <TextBox>
-        <ApplyText>내 구인글에 지원한 동백님</ApplyText>
-        <NumberTextBox>
-          <ApplyNumber>{applicantCount}명</ApplyNumber>
-          <MoreButtonBox>
-            <MoreIcon
-              src={process.env.PUBLIC_URL + '/assets/common/more-icon.svg'}
-            ></MoreIcon>
-          </MoreButtonBox>
-        </NumberTextBox>
-      </TextBox>
     </BoxContainer>
   );
 };
 
 const BoxContainer = styled.div`
   width: 100%;
-  height: 4.625rem;
+  height: auto;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   /* 임시 */
   margin-bottom: 5rem;
+  z-index: 1;
+`;
+const ManagementBox = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-radius: 0.6875rem 4.4375rem 0rem 0rem;
+  background: var(--Base-White, #fff);
+  /* Shadow_dong */
+  box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
+  padding: 0.8rem;
 `;
 const ProfileBox = styled.div`
   width: 100%;
-  height: 4.625rem;
+  height: auto;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
-  border-radius: 0.625rem 0.625rem 0rem 0rem;
-  border: 2px solid var(--Base-Gray2, #ebeceb);
-  background: #fff;
-  padding: 0.5rem;
+  margin-bottom: 1rem;
 `;
-const ApplyZero = styled.div`
-  width: 100%;
-  color: var(--Base-Deep-Gray, #5b5b5b);
+
+const MyRecruitManagementText = styled.div`
+  color: var(--Primary-nari-text, #f48400);
+  font-family: Nanum_Square;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  z-index: 3;
+  margin-top: 0.2rem;
+`;
+
+const MoreIconBox = styled.div`
+  width: 0.55363rem;
+  height: 1rem;
+  flex-shrink: 0;
+  stroke-width: 2px;
+
+  img {
+    margin-left: 1rem;
+    padding-top: 0.35rem;
+  }
+`;
+
+const RecruitTitleText = styled.div`
+  width: 21rem;
+  color: var(--Base-Black, #000);
   font-family: Nanum_Square;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  text-decoration-line: underline;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const ProfileStyle = styled.div`
-  width: 3.0625rem;
-  height: 3.39744rem;
-  flex-shrink: 0;
-  margin-right: 0.3rem;
-  position: relative;
-`;
-
-const ProfileImage = styled.img`
-  width: 3.0625rem;
-  height: 3.39744rem;
-  flex-shrink: 0;
-`;
-
-const ProfileHeartIcon = styled.img`
-  width: 1rem;
-  height: 1rem;
-  flex-shrink: 0;
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const TextBox = styled.div`
   width: 100%;
   height: 3.125rem;
   flex-shrink: 0;
-  border-radius: 0rem 0rem 0.625rem 0.625rem;
-  background: var(--Secondary-nari2, #ffebb2);
+  border-radius: 0rem 0rem 0.6875rem 0.6875rem;
+  background: var(--Primary-nari, #ffaa0e);
+  /* Shadow_dong */
+  box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
   display: flex;
   flex-direction: row;
-  padding: 0.5rem;
+  padding: 0.8rem;
   align-items: center;
   justify-content: space-between;
 `;
@@ -127,23 +167,27 @@ const NumberTextBox = styled.div`
 `;
 
 const ApplyText = styled.div`
-  color: var(--Base-Black, #000);
-  font-family: Nanum_Square;
+  color: #fff;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  font-family: NanumSquare;
   font-size: 1.125rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 800;
   line-height: normal;
   margin-right: 4.3rem;
 `;
 
 const ApplyNumber = styled.div`
-  color: var(--Base-Black, #000);
-  text-align: right;
-  font-family: Nanum_Square;
+  color: #fff;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  font-family: NanumSquare;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 800;
   line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const MoreButtonBox = styled.button`
