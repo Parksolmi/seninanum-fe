@@ -20,7 +20,7 @@ const App: React.FC = () => {
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
 
         <Route element={<NavLayout />}>
-          <Route path="/" element={<HomeIndexPage />} />
+          <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
           <Route path="/community" element={<CommunityIndexPage />} />
           <Route path="/mypage" element={<MyIndexPage />} />

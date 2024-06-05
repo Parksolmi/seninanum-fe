@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SummaryCard from '../../components/common/SummaryCard';
 import CareerProfileProgress from '../../components/home/CareerProfileProgress';
 import ProgressBar from '../../components/common/ProgressBar';
 
 const HomeIndexPage: React.FC = () => {
+
   return (
     <WrapContent>
       <CareerProfileProgress status={0} />
