@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SummaryCard from '../../components/common/SummaryCard';
 import CareerProfileProgress from '../../components/home/CareerProfileProgress';
 import ProgressBar from '../../components/common/ProgressBar';
+import InputPrice from '../../components/common/InputPrice';
 
 const HomeIndexPage: React.FC = () => {
-
   return (
     <WrapContent>
       <CareerProfileProgress status={0} />
@@ -18,6 +18,7 @@ const HomeIndexPage: React.FC = () => {
         fields={['교육', '예능', '디지털']}
       />
       <ProgressBar status={2} type={'dong'} />
+      <InputPrice selected={false} buttontype={'dong'} />
     </WrapContent>
   );
 };
