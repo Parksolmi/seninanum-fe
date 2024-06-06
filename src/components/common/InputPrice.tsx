@@ -1,46 +1,77 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-type ButtonType = 'dong' | 'nari';
+interface RadioButtonProps {
+  selected: boolean;
+  buttontype: 'dong' | 'nari';
+}
 
-const InputPrice = () => {
+const InputPrice: React.FC<RadioButtonProps> = ({ selected, buttontype }) => {
   const [selectedButton, setSelectedButton] = useState<
     'hourly' | 'perItem' | null
   >(null);
 
+  const [price, setPrice] = useState<string>('');
+
+  // 버튼 클릭 시 상태 업데이트
   const handleButtonClick = (button: 'hourly' | 'perItem') => {
     setSelectedButton(button);
+  };
+
+  // 입력값 변경 시 상태 업데이트
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(event.target.value);
+  };
+
+  // click 시 아이콘 이미지 변경
+  const getImageSrc = (selected: boolean, buttontype: 'dong' | 'nari') => {
+    if (selected) {
+      return buttontype === 'dong'
+        ? '/assets/home/radio-filled-dong.svg'
+        : '/assets/home/radio-filled-nari.svg';
+    }
+    return '/assets/home/radio-empty.svg';
   };
   return (
     <PriceInputContainer>
       <Container>
-        <Button
-          selected={selectedButton === 'hourly'}
-          buttonType="dong"
-          onClick={() => handleButtonClick('hourly')}
-        >
-          시간당
-        </Button>
-        <Button
-          selected={selectedButton === 'perItem'}
-          buttonType="dong"
-          onClick={() => handleButtonClick('perItem')}
-        >
-          건당
-        </Button>
+        <ButtonBox>
+          <RadioButton onClick={() => handleButtonClick('hourly')}>
+            <img
+              src={getImageSrc(selectedButton === 'hourly', 'dong')}
+              alt=""
+            />
+          </RadioButton>
+          <Button>시간당</Button>
+        </ButtonBox>
+        <ButtonBox>
+          <RadioButton onClick={() => handleButtonClick('perItem')}>
+            <img
+              src={getImageSrc(selectedButton === 'perItem', 'dong')}
+              alt=""
+            />
+          </RadioButton>
+          <Button>건당</Button>
+        </ButtonBox>
+        <InputArea>
+          <PriceInput>
+            <InputField
+              type="number"
+              value={price}
+              onChange={handleInputChange}
+              placeholder="희망가격"
+            ></InputField>
+          </PriceInput>
+          <WonText>원</WonText>
+        </InputArea>
       </Container>
-      <InputArea>
-        <PriceInput>
-          <InputField placeholder="희망가격"></InputField>
-        </PriceInput>
-        <WonText>원 이하</WonText>
-      </InputArea>
     </PriceInputContainer>
   );
 };
 const PriceInputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 const Container = styled.div`
   display: flex;
@@ -49,47 +80,50 @@ const Container = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Button = styled.button<{ selected: boolean; buttonType: ButtonType }>`
-  width: 100%;
-  padding: 1rem 3.2rem;
-  margin-right: 0.4rem;
+const ButtonBox = styled.div`
+  margin-right: 0.8rem;
+  display: flex;
+`;
+
+const Button = styled.div`
+  margin-left: 0.4rem;
   font-family: NanumSquare;
   font-size: 1.125rem;
   font-weight: 400;
-  border-radius: 0.625rem;
-  background-color: transparent;
+`;
 
-  ${({ selected, buttonType }) => css`
-    border: ${selected
-      ? buttonType === 'dong'
-        ? '2px solid var(--Primary-dong, #FF314A)'
-        : '2px solid  var(--Primary-nari, #FFAA0E)'
-      : '2px solid  var(--Base-Black, #000)'};
-    color: ${selected
-      ? buttonType === 'dong'
-        ? 'var(--Primary-dong, #FF314A)'
-        : 'var(--Primary-nari, #FFAA0E)'
-      : 'var(--Base-Black, #000)'};
-  `}
+const RadioButton = styled.div`
+  width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: transparent;
+
+  img {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
 `;
 
 const InputArea = styled.div`
+  margin-left: 0.6rem;
   display: flex;
   flex-direction: row;
 `;
 const PriceInput = styled.div`
-  width: 12rem;
+  width: 9rem;
   height: 0.0625rem;
-  background: var(--Base-Gray, #8e8e8e);
 `;
 
 const InputField = styled.input`
+  text-align: center;
+  padding: 0;
   width: 100%;
-  color: var(--Base-Black, #000);
+  color: #000;
   font-family: NanumSquare;
   font-size: 1.125rem;
-  padding-left: 35%;
-  padding-right: 20%;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -98,7 +132,7 @@ const InputField = styled.input`
   &::placeholder {
     font-weight: 300;
     line-height: 1rem;
-    color: var(--Base-Deep-Gray);
+    color: #989898;
   }
   &:focus {
     outline: none;
