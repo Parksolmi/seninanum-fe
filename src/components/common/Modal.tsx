@@ -24,24 +24,26 @@ const Modal = ({
   return (
     isOpen && (
       <ModalBackground>
-        <ModalWrapper>
-          <ModalTitleText>{title}</ModalTitleText>
-          <ModalContentText>{content}</ModalContentText>
-          <WrapButton>
-            <Button
-              type={null}
-              disabled={false}
-              children={cancelText}
-              onClick={cancelModal}
-            ></Button>
-            <Button
-              type={'nari'}
-              disabled={false}
-              children={confirmText}
-              onClick={confirmModal}
-            ></Button>
-          </WrapButton>
-        </ModalWrapper>
+        <ModalPosition>
+          <ModalWrapper>
+            <ModalTitleText>{title}</ModalTitleText>
+            <ModalContentText>{content}</ModalContentText>
+            <WrapButton>
+              <Button
+                type={null}
+                disabled={false}
+                children={cancelText}
+                onClick={cancelModal}
+              ></Button>
+              <Button
+                type={'nari'}
+                disabled={false}
+                children={confirmText}
+                onClick={confirmModal}
+              ></Button>
+            </WrapButton>
+          </ModalWrapper>
+        </ModalPosition>
       </ModalBackground>
     )
   );
@@ -57,18 +59,22 @@ const ModalBackground = styled.div`
   background: rgba(0, 0, 0, 0.3);
 `;
 
+const ModalPosition = styled.div`
+  position: absolute;
+  top: 30%;
+  right: 1.1rem;
+  left: 1.1rem;
+`;
+
 const ModalWrapper = styled.div`
   padding: 2rem 1rem 1rem 1rem;
-  width: 20.75rem;
+  width: 100%;
   height: 14.125rem;
   flex-shrink: 0;
   border-radius: 0.9375rem;
   background: var(--Base-White, #fff);
   /* Shadow_dong */
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
-  position: relative;
-  top: 30%;
-  left: 10%;
 `;
 
 const ModalTitleText = styled.div`
