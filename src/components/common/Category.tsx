@@ -4,9 +4,10 @@ import styled from 'styled-components';
 interface CategoryProps {
   label: string;
   list: string[];
+  type: 'dong' | 'nari' | null;
 }
 
-const Category = ({ label, list }: CategoryProps) => {
+const Category = ({ label, list, type }: CategoryProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   return (
@@ -21,6 +22,7 @@ const Category = ({ label, list }: CategoryProps) => {
               console.log(item);
             }}
             $isSelected={selectedTags.includes(item)}
+            $type={type}
           >
             {item}
           </Tag>
@@ -45,6 +47,7 @@ const TagContainer = styled.div`
 
 interface TagProps {
   $isSelected: boolean;
+  $type: 'dong' | 'nari' | null;
 }
 const Tag = styled.div<TagProps>`
   display: flex;
@@ -59,12 +62,19 @@ const Tag = styled.div<TagProps>`
   height: 55px;
   transition: border 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
 
-  ${({ $isSelected }) =>
-    $isSelected &&
-    `border: 2px solid var(--Primary-dong); 
+  ${({ $isSelected, $type }) =>
+    $isSelected && $type !== null
+      ? $isSelected && $type === 'dong'
+        ? `border: 2px solid var(--Primary-dong); 
      color: var(--Primary-dong); 
      font-weight: 700;
-    `}
+    `
+        : `
+    border: 2px solid var(--Primary-nari); 
+     color: var(--Primary-nari); 
+     font-weight: 700;
+    `
+      : `border: 1px solid #8e8e8e;`}
 `;
 
 export default Category;

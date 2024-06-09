@@ -1,120 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import Category from './Category';
 
 interface RadioButtonProps {
   selected: boolean;
   buttontype: 'dong' | 'nari';
 }
-
-const InputPrice: React.FC<RadioButtonProps> = ({ selected, buttontype }) => {
-  const [selectedButton, setSelectedButton] = useState<
-    'hourly' | 'perItem' | null
-  >(null);
-
-  const [price, setPrice] = useState<string>('');
-
-  // 버튼 클릭 시 상태 업데이트
-  const handleButtonClick = (button: 'hourly' | 'perItem') => {
-    setSelectedButton(button);
-  };
-
-  // 입력값 변경 시 상태 업데이트
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(event.target.value);
-  };
-
-  // click 시 아이콘 이미지 변경
-  const getImageSrc = (selected: boolean, buttontype: 'dong' | 'nari') => {
-    if (selected) {
-      return buttontype === 'dong'
-        ? '/assets/home/radio-filled-dong.svg'
-        : '/assets/home/radio-filled-nari.svg';
-    }
-    return '/assets/home/radio-empty.svg';
-  };
+const priceCategory: string[] = ['시간당', '건당'];
+const InputPrice: React.FC<RadioButtonProps> = () => {
   return (
-    <PriceInputContainer>
+    <Wrapper>
       <Container>
-        <ButtonBox>
-          <RadioButton onClick={() => handleButtonClick('hourly')}>
-            <img
-              src={getImageSrc(selectedButton === 'hourly', 'dong')}
-              alt=""
-            />
-          </RadioButton>
-          <Button>시간당</Button>
-        </ButtonBox>
-        <ButtonBox>
-          <RadioButton onClick={() => handleButtonClick('perItem')}>
-            <img
-              src={getImageSrc(selectedButton === 'perItem', 'dong')}
-              alt=""
-            />
-          </RadioButton>
-          <Button>건당</Button>
-        </ButtonBox>
-        <InputArea>
-          <PriceInput>
-            <InputField
-              type="number"
-              value={price}
-              onChange={handleInputChange}
-              placeholder="희망가격"
-            ></InputField>
-          </PriceInput>
-          <WonText>원</WonText>
-        </InputArea>
+        <Category label="" list={priceCategory} type={'nari'}></Category>
       </Container>
-    </PriceInputContainer>
+      <InputArea>
+        <PriceInput>
+          <InputField placeholder="희망가격" type="number"></InputField>
+        </PriceInput>
+      </InputArea>
+      <WonText>원</WonText>
+    </Wrapper>
   );
 };
-const PriceInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const Container = styled.div`
-  display: flex;
+const Wrapper = styled.div`
+  width: 100%;
   flex-direction: row;
-  align-items: center;
-  margin-bottom: 2rem;
-`;
-
-const ButtonBox = styled.div`
-  margin-right: 0.8rem;
   display: flex;
+  margin-top: 0.8rem;
 `;
 
-const Button = styled.div`
-  margin-left: 0.4rem;
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-weight: 400;
-`;
-
-const RadioButton = styled.div`
-  width: 1.2rem;
-  height: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  border: transparent;
-
-  img {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
+const Container = styled.div`
+  width: 50%;
+  flex-direction: row;
 `;
 
 const InputArea = styled.div`
-  margin-left: 0.6rem;
-  display: flex;
+  margin-left: 1.2rem;
   flex-direction: row;
 `;
 const PriceInput = styled.div`
   width: 9rem;
   height: 0.0625rem;
+  padding-top: 25%;
 `;
 
 const InputField = styled.input`
@@ -129,6 +56,7 @@ const InputField = styled.input`
   line-height: normal;
   border-width: 0;
   border-width: 0 0 2px;
+  border-color: var(--Base-Gray, #8e8e8e);
   &::placeholder {
     font-weight: 300;
     line-height: 1rem;
@@ -147,7 +75,7 @@ const WonText = styled.div`
   font-weight: 400;
   line-height: normal;
   margin-left: 0.6rem;
-  margin-top: 0.2rem;
+  padding-top: 10%;
 `;
 
 export default InputPrice;
