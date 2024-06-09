@@ -27,7 +27,7 @@ const KakaoAuthHandle = (props) => {
         });
     };
     kakaoLogin();
-  }, [props.history]);
+  }, [setUserState, props.history]);
 
   return (
     <>
