@@ -12,7 +12,7 @@ const HomeIndexPage: React.FC = () => {
   //test api
   useEffect(() => {
     setUserType('dong');
-    axios.get('http://localhost:3001/test');
+    axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/test`);
   }, []);
 
   return (

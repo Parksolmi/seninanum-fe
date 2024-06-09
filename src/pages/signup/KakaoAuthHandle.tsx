@@ -11,7 +11,7 @@ const KakaoAuthHandle = (props) => {
     const kakaoLogin = async () => {
       axios
         .get(
-          `${process.env.REACT_APP_BACKEND_API_URL}kakao/oauth/token?code=${code}`
+          `${process.env.REACT_APP_BACKEND_API_URL}/kakao/oauth/token?code=${code}`
         )
         .then((res) => {
           let userData = res.data.kakao_account.profile;
