@@ -11,6 +11,9 @@ import AgreePolicyPage from './pages/signup/AgreePolicyPage';
 import RegisterProfilePage from './pages/signup/RegisterProfilePage';
 import SignupIndexPage from './pages/signup/SignupIndexPage';
 import KakaoAuthHandle from './pages/signup/KakaoAuthHandle';
+import RegisterRecruitFieldPage from './pages/home/RegisterRecruitFieldPage';
+import RegisterRecruitMethodPage from './pages/home/RegisterRecruitMethodPage';
+import RegisterRecruitContentPage from './pages/home/RegisterRecruitContentPage';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +26,18 @@ const App: React.FC = () => {
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
 
+        <Route
+          path="/register/recruit/field"
+          element={<RegisterRecruitFieldPage />}
+        />
+        <Route
+          path="/register/recruit/method"
+          element={<RegisterRecruitMethodPage />}
+        />
+        <Route
+          path="/register/recruit/content"
+          element={<RegisterRecruitContentPage />}
+        />
         <Route element={<NavLayout />}>
           <Route path="/" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
