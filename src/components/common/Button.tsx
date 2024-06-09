@@ -34,7 +34,7 @@ const StyledButton = styled.button<styleButton>`
   color: ${({ $type }) => ($type === null ? '#5B5B5B' : '#ffffff')};
   background-color: ${({ $type }) =>
     $type !== null
-      ? $type === '동백'
+      ? $type === 'dong'
         ? `var(--Primary-dong)`
         : `var(--Primary-nari)`
       : '#EBECEB'};
