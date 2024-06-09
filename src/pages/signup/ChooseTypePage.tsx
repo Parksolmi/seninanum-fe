@@ -8,10 +8,10 @@ const ChooseTypePage: React.FC = () => {
   const { setUserState } = useUserState();
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
-  const handleButtonClick = (name: string) => {
-    setUserState({ userType: name });
+  const handleButtonClick = (type: string) => {
+    setUserState({ userType: type });
     setSelectedButton((prevSelectedButton) =>
-      prevSelectedButton === name ? null : name
+      prevSelectedButton === type ? null : type
     );
   };
 
