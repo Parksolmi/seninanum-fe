@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import useUserState from '../../store/UserState';
 
-const KakaoAuthHandle = (props) => {
+const KakaoAuthHandle = () => {
   const { setUserState } = useUserState();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const KakaoAuthHandle = (props) => {
         });
     };
     kakaoLogin();
-  }, [setUserState, props.history]);
+  }, [setUserState]);
 
   return (
     <>
