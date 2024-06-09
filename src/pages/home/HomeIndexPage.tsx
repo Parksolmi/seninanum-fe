@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SummaryCard from '../../components/common/SummaryCard';
 import CareerProfileProgress from '../../components/home/CareerProfileProgress';
+import axios from 'axios';
 
 const HomeIndexPage: React.FC = () => {
-  const [userType, setUserType] = useState<String>('dong');
+  const [userType, setUserType] = useState<string>('dong');
+
+  //test api
+  useEffect(() => {
+    setUserType('dong');
+    const result = axios.get('http://localhost:3001/test');
+  }, []);
 
   return (
     <WrapContent>
@@ -12,7 +19,7 @@ const HomeIndexPage: React.FC = () => {
         <>
           <CareerProfileProgress status={0} />
           <SummaryCard
-            type="dong"
+            type={userType}
             nickname="닉네임"
             age="20대"
             method="비대면"

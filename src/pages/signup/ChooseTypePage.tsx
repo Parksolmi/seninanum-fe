@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import UserTypeButton from '../../components/signin/UserTypeButton';
 import Button from '../../components/common/Button';
+import useUserState from '../../store/UserState';
 
 const ChooseTypePage: React.FC = () => {
+  const { setUserState } = useUserState();
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
+
   const handleButtonClick = (name: string) => {
+    setUserState({ userType: name });
     setSelectedButton((prevSelectedButton) =>
       prevSelectedButton === name ? null : name
     );
@@ -24,12 +28,12 @@ const ChooseTypePage: React.FC = () => {
       <UserTypeButton
         types="dong"
         isSelected={selectedButton === 'dong'}
-        onClick={handleButtonClick}
+        onClick={() => handleButtonClick('dong')}
       ></UserTypeButton>
       <UserTypeButton
         types="nari"
         isSelected={selectedButton === 'nari'}
-        onClick={handleButtonClick}
+        onClick={() => handleButtonClick('nari')}
       ></UserTypeButton>
       <div></div>
       <WrapButton>
