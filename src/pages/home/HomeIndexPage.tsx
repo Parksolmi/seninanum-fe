@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SummaryCard from '../../components/common/SummaryCard';
 import CareerProfileProgress from '../../components/home/CareerProfileProgress';
-import axios from 'axios';
 import ProgressBar from '../../components/common/ProgressBar';
 import InputPrice from '../../components/common/InputPrice';
 
 const HomeIndexPage: React.FC = () => {
-  const [userType, setUserType] = useState<string>('dong');
-
-  //test api
-  useEffect(() => {
-    setUserType('dong');
-    axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/test`);
-  }, []);
+  const userType = 'dong';
 
   return (
     <WrapContent>

@@ -4,62 +4,76 @@ import InputText from '../../components/common/InputText';
 import Toggle from '../../components/signin/Toggle';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
+import useUserState from '../../store/UserState';
+import { instance } from '../../api/instance';
+import { login } from '../../store/LoginState';
 
 const RegisterProfilePage: React.FC = () => {
-  const [selectedGender, setSelectedGender] = useState<string>('');
-  const [profileData, setProfileData] = useState<Object>({
-    nickname: '',
-    gender: '',
-    birth: '',
-  });
+  const navigate = useNavigate();
+  const { userState, setUserState } = useUserState();
 
-  const isDisabled = profileData === '';
-  // 페이지 이동
-  const onClickBtn = () => {
-    // navigate('policy');
-    window.location.href = '/';
-  };
+  const [selectedGender, setSelectedGender] = useState<string>('');
+
+  const isDisabled =
+    userState.nickname === '' ||
+    userState.gender === '' ||
+    userState.birthYear === '';
+
   const handleOnChange = (e: any) => {
     const { name, value } = e.target;
-    setProfileData((prev) => ({ ...prev, [name]: value }));
+    setUserState({ [name]: value });
   };
 
-  useEffect(() => {
-    setProfileData((prev) => ({ ...prev, gender: selectedGender }));
-  }, [selectedGender]);
-  useEffect(() => {
-    console.log(profileData);
-  }, [profileData]);
+  const onSignup = async () => {
+    try {
+      await instance.post('/signup', {
+        userId: userState.userId,
+        userType: userState.userType,
+        nickname: userState.nickname,
+        gender: userState.gender,
+        birthYear: userState.birthYear,
+        profile: userState.profile,
+      });
+      navigate('/home');
 
-  const navigate = useNavigate();
+      login(userState.userId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const onClickBackBtn = () => {
+  const navigateBack = () => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    setUserState({ gender: selectedGender });
+  }, [setUserState, selectedGender]);
+
   return (
     <WrapContent>
-      <Back onClick={onClickBackBtn}>
+      <Back onClick={navigateBack}>
         <img src={'/assets/signIn/back-icon.svg'} alt=" " />
       </Back>
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
         <InputText
           name="nickname"
+          value={userState.nickname}
           onChange={handleOnChange}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
         ></InputText>
         <Toggle options={['남성', '여성']} setState={setSelectedGender} />
         <InputText
-          name="birth"
+          name="birthYear"
           onChange={handleOnChange}
           label="출생년도"
           placeholder="태어나신 연도를 입력해주세요."
         ></InputText>
       </WrapFrom>
       <WrapButton>
-        <Button disabled={isDisabled} type={'동백'} onClick={onClickBtn}>
+        <Button disabled={isDisabled} type={'동백'} onClick={onSignup}>
           완료하기
         </Button>
       </WrapButton>
