@@ -1,0 +1,213 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import StopWritingButton from '../../components/common/StopWritingButton';
+import ProgressBar from '../../components/common/ProgressBar';
+import Category from '../../components/common/Category';
+import ageState from './../../constants/ageState';
+import categoryState from '../../constants/categoryState';
+import RegionDropDown from '../../components/common/RegionDropDown';
+import InputPrice from '../../components/common/InputPrice';
+import Button from '../../components/common/Button';
+
+const RegisterProfileConditionPage = () => {
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+
+  const handleButtonClick = (method: string) => {
+    setSelectedMethod(method);
+  };
+  const handlePrevButtonClick = () => {
+    window.location.href = '/register/profile/introduction';
+  };
+  const handleNextButtonClick = () => {};
+  return (
+    <WrapContent>
+      <ButtonWrap>
+        <StopWritingButton />
+      </ButtonWrap>
+      <ProgressBar status={2} type={'dong'}></ProgressBar>
+      <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
+      <TitleText>희망 연령대</TitleText>
+      <Category label="" list={ageState.list} type={'dong'}></Category>
+      <TitleText>희망 활동 분야</TitleText>
+      <SubText>전문 분야</SubText>
+      <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
+      <Category label="" list={categoryState.list} type={'dong'}></Category>
+      <SubText>
+        <div>제공할 서비스</div>
+      </SubText>
+      <InputService placeholder="ex. 컨설팅, 맞춤 과외 등"></InputService>
+      <TitleText>희망 활동 형태</TitleText>
+      <MethodButtonContainer>
+        {['대면', '비대면', '모두 선택'].map((method) => (
+          <MethodButton
+            key={method}
+            $isSelected={selectedMethod === method}
+            onClick={() => handleButtonClick(method)}
+          >
+            {method}
+          </MethodButton>
+        ))}
+      </MethodButtonContainer>
+      <TitleText>희망 활동 지역</TitleText>
+      <RegionDropDown></RegionDropDown>
+
+      <TitleText>희망 금액</TitleText>
+      <InputPrice selected={false} buttontype={'dong'}></InputPrice>
+      <GapButton></GapButton>
+
+      <WrapButtonContainer>
+        <WrapButton>
+          <Button
+            type={null}
+            disabled={false}
+            children={'이전'}
+            onClick={handlePrevButtonClick}
+          ></Button>
+          <Button
+            type={'dong'}
+            disabled={false}
+            children={'다음'}
+            onClick={handleNextButtonClick}
+          ></Button>
+        </WrapButton>
+      </WrapButtonContainer>
+    </WrapContent>
+  );
+};
+
+const WrapContent = styled.div`
+  padding: 1.3rem 1.1rem;
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  float: right;
+  width: 5.7rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+  margin-bottom: 1.63rem;
+`;
+
+const CategoryText = styled.div`
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.03rem;
+  margin-top: 5.1rem;
+  margin-bottom: 1.56rem;
+  white-space: pre-line;
+`;
+
+const TitleText = styled.div`
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.0275rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+`;
+
+const SubText = styled.div`
+  color: var(--Base-Black, #000);
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 0.5rem;
+  div {
+    margin-top: 1rem;
+  }
+`;
+
+const LastSubText = styled.div`
+  color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
+const InputService = styled.input`
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  opacity: 0.5;
+  border-width: 0 0 1px;
+  width: 100%;
+
+  &::placeholder {
+    color: var(--Base-Gray2, #5b5b5b);
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+`;
+
+const MethodButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 0.3rem;
+`;
+
+interface MethodButtonProps {
+  $isSelected: boolean;
+}
+
+const MethodButton = styled.div<MethodButtonProps>`
+  width: 33.3%;
+  height: 3.75rem;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  border: ${({ $isSelected }) =>
+    $isSelected
+      ? '2px solid var(--Primary-dong, #FF314A)'
+      : '1px solid var(--Base-Gray, #8e8e8e)'};
+
+  background: #fff;
+  color: ${({ $isSelected }) =>
+    $isSelected ? 'var(--Primary-dong, #FF314A)' : 'var(--Base-Black, #000)'};
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const GapButton = styled.div`
+  margin-bottom: 8rem;
+`;
+
+const WrapButtonContainer = styled.div`
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.1rem 4rem 1.1rem;
+`;
+
+const WrapButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+`;
+export default RegisterProfileConditionPage;

@@ -3,24 +3,58 @@ import styled from 'styled-components';
 
 interface CareerDetailProps {
   title: string;
-  period: string;
+  startYear: number;
+  startMonth: number;
+  endYear: number;
+  endMonth: number;
   content: string;
   onDelete: () => void;
 }
 
 const CareerDetail = ({
   title,
-  period,
+  startYear,
+  startMonth,
+  endYear,
+  endMonth,
   content,
   onDelete,
 }: CareerDetailProps) => {
+  // 입사 기간 계산
+  const calculatePeriod = (
+    startYear: number,
+    startMonth: number,
+    endYear: number,
+    endMonth: number
+  ) => {
+    let years = endYear - startYear;
+    let months = endMonth - startMonth;
+
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    return `${years}년 ${months}개월`;
+  };
+
+  const period = calculatePeriod(startYear, startMonth, endYear, endMonth);
   return (
     <InputContainer>
-      <h1>{title}</h1>
+      <span className="first-div">
+        <h1>{title}</h1>
+        <span className="delete" onClick={onDelete}>
+          삭제하기
+        </span>
+      </span>
       <div>
-        <p>{period}</p>
-        <p className="total">30년 7개월</p>
+        <p>{`${startYear}-${startMonth
+          .toString()
+          .padStart(2, '0')} ~ ${endYear}-${endMonth
+          .toString()
+          .padStart(2, '0')}`}</p>
+        <p className="total">{period}</p>
       </div>
+      {/* 최대 3줄 표시 */}
       <p className="content">{content}</p>
     </InputContainer>
   );
@@ -42,6 +76,23 @@ const InputContainer = styled.div`
     font-weight: 700;
   }
 
+  .first-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .delete {
+    color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: underline;
+  }
+
   div {
     display: flex;
     justify-content: space-between;
@@ -55,6 +106,11 @@ const InputContainer = styled.div`
 
   .content {
     font-size: 1.2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 최대 3줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
