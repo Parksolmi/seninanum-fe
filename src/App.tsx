@@ -24,7 +24,7 @@ const App: React.FC = () => {
     <>
       <GlobalStyle />
       <Routes>
-        <Route path="/signup" element={<SignupIndexPage />} />
+        <Route path="/" element={<SignupIndexPage />} />
         <Route path="/signup/usertype" element={<ChooseTypePage />} />
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
@@ -60,7 +60,7 @@ const App: React.FC = () => {
           element={<RegisterProfileConditionPage />}
         />
         <Route element={<NavLayout />}>
-          <Route path="/" element={<HomeIndexPage />} />
+          <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
           <Route path="/community" element={<CommunityIndexPage />} />
           <Route path="/mypage" element={<MyIndexPage />} />

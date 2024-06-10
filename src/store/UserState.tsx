@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface UserState {
+  userId: string;
   userType: string;
   nickname: string;
   gender: string;
@@ -18,6 +19,7 @@ const useUserState = create<UserStateType>()(
     persist(
       (set) => ({
         userState: {
+          userId: '',
           userType: '',
           nickname: '',
           gender: '',

@@ -5,15 +5,23 @@ interface InputProps {
   label: string;
   placeholder: string;
   name: string;
+  value?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const InputText = ({ label, placeholder, name, onChange }: InputProps) => {
+const InputText = ({
+  label,
+  placeholder,
+  name,
+  value,
+  onChange,
+}: InputProps) => {
   return (
     <InputContainer>
       <Label>{label}</Label>
       <InputBox
         name={name}
+        value={value}
         type="text"
         placeholder={placeholder}
         onChange={onChange}

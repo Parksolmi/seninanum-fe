@@ -1,5 +1,6 @@
-import axios from 'axios';
+import { instance } from '../../api/instance';
 import React, { useEffect } from 'react';
+import { login } from '../../store/LoginState';
 import useUserState from '../../store/UserState';
 
 const KakaoAuthHandle = () => {
@@ -9,22 +10,22 @@ const KakaoAuthHandle = () => {
     let code = new URL(window.location.href).searchParams.get('code');
 
     const kakaoLogin = async () => {
-      axios
-        .get(
-          `${process.env.REACT_APP_BACKEND_API_URL}/kakao/oauth/token?code=${code}`
-        )
-        .then((res) => {
-          let userData = res.data.kakao_account.profile;
+      try {
+        const response = await instance.get(`/kakao/oauth/token?code=${code}`);
 
-          setUserState({
-            nickname: userData.nickname,
-            profile: userData.profile_image_url,
-          });
+        let userData = response.data;
+        console.log(response.data);
 
-          // localStorage.setItem('token_body', res.body);
-
-          window.location.href = '/signup/usertype';
+        setUserState({
+          userId: userData.id,
+          nickname: userData.kakao_account.profile.nickname,
+          profile: userData.kakao_account.profile.profile_image_url,
         });
+
+        login(userData.id);
+      } catch (err) {
+        console.log('error', err);
+      }
     };
     kakaoLogin();
   }, [setUserState]);
