@@ -7,11 +7,11 @@ interface RadioButtonProps {
   buttontype: 'dong' | 'nari';
 }
 const priceCategory: string[] = ['시간당', '건당'];
-const InputPrice: React.FC<RadioButtonProps> = () => {
+const InputPrice: React.FC<RadioButtonProps> = ({ buttontype }) => {
   return (
     <Wrapper>
       <Container>
-        <Category label="" list={priceCategory} type={'nari'}></Category>
+        <Category label="" list={priceCategory} type={buttontype}></Category>
       </Container>
       <InputArea>
         <PriceInput>

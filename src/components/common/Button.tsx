@@ -45,6 +45,7 @@ const StyledButton = styled.button<styleButton>`
   line-height: normal;
   border: none;
   border-radius: 0.625rem;
+
   transition: background-color 0.5s ease;
   &:disabled {
     background-color: #d9d9d9;

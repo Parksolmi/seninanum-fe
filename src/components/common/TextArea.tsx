@@ -3,10 +3,16 @@ import React from 'react';
 
 interface TextAreaProps {
   inputPlaceholder: string;
+  onChange: (e: any) => void;
 }
 
-const TextArea = ({ inputPlaceholder }: TextAreaProps) => {
-  return <TextAreaStyle placeholder={inputPlaceholder}></TextAreaStyle>;
+const TextArea = ({ inputPlaceholder, onChange }: TextAreaProps) => {
+  return (
+    <TextAreaStyle
+      placeholder={inputPlaceholder}
+      onChange={onChange}
+    ></TextAreaStyle>
+  );
 };
 
 const TextAreaStyle = styled.textarea`
@@ -18,7 +24,12 @@ const TextAreaStyle = styled.textarea`
   padding-left: 0.8rem;
   padding-top: 0.75rem;
   text &::placeholder {
-    color: #5b5b5b;
+    color: var(--Base-Gray2, #5b5b5b);
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
 

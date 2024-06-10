@@ -24,6 +24,7 @@ const RegisterRecruitContentPage = () => {
   // 모달 > 확인하기 버튼 클릭 시 동작되는 함수
   const confirmModal = () => {};
 
+  const onChange = () => {};
   return (
     <WrapContent>
       <ButtonWrap onClick={openModal}>
@@ -40,7 +41,10 @@ const RegisterRecruitContentPage = () => {
         <span>{inputCount}</span>
         <span>/40</span>
       </MaxText>
-      <TextArea inputPlaceholder={'내용을 입력하세요.'}></TextArea>
+      <TextArea
+        inputPlaceholder={'내용을 입력하세요.'}
+        onChange={onChange}
+      ></TextArea>
       <InputPrice selected={false} buttontype={'nari'}></InputPrice>
       <WrapButton>
         <Button

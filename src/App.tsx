@@ -14,6 +14,10 @@ import KakaoAuthHandle from './pages/signup/KakaoAuthHandle';
 import RegisterRecruitFieldPage from './pages/home/RegisterRecruitFieldPage';
 import RegisterRecruitMethodPage from './pages/home/RegisterRecruitMethodPage';
 import RegisterRecruitContentPage from './pages/home/RegisterRecruitContentPage';
+import RegisterProfileCareerPage from './pages/home/RegisterProfileCareerPage';
+import RegisterProfileCareerAddPage from './pages/home/RegisterProfileCareerAddPage';
+import RegisterProfileIntroductionPage from './pages/home/RegisterProfileIntroductionPage';
+import RegisterProfileConditionPage from './pages/home/RegisterProfileConditionPage';
 
 const App: React.FC = () => {
   return (
@@ -37,6 +41,23 @@ const App: React.FC = () => {
         <Route
           path="/register/recruit/content"
           element={<RegisterRecruitContentPage />}
+        />
+
+        <Route
+          path="/register/profile/career"
+          element={<RegisterProfileCareerPage />}
+        />
+        <Route
+          path="/register/profile/career/add"
+          element={<RegisterProfileCareerAddPage />}
+        />
+        <Route
+          path="/register/profile/introduction"
+          element={<RegisterProfileIntroductionPage />}
+        />
+        <Route
+          path="/register/profile/condition"
+          element={<RegisterProfileConditionPage />}
         />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
