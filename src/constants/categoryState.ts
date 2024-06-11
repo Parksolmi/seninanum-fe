@@ -1,5 +1,5 @@
 const categoryState = {
-  label: '희망 분야',
+  label: '희망 활동 분야',
   list: [
     '돌봄',
     '생활',

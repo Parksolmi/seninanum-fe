@@ -4,7 +4,7 @@ import regionState from './../../constants/regionState';
 
 const RegionDropDown = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedRegion, setSelectedRegion] = useState<string>('강남구');
+  const [selectedRegion, setSelectedRegion] = useState<string>('지역 선택');
   const onToggle = () => setIsOpen(!isOpen);
   const onOptionClicked = (value: string, index: number) => {
     return () => {

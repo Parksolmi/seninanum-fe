@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-import RegionDropDown from '../../components/common/RegionDropDown';
+import { useNavigate } from 'react-router-dom';
+import Dropdown from '../../components/common/DropDown';
+import regionState from './../../constants/regionState';
+import useRecruitState from '../../store/RecruitState';
 
 const RegisterRecruitMethodPage = () => {
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { setRecruitState } = useRecruitState();
+
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [selectedRegion, setSelectedRegion] = useState<string>('');
+
+  const isDisabled =
+    !selectedMethod || (!selectedRegion && selectedMethod !== '비대면 서비스');
 
   const handleButtonClick = (method: string) => {
     setSelectedMethod(method);
   };
 
-  const handlePrevButtonClick = () => {};
-  const handleNextButtonClick = () => {
-    window.location.href = '/register/recruit/content';
+  const navigateToField = () => {
+    navigate('/register/recruit/field');
   };
+  const navigateToContent = () => {
+    navigate('/register/recruit/content');
+  };
+
+  useEffect(() => {
+    setRecruitState({ method: selectedMethod, region: selectedRegion });
+  }, [setRecruitState, selectedMethod, selectedRegion]);
+
   return (
     <WrapContent>
       <ButtonWrap>
         <StopWritingButton />
       </ButtonWrap>
       <ProgressBar status={1} type={'nari'} />
-      <CategoryText>{`어떤 방식으로 진행되나요?`}</CategoryText>
+      <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
         {['대면 서비스', '비대면 서비스', '모두 선택'].map((method) => (
           <MethodButton
@@ -34,22 +51,30 @@ const RegisterRecruitMethodPage = () => {
           </MethodButton>
         ))}
       </MethodButtonContainer>
-
-      <SelectRegion>희망 지역을 선택해주세요.</SelectRegion>
-      <RegionDropDown></RegionDropDown>
+      {selectedMethod !== '' && selectedMethod !== '비대면 서비스' && (
+        <>
+          <TitleText>희망 지역을 선택해주세요.</TitleText>
+          <Dropdown
+            placeholder="지역선택"
+            list={regionState.list}
+            selected={selectedRegion}
+            onSelect={setSelectedRegion}
+          />
+        </>
+      )}
 
       <WrapButton>
         <Button
           type={null}
           disabled={false}
           children={'이전'}
-          onClick={handlePrevButtonClick}
+          onClick={navigateToField}
         ></Button>
         <Button
           type={'nari'}
-          disabled={false}
+          disabled={isDisabled}
           children={'다음'}
-          onClick={handleNextButtonClick}
+          onClick={navigateToContent}
         ></Button>
       </WrapButton>
     </WrapContent>
@@ -63,20 +88,14 @@ const ButtonWrap = styled.div`
   float: right;
   width: 5.7rem;
   height: 2.2rem;
-  flex-shrink: 0;
   margin-bottom: 1.63rem;
 `;
-const CategoryText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
+const TitleText = styled.div`
   font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  font-family: 'NanumSquareR';
+  font-weight: 700;
+  margin-top: 2rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const MethodButtonContainer = styled.div`
@@ -89,7 +108,6 @@ const MethodButtonContainer = styled.div`
 interface MethodButtonProps {
   $isSelected: boolean;
 }
-
 const MethodButton = styled.div<MethodButtonProps>`
   width: 100%;
   height: 3.75rem;
@@ -105,11 +123,8 @@ const MethodButton = styled.div<MethodButtonProps>`
     $isSelected
       ? 'var(--Primary-nari-text, var(--Primary-nari-text, #F48400))'
       : 'var(--Base-Black, #000)'};
-  font-family: NanumSquare;
   font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 600;
 
   padding-left: 1rem;
   display: flex;
@@ -126,16 +141,6 @@ const WrapButton = styled.div`
   right: 1.1rem;
   bottom: 4rem;
   gap: 1rem;
-`;
-
-const SelectRegion = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.03rem;
 `;
 
 export default RegisterRecruitMethodPage;

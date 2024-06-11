@@ -9,14 +9,16 @@ interface ProgressType {
 const ProgressBar = ({ status, type }: ProgressType) => {
   return (
     <BarStyle>
-      <img src={`/assets/home/progress-step${status}-${type}.svg`} alt="" />
+      <img
+        src={`/assets/home/progress-step${status}-${type}.svg`}
+        alt="진행단계"
+      />
     </BarStyle>
   );
 };
 
 const BarStyle = styled.div`
   width: 100%;
-  height: 1.875rem;
 
   img {
     width: 100%;
