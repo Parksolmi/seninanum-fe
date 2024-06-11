@@ -2,7 +2,7 @@ import { instance } from '../api/instance';
 
 export const login = async (value) => {
   try {
-    const response = await instance.post('/login', {
+    const response = await instance.post('/auth/login', {
       userId: value,
     });
 

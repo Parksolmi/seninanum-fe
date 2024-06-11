@@ -24,7 +24,7 @@ const RegisterProfilePage: React.FC = () => {
 
   const onSignup = async () => {
     try {
-      await instance.post('/signup', {
+      await instance.post('/auth/signup', {
         userId: userState.userId,
         userType: userState.userType,
         nickname: userState.nickname,
