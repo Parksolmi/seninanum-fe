@@ -2,84 +2,99 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';
+import useUserState from '../../store/UserState';
 import { useNavigate } from 'react-router-dom';
 
 const AgreePolicyPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const { userState } = useUserState();
+
   const [checkboxes, setCheckboxes] = useState({
     selectAll: false,
+    madatory1: false,
+    madatory2: false,
     option1: false,
-    option2: false,
   });
 
-  const handleSelectAllChange = (checked: boolean) => {
-    setCheckboxes({
-      selectAll: checked,
-      option1: checked,
-      option2: checked,
-    });
-  };
-
-  const handleOptionChange = (
-    option: 'option1' | 'option2',
-    checked: boolean
-  ) => {
-    setCheckboxes((prev) => {
-      const updatedCheckboxes = {
-        ...prev,
-        [option]: checked,
-        selectAll:
-          (checked && prev.option1 && prev.option2) ||
-          (!checked && !prev.option1 && !prev.option2)
-            ? checked
-            : prev.selectAll,
-      };
-      updatedCheckboxes.selectAll =
-        updatedCheckboxes.option1 && updatedCheckboxes.option2;
-      return updatedCheckboxes;
-    });
-  };
-  // 비활성화 조건
   const isDisabled =
     checkboxes.selectAll === false ||
-    checkboxes.option1 === false ||
-    checkboxes.option2 === false;
+    checkboxes.madatory1 === false ||
+    checkboxes.madatory2 === false;
 
-  const navigate = useNavigate();
-  // 페이지 이동
+  const handleSelectChange = (e) => {
+    const { id, checked } = e.target;
+
+    if (id === 'selectAll') {
+      setCheckboxes({
+        selectAll: checked,
+        madatory1: checked,
+        madatory2: checked,
+        option1: checked,
+      });
+    } else {
+      const newCheckboxes = { ...checkboxes, [id]: checked };
+      const allMandatoryChecked =
+        newCheckboxes.madatory1 && newCheckboxes.madatory2;
+      setCheckboxes({
+        ...newCheckboxes,
+        selectAll: allMandatoryChecked,
+      });
+    }
+  };
+
   const onClickBtn = () => {
-    window.location.href = '/signup/profile';
+    navigate('/signup/profile');
   };
   const onClickBackBtn = () => {
-    navigate(-1);
+    navigate('/signup/userType');
   };
+
   return (
     <WrapContent>
-      <Back onClick={onClickBackBtn}>
+      <BackButton onClick={onClickBackBtn}>
         <img src="/assets/signIn/back-icon.svg" alt="back" />
-      </Back>
+      </BackButton>
 
       <Text1>시니나눔이 처음이시네요!</Text1>
       <Text2>이용약관에 동의해주세요.</Text2>
-      <CheckBox
-        id="전체 선택"
-        label="약관에 모두 동의"
-        checked={checkboxes.selectAll}
-        onChange={handleSelectAllChange}
-      />
-      <CheckBox
-        id="1"
-        label="(필수) 만 14세 이상입니다"
-        checked={checkboxes.option1}
-        onChange={(checked) => handleOptionChange('option1', checked)}
-      />
-      <CheckBox
-        id="2"
-        label="(필수) 이용약관"
-        checked={checkboxes.option2}
-        onChange={(checked) => handleOptionChange('option2', checked)}
-      />
+      <WrapCheckBox>
+        <CheckBox
+          id="selectAll"
+          label="약관에 모두 동의"
+          checked={checkboxes.selectAll}
+          onChange={handleSelectChange}
+          userType={userState.userType}
+        />
+        <SplitLine />
+        <CheckBox
+          id="madatory1"
+          label="(필수) 만 14세 이상입니다"
+          checked={checkboxes.madatory1}
+          onChange={handleSelectChange}
+          userType={userState.userType}
+        />
+        <CheckBox
+          id="madatory2"
+          label="(필수) 이용약관"
+          checked={checkboxes.madatory2}
+          onChange={handleSelectChange}
+          userType={userState.userType}
+        />
+        <CheckBox
+          id="option1"
+          label="(선택) 마케팅 수신동의"
+          checked={checkboxes.option1}
+          onChange={handleSelectChange}
+          userType={userState.userType}
+        />
+      </WrapCheckBox>
       <WrapButton>
-        <Button disabled={isDisabled} type="nari" onClick={onClickBtn}>
+        <Button
+          disabled={isDisabled}
+          type={userState.userType}
+          onClick={onClickBtn}
+        >
           다음
         </Button>
       </WrapButton>
@@ -90,41 +105,38 @@ const AgreePolicyPage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-const Back = styled.div`
-  width: 25px;
-  height: 25px;
-  flex-shrink: 0;
+const BackButton = styled.div`
   margin-top: 1.81rem;
   img {
-    width: 16px;
-    height: 16px;
+    width: 1.5rem;
   }
 `;
 
 const Text1 = styled.div`
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: #000;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 800;
-  line-height: normal;
-  letter-spacing: 0.03rem;
 `;
 const Text2 = styled.div`
   margin-bottom: 4rem;
-  color: var(--Base-Deep-Gray, #5b5b5b);
+  color: var(--Base-Deep-Gray);
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.025rem;
 `;
 const WrapButton = styled.div`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
   bottom: 4rem;
+`;
+const WrapCheckBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+const SplitLine = styled.div`
+  border-top: solid 1px #ebeceb;
 `;
 
 export default AgreePolicyPage;

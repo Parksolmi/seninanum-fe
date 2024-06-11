@@ -52,9 +52,9 @@ const RegisterProfilePage: React.FC = () => {
 
   return (
     <WrapContent>
-      <Back onClick={navigateBack}>
-        <img src={'/assets/signIn/back-icon.svg'} alt=" " />
-      </Back>
+      <BackButton onClick={navigateBack}>
+        <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
+      </BackButton>
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
         <InputText
@@ -73,7 +73,11 @@ const RegisterProfilePage: React.FC = () => {
         ></InputText>
       </WrapFrom>
       <WrapButton>
-        <Button disabled={isDisabled} type={'동백'} onClick={onSignup}>
+        <Button
+          disabled={isDisabled}
+          type={userState.userType}
+          onClick={onSignup}
+        >
           완료하기
         </Button>
       </WrapButton>
@@ -84,14 +88,10 @@ const RegisterProfilePage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-const Back = styled.div`
-  width: 25px;
-  height: 25px;
-  flex-shrink: 0;
+const BackButton = styled.div`
   margin-top: 1.81rem;
   img {
-    width: 16px;
-    height: 16px;
+    width: 1.5rem;
   }
 `;
 const HeaderText = styled.div`
