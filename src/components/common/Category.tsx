@@ -2,29 +2,32 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface CategoryProps {
-  label: string;
+  label?: string;
   list: string[];
   type: 'dong' | 'nari' | null;
+  selectedTags: string[];
+  onClickTag: (tag: Object) => void;
 }
 
-const Category = ({ label, list, type }: CategoryProps) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+const Category = ({
+  label,
+  list,
+  type,
+  selectedTags,
+  onClickTag,
+}: CategoryProps) => {
   return (
     <>
       <Label>{label}</Label>
       <TagContainer>
-        {list.map((item, index) => (
+        {list.map((tag) => (
           <Tag
-            key={index}
-            onClick={() => {
-              setSelectedTags([...selectedTags, item]);
-              console.log(item);
-            }}
-            $isSelected={selectedTags.includes(item)}
+            key={tag}
+            onClick={() => onClickTag(tag)}
+            $isSelected={selectedTags.includes(tag)}
             $type={type}
           >
-            {item}
+            {tag}
           </Tag>
         ))}
       </TagContainer>
@@ -45,6 +48,18 @@ const TagContainer = styled.div`
   gap: 10px;
 `;
 
+const HiddenCheckbox = styled.input`
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
 interface TagProps {
   $isSelected: boolean;
   $type: 'dong' | 'nari' | null;
@@ -60,7 +75,7 @@ const Tag = styled.div<TagProps>`
   border-radius: 16px;
   border: 1px solid #8e8e8e;
   height: 55px;
-  transition: border 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+  /* transition: border 0.3s ease, color 0.3s ease, font-weight 0.3s ease; */
 
   ${({ $isSelected, $type }) =>
     $isSelected && $type !== null
@@ -70,8 +85,8 @@ const Tag = styled.div<TagProps>`
      font-weight: 700;
     `
         : `
-    border: 2px solid var(--Primary-nari); 
-     color: var(--Primary-nari); 
+    border: 2px solid var(--Primary-Deep-nari); 
+     color: var(--Primary-Deep-nari); 
      font-weight: 700;
     `
       : `border: 1px solid #8e8e8e;`}

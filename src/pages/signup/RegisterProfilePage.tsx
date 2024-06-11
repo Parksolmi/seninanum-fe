@@ -43,7 +43,7 @@ const RegisterProfilePage: React.FC = () => {
   };
 
   const navigateBack = () => {
-    navigate(-1);
+    navigate('/signup/policy');
   };
 
   useEffect(() => {

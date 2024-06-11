@@ -1,29 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 const RegisterRecruitFieldPage = () => {
-  const onClick = () => {
-    window.location.href = '/register/recruit/method';
+  const navigate = useNavigate();
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const hadnleClickTag = (tag) => {
+    setSelectedTags((prevTags) => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter((t) => t !== tag);
+      } else if (prevTags.length >= 3) {
+        setTimeout(() => {
+          toast.error('분야는 3개까지 선택이 가능합니다.');
+        }, 0);
+        return prevTags;
+      } else {
+        return [...prevTags, tag];
+      }
+    });
   };
+
+  const navigateToMethod = () => {
+    navigate('/register/recruit/method');
+  };
+
   return (
     <WrapContent>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 150,
+        }}
+        toastOptions={{
+          style: {
+            fontSize: '16px',
+          },
+        }}
+      />
+
       <ButtonWrap>
         <StopWritingButton />
       </ButtonWrap>
       <ProgressBar status={0} type={'nari'}></ProgressBar>
-      <CategoryText>{`어떤 분야의 동백님을 \n 찾으시나요?`}</CategoryText>
-      <Category label="" list={categoryState.list} type={'nari'}></Category>
+      <CategoryText>
+        어떤 분야의 동백님을 <br /> 찾으시나요?
+        <p>분야는 3개까지 선택이 가능합니다.</p>
+      </CategoryText>
+      <Category
+        list={categoryState.list}
+        type={'nari'}
+        selectedTags={selectedTags}
+        onClickTag={hadnleClickTag}
+      ></Category>
       <WrapButton>
         <Button
           type={'nari'}
           disabled={false}
           children={'다음'}
-          onClick={onClick}
+          onClick={navigateToMethod}
         ></Button>
       </WrapButton>
     </WrapContent>
@@ -44,16 +86,18 @@ const ButtonWrap = styled.div`
 `;
 
 const CategoryText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  font-family: 'NanumSquareR';
+  font-weight: 700;
+  margin-top: 6rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
+
+  p {
+    font-size: 1rem;
+    font-family: 'NanumSquare';
+    font-weight: 400;
+    margin-top: 1rem;
+  }
 `;
 
 const WrapButton = styled.div`

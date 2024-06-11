@@ -5,6 +5,7 @@ const theme = {
   colors: {
     dong: '#FF314A',
     nari: '#FFAA0E',
+    deepNari: '#F48400',
     deepGray: '#5B5B5B',
   },
 };
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --Primary-dong: ${theme.colors.dong};
     --Primary-nari: ${theme.colors.nari};
+    --Primary-Deep-nari: ${theme.colors.deepNari};
     --Secondary-dong-2: #FFEDF0;
     --Secondary-nari-2: #FFF8E3;
     --Base-Deep-Gray: ${theme.colors.deepGray};
