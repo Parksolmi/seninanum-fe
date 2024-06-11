@@ -1,5 +1,5 @@
 const regionState = {
-  label: '만남 방식',
+  label: '희망 활동 지역',
   list: [
     '강남구',
     '강동구',

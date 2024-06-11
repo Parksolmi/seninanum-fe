@@ -16,6 +16,8 @@ const RegisterRecruitFieldPage = () => {
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  const isDisabled = selectedTags.length < 3;
+
   const hadnleClickTag = (tag) => {
     setSelectedTags((prevTags) => {
       if (prevTags.includes(tag)) {
@@ -57,10 +59,10 @@ const RegisterRecruitFieldPage = () => {
         <StopWritingButton />
       </ButtonWrap>
       <ProgressBar status={0} type={'nari'}></ProgressBar>
-      <CategoryText>
+      <TitleText>
         어떤 분야의 동백님을 <br /> 찾으시나요?
         <p>분야는 3개까지 선택이 가능합니다.</p>
-      </CategoryText>
+      </TitleText>
       <Category
         list={categoryState.list}
         type={'nari'}
@@ -70,7 +72,7 @@ const RegisterRecruitFieldPage = () => {
       <WrapButton>
         <Button
           type={'nari'}
-          disabled={false}
+          disabled={isDisabled}
           children={'다음'}
           onClick={navigateToMethod}
         ></Button>
@@ -92,11 +94,11 @@ const ButtonWrap = styled.div`
   margin-bottom: 1.63rem;
 `;
 
-const CategoryText = styled.div`
+const TitleText = styled.div`
   font-size: 1.5rem;
   font-family: 'NanumSquareR';
   font-weight: 700;
-  margin-top: 6rem;
+  margin-top: 2rem;
   margin-bottom: 1.56rem;
 
   p {

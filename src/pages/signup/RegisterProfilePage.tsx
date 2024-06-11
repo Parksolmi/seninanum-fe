@@ -15,9 +15,7 @@ const RegisterProfilePage: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>('');
 
   const isDisabled =
-    userState.nickname === '' ||
-    userState.gender === '' ||
-    userState.birthYear === '';
+    !userState.nickname || !userState.gender || !userState.birthYear;
 
   const handleOnChange = (e: any) => {
     const { name, value } = e.target;

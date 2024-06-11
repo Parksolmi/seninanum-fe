@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import React from 'react';
 
 interface InputProps {
+  name: string;
   inputPlaceholder: string;
   onChange: (e: any) => void;
   maxLength: number;
 }
 
-const Input = ({ inputPlaceholder, onChange, maxLength }: InputProps) => {
+const Input = ({ name, inputPlaceholder, onChange, maxLength }: InputProps) => {
   return (
     <InputBox
+      name={name}
       type="text"
       placeholder={inputPlaceholder}
       onChange={onChange}

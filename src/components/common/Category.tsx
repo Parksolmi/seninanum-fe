@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface CategoryProps {
@@ -20,16 +20,17 @@ const Category = ({
     <>
       <Label>{label}</Label>
       <TagContainer>
-        {list.map((tag) => (
-          <Tag
-            key={tag}
-            onClick={() => onClickTag(tag)}
-            $isSelected={selectedTags.includes(tag)}
-            $type={type}
-          >
-            {tag}
-          </Tag>
-        ))}
+        {Array.isArray(selectedTags) &&
+          list.map((tag) => (
+            <Tag
+              key={tag}
+              onClick={() => onClickTag(tag)}
+              $isSelected={selectedTags.includes(tag)}
+              $type={type}
+            >
+              {tag}
+            </Tag>
+          ))}
       </TagContainer>
     </>
   );
