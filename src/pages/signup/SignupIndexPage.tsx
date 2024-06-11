@@ -14,7 +14,7 @@ const SignupIndexPage = () => {
 
   return (
     <WrapContent>
-      <Logo src="/assets/signIn/kakao-logo.svg" alt="시니나눔 로고" />
+      <Logo src="/assets/signIn/seni-logo.svg" alt="시니나눔 로고" />
       <CatchPhrase>
         은퇴 이후 신나는 일상!
         <br /> 시니어들의 재능 나눔 서비스
@@ -38,7 +38,7 @@ const WrapContent = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 30%;
+  width: 50%;
 `;
 
 const CatchPhrase = styled.p`
