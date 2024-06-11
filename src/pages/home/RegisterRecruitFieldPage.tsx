@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -7,9 +7,12 @@ import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import useRecruitState from '../../store/RecruitState';
 
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
+
+  const { setRecruitState } = useRecruitState();
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -31,6 +34,10 @@ const RegisterRecruitFieldPage = () => {
   const navigateToMethod = () => {
     navigate('/register/recruit/method');
   };
+
+  useEffect(() => {
+    setRecruitState({ field: selectedTags.join(',') });
+  }, [selectedTags]);
 
   return (
     <WrapContent>
