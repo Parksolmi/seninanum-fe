@@ -4,18 +4,23 @@ import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
 import RegionDropDown from '../../components/common/RegionDropDown';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterRecruitMethodPage = () => {
+  const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
   const handleButtonClick = (method: string) => {
     setSelectedMethod(method);
   };
 
-  const handlePrevButtonClick = () => {};
-  const handleNextButtonClick = () => {
-    window.location.href = '/register/recruit/content';
+  const navigateToField = () => {
+    navigate('/register/recruit/field');
   };
+  const navigateToContent = () => {
+    navigate('/register/recruit/content');
+  };
+
   return (
     <WrapContent>
       <ButtonWrap>
@@ -34,22 +39,25 @@ const RegisterRecruitMethodPage = () => {
           </MethodButton>
         ))}
       </MethodButtonContainer>
-
-      <SelectRegion>희망 지역을 선택해주세요.</SelectRegion>
-      <RegionDropDown></RegionDropDown>
+      {selectedMethod !== '비대면 서비스' && (
+        <>
+          <SelectRegion>희망 지역을 선택해주세요.</SelectRegion>
+          <RegionDropDown></RegionDropDown>
+        </>
+      )}
 
       <WrapButton>
         <Button
           type={null}
           disabled={false}
           children={'이전'}
-          onClick={handlePrevButtonClick}
+          onClick={navigateToField}
         ></Button>
         <Button
           type={'nari'}
           disabled={false}
           children={'다음'}
-          onClick={handleNextButtonClick}
+          onClick={navigateToContent}
         ></Button>
       </WrapButton>
     </WrapContent>
@@ -63,20 +71,14 @@ const ButtonWrap = styled.div`
   float: right;
   width: 5.7rem;
   height: 2.2rem;
-  flex-shrink: 0;
   margin-bottom: 1.63rem;
 `;
 const CategoryText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  font-family: 'NanumSquareR';
+  font-weight: 700;
+  margin-top: 6rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const MethodButtonContainer = styled.div`
