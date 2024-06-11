@@ -3,23 +3,23 @@ import React, { useState } from 'react';
 import UserTypeButton from '../../components/signin/UserTypeButton';
 import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';
+import { useNavigate } from 'react-router-dom';
 
 const ChooseTypePage: React.FC = () => {
-  const { setUserState } = useUserState();
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleButtonClick = (type: string) => {
+  const { setUserState } = useUserState();
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const isDisabled = selectedType === 'null';
+
+  const handleSelectType = (type: string) => {
     setUserState({ userType: type });
-    setSelectedButton((prevSelectedButton) =>
-      prevSelectedButton === type ? null : type
-    );
+    setSelectedType((prevSelected) => (prevSelected === type ? null : type));
   };
 
-  const isDisabled = selectedButton === 'null';
-  // 페이지 이동
-  const onClickBtn = () => {
-    // navigate('policy');
-    window.location.href = '/signup/policy';
+  const navigateToPolicy = () => {
+    navigate('/signup/policy');
   };
 
   return (
@@ -27,20 +27,20 @@ const ChooseTypePage: React.FC = () => {
       <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
         types="dong"
-        isSelected={selectedButton === 'dong'}
-        onClick={() => handleButtonClick('dong')}
+        isSelected={selectedType === 'dong'}
+        onClick={() => handleSelectType('dong')}
       ></UserTypeButton>
       <UserTypeButton
         types="nari"
-        isSelected={selectedButton === 'nari'}
-        onClick={() => handleButtonClick('nari')}
+        isSelected={selectedType === 'nari'}
+        onClick={() => handleSelectType('nari')}
       ></UserTypeButton>
       <div></div>
       <WrapButton>
         <Button
           disabled={isDisabled}
-          type={selectedButton}
-          onClick={onClickBtn}
+          type={selectedType}
+          onClick={navigateToPolicy}
         >
           다음
         </Button>

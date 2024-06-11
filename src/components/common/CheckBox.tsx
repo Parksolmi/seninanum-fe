@@ -4,8 +4,9 @@ import React from 'react';
 interface CheckboxProps {
   id: string;
   checked: boolean;
-  onChange: (checked: boolean) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
   label?: string | null;
+  userType: string;
 }
 
 const CheckBox: React.FC<CheckboxProps> = ({
@@ -13,24 +14,17 @@ const CheckBox: React.FC<CheckboxProps> = ({
   checked,
   onChange,
   label,
+  userType,
 }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.checked);
-  };
   return (
     <CheckBoxContainer>
       <Checkbox $checked={checked} htmlFor={id}>
-        <HiddenCheckbox
-          id={id}
-          type="checkbox"
-          onChange={handleChange}
-          // $checked={checked}
-        />
+        <HiddenCheckbox id={id} type="checkbox" onChange={onChange} />
         <CheckIcon
           alt="check"
           src={
             checked
-              ? '/assets/signIn/check-filled.svg'
+              ? `/assets/signIn/check-filled-${userType}.svg`
               : '/assets/signIn/check-empty.svg'
           }
         />
@@ -43,9 +37,8 @@ const CheckBox: React.FC<CheckboxProps> = ({
 const CheckBoxContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1.81rem;
 `;
-// checked 상태에 따라 empty/filled.svg 변경
+
 const Checkbox = styled.label<{ $checked: Boolean }>`
   display: inline-block;
   width: 30px;
