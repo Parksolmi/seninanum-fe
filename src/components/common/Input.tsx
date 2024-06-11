@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import React from 'react';
 
+//name 적용 필요 : RegisterProfileCareerAddPage
 interface InputProps {
-  name: string;
+  name?: string;
   inputPlaceholder: string;
   onChange: (e: any) => void;
   maxLength: number;

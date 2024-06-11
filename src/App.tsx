@@ -11,13 +11,13 @@ import AgreePolicyPage from './pages/signup/AgreePolicyPage';
 import RegisterProfilePage from './pages/signup/RegisterProfilePage';
 import SignupIndexPage from './pages/signup/SignupIndexPage';
 import KakaoAuthHandle from './pages/signup/KakaoAuthHandle';
-import RegisterRecruitFieldPage from './pages/home/RegisterRecruitFieldPage';
-import RegisterRecruitMethodPage from './pages/home/RegisterRecruitMethodPage';
-import RegisterRecruitContentPage from './pages/home/RegisterRecruitContentPage';
-import RegisterProfileCareerPage from './pages/home/RegisterProfileCareerPage';
-import RegisterProfileCareerAddPage from './pages/home/RegisterProfileCareerAddPage';
-import RegisterProfileIntroductionPage from './pages/home/RegisterProfileIntroductionPage';
-import RegisterProfileConditionPage from './pages/home/RegisterProfileConditionPage';
+import RegisterRecruitFieldPage from './pages/register/RegisterRecruitFieldPage';
+import RegisterRecruitMethodPage from './pages/register/RegisterRecruitMethodPage';
+import RegisterRecruitContentPage from './pages/register/RegisterRecruitContentPage';
+import RegisterProfileCareerPage from './pages/register/RegisterProfileCareerPage';
+import RegisterProfileCareerAddPage from './pages/register/RegisterProfileCareerAddPage';
+import RegisterProfileIntroductionPage from './pages/register/RegisterProfileIntroductionPage';
+import RegisterProfileConditionPage from './pages/register/RegisterProfileConditionPage';
 
 const App: React.FC = () => {
   return (
