@@ -73,7 +73,11 @@ const RegisterProfilePage: React.FC = () => {
         ></InputText>
       </WrapFrom>
       <WrapButton>
-        <Button disabled={isDisabled} type={'동백'} onClick={onSignup}>
+        <Button
+          disabled={isDisabled}
+          type={userState.userType}
+          onClick={onSignup}
+        >
           완료하기
         </Button>
       </WrapButton>

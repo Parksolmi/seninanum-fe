@@ -43,9 +43,6 @@ const Checkbox = styled.label<{ $checked: Boolean }>`
   display: inline-block;
   width: 30px;
   height: 30px;
-  /* & > svg {
-    empty}
-  } */
 `;
 const CheckIcon = styled.img`
   width: 1.875rem;
@@ -67,15 +64,9 @@ const HiddenCheckbox = styled.input`
 const Label = styled.label`
   display: inline-block;
   line-height: 16px;
-  cursor: pointer;
   margin-left: 0.38rem;
-  color: var(--Base-Black, #000);
-  font-family: Nanum_Square;
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.025rem;
 `;
 
 export default CheckBox;

@@ -83,7 +83,7 @@ const AgreePolicyPage: React.FC = () => {
         />
         <CheckBox
           id="option1"
-          label="(선택) 만 14세 이상입니다"
+          label="(선택) 마케팅 수신동의"
           checked={checkboxes.option1}
           onChange={handleSelectChange}
           userType={userState.userType}
