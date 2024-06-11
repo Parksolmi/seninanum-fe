@@ -31,7 +31,7 @@ const RegisterRecruitMethodPage = () => {
 
   useEffect(() => {
     setRecruitState({ method: selectedMethod, region: selectedRegion });
-  }, [selectedMethod, selectedRegion]);
+  }, [setRecruitState, selectedMethod, selectedRegion]);
 
   return (
     <WrapContent>

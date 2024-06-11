@@ -32,6 +32,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 ? '/assets/home/dropup-icon.svg'
                 : '/assets/home/dropdown-icon.svg'
             }
+            alt="화살표"
           />
         </DropdownButton>
 

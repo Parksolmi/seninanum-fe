@@ -39,7 +39,7 @@ const RegisterRecruitFieldPage = () => {
 
   useEffect(() => {
     setRecruitState({ field: selectedTags.join(',') });
-  }, [selectedTags]);
+  }, [setRecruitState, selectedTags]);
 
   return (
     <WrapContent>

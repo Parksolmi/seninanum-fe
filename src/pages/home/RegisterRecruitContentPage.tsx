@@ -40,7 +40,7 @@ const RegisterRecruitContentPage = () => {
 
   useEffect(() => {
     setRecruitState({ priceType: selectedPriceType });
-  }, [selectedPriceType]);
+  }, [setRecruitState, selectedPriceType]);
 
   return (
     <WrapContent>

@@ -49,18 +49,6 @@ const TagContainer = styled.div`
   gap: 10px;
 `;
 
-const HiddenCheckbox = styled.input`
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
-
 interface TagProps {
   $isSelected: boolean;
   $type: 'dong' | 'nari' | null;
