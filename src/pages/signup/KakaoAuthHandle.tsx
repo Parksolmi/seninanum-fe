@@ -13,7 +13,7 @@ const KakaoAuthHandle = () => {
 
     const kakaoLogin = async () => {
       try {
-        const response = await instance.get(`auth/kakao/token?code=${code}`);
+        const response = await instance.get(`/auth/kakao/token?code=${code}`);
 
         let userData = response.data;
         console.log(response.data);
