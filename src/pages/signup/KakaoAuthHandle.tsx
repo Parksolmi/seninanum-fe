@@ -34,7 +34,7 @@ const KakaoAuthHandle = () => {
 
   return (
     <WrapContent>
-      <SyncLoader color="#FFAA0E" />
+      <SyncLoader color="#ffe810" />
     </WrapContent>
   );
 };
