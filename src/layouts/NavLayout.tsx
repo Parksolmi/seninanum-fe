@@ -8,7 +8,7 @@ import useUserInfo from '../hooks/useUserInfo';
 const NavLayout = () => {
   // const { userState } = useUserState();
   // const userId = userState.userId;
-  const userId = '3522001522'; //test데이터 넣어보기
+  const userId = '3518693517'; //test데이터 넣어보기
 
   const userType = useUserInfo(userId);
   console.log(userType);
