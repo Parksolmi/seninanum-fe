@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import TabMenu from '../../store/TabContext';
 
 interface TabBarProps {
-  readonly type: 'dong' | 'nari';
+  type: 'dong' | 'nari' | null;
+  // userId: string;
 }
 
-const TabBar = ({ type }: TabBarProps) => {
+const TabBar: React.FC<TabBarProps> = ({ type }) => {
   const { setTabMenuState } = TabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
   }));
@@ -63,6 +64,10 @@ const TabBar = ({ type }: TabBarProps) => {
     setCurrentPage(location.pathname);
   }, [location]);
 
+  if (type === null) {
+    return null; // 로딩 중일 때는 아무것도 렌더링하지 않음
+  }
+
   return (
     <StyledNav>
       <WrapItem>
@@ -93,7 +98,7 @@ const TabBar = ({ type }: TabBarProps) => {
 
 interface LabelProps {
   $active: 'active' | 'inactive';
-  $type: string;
+  $type: 'dong' | 'nari';
 }
 
 const StyledNav = styled.nav`
