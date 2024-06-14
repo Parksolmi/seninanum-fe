@@ -22,7 +22,6 @@ const ButtonBox = styled.div`
   padding-bottom: 0.5rem;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 `;
 
 const ButtonIcon = styled.img`
@@ -34,10 +33,7 @@ const ButtonIcon = styled.img`
 const ButtonText = styled.div`
   color: #868686;
   text-align: center;
-  font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
 `;
 export default StopWritingButton;

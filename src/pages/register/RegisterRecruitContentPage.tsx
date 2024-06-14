@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -7,16 +7,23 @@ import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import InputPrice from '../../components/common/InputPrice';
 import Modal from '../../components/common/Modal';
+import { useNavigate } from 'react-router-dom';
+import useRecruitState from '../../store/RecruitState';
 
 const RegisterRecruitContentPage = () => {
-  let [inputCount, setInputCount] = useState(0);
+  const navigate = useNavigate();
+  const { setRecruitState } = useRecruitState();
 
-  const onTextAreaHandler = (e) => {
+  const [inputCount, setInputCount] = useState(0);
+  const [selectedPriceType, setSelectedPriceType] = useState('');
+
+  const hadnleOnChagne = (e) => {
+    const { name, value } = e.target;
+
     setInputCount(e.target.value.replace(/<br\s*V?>/gm, '\n').length);
+    setRecruitState({ [name]: value });
   };
 
-  const handlePrevButtonClick = () => {};
-  const handleNextButtonClick = () => {};
   // 모달 열고 닫기
   const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
   const openModal = () => setIsOpenModal(true);
@@ -24,17 +31,28 @@ const RegisterRecruitContentPage = () => {
   // 모달 > 확인하기 버튼 클릭 시 동작되는 함수
   const confirmModal = () => {};
 
-  const onChange = () => {};
+  const navigateToMethod = () => {
+    navigate('/register/recruit/method');
+  };
+  const navigateTo = () => {
+    navigate('/home');
+  };
+
+  useEffect(() => {
+    setRecruitState({ priceType: selectedPriceType });
+  }, [setRecruitState, selectedPriceType]);
+
   return (
     <WrapContent>
       <ButtonWrap onClick={openModal}>
         <StopWritingButton />
       </ButtonWrap>
       <ProgressBar status={2} type={'nari'} />
-      <CategoryText>{`마지막으로,\n내 구인글을 소개해보세요!`}</CategoryText>
+      <TitleText>{`마지막으로,\n내 구인글을 소개해보세요!`}</TitleText>
       <Input
+        name="title"
         inputPlaceholder={'제목을 입력하세요.'}
-        onChange={onTextAreaHandler}
+        onChange={hadnleOnChagne}
         maxLength={39}
       ></Input>
       <MaxText>
@@ -42,22 +60,29 @@ const RegisterRecruitContentPage = () => {
         <span>/40</span>
       </MaxText>
       <TextArea
+        name="content"
         inputPlaceholder={'내용을 입력하세요.'}
-        onChange={onChange}
+        onChange={hadnleOnChagne}
       ></TextArea>
-      <InputPrice selected={false} buttontype={'nari'}></InputPrice>
+      <InputPrice
+        name="price"
+        onChange={hadnleOnChagne}
+        userType={'nari'}
+        selected={selectedPriceType}
+        onClickMethod={setSelectedPriceType}
+      />
       <WrapButton>
         <Button
           type={null}
           disabled={false}
           children={'이전'}
-          onClick={handlePrevButtonClick}
+          onClick={navigateToMethod}
         ></Button>
         <Button
           type={'nari'}
           disabled={false}
           children={'다음'}
-          onClick={handleNextButtonClick}
+          onClick={navigateTo}
         ></Button>
       </WrapButton>
       <Modal
@@ -83,17 +108,12 @@ const ButtonWrap = styled.div`
   flex-shrink: 0;
   margin-bottom: 1.63rem;
 `;
-const CategoryText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
+const TitleText = styled.div`
   font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  font-family: 'NanumSquareR';
+  font-weight: 700;
+  margin-top: 2rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const MaxText = styled.span`

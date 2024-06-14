@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import { refresh } from '../store/auth';
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_API_URL,

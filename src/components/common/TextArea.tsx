@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 import React from 'react';
 
+//name 적용 필요 : RegisterProfileCareerAddPage
 interface TextAreaProps {
+  name?: string;
   inputPlaceholder: string;
   onChange: (e: any) => void;
 }
 
-const TextArea = ({ inputPlaceholder, onChange }: TextAreaProps) => {
+const TextArea = ({ name, inputPlaceholder, onChange }: TextAreaProps) => {
   return (
     <TextAreaStyle
+      name={name}
       placeholder={inputPlaceholder}
       onChange={onChange}
     ></TextAreaStyle>
