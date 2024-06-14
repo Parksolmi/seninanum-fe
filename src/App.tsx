@@ -59,6 +59,7 @@ const App: React.FC = () => {
           path="/register/profile/condition"
           element={<RegisterProfileConditionPage />}
         />
+
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
