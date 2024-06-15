@@ -8,17 +8,55 @@ import categoryState from '../../constants/categoryState';
 import RegionDropDown from '../../components/common/RegionDropDown';
 import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const RegisterProfileConditionPage = () => {
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
+  const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedPriceType, setSelectedPriceType] = useState('');
+  const isDisabled = selectedTags.length < 3;
+
+  const hadnleClickAgeTag = (tag) => {
+    setSelectedAgeTags((prevTags) => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter((t) => t !== tag);
+      } else if (prevTags.length >= 3) {
+        setTimeout(() => {
+          toast.error('희망 연령대는 3개까지 선택이 가능합니다.');
+        }, 0);
+        return prevTags;
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+  const hadnleClickTag = (tag) => {
+    setSelectedTags((prevTags) => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter((t) => t !== tag);
+      } else if (prevTags.length >= 3) {
+        setTimeout(() => {
+          toast.error('분야는 3개까지 선택이 가능합니다.');
+        }, 0);
+        return prevTags;
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+  const hadnleOnChagne = () => {};
   const handleButtonClick = (method: string) => {
     setSelectedMethod(method);
   };
-  const handlePrevButtonClick = () => {
-    window.location.href = '/register/profile/introduction';
-  };
   const handleNextButtonClick = () => {};
+  const navigate = useNavigate();
+  const navigateToRegisterIntroduction = () => {
+    navigate('/register/profile/introduction');
+  };
+
   return (
     <WrapContent>
       <ButtonWrap>
@@ -27,11 +65,23 @@ const RegisterProfileConditionPage = () => {
       <ProgressBar status={2} type={'dong'}></ProgressBar>
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
       <TitleText>희망 연령대</TitleText>
-      <Category label="" list={ageState.list} type={'dong'}></Category>
+      <Category
+        label=""
+        list={ageState.list}
+        type={'dong'}
+        selectedTags={selectedAgeTags}
+        onClickTag={hadnleClickAgeTag}
+      ></Category>
       <TitleText>희망 활동 분야</TitleText>
       <SubText>전문 분야</SubText>
       <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
-      <Category label="" list={categoryState.list} type={'dong'}></Category>
+      <Category
+        label=""
+        list={categoryState.list}
+        type={'dong'}
+        selectedTags={selectedTags}
+        onClickTag={hadnleClickTag}
+      ></Category>
       <SubText>
         <div>제공할 서비스</div>
       </SubText>
@@ -52,7 +102,13 @@ const RegisterProfileConditionPage = () => {
       <RegionDropDown></RegionDropDown>
 
       <TitleText>희망 금액</TitleText>
-      <InputPrice selected={false} buttontype={'dong'}></InputPrice>
+      <InputPrice
+        name="price"
+        onChange={hadnleOnChagne}
+        userType={'dong'}
+        selected={selectedPriceType}
+        onClickMethod={setSelectedPriceType}
+      ></InputPrice>
       <GapButton></GapButton>
 
       <WrapButtonContainer>
@@ -61,7 +117,7 @@ const RegisterProfileConditionPage = () => {
             type={null}
             disabled={false}
             children={'이전'}
-            onClick={handlePrevButtonClick}
+            onClick={navigateToRegisterIntroduction}
           ></Button>
           <Button
             type={'dong'}

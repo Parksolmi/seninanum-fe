@@ -4,14 +4,16 @@ import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterProfileIntroductionPage = () => {
   const onChange = () => {};
-  const handlePrevButtonClick = () => {
-    window.location.href = '/register/profile/career';
+  const navigate = useNavigate();
+  const navigateToRegisterProfileCareer = () => {
+    navigate('/register/profile/career');
   };
-  const handleNextButtonClick = () => {
-    window.location.href = '/register/profile/condition';
+  const navigateToRegisterProfileCondition = () => {
+    navigate('/register/profile/condition');
   };
   return (
     <WrapContent>
@@ -31,20 +33,22 @@ const RegisterProfileIntroductionPage = () => {
         onChange={onChange}
       ></TextArea>
 
-      <WrapButton>
-        <Button
-          type={null}
-          disabled={false}
-          children={'이전'}
-          onClick={handlePrevButtonClick}
-        ></Button>
-        <Button
-          type={'dong'}
-          disabled={false}
-          children={'다음'}
-          onClick={handleNextButtonClick}
-        ></Button>
-      </WrapButton>
+      <WrapButtonContainer>
+        <WrapButton>
+          <Button
+            type={null}
+            disabled={false}
+            children={'이전'}
+            onClick={navigateToRegisterProfileCareer}
+          ></Button>
+          <Button
+            type={'dong'}
+            disabled={false}
+            children={'다음'}
+            onClick={navigateToRegisterProfileCondition}
+          ></Button>
+        </WrapButton>
+      </WrapButtonContainer>
     </WrapContent>
   );
 };
@@ -108,13 +112,17 @@ const PictureArea = styled.div`
   margin-bottom: 2rem;
 `;
 
-const WrapButton = styled.div`
+const WrapButtonContainer = styled.div`
+  background-color: #fff;
   position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.1rem 4rem 1.1rem;
+`;
+const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: 4rem;
   gap: 1rem;
 `;
 export default RegisterProfileIntroductionPage;
