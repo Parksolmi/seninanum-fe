@@ -17,7 +17,6 @@ const RegisterProfileConditionPage = () => {
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedPriceType, setSelectedPriceType] = useState('');
-  const isDisabled = selectedTags.length < 3;
 
   const hadnleClickAgeTag = (tag) => {
     setSelectedAgeTags((prevTags) => {
