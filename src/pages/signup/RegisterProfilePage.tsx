@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import InputText from '../../components/common/InputText';
-import Toggle from '../../components/signin/Toggle';
+import Toggle from '../../components/signup/Toggle';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';

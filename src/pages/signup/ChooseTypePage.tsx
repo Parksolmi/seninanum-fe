@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
-import UserTypeButton from '../../components/signin/UserTypeButton';
+import UserTypeButton from '../../components/signup/UserTypeButton';
 import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';
 import { useNavigate } from 'react-router-dom';
