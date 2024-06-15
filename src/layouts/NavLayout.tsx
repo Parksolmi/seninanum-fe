@@ -18,8 +18,17 @@ const NavLayout = () => {
   };
 
   useEffect(() => {
+    const getUserType = async () => {
+      try {
+        const response = await instance.get('/user/userType');
+        setUserType(response.data);
+      } catch (error) {
+        console.error('ErError fetching user type:', error);
+      }
+    };
+
     getUserType();
-  }, []);
+  }, [setUserType]);
 
   return (
     <>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import CommunityIndexPageDong from './CommunityIndexPageDong';
 import CommunityIndexPageNari from './CommunityIndexPageNari';
