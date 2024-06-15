@@ -7,7 +7,8 @@ import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 
-const TYPE = 'nari';
+const USER_TYPE = 'nari';
+const CARD_TYPE = 'dong';
 
 const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
@@ -34,12 +35,12 @@ const HomeIndexPageNari: React.FC = () => {
           <ShortcutButton
             navigateTo={() => navigate('/register/recruit/field')}
             shortcutButtonText={`구인글\n작성하기`}
-            type={TYPE}
+            type={USER_TYPE}
           ></ShortcutButton>
           <ShortcutButton
             navigateTo={() => navigate('/')}
             shortcutButtonText={`리뷰\n작성하기`}
-            type={TYPE}
+            type={USER_TYPE}
           ></ShortcutButton>
         </WrapShortcutButtons>
         <TitleText>
@@ -49,28 +50,28 @@ const HomeIndexPageNari: React.FC = () => {
         <WrapVerticalProfiles>
           <ProfileVerticalCard
             nickname={'닉네임'}
-            types="dong"
+            types={CARD_TYPE}
             age="60대"
             gender="여자"
             tagText="경력많음"
           />
           <ProfileVerticalCard
             nickname={'닉네임'}
-            types="dong"
+            types={CARD_TYPE}
             age="60대"
             gender="여자"
             tagText="경력많음"
           />
           <ProfileVerticalCard
             nickname={'닉네임'}
-            types="dong"
+            types={CARD_TYPE}
             age="60대"
             gender="여자"
             tagText="경력많음"
           />
           <ProfileVerticalCard
             nickname={'닉네임'}
-            types="dong"
+            types={CARD_TYPE}
             age="60대"
             gender="여자"
             tagText="경력많음"
@@ -81,14 +82,14 @@ const HomeIndexPageNari: React.FC = () => {
         <FilterButton />
         <WrapDongCards>
           <SummaryCard
-            type={TYPE}
+            type={CARD_TYPE}
             fields={['IT', '예체능', '디지털']}
           ></SummaryCard>
-          <SummaryCard type={TYPE} fields={['IT', '예체능']}></SummaryCard>
-          <SummaryCard type={TYPE} fields={['IT']}></SummaryCard>
-          <SummaryCard type={TYPE} fields={['IT', '취업']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT', '예체능']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT', '취업']}></SummaryCard>
           <SummaryCard
-            type={TYPE}
+            type={CARD_TYPE}
             fields={['입시', '경제', '교육']}
           ></SummaryCard>
         </WrapDongCards>
