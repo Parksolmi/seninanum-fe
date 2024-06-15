@@ -6,6 +6,7 @@ import CareerDetail from './../../components/common/CareerDetail';
 import FileAddButton from '../../components/home/FileAddButton';
 import useCareerStore from '../../store/CareerStore';
 import Button from '../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterProfileCareerPage = () => {
   const careers = useCareerStore((state) => state.careers);
@@ -16,13 +17,17 @@ const RegisterProfileCareerPage = () => {
     console.log('Careers:', careers);
   }, [careers]);
 
-  const onClickNextBtn = () => {
-    window.location.href = '/register/profile/introduction';
+  const navigate = useNavigate();
+  const navigateToRegisterProfile = () => {
+    navigate('/home');
+  };
+  const navigateToRegisterProfileIntroduction = () => {
+    navigate('/register/profile/introduction');
   };
 
   return (
     <WrapContent>
-      <ButtonWrap>
+      <ButtonWrap onClick={navigateToRegisterProfile}>
         <StopWritingButton />
       </ButtonWrap>
       <ProgressBar status={0} type={'dong'} />
@@ -64,7 +69,7 @@ const RegisterProfileCareerPage = () => {
             type={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={onClickNextBtn}
+            onClick={navigateToRegisterProfileIntroduction}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>

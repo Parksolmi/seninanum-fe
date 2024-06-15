@@ -16,7 +16,7 @@ const RegisterProfileCareerAddPage = () => {
   const addCareer = useCareerStore((state) => state.addCareer);
   const navigate = useNavigate();
   const onClick = () => {};
-  const onCloseBtnClick = () => {
+  const navigateToRegisterProfile = () => {
     navigate('/register/profile/career');
   };
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,7 +41,7 @@ const RegisterProfileCareerAddPage = () => {
       <WrapCloseIcon>
         <ClosePage
           src="/assets/common/page-close.svg"
-          onClick={onCloseBtnClick}
+          onClick={navigateToRegisterProfile}
         ></ClosePage>
       </WrapCloseIcon>
       <form onSubmit={handleSubmit}>

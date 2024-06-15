@@ -4,20 +4,20 @@ import styled from 'styled-components';
 interface SummaryCardProps {
   // profile: string;
   type: string;
-  nickname: string;
-  age: string;
-  method: string;
-  content: string;
+  // nickname: string;
+  // age: string;
+  // method: string;
+  // content: string;
   fields: string[];
 }
 
 const SummaryCard = ({
   // profile,
   type,
-  nickname,
-  age,
-  method,
-  content,
+  // nickname,
+  // age,
+  // method,
+  // content,
   fields,
 }: SummaryCardProps) => {
   return (
@@ -93,7 +93,7 @@ const WrapContent = styled.div`
   font-size: 1.375rem;
   font-weight: 600;
   line-height: 1.1;
-  font-family: 'NanumSquareR';
+  font-family: NanumSquare;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -105,22 +105,25 @@ const WrapContent = styled.div`
 const WrapField = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 0.3rem;
+  gap: 0.5rem;
 `;
 interface fieldType {
   $type: string;
 }
 const Field = styled.div<fieldType>`
-  flex-grow: 1;
   border-radius: 0.5rem;
   background: ${({ $type }) =>
-    $type === 'dong' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
-  color: #414040;
-  font-family: 'NanumSquareR';
-  font-weight: 400;
+    $type === 'dong' ? 'var(--Secondary-nari-2)' : 'var(--Secondary-dong-2)'};
+  color: var(--Base-Deep-Gray, #5b5b5b);
   text-align: center;
-  font-size: 1.375rem;
-  padding: 0.5rem;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0.25rem 0.875rem;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default SummaryCard;

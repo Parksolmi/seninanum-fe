@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface ProgressProps {
@@ -6,12 +7,21 @@ interface ProgressProps {
 }
 
 const CareerProfileProgress = ({ status }: ProgressProps) => {
+  const navigate = useNavigate();
+  const navigateToRegisterProfile = () => {
+    navigate('/register/profile/career');
+  };
+
   return (
     <InputContainer>
-      <Progress>현재 2단계 작성 중</Progress>
+      <Progress>{`현재 ${status}단계 작성 중`}</Progress>
       <Title>
         <p>나의 경력프로필 채우기</p>
-        <img src={'/assets/common/right-arrow.svg'} alt="naviate" />
+        <img
+          src={'/assets/common/right-arrow.svg'}
+          alt="naviate"
+          onClick={navigateToRegisterProfile}
+        />
       </Title>
       <img
         src={`/assets/home/career-progress-${status}.svg`}
