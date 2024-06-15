@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/common/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
@@ -9,6 +10,8 @@ import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 const TYPE = 'nari';
 
 const HomeIndexPageNari: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <BannerContainer
@@ -16,19 +19,25 @@ const HomeIndexPageNari: React.FC = () => {
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>
-        {/* <MyRecruitProgress myRecruit={0} RecruitThisMonth={21} /> */}
         <MyRecruitProgress
+          myRecruit={0}
+          RecruitThisMonth={21}
+          navigateToRecruit={() => navigate('/register/recruit/field')}
+        />
+        {/* <MyRecruitProgress
           myRecruit={1}
           applicantCount={4}
           recruitTitle="기후기술 창업대회 공모전 도와주실 전문가 분을 찾습니다! 굉장히 어렵네요..."
-        />
+        /> */}
         <TitleText>간편 바로가기</TitleText>
         <WrapShortcutButtons>
           <ShortcutButton
+            navigateTo={() => navigate('/register/recruit/field')}
             shortcutButtonText={`구인글\n작성하기`}
             type={TYPE}
           ></ShortcutButton>
           <ShortcutButton
+            navigateTo={() => navigate('/')}
             shortcutButtonText={`리뷰\n작성하기`}
             type={TYPE}
           ></ShortcutButton>

@@ -7,6 +7,7 @@ interface RecruitData {
   applicantCount?: number;
   RecruitThisMonth?: number;
   recruitTitle?: string;
+  navigateToRecruit: () => void;
 }
 
 const MyRecruitProgress: React.FC<RecruitData> = ({
@@ -14,6 +15,7 @@ const MyRecruitProgress: React.FC<RecruitData> = ({
   applicantCount,
   RecruitThisMonth,
   recruitTitle,
+  navigateToRecruit,
 }) => {
   return (
     <BoxContainer>
@@ -21,7 +23,7 @@ const MyRecruitProgress: React.FC<RecruitData> = ({
       {myRecruit === 0 ? (
         <>
           <ManagementBox>
-            <ProfileBox>
+            <ProfileBox onClick={navigateToRecruit}>
               <MyRecruitManagementText>구인글 작성하기</MyRecruitManagementText>
               <MoreIconBox>
                 <img
@@ -130,7 +132,7 @@ const RecruitTitleText = styled.div`
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2rem;
+  line-height: 1.3rem;
 `;
 
 const TextBox = styled.div`

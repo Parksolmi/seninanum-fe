@@ -9,10 +9,11 @@ import InputPrice from '../../components/common/InputPrice';
 import Modal from '../../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import useRecruitState from '../../store/RecruitState';
+import { instance } from '../../api/instance';
 
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
-  const { setRecruitState } = useRecruitState();
+  const { recruitState, setRecruitState } = useRecruitState();
 
   const [inputCount, setInputCount] = useState(0);
   const [selectedPriceType, setSelectedPriceType] = useState('');
@@ -24,6 +25,24 @@ const RegisterRecruitContentPage = () => {
     setRecruitState({ [name]: value });
   };
 
+  const registerRecruit = () => {
+    try {
+      instance.post('/register/recruit', {
+        title: recruitState.title,
+        content: recruitState.content,
+        method: recruitState.method,
+        priceType: recruitState.priceType,
+        price: recruitState.price,
+        region: recruitState.region,
+        field: recruitState.field,
+      });
+      window.alert('등록되었습니다.');
+      navigate('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // 모달 열고 닫기
   const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
   const openModal = () => setIsOpenModal(true);
@@ -33,9 +52,6 @@ const RegisterRecruitContentPage = () => {
 
   const navigateToMethod = () => {
     navigate('/register/recruit/method');
-  };
-  const navigateTo = () => {
-    navigate('/home');
   };
 
   useEffect(() => {
@@ -82,7 +98,7 @@ const RegisterRecruitContentPage = () => {
           type={'nari'}
           disabled={false}
           children={'다음'}
-          onClick={navigateTo}
+          onClick={registerRecruit}
         ></Button>
       </WrapButton>
       <Modal
