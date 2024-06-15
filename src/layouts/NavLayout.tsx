@@ -20,7 +20,7 @@ const NavLayout = () => {
   return (
     <>
       <Padding>
-        <Outlet context={{ userType }} />
+        <Outlet context={'dong'} />
       </Padding>
       <TabBar userType={userType} getUserType={getUserType} />
     </>
