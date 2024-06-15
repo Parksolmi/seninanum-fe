@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from './../../components/common/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
+import { useNavigate } from 'react-router-dom';
+
+const USER_TYPE = 'dong';
+const CARD_TYPE = 'nari';
 
 const HomeIndexPageDong: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <BannerContainer
@@ -16,25 +22,27 @@ const HomeIndexPageDong: React.FC = () => {
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton
+            navigateTo={() => navigate('/')}
             shortcutButtonText={`구인글\n조회하기`}
-            type="dong"
+            type={USER_TYPE}
           ></ShortcutButton>
           <ShortcutButton
+            navigateTo={() => navigate('/')}
             shortcutButtonText={`리뷰\n작성하기`}
-            type="dong"
+            type={USER_TYPE}
           ></ShortcutButton>
         </ButtonHorizontal>
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
           <SummaryCard
-            type={'nari'}
+            type={CARD_TYPE}
             fields={['IT', '예체능', '디지털']}
           ></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT', '예체능']}></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT']}></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT', '취업']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT', '예체능']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT']}></SummaryCard>
+          <SummaryCard type={CARD_TYPE} fields={['IT', '취업']}></SummaryCard>
           <SummaryCard
-            type={'nari'}
+            type={CARD_TYPE}
             fields={['입시', '경제', '교육']}
           ></SummaryCard>
         </NariCardVertical>
