@@ -5,21 +5,22 @@ import styled from 'styled-components';
 import TabMenu from '../../store/TabContext';
 
 interface TabBarProps {
-  type: 'dong' | 'nari' | null;
-  // userId: string;
+  userType: string;
+  getUserType: () => void;
 }
 
-const TabBar: React.FC<TabBarProps> = ({ type }) => {
+const TabBar: React.FC<TabBarProps> = ({ userType, getUserType }) => {
   const { setTabMenuState } = TabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
   }));
 
+  const handleClick = (tab: number) => {
+    setTabMenuState(tab);
+    getUserType();
+  };
+
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('/');
-
-  const handleTabClick = (tab: number) => {
-    setTabMenuState(tab);
-  };
 
   interface MenuItem {
     id: number;
@@ -35,28 +36,28 @@ const TabBar: React.FC<TabBarProps> = ({ type }) => {
       name: '홈',
       path: '/home',
       icon: '/assets/tabIcon/home.svg',
-      iconActive: `/assets/tabIcon/home-active-${type}.svg`,
+      iconActive: `/assets/tabIcon/home-active-${userType}.svg`,
     },
     {
       id: 1,
       name: '채팅',
       path: '/chat',
       icon: '/assets/tabIcon/chat.svg',
-      iconActive: `/assets/tabIcon/chat-active-${type}.svg`,
+      iconActive: `/assets/tabIcon/chat-active-${userType}.svg`,
     },
     {
       id: 2,
       name: '게시판',
       path: '/community',
       icon: '/assets/tabIcon/community.svg',
-      iconActive: `/assets/tabIcon/community-active-${type}.svg`,
+      iconActive: `/assets/tabIcon/community-active-${userType}.svg`,
     },
     {
       id: 3,
       name: '내정보',
       path: '/mypage',
       icon: '/assets/tabIcon/mypage.svg',
-      iconActive: `/assets/tabIcon/mypage-active-${type}.svg`,
+      iconActive: `/assets/tabIcon/mypage-active-${userType}.svg`,
     },
   ];
 
@@ -64,7 +65,7 @@ const TabBar: React.FC<TabBarProps> = ({ type }) => {
     setCurrentPage(location.pathname);
   }, [location]);
 
-  if (type === null) {
+  if (userType === '') {
     return null; // 로딩 중일 때는 아무것도 렌더링하지 않음
   }
 
@@ -75,9 +76,7 @@ const TabBar: React.FC<TabBarProps> = ({ type }) => {
           <NavItem
             to={item.path}
             key={item.name}
-            onClick={() => {
-              handleTabClick(item.id);
-            }}
+            onClick={() => handleClick(item.id)}
           >
             <img
               src={currentPage === item.path ? item.iconActive : item.icon}
@@ -85,7 +84,7 @@ const TabBar: React.FC<TabBarProps> = ({ type }) => {
             />
             <Label
               $active={currentPage === item.path ? 'active' : 'inactive'}
-              $type={type}
+              $type={userType}
             >
               {item.name}
             </Label>
@@ -98,7 +97,7 @@ const TabBar: React.FC<TabBarProps> = ({ type }) => {
 
 interface LabelProps {
   $active: 'active' | 'inactive';
-  $type: 'dong' | 'nari';
+  $type: string;
 }
 
 const StyledNav = styled.nav`
