@@ -3,9 +3,11 @@ import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import MyIndexPageDong from './MyIndexPageDong';
 import MyIndexPageNari from './MyIndexPageNari';
+import userTypeStore from '../../store/userTypeState';
 
 const MyIndexPage: React.FC = () => {
-  const { userType } = useOutletContext<{ userType: 'dong' | 'nari' }>();
+  const { userType } = userTypeStore();
+
   return (
     <WrapContent>
       {userType === 'dong' ? <MyIndexPageDong /> : <MyIndexPageNari />}

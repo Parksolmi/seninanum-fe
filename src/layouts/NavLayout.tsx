@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import TabBar from '../components/common/TabBar';
 import userTypeStore from '../store/userTypeState';
@@ -17,10 +17,14 @@ const NavLayout = () => {
     }
   };
 
+  useEffect(() => {
+    getUserType();
+  }, []);
+
   return (
     <>
       <Padding>
-        <Outlet context={'dong'} />
+        <Outlet />
       </Padding>
       <TabBar userType={userType} getUserType={getUserType} />
     </>

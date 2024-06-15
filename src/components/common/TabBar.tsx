@@ -65,10 +65,6 @@ const TabBar: React.FC<TabBarProps> = ({ userType, getUserType }) => {
     setCurrentPage(location.pathname);
   }, [location]);
 
-  if (userType === '') {
-    return null; // 로딩 중일 때는 아무것도 렌더링하지 않음
-  }
-
   return (
     <StyledNav>
       <WrapItem>

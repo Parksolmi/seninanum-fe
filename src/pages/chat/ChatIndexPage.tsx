@@ -1,11 +1,12 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
 import ChatIndexPageNari from './ChatIndexPageNari';
 import ChatIndexPageDong from './ChatIndexPageDong';
 import styled from 'styled-components';
+import userTypeStore from '../../store/userTypeState';
 
 const ChatIndexPage: React.FC = () => {
-  const { userType } = useOutletContext<{ userType: 'dong' | 'nari' }>();
+  const { userType } = userTypeStore();
+
   return (
     <WrapContent>
       {userType === 'dong' ? <ChatIndexPageDong /> : <ChatIndexPageNari />}

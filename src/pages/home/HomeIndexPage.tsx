@@ -1,10 +1,13 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import userTypeStore from '../../store/userTypeState';
 import HomeIndexPageDong from './HomeIndexPageDong';
 import HomeIndexPageNari from './HomeIndexPageNari';
 
 const HomeIndexPage: React.FC = () => {
-  const { userType } = useOutletContext<{ userType: 'dong' | 'nari' }>();
+  const { userType } = userTypeStore();
+
+  console.log(localStorage.getItem('userTypeStae'));
+
   return (
     <>{userType === 'dong' ? <HomeIndexPageDong /> : <HomeIndexPageNari />}</>
   );

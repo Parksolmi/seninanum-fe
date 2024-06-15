@@ -3,9 +3,11 @@ import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import CommunityIndexPageDong from './CommunityIndexPageDong';
 import CommunityIndexPageNari from './CommunityIndexPageNari';
+import userTypeStore from '../../store/userTypeState';
 
 const CommunityIndexPage: React.FC = () => {
-  const { userType } = useOutletContext<{ userType: 'dong' | 'nari' }>();
+  const { userType } = userTypeStore();
+
   return (
     <WrapContent>
       {userType === 'dong' ? (
