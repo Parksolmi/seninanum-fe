@@ -5,9 +5,14 @@ import styled from 'styled-components';
 interface ButtonProps {
   shortcutButtonText: string;
   type: 'dong' | 'nari';
+  navigateTo: () => void;
 }
 
-const ShortcutButton = ({ shortcutButtonText, type }: ButtonProps) => {
+const ShortcutButton = ({
+  shortcutButtonText,
+  type,
+  navigateTo,
+}: ButtonProps) => {
   let iconSrc;
 
   switch (shortcutButtonText) {
@@ -29,7 +34,7 @@ const ShortcutButton = ({ shortcutButtonText, type }: ButtonProps) => {
       break;
   }
   return (
-    <WrapButton>
+    <WrapButton onClick={navigateTo}>
       <ButtonText>{shortcutButtonText}</ButtonText>
       <WriteIcon
         //리뷰 작성하기, 구인글 조회하기, 구인글 작성하기

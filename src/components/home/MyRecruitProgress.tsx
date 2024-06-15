@@ -4,16 +4,18 @@ import styled from 'styled-components';
 // 작성한 구인글 수, 지원자 수, 이번 달 등록된 구인글 수, 구인글 제목
 interface RecruitData {
   myRecruit: number;
-  applicantCount: number;
-  RecruitThisMonth: number;
-  recruitTitle: string;
+  applicantCount?: number;
+  RecruitThisMonth?: number;
+  recruitTitle?: string;
+  navigateToRecruit: () => void;
 }
 
-const ApplyMyRecruit: React.FC<RecruitData> = ({
+const MyRecruitProgress: React.FC<RecruitData> = ({
   myRecruit,
   applicantCount,
   RecruitThisMonth,
   recruitTitle,
+  navigateToRecruit,
 }) => {
   return (
     <BoxContainer>
@@ -21,7 +23,7 @@ const ApplyMyRecruit: React.FC<RecruitData> = ({
       {myRecruit === 0 ? (
         <>
           <ManagementBox>
-            <ProfileBox>
+            <ProfileBox onClick={navigateToRecruit}>
               <MyRecruitManagementText>구인글 작성하기</MyRecruitManagementText>
               <MoreIconBox>
                 <img
@@ -33,18 +35,19 @@ const ApplyMyRecruit: React.FC<RecruitData> = ({
               </MoreIconBox>
             </ProfileBox>
             <RecruitTitleText>
-              구인글을 작성하면 나에게 맞는 동백님을 추천받을 수 있어요!
+              구인글을 작성하면
+              <br /> 나에게 맞는 동백님을 추천받을 수 있어요!
             </RecruitTitleText>
           </ManagementBox>
           <TextBox>
             <ApplyText>이번 달 등록된 구인글 수</ApplyText>
             <NumberTextBox>
               <ApplyNumber>{RecruitThisMonth}개</ApplyNumber>
-              <MoreButtonBox>
+              {/* <MoreButtonBox>
                 <MoreIcon
                   src={process.env.PUBLIC_URL + '/assets/common/more-icon.svg'}
                 ></MoreIcon>
-              </MoreButtonBox>
+              </MoreButtonBox> */}
             </NumberTextBox>
           </TextBox>
         </>
@@ -83,7 +86,7 @@ const BoxContainer = styled.div`
   flex-direction: column;
   flex-shrink: 0;
   /* 임시 */
-  margin-bottom: 5rem;
+  /* margin-bottom: 5rem; */
   z-index: 1;
 `;
 const ManagementBox = styled.div`
@@ -96,24 +99,21 @@ const ManagementBox = styled.div`
   background: var(--Base-White, #fff);
   /* Shadow_dong */
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
-  padding: 0.8rem;
+  padding: 0.8rem 1.6rem 0.8rem 0.8rem;
 `;
 const ProfileBox = styled.div`
   width: 100%;
-  height: auto;
-  flex-shrink: 0;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   margin-bottom: 1rem;
+  gap: 0.7rem;
 `;
 
 const MyRecruitManagementText = styled.div`
   color: var(--Primary-nari-text, #f48400);
-  font-family: Nanum_Square;
+  font-family: 'Nanum_SquareR';
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   z-index: 3;
   margin-top: 0.2rem;
 `;
@@ -123,27 +123,16 @@ const MoreIconBox = styled.div`
   height: 1rem;
   flex-shrink: 0;
   stroke-width: 2px;
-
-  img {
-    margin-left: 1rem;
-    padding-top: 0.35rem;
-  }
 `;
 
 const RecruitTitleText = styled.div`
   width: 21rem;
-  color: var(--Base-Black, #000);
   font-family: Nanum_Square;
   font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: nowrap;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3rem;
 `;
 
 const TextBox = styled.div`
@@ -190,22 +179,22 @@ const ApplyNumber = styled.div`
   align-items: center;
 `;
 
-const MoreButtonBox = styled.button`
-  display: flex;
-  width: 1.5rem;
-  height: 1.4375rem;
-  padding: 0.375rem 0rem 0.3125rem 0rem;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  background: transparent;
-  border: transparent;
-`;
+// const MoreButtonBox = styled.button`
+//   display: flex;
+//   width: 1.5rem;
+//   height: 1.4375rem;
+//   padding: 0.375rem 0rem 0.3125rem 0rem;
+//   justify-content: center;
+//   align-items: center;
+//   flex-shrink: 0;
+//   background: transparent;
+//   border: transparent;
+// `;
 
-const MoreIcon = styled.img`
-  width: 0.375rem;
-  height: 0.75rem;
-  flex-shrink: 0;
-`;
+// const MoreIcon = styled.img`
+//   width: 0.375rem;
+//   height: 0.75rem;
+//   flex-shrink: 0;
+// `;
 
-export default ApplyMyRecruit;
+export default MyRecruitProgress;

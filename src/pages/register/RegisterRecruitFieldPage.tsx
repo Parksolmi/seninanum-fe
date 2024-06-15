@@ -16,7 +16,7 @@ const RegisterRecruitFieldPage = () => {
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const isDisabled = selectedTags.length < 3;
+  const isDisabled = selectedTags.length < 1;
 
   const hadnleClickTag = (tag) => {
     setSelectedTags((prevTags) => {

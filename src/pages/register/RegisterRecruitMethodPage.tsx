@@ -95,14 +95,13 @@ const TitleText = styled.div`
   font-family: 'NanumSquareR';
   font-weight: 700;
   margin-top: 2rem;
-  margin-bottom: 1.56rem;
+  margin-bottom: 1rem;
 `;
 
 const MethodButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 3rem;
 `;
 
 interface MethodButtonProps {

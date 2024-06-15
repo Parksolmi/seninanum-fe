@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface RecruitState {
-  userId: string;
   title: string;
   content: string;
   method: string;
@@ -21,7 +20,6 @@ const useRecruitState = create<RecruitStateType>()(
     persist(
       (set) => ({
         recruitState: {
-          userId: '',
           title: '',
           content: '',
           method: '',

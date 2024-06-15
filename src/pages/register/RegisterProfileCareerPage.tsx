@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import CareerDetail from './../../components/common/CareerDetail';
-import FileAddButton from '../../components/home/FileAddButton';
+import FileAddButton from '../../components/register/FileAddButton';
 import useCareerStore from '../../store/CareerStore';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';

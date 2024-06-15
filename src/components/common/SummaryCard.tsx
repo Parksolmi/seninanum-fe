@@ -26,8 +26,14 @@ const SummaryCard = ({
         <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
         <ProfileInfo>
           <p>
-            <strong>닉네임</strong> {type === 'nari' ? '나리' : '동백'}
-            <Badge src={`/assets/common/badge-${type}.png`} />
+            <strong>닉네임</strong> {type === 'dong' ? '나리' : '동백'}
+            <Badge
+              src={
+                type === 'dong'
+                  ? `/assets/common/badge-nari.png`
+                  : `/assets/common/badge-dong.png`
+              }
+            />
           </p>
           <span>20대 | 대면</span>
         </ProfileInfo>
@@ -113,7 +119,7 @@ interface fieldType {
 const Field = styled.div<fieldType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
-    $type === 'dong' ? 'var(--Secondary-nari-2)' : 'var(--Secondary-dong-2)'};
+    $type === 'dong' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
   color: var(--Base-Deep-Gray, #5b5b5b);
   text-align: center;
   font-family: NanumSquare;
