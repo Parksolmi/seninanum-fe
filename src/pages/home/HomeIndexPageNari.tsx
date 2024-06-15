@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/common/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
+import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 
@@ -22,7 +23,7 @@ const HomeIndexPageNari: React.FC = () => {
           recruitTitle="기후기술 창업대회 공모전 도와주실 전문가 분을 찾습니다! 굉장히 어렵네요..."
         />
         <TitleText>간편 바로가기</TitleText>
-        <ButtonHorizontal>
+        <WrapShortcutButtons>
           <ShortcutButton
             shortcutButtonText={`구인글\n작성하기`}
             type={TYPE}
@@ -31,7 +32,7 @@ const HomeIndexPageNari: React.FC = () => {
             shortcutButtonText={`리뷰\n작성하기`}
             type={TYPE}
           ></ShortcutButton>
-        </ButtonHorizontal>
+        </WrapShortcutButtons>
         <TitleText>
           교육•예체능•디지털 분야의 <br />
           동백님들을 추천해드릴게요!
@@ -67,8 +68,9 @@ const HomeIndexPageNari: React.FC = () => {
           />
         </WrapVerticalProfiles>
 
-        <TitleText>추천 구인글</TitleText>
-        <NariCardVertical>
+        <TitleText>원하는 동백님을 직접 찾아봐요!</TitleText>
+        <FilterButton />
+        <WrapDongCards>
           <SummaryCard
             type={TYPE}
             fields={['IT', '예체능', '디지털']}
@@ -80,7 +82,7 @@ const HomeIndexPageNari: React.FC = () => {
             type={TYPE}
             fields={['입시', '경제', '교육']}
           ></SummaryCard>
-        </NariCardVertical>
+        </WrapDongCards>
       </WrapContent>
     </>
   );
@@ -94,6 +96,7 @@ const BannerContainer = styled.img`
 
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
+  margin-bottom: 2rem;
 `;
 
 const TitleText = styled.div`
@@ -106,15 +109,8 @@ const TitleText = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ButtonHorizontal = styled.div`
+const WrapShortcutButtons = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
-`;
-
-const NariCardVertical = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 1rem;
 `;
 
@@ -126,4 +122,10 @@ const WrapVerticalProfiles = styled.div`
   white-space: nowrap;
 `;
 
+const WrapDongCards = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+`;
 export default HomeIndexPageNari;

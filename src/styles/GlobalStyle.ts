@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     --Primary-nari: ${theme.colors.nari};
     --Primary-Deep-nari: ${theme.colors.deepNari};
     --Secondary-dong-2: #FFEDF0;
-    --Secondary-nari-2: #FFF8E3;
+    --Secondary-nari-2: #ffebb2;
     --Base-Deep-Gray: ${theme.colors.deepGray};
   }
 `;

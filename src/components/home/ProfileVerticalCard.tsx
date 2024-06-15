@@ -79,7 +79,6 @@ const ProfileNickname = styled.div`
 
 const ProfileType = styled.div`
   margin-right: 0.2rem;
-  color: #000;
   text-align: center;
   font-size: 1.125rem;
   font-weight: 600;
@@ -105,7 +104,9 @@ const AgeTag = styled.div`
 const TagText = styled.div`
   text-align: center;
   font-family: NanumSquare;
+  font-weight: 700;
   font-size: 1.25rem;
+  color: var(--Base-Deep-Gray, #5b5b5b);
 `;
 
 const CategoryWrapTag = styled.div`
@@ -117,7 +118,7 @@ const CategoryWrapTag = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  background: var(--Secondary-nari2, #ffebb2);
+  background: var(--Secondary-nari-2, #ffebb2);
 `;
 
 export default ProfileVerticalCard;
