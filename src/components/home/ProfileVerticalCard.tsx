@@ -44,75 +44,53 @@ const ProfileVerticalCard = ({
 };
 
 const WrapCard = styled.div`
-  /* 임시 */
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding: 0.8rem 0.8rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-radius: 20px;
   width: 100%;
-  height: 14rem;
-  flex-shrink: 0;
   fill: var(--Base-White, #fff);
   box-shadow: 0px 2px 6.3px rgba(150, 150, 150, 0.4);
+  max-width: 10rem;
 `;
 
 const ProfileImage = styled.img`
   width: 3.75rem;
-  height: 4rem;
   flex-shrink: 0;
-  margin-top: 1rem;
-  margin-left: 1.6rem;
-  margin-right: 1.6rem;
-  display: block;
-  margin: auto;
-  border-radius: 100%;
+  margin-bottom: 1rem;
+  border-radius: 50%;
 `;
 
 const ProfileNameBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 0.4rem;
-  margin-bottom: 0.69rem;
   align-items: center;
   justify-content: center;
 `;
 
 const ProfileNickname = styled.div`
   margin-right: 0.2rem;
-  color: #000;
-  text-align: center;
   font-family: NanumSquare;
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const ProfileType = styled.div`
   margin-right: 0.2rem;
   color: #000;
   text-align: center;
-  font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 600;
 `;
 
 const ProfileBadge = styled.img`
   width: 1.375rem;
-  height: 0.875rem;
-  flex-shrink: 0;
 `;
 
 const TagContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-bottom: 0.3rem;
   width: 100%;
 `;
 const AgeTag = styled.div`
@@ -125,15 +103,9 @@ const AgeTag = styled.div`
 `;
 
 const TagText = styled.div`
-  color: #000;
   text-align: center;
   font-family: NanumSquare;
   font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-
-  align-items: center;
 `;
 
 const CategoryWrapTag = styled.div`
@@ -146,7 +118,6 @@ const CategoryWrapTag = styled.div`
   justify-content: center;
   border-radius: 0.5rem;
   background: var(--Secondary-nari2, #ffebb2);
-  margin-bottom: 1.1rem;
 `;
 
 export default ProfileVerticalCard;
