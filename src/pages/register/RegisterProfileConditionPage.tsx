@@ -10,8 +10,10 @@ import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+// import useCareerProfileState from '../../store/CareerProfileState';
 
 const RegisterProfileConditionPage = () => {
+  // const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>([]);

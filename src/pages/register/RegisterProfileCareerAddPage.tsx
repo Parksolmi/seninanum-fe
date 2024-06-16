@@ -1,41 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useCareerStore from '../../store/CareerStore';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import TextArea from '../../components/common/TextArea';
+import useCareerItemState from '../../store/CareerItemState';
+import { instance } from '../../api/instance';
 
 const RegisterProfileCareerAddPage = () => {
+  const { careers, addCareer } = useCareerItemState();
   const [title, setTitle] = useState('');
-  const [startYear, setStartYear] = useState<number>(0);
-  const [startMonth, setStartMonth] = useState<number>(0);
-  const [endYear, setEndYear] = useState<number>(0);
-  const [endMonth, setEndMonth] = useState<number>(0);
+  const [startYear, setStartYear] = useState(0);
+  const [startMonth, setStartMonth] = useState(0);
+  const [endYear, setEndYear] = useState(0);
+  const [endMonth, setEndMonth] = useState(0);
+  const [period, setPeriod] = useState('');
   const [content, setContent] = useState('');
-  const addCareer = useCareerStore((state) => state.addCareer);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'title') setTitle(value);
+    if (name === 'startYear') setStartYear(Number(value));
+    if (name === 'startMonth') setStartMonth(Number(value));
+    if (name === 'endYear') setEndYear(Number(value));
+    if (name === 'endMonth') setEndMonth(Number(value));
+    if (name === 'period') setPeriod(value);
+    if (name === 'content') setContent(value);
+  };
+
+  const addNewCareer = async () => {
+    const newCareer = {
+      id: careers.length > 0 ? careers[careers.length - 1].id + 1 : 1,
+      title,
+      startYear,
+      startMonth,
+      endYear,
+      endMonth,
+      period,
+      content,
+    };
+    try {
+      await instance.post('/register/career/add', newCareer);
+      addCareer(newCareer);
+      window.alert('등록되었습니다.');
+      navigate('/register/profile/career');
+    } catch (error) {
+      console.error('Failed to add career', error);
+    }
+  };
+
   const navigate = useNavigate();
-  const onClick = () => {};
   const navigateToRegisterProfile = () => {
     navigate('/register/profile/career');
   };
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (startYear && startMonth && endYear && endMonth) {
-      addCareer({
-        id: Date.now(),
-        title,
-        startYear,
-        startMonth,
-        endYear,
-        endMonth,
-        content,
-      });
-      navigate('/register/profile/career');
-    } else {
-      alert('모든 필드를 입력해주세요.');
-    }
-  };
+
   return (
     <WrapContent>
       <WrapCloseIcon>
@@ -44,11 +62,11 @@ const RegisterProfileCareerAddPage = () => {
           onClick={navigateToRegisterProfile}
         ></ClosePage>
       </WrapCloseIcon>
-      <form onSubmit={handleSubmit}>
+      <div>
         <CategoryText>회사명</CategoryText>
         <Input
           inputPlaceholder="회사명을 입력하세요."
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleOnChange}
           maxLength={50}
         ></Input>
         <CategoryText>근무기간</CategoryText>
@@ -57,13 +75,13 @@ const RegisterProfileCareerAddPage = () => {
           <InputYearMonthText
             type="number"
             placeholder="YYYY"
-            onChange={(e) => setStartYear(parseInt(e.target.value))}
+            onChange={handleOnChange}
           ></InputYearMonthText>
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
-            onChange={(e) => setStartMonth(parseInt(e.target.value))}
+            onChange={handleOnChange}
           ></InputYearMonthText>
           <InputAreaText>월</InputAreaText>
         </InputArea>
@@ -72,30 +90,30 @@ const RegisterProfileCareerAddPage = () => {
           <InputYearMonthText
             type="number"
             placeholder="YYYY"
-            onChange={(e) => setEndYear(parseInt(e.target.value))}
+            onChange={handleOnChange}
           ></InputYearMonthText>
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
-            onChange={(e) => setEndMonth(parseInt(e.target.value))}
+            onChange={handleOnChange}
           ></InputYearMonthText>
           <InputAreaText>월</InputAreaText>
         </InputArea>
         <CategoryText>세부 업무 내용</CategoryText>
         <TextArea
           inputPlaceholder="세부 업무를 입력하세요."
-          onChange={(e) => setContent(e.target.value)}
+          onChange={handleOnChange}
         ></TextArea>
         <WrapButton>
           <Button
             children="등록"
             disabled={false}
             type={'dong'}
-            onClick={onClick}
+            onClick={addNewCareer}
           ></Button>
         </WrapButton>
-      </form>
+      </div>
     </WrapContent>
   );
 };

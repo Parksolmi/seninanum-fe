@@ -2,22 +2,73 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
-import CareerDetail from './../../components/common/CareerDetail';
 import FileAddButton from '../../components/register/FileAddButton';
-import useCareerStore from '../../store/CareerStore';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import useCareerItemState from '../../store/CareerItemState';
+import { instance } from '../../api/instance';
 
 const RegisterProfileCareerPage = () => {
-  const careers = useCareerStore((state) => state.careers);
-  const totalPeriod = useCareerStore((state) => state.totalPeriod);
-  const removeCareer = useCareerStore((state) => state.removeCareer);
-
-  useEffect(() => {
-    console.log('Careers:', careers);
-  }, [careers]);
+  const { setCareers } = useCareerItemState();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCareers = async () => {
+      try {
+        const response = await instance.get('/register/careers');
+        setCareers(response.data);
+      } catch (error) {
+        console.error('Failed to fetch careers from server', error);
+      }
+    };
+    fetchCareers();
+  }, [setCareers]);
+
+  /*
+  const handleRemoveCareer = async (title) => {
+    try {
+      await instance.delete('/register/career/delete', {
+        data: { title },
+      });
+      removeCareer(title);
+    } catch (error) {
+      console.error('Failed to remove career', error);
+    }
+  };
+
+  const calculateTotalPeriod = (): string => {
+    let totalYears = 0;
+    let totalMonths = 0;
+
+    careers.forEach((career) => {
+      const startYear = career.startYear;
+      const startMonth = career.startMonth;
+      const endYear = career.endYear;
+      const endMonth = career.endMonth;
+
+      let years = endYear - startYear;
+      let months = endMonth - startMonth;
+
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      totalYears += years;
+      totalMonths += months;
+    });
+
+    totalYears += Math.floor(totalMonths / 12);
+    totalMonths = totalMonths % 12;
+
+    return `총 경력 ${totalYears}년 ${totalMonths}개월`;
+  };*/
+
+  const navigateToAddPage = () => {
+    navigate('/register/profile/career/add');
+  };
+
   const navigateToRegisterProfile = () => {
     navigate('/home');
   };
@@ -34,9 +85,9 @@ const RegisterProfileCareerPage = () => {
       <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
       <TotalCareer>
         <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-        <TotalCareerText>{totalPeriod()}</TotalCareerText>
+        <TotalCareerText></TotalCareerText>
       </TotalCareer>
-      {careers.map((career) => (
+      {/*{careers.map((career) => (
         <CareerDetail
           key={career.id}
           title={career.title}
@@ -45,12 +96,10 @@ const RegisterProfileCareerPage = () => {
           endYear={career.endYear}
           endMonth={career.endMonth}
           content={career.content}
-          onDelete={() => removeCareer(career.id)}
+          onDelete={() => handleRemoveCareer(career.title)}
         />
-      ))}
-      <ButtonBox
-        onClick={() => (window.location.href = '/register/profile/career/add')}
-      >
+      ))}*/}
+      <ButtonBox onClick={navigateToAddPage}>
         <FileAddButton addText={'경력 추가'}></FileAddButton>
       </ButtonBox>
       <LineStyle />
