@@ -19,6 +19,7 @@ import RegisterProfileCareerAddPage from './pages/career/RegisterProfileCareerAd
 import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntroductionPage';
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
+import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 
 const App: React.FC = () => {
   return (
@@ -45,6 +46,7 @@ const App: React.FC = () => {
         />
         //구인글 조회
         <Route path="/view/recruit/list" element={<ViewRecruitList />} />
+        <Route path="/view/recruit/detail" element={<ViewRecruitDetail />} />
         //경력 프로필 등록
         <Route
           path="/register/profile/career"

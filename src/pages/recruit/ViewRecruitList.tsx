@@ -1,14 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import DetailCard from '../../components/common/DetailCard';
 import Fields from '../../components/common/Fields';
 import PrevHeader from '../../components/header/PrevHeader';
 
 const ViewRecruitList = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <WrapContent>
-        <PrevHeader title={'구인글 조회'} />
+        <PrevHeader
+          title={'구인글 목록'}
+          navigateTo={() => navigate('/home')}
+        />
         <Fields list={['예체능', '돌봄', '스포츠']} type={'dong'} />
       </WrapContent>
       <SplitLine />
