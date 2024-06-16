@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 버튼 텍스트
+//navigateTo optional 수정 필요
 interface ButtonProps {
   shortcutButtonText: string;
   type: 'dong' | 'nari';
-  navigateTo: () => void;
+  navigateTo?: () => void;
 }
 
 const ShortcutButton = ({

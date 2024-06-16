@@ -7,8 +7,9 @@ import SummaryCard from '../../components/common/SummaryCard';
 const HomeIndexPageDong: React.FC = () => {
   return (
     <>
+      <LogoImg src="/assets/common/seni-text-logo.svg" alt="logo" />
       <BannerContainer
-        src="/assets/home/home-banner.svg"
+        src="/assets/home/home-banner2.png"
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>
@@ -43,10 +44,17 @@ const HomeIndexPageDong: React.FC = () => {
   );
 };
 
+const LogoImg = styled.img`
+  position: absolute;
+  top: 2rem;
+  left: 17.6px;
+  z-index: 999;
+  object-fit: contain;
+`;
+
 const BannerContainer = styled.img`
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
-  height: 22.5rem;
 `;
 
 const WrapContent = styled.div`
