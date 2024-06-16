@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useFieldState from '../../store/FieldState';
 
 interface FieldsProps {
   list: string[];
+  type: 'nari' | 'dong' | null;
 }
-const Fields = ({ list }: FieldsProps) => {
-  // const list = ['예체능'];
-  const type = 'nari';
-
-  const selectedTags: string[] = [];
+const Fields = ({ list, type }: FieldsProps) => {
+  const { fieldState, setFieldState } = useFieldState();
 
   return (
     <>
       <WrapTags>
-        {list.map((tag) => (
+        {list.map((tag, index) => (
           <Tag
             key={tag}
-            onClick={() => selectedTags.push(tag)}
-            $isSelected={selectedTags.includes(tag)}
+            onClick={() => setFieldState(index)}
+            $isSelected={fieldState.field === index}
             $type={type}
           >
             {tag}
@@ -49,21 +48,23 @@ const Tag = styled.div<TagProps>`
   flex: 1 1 calc(33.33% - 10px);
   padding: 0.5rem 0;
   border-radius: 1.40625rem;
-  border: 2px solid #ebeceb;
-  background: #fff
-    ${({ $isSelected, $type }) =>
-      $isSelected && $type !== null
-        ? $isSelected && $type === 'dong'
-          ? `border: 2px solid var(--Primary-dong); 
-     color: var(--Primary-dong); 
-     font-weight: 700;
-    `
-          : `
-    border: 2px solid var(--Primary-Deep-nari); 
-     color: var(--Primary-Deep-nari); 
-     font-weight: 700;
-    `
-        : `border: 1px solid #8e8e8e;`};
+  background: #fff;
+  ${({ $isSelected, $type }) =>
+    $isSelected
+      ? $type === 'dong'
+        ? `
+            border: 1px solid var(--Primary-dong);
+            background-color: var(--Primary-dong);
+            color: white;
+            font-weight: 700;
+          `
+        : `
+            border: 1px solid var(--Primary-nari);
+            background-color: var(--Primary-nari);
+            color: white;
+            font-weight: 700;
+          `
+      : `border: 2px solid #ebeceb;`};
 `;
 
 export default Fields;
