@@ -1,45 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
-import ShortcutButton from './../../components/common/ShortcutButton';
+import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
+import { useNavigate } from 'react-router-dom';
 
 const HomeIndexPageDong: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <LogoImg src="/assets/common/seni-text-logo.svg" alt="logo" />
+
       <BannerContainer
         src="/assets/home/home-banner2.png"
         alt="배너이미지"
       ></BannerContainer>
-      <WrapContent>
-        <CareerProfileProgress status={0}></CareerProfileProgress>
+
+      <ContentContainer>
+        <CareerProfileProgress status={0} />
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton
             shortcutButtonText={`구인글\n조회하기`}
             type="dong"
+            navigateTo={() => navigate('/view/recruit/list')}
           ></ShortcutButton>
           <ShortcutButton
             shortcutButtonText={`리뷰\n작성하기`}
             type="dong"
           ></ShortcutButton>
         </ButtonHorizontal>
+
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
-          <SummaryCard
+          {/* <SummaryCard
             type={'nari'}
             fields={['IT', '예체능', '디지털']}
-          ></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT', '예체능']}></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT']}></SummaryCard>
-          <SummaryCard type={'nari'} fields={['IT', '취업']}></SummaryCard>
-          <SummaryCard
-            type={'nari'}
-            fields={['입시', '경제', '교육']}
-          ></SummaryCard>
+          ></SummaryCard> */}
         </NariCardVertical>
-      </WrapContent>
+      </ContentContainer>
     </>
   );
 };
@@ -57,17 +56,14 @@ const BannerContainer = styled.img`
   width: 100%;
 `;
 
-const WrapContent = styled.div`
+const ContentContainer = styled.div`
   padding: 1.3rem 1.1rem;
 `;
 
 const TitleText = styled.div`
-  color: var(--Base-Black, #000);
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 800;
-  line-height: normal;
   letter-spacing: -0.075rem;
   margin-top: 2.6rem;
   margin-bottom: 1rem;

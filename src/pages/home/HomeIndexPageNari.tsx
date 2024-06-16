@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ShortcutButton from '../../components/common/ShortcutButton';
+import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
 import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
