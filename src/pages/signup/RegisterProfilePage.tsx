@@ -7,6 +7,7 @@ import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';
 import { instance } from '../../api/instance';
 import { login } from '../../store/LoginState';
+import PrevHeader from '../../components/header/PrevHeader';
 
 const RegisterProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -50,9 +51,7 @@ const RegisterProfilePage: React.FC = () => {
 
   return (
     <WrapContent>
-      <BackButton onClick={navigateBack}>
-        <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
-      </BackButton>
+      <PrevHeader navigateTo="/signup/policy" />
       <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
       <WrapFrom>
         <InputText

@@ -38,10 +38,7 @@ const ViewRecruitList = () => {
   return (
     <>
       <WrapContent>
-        <PrevHeader
-          title={'구인글 목록'}
-          navigateTo={() => navigate('/home')}
-        />
+        <PrevHeader title={'구인글 목록'} navigateTo={'/home'} />
         <Fields list={FIELDS} type={'dong'} />
       </WrapContent>
       <SplitLine />

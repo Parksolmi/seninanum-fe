@@ -4,13 +4,15 @@ import styled from 'styled-components';
 
 interface PrevHeaderProps {
   title?: string;
-  navigateTo: () => void;
+  navigateTo: string;
 }
 
 const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
+  const navigate = useNavigate();
+
   return (
     <WrapHeader>
-      <BackButton onClick={navigateTo}>
+      <BackButton onClick={() => navigate(navigateTo)}>
         <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
       </BackButton>
       <TitleText>{title}</TitleText>

@@ -55,7 +55,7 @@ const ViewRecruitDetail = () => {
           <WrapContent>
             <PrevHeader
               title={'구인글 조회'}
-              navigateTo={() => navigate('/view/recruit/list')}
+              navigateTo={'/view/recruit/list'}
             />
             <div>
               <TitleText>{recruit.title}</TitleText>
