@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
 import { useNavigate } from 'react-router-dom';
+import LogoHeader from '../../components/header/LogoHeader';
+import SummaryCard from '../../components/common/SummaryCard';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
@@ -12,10 +14,9 @@ const HomeIndexPageDong: React.FC = () => {
 
   return (
     <>
-      <LogoImg src="/assets/common/seni-text-logo.svg" alt="logo" />
-
+      <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner2.png"
+        src="/assets/home/home-banner.png"
         alt="배너이미지"
       ></BannerContainer>
 
@@ -37,23 +38,20 @@ const HomeIndexPageDong: React.FC = () => {
 
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
-          {/* <SummaryCard
+          {/* 임시 */}
+          <SummaryCard
             type={'nari'}
             fields={['IT', '예체능', '디지털']}
-          ></SummaryCard> */}
+          ></SummaryCard>
+          <SummaryCard
+            type={'nari'}
+            fields={['IT', '예체능', '디지털']}
+          ></SummaryCard>
         </NariCardVertical>
       </ContentContainer>
     </>
   );
 };
-
-const LogoImg = styled.img`
-  position: absolute;
-  top: 2rem;
-  left: 17.6px;
-  z-index: 999;
-  object-fit: contain;
-`;
 
 const BannerContainer = styled.img`
   object-fit: contain;
@@ -61,7 +59,7 @@ const BannerContainer = styled.img`
 `;
 
 const ContentContainer = styled.div`
-  padding: 1.3rem 1.1rem;
+  padding: 0 1.1rem 2rem 1.1rem;
 `;
 
 const TitleText = styled.div`
