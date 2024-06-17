@@ -6,7 +6,7 @@ import styled from 'styled-components';
 // }
 
 const LogoHeader = () => {
-  return <LogoImg src="/assets/common/seni-white-logo.svg" alt="logo" />;
+  return <LogoImg src="/assets/common/seni-white-logo.png" alt="logo" />;
 };
 
 const LogoImg = styled.img`
@@ -15,6 +15,8 @@ const LogoImg = styled.img`
   left: 17.6px;
   z-index: 999;
   object-fit: contain;
+
+  width: 8rem;
 `;
 
 export default LogoHeader;

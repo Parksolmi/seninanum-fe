@@ -14,13 +14,13 @@ const SignupIndexPage = () => {
 
   return (
     <WrapContent>
-      <Logo src="/assets/signIn/seni-logo.svg" alt="시니나눔 로고" />
-      <CatchPhrase>
+      <Logo src="/assets/signIn/seni-logo.png" alt="시니나눔 로고" />
+      {/* <CatchPhrase>
         은퇴 이후 신나는 일상!
         <br /> 시니어들의 재능 나눔 서비스
-      </CatchPhrase>
+      </CatchPhrase> */}
       <KakaoButton onClick={handleLogin}>
-        <img src="/assets/signIn/kakao-logo.svg" alt="카카오 로고" />
+        <img src="/assets/signIn/kakao-logo.png" alt="카카오 로고" />
         카카오톡 로그인하기
       </KakaoButton>
     </WrapContent>
@@ -38,13 +38,7 @@ const WrapContent = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 50%;
-`;
-
-const CatchPhrase = styled.p`
-  font-family: 'NanumSquareB';
-  font-size: 1.5rem;
-  text-align: center;
+  width: 70%;
 `;
 
 const KakaoButton = styled.button`
@@ -57,9 +51,14 @@ const KakaoButton = styled.button`
   border: none;
   border-radius: 0.625rem;
   background: #ffe810;
+  color: black;
   height: 3.75rem;
   font-family: 'NanumSquareR';
   font-size: 1.4375rem;
+
+  img {
+    width: 45px;
+  }
 `;
 
 export default SignupIndexPage;
