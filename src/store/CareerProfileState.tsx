@@ -3,12 +3,13 @@ import { devtools, persist } from 'zustand/middleware';
 
 interface CareerProfileState {
   introduce: string;
+  age: string;
+  field: string;
   service: string;
   method: string;
+  region: string;
   priceType: string;
   price: number;
-  region: string;
-  field: string;
 }
 
 interface CareerProfileStateType {
@@ -22,12 +23,13 @@ const useCareerProfileState = create<CareerProfileStateType>()(
       (set) => ({
         careerProfileState: {
           introduce: '',
+          age: '',
+          field: '',
           service: '',
           method: '',
+          region: '',
           priceType: '',
           price: -1,
-          region: '',
-          field: '',
         },
         setCareerProfileState: (careerProfileState) =>
           set((state) => ({

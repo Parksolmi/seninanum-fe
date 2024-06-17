@@ -8,7 +8,8 @@ import useCareerItemState from '../../store/CareerItemState';
 import { instance } from '../../api/instance';
 
 const RegisterProfileCareerAddPage = () => {
-  const { careers, addCareer } = useCareerItemState();
+  const navigate = useNavigate();
+  const { addCareer } = useCareerItemState();
   const [title, setTitle] = useState('');
   const [startYear, setStartYear] = useState(0);
   const [startMonth, setStartMonth] = useState(0);
@@ -17,20 +18,8 @@ const RegisterProfileCareerAddPage = () => {
   const [period, setPeriod] = useState('');
   const [content, setContent] = useState('');
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'title') setTitle(value);
-    if (name === 'startYear') setStartYear(Number(value));
-    if (name === 'startMonth') setStartMonth(Number(value));
-    if (name === 'endYear') setEndYear(Number(value));
-    if (name === 'endMonth') setEndMonth(Number(value));
-    if (name === 'period') setPeriod(value);
-    if (name === 'content') setContent(value);
-  };
-
   const addNewCareer = async () => {
     const newCareer = {
-      id: careers.length > 0 ? careers[careers.length - 1].id + 1 : 1,
       title,
       startYear,
       startMonth,
@@ -40,16 +29,49 @@ const RegisterProfileCareerAddPage = () => {
       content,
     };
     try {
-      await instance.post('/register/career/add', newCareer);
-      addCareer(newCareer);
+      const response = await instance.post('/career/item', newCareer);
+      console.log(response.data);
+      addCareer({ ...newCareer }); // 서버에서 반환된 새 경력 항목 사용
       window.alert('등록되었습니다.');
       navigate('/register/profile/career');
     } catch (error) {
-      console.error('Failed to add career', error);
+      console.error(
+        'Failed to add career',
+        error.response ? error.response.data : error.message
+      );
+      window.alert('등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const navigate = useNavigate();
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'title':
+        setTitle(value);
+        break;
+      case 'startYear':
+        setStartYear(Number(value));
+        break;
+      case 'startMonth':
+        setStartMonth(Number(value));
+        break;
+      case 'endYear':
+        setEndYear(Number(value));
+        break;
+      case 'endMonth':
+        setEndMonth(Number(value));
+        break;
+      case 'period':
+        setPeriod(value);
+        break;
+      case 'content':
+        setContent(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   const navigateToRegisterProfile = () => {
     navigate('/register/profile/career');
   };
@@ -68,6 +90,7 @@ const RegisterProfileCareerAddPage = () => {
           inputPlaceholder="회사명을 입력하세요."
           onChange={handleOnChange}
           maxLength={50}
+          name="title"
         ></Input>
         <CategoryText>근무기간</CategoryText>
         <YearText>입사연월</YearText>
@@ -76,12 +99,14 @@ const RegisterProfileCareerAddPage = () => {
             type="number"
             placeholder="YYYY"
             onChange={handleOnChange}
+            name="startYear"
           ></InputYearMonthText>
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
             onChange={handleOnChange}
+            name="startMonth"
           ></InputYearMonthText>
           <InputAreaText>월</InputAreaText>
         </InputArea>
@@ -91,12 +116,14 @@ const RegisterProfileCareerAddPage = () => {
             type="number"
             placeholder="YYYY"
             onChange={handleOnChange}
+            name="endYear"
           ></InputYearMonthText>
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
             onChange={handleOnChange}
+            name="endMonth"
           ></InputYearMonthText>
           <InputAreaText>월</InputAreaText>
         </InputArea>
@@ -104,6 +131,7 @@ const RegisterProfileCareerAddPage = () => {
         <TextArea
           inputPlaceholder="세부 업무를 입력하세요."
           onChange={handleOnChange}
+          name="content"
         ></TextArea>
         <WrapButton>
           <Button

@@ -5,16 +5,24 @@ import ProgressBar from '../../components/common/ProgressBar';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import useCareerProfileState from '../../store/CareerProfileState';
 
 const RegisterProfileIntroductionPage = () => {
-  const onChange = () => {};
   const navigate = useNavigate();
+  const { setCareerProfileState } = useCareerProfileState();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setCareerProfileState({ [name]: value });
+  };
+
   const navigateToRegisterProfileCareer = () => {
     navigate('/register/profile/career');
   };
   const navigateToRegisterProfileCondition = () => {
     navigate('/register/profile/condition');
   };
+
   return (
     <WrapContent>
       <ButtonWrap>
@@ -29,8 +37,9 @@ const RegisterProfileIntroductionPage = () => {
       </PictureArea>
       <SubText>자기소개</SubText>
       <TextArea
+        name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
-        onChange={onChange}
+        onChange={handleOnChange}
       ></TextArea>
 
       <WrapButtonContainer>
