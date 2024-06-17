@@ -2,45 +2,41 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface DetailCardProps {
-  // profile: string;
   type: string;
-  // nickname: string;
-  // age: string;
-  // method: string;
+  title: string;
+  content: string;
+  nickname: string;
+  age: number;
+  method: string;
   // content: string;
-  fields: string[];
+  region?: string;
 }
 
 const DetailCard = ({
-  // profile,
   type,
-  // nickname,
-  // age,
-  // method,
+  title,
+  content,
+  nickname,
+  age,
+  method,
   // content,
-  fields,
+  region,
 }: DetailCardProps) => {
   return (
     <InputContainer>
       <WrapProfile>
         <ProfileInfo>
-          <span>닉네임 {type === 'dong' ? '동백' : '나리'} | 20대</span>
+          <span>
+            {nickname} {type === 'dong' ? '동백' : '나리'} |{' '}
+            {Math.floor(age / 10) * 10}대
+          </span>
         </ProfileInfo>
       </WrapProfile>
-      <WrapTitle>
-        기후기술 창업대회 공모전 피드백 및 도와주실 전문가 구합니다. 기후기술
-        창업대회 공모전 피드백 및 도와주실 전문가 구합니다.
-      </WrapTitle>
-      <WrapContent>
-        환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일
-        저녁에 만나서 피드백 주실 분을 찾습니다.
-      </WrapContent>
+      <WrapTitle>{title}</WrapTitle>
+      <WrapContent>{content}</WrapContent>
       <WrapField>
-        {fields.map((field, index) => (
-          <Field key={index} $type={type}>
-            {field}
-          </Field>
-        ))}
+        <Field $type={type}>{method.replace('서비스', '')}</Field>
+        {region !== '' && <Field $type={type}>서울시 {region}</Field>}
       </WrapField>
     </InputContainer>
   );
