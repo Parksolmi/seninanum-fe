@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
-import ShortcutButton from './../../components/common/ShortcutButton';
+import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,17 +13,21 @@ const HomeIndexPageDong: React.FC = () => {
 
   return (
     <>
+      <LogoImg src="/assets/common/seni-text-logo.svg" alt="logo" />
+
       <BannerContainer
-        src="/assets/home/home-banner.svg"
+        src="/assets/home/home-banner2.png"
         alt="배너이미지"
       ></BannerContainer>
-      <WrapContent>
-        <CareerProfileProgress status={0}></CareerProfileProgress>
+
+      <ContentContainer>
+        <CareerProfileProgress status={0} />
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton
             navigateTo={() => navigate('/')}
             shortcutButtonText={`구인글\n조회하기`}
+            navigateTo={() => navigate('/view/recruit/list')}
             type={USER_TYPE}
           ></ShortcutButton>
           <ShortcutButton
@@ -32,42 +36,40 @@ const HomeIndexPageDong: React.FC = () => {
             type={USER_TYPE}
           ></ShortcutButton>
         </ButtonHorizontal>
+
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
-          <SummaryCard
-            type={CARD_TYPE}
+          {/* <SummaryCard
+            type={'nari'}
             fields={['IT', '예체능', '디지털']}
-          ></SummaryCard>
-          <SummaryCard type={CARD_TYPE} fields={['IT', '예체능']}></SummaryCard>
-          <SummaryCard type={CARD_TYPE} fields={['IT']}></SummaryCard>
-          <SummaryCard type={CARD_TYPE} fields={['IT', '취업']}></SummaryCard>
-          <SummaryCard
-            type={CARD_TYPE}
-            fields={['입시', '경제', '교육']}
-          ></SummaryCard>
+          ></SummaryCard> */}
         </NariCardVertical>
-      </WrapContent>
+      </ContentContainer>
     </>
   );
 };
 
-const BannerContainer = styled.img`
-  object-fit: cover;
-  width: 100%;
-  height: 22.5rem;
+const LogoImg = styled.img`
+  position: absolute;
+  top: 2rem;
+  left: 17.6px;
+  z-index: 999;
+  object-fit: contain;
 `;
 
-const WrapContent = styled.div`
+const BannerContainer = styled.img`
+  object-fit: contain;
+  width: 100%;
+`;
+
+const ContentContainer = styled.div`
   padding: 1.3rem 1.1rem;
 `;
 
 const TitleText = styled.div`
-  color: var(--Base-Black, #000);
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 800;
-  line-height: normal;
   letter-spacing: -0.075rem;
   margin-top: 2.6rem;
   margin-bottom: 1rem;

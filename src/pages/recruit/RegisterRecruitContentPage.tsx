@@ -27,7 +27,7 @@ const RegisterRecruitContentPage = () => {
 
   const registerRecruit = () => {
     try {
-      instance.post('/register/recruit', {
+      instance.post('/recruit', {
         title: recruitState.title,
         content: recruitState.content,
         method: recruitState.method,
