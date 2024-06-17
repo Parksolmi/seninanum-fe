@@ -42,7 +42,7 @@ const ViewRecruitDetail = () => {
 
       getRecruitDetail();
     }
-  }, []);
+  }, [recruitId]);
 
   return (
     <>

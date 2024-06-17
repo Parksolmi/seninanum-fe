@@ -31,7 +31,7 @@ const App: React.FC = () => {
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
-        //구인글 등록
+        {/* 구인글 등록 */}
         <Route
           path="/register/recruit/field"
           element={<RegisterRecruitFieldPage />}
@@ -44,13 +44,13 @@ const App: React.FC = () => {
           path="/register/recruit/content"
           element={<RegisterRecruitContentPage />}
         />
-        //구인글 조회
+        {/* 구인글 조회 */}
         <Route path="/view/recruit/list" element={<ViewRecruitList />} />
         <Route
           path="/view/recruit/:recruitId"
           element={<ViewRecruitDetail />}
         />
-        //경력 프로필 등록
+        {/* 경력 프로필 등록 */}
         <Route
           path="/register/profile/career"
           element={<RegisterProfileCareerPage />}

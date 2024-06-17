@@ -47,9 +47,6 @@ const AgreePolicyPage: React.FC = () => {
   const onClickBtn = () => {
     navigate('/signup/profile');
   };
-  const onClickBackBtn = () => {
-    navigate('/signup/userType');
-  };
 
   return (
     <WrapContent>
@@ -103,12 +100,6 @@ const AgreePolicyPage: React.FC = () => {
 
 const WrapContent = styled.div`
   padding: 0 1.1rem;
-`;
-const BackButton = styled.div`
-  margin-top: 1.81rem;
-  img {
-    width: 1.5rem;
-  }
 `;
 
 const Text1 = styled.div`

@@ -41,10 +41,6 @@ const RegisterProfilePage: React.FC = () => {
     }
   };
 
-  const navigateBack = () => {
-    navigate('/signup/policy');
-  };
-
   useEffect(() => {
     setUserState({ gender: selectedGender });
   }, [setUserState, selectedGender]);
@@ -85,12 +81,7 @@ const RegisterProfilePage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-const BackButton = styled.div`
-  margin-top: 1.81rem;
-  img {
-    width: 1.5rem;
-  }
-`;
+
 const HeaderText = styled.div`
   margin-top: 2.25rem;
   margin-bottom: 0.75rem;
