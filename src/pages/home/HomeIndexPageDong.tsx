@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
-import SummaryCard from '../../components/common/SummaryCard';
 import { useNavigate } from 'react-router-dom';
 
 const USER_TYPE = 'dong';
-const CARD_TYPE = 'nari';
+// const CARD_TYPE = 'nari';
 
 const HomeIndexPageDong: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ const HomeIndexPageDong: React.FC = () => {
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton
-            navigateTo={() => navigate('/')}
             shortcutButtonText={`구인글\n조회하기`}
             navigateTo={() => navigate('/view/recruit/list')}
             type={USER_TYPE}

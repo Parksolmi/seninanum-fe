@@ -44,14 +44,6 @@ const ViewRecruitDetail = () => {
     }
   }, []);
 
-  //확인용
-  useEffect(() => {
-    if (recruit !== null) {
-      console.log(recruit.birthyear);
-      console.log(calcAge(recruit.birthyear));
-    }
-  }, [recruit]);
-
   return (
     <>
       {recruit === null ? (
