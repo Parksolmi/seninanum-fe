@@ -8,7 +8,8 @@ interface BriefProfileCardProps {
   // age: string;
   // method: string;
   // content: string;
-  userInfo: string[];
+  gender: string;
+  age: string;
 }
 
 const BriefProfileCard = ({
@@ -18,7 +19,8 @@ const BriefProfileCard = ({
   // age,
   // method,
   // content,
-  userInfo,
+  gender,
+  age,
 }: BriefProfileCardProps) => {
   return (
     <WrapProfile>
@@ -27,11 +29,12 @@ const BriefProfileCard = ({
         <span>닉네임 {type === 'dong' ? '동백' : '나리'} </span>
       </ProfileInfo>
       <Fields>
-        {userInfo.map((field, index) => (
-          <Field key={index} $type={type}>
-            {field}
-          </Field>
-        ))}
+        {gender === 'F' ? (
+          <Field $type={type}>여성</Field>
+        ) : (
+          <Field $type={type}>남성</Field>
+        )}
+        <Field $type={type}>{age}</Field>
       </Fields>
     </WrapProfile>
   );

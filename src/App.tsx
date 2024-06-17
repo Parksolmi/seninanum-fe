@@ -46,7 +46,10 @@ const App: React.FC = () => {
         />
         //구인글 조회
         <Route path="/view/recruit/list" element={<ViewRecruitList />} />
-        <Route path="/view/recruit/detail" element={<ViewRecruitDetail />} />
+        <Route
+          path="/view/recruit/:recruitId"
+          element={<ViewRecruitDetail />}
+        />
         //경력 프로필 등록
         <Route
           path="/register/profile/career"

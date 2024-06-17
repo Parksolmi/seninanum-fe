@@ -5,6 +5,7 @@ import { instance } from '../../api/instance';
 import DetailCard from '../../components/common/DetailCard';
 import Fields from '../../components/common/Fields';
 import PrevHeader from '../../components/header/PrevHeader';
+import { calcAge } from '../../utils/calcAge';
 
 const FIELDS = ['교육', '경제', '생활'];
 interface Recruit {
@@ -53,9 +54,10 @@ const ViewRecruitList = () => {
               title={recruit.title}
               content={recruit.content}
               nickname={recruit.nickname}
-              age={new Date().getFullYear() - parseInt(recruit.birthyear, 10)}
+              age={calcAge(recruit.birthyear)}
               method={recruit.method}
               region={recruit.region}
+              navigateTo={() => navigate(`/view/recruit/${recruit.recruitId}`)}
             />
           ))}
       </WrapContent>

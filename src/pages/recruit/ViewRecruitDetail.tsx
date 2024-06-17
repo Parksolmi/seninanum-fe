@@ -1,79 +1,119 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { instance } from '../../api/instance';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileCard from '../../components/view/BriefProfileCard';
+import { SyncLoader } from 'react-spinners';
+import { formatDate } from '../../utils/formatDate';
+import { calcAge } from '../../utils/calcAge';
+
+interface Recruit {
+  title: string;
+  content: string;
+  nickname: string;
+  birthyear: string;
+  method: string;
+  region: string;
+  price: string;
+  priceType: string;
+  gender: string;
+  field: string;
+  createdAt: string;
+}
 
 const ViewRecruitDetail = () => {
   const navigate = useNavigate();
+  const { recruitId } = useParams<{ recruitId: string }>();
+
+  const [recruit, setRecruit] = useState<Recruit | null>(null);
+
+  useEffect(() => {
+    if (recruitId) {
+      const getRecruitDetail = async () => {
+        try {
+          const res = await instance.get(`/recruit/${recruitId}`);
+          setRecruit(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      getRecruitDetail();
+    }
+  }, []);
 
   return (
     <>
-      <WrapContent>
-        <PrevHeader
-          title={'구인글 조회'}
-          navigateTo={() => navigate('/view/recruit/list')}
-        />
-        <div>
-          <TitleText>
-            기후기술 창업대회 공모전 피드백 및 도와주실 전문가님 구합니다!
-          </TitleText>
-          <ContentText>
-            환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주
-            수요일 저녁에 만나서 피드백 받는 시간을 갖고 싶습니다. 최대한
-            환경부나, 환경 기술에 대한 박식한 지식을 가지고 계신 어른분이면 좋을
-            것 같습니다. 저희 팀원은 총 5명이고, 동작구 소재의 대학교를 다니고
-            있습니다.
-          </ContentText>
-          <UploadTimeText>
-            <img src="/assets/common/clock-icon.svg" alt="clock" />
-            <p>06.17 23:09</p>
-          </UploadTimeText>
-        </div>
-      </WrapContent>
+      {recruit === null ? (
+        <WrapLoader>
+          <SyncLoader color="var(--Primary-dong)" />
+        </WrapLoader>
+      ) : (
+        <>
+          <WrapContent>
+            <PrevHeader
+              title={'구인글 조회'}
+              navigateTo={() => navigate('/view/recruit/list')}
+            />
+            <div>
+              <TitleText>{recruit.title}</TitleText>
+              <ContentText>{recruit.content}</ContentText>
+              <UploadTimeText>
+                <img src="/assets/common/clock-icon.svg" alt="clock" />
+                <p>{formatDate(recruit.createdAt)}</p>
+              </UploadTimeText>
+            </div>
+          </WrapContent>
 
-      <SplitLine />
+          <SplitLine />
 
-      <WrapContent>
-        <div>
-          <TitleText>작성자</TitleText>
-          <BriefProfileCard type="nari" userInfo={['여성', '20대']} />
-        </div>
-        <div>
-          <TitleText>모집조건</TitleText>
-          <ConditionText>
-            <tbody>
-              <tr>
-                <th>분야</th>
-                <td>교육</td>
-              </tr>
-              <tr>
-                <th>활동방식</th>
-                <td>대면</td>
-              </tr>
-              <tr>
-                <th>활동지역</th>
-                <td>서울시 동작구</td>
-              </tr>
-              <tr>
-                <th>급여</th>
-                <td>건당 10000원</td>
-              </tr>
-            </tbody>
-          </ConditionText>
-        </div>
-        <WrapButton>
-          <Button
-            disabled={false}
-            type={'dong'}
-            // 임시
-            onClick={() => navigate('/home')}
-          >
-            지원하기
-          </Button>
-        </WrapButton>
-      </WrapContent>
+          <WrapContent>
+            <div>
+              <TitleText>작성자</TitleText>
+              <BriefProfileCard
+                type="nari"
+                gender={recruit.gender}
+                age={calcAge(recruit.birthyear)}
+              />
+            </div>
+            <div>
+              <TitleText>모집조건</TitleText>
+              <ConditionText>
+                <tbody>
+                  <tr>
+                    <th>분야</th>
+                    <td>교육</td>
+                  </tr>
+                  <tr>
+                    <th>활동방식</th>
+                    <td>대면</td>
+                  </tr>
+                  <tr>
+                    <th>활동지역</th>
+                    <td>서울시 동작구</td>
+                  </tr>
+                  <tr>
+                    <th>급여</th>
+                    <td>건당 10000원</td>
+                  </tr>
+                </tbody>
+              </ConditionText>
+            </div>
+            <WrapButton>
+              <Button
+                disabled={false}
+                type={'dong'}
+                // 임시
+                onClick={() => navigate('/home')}
+              >
+                지원하기
+              </Button>
+            </WrapButton>
+          </WrapContent>
+        </>
+      )}
     </>
   );
 };
@@ -139,6 +179,16 @@ const WrapButton = styled.div`
   left: 1.1rem;
   right: 1.1rem;
   bottom: 1.5rem;
+`;
+
+const WrapLoader = styled.div`
+  padding: 0 1.1rem;
+  display: flex;
+  gap: 2.5rem;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ViewRecruitDetail;

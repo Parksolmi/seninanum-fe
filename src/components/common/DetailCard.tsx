@@ -6,10 +6,10 @@ interface DetailCardProps {
   title: string;
   content: string;
   nickname: string;
-  age: number;
+  age: string;
   method: string;
-  // content: string;
   region?: string;
+  navigateTo: () => void;
 }
 
 const DetailCard = ({
@@ -19,16 +19,15 @@ const DetailCard = ({
   nickname,
   age,
   method,
-  // content,
   region,
+  navigateTo,
 }: DetailCardProps) => {
   return (
-    <InputContainer>
+    <InputContainer onClick={navigateTo}>
       <WrapProfile>
         <ProfileInfo>
           <span>
-            {nickname} {type === 'dong' ? '동백' : '나리'} |{' '}
-            {Math.floor(age / 10) * 10}대
+            {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
           </span>
         </ProfileInfo>
       </WrapProfile>
