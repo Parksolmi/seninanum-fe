@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import Dropdown from '../../components/common/DropDown';
 import regionState from './../../constants/regionState';
 import useRecruitState from '../../store/RecruitState';
+import ExitHeader from '../../components/header/ExitHeader';
 
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
@@ -35,9 +35,7 @@ const RegisterRecruitMethodPage = () => {
 
   return (
     <WrapContent>
-      <ButtonWrap>
-        <StopWritingButton />
-      </ButtonWrap>
+      <ExitHeader navigateTo={'/home'} />
       <ProgressBar status={1} type={'nari'} />
       <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
@@ -82,13 +80,6 @@ const RegisterRecruitMethodPage = () => {
 };
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
-`;
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  margin-bottom: 1.63rem;
 `;
 const TitleText = styled.div`
   font-size: 1.5rem;

@@ -4,6 +4,7 @@ import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';
 import { useNavigate } from 'react-router-dom';
+import PrevHeader from '../../components/header/PrevHeader';
 
 const AgreePolicyPage: React.FC = () => {
   const navigate = useNavigate();
@@ -46,15 +47,10 @@ const AgreePolicyPage: React.FC = () => {
   const onClickBtn = () => {
     navigate('/signup/profile');
   };
-  const onClickBackBtn = () => {
-    navigate('/signup/userType');
-  };
 
   return (
     <WrapContent>
-      <BackButton onClick={onClickBackBtn}>
-        <img src="/assets/signIn/back-icon.svg" alt="back" />
-      </BackButton>
+      <PrevHeader navigateTo={'/signup/usertype'} />
 
       <Text1>시니나눔이 처음이시네요!</Text1>
       <Text2>이용약관에 동의해주세요.</Text2>
@@ -104,12 +100,6 @@ const AgreePolicyPage: React.FC = () => {
 
 const WrapContent = styled.div`
   padding: 0 1.1rem;
-`;
-const BackButton = styled.div`
-  margin-top: 1.81rem;
-  img {
-    width: 1.5rem;
-  }
 `;
 
 const Text1 = styled.div`

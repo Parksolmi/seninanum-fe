@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ShortcutButton from '../../components/common/ShortcutButton';
+import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
 import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
+import LogoHeader from '../../components/header/LogoHeader';
 
 const USER_TYPE = 'nari';
 const CARD_TYPE = 'dong';
@@ -15,8 +16,9 @@ const HomeIndexPageNari: React.FC = () => {
 
   return (
     <>
+      <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner2.svg"
+        src="/assets/home/home-banner2.png"
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>
@@ -99,13 +101,12 @@ const HomeIndexPageNari: React.FC = () => {
 };
 
 const BannerContainer = styled.img`
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
-  height: 22.5rem;
 `;
 
 const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
+  padding: 0 1.1rem 2rem 1.1rem;
   margin-bottom: 2rem;
 `;
 

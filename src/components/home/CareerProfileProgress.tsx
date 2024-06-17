@@ -52,7 +52,7 @@ const Progress = styled.div`
   letter-spacing: 0.32px;
 `;
 
-const Title = styled.h1`
+const Title = styled.h3`
   display: flex;
   color: #000;
   font-family: NanumSquare;

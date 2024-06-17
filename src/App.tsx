@@ -11,13 +11,15 @@ import AgreePolicyPage from './pages/signup/AgreePolicyPage';
 import RegisterProfilePage from './pages/signup/RegisterProfilePage';
 import SignupIndexPage from './pages/signup/SignupIndexPage';
 import KakaoAuthHandle from './pages/signup/KakaoAuthHandle';
-import RegisterRecruitFieldPage from './pages/register/RegisterRecruitFieldPage';
-import RegisterRecruitMethodPage from './pages/register/RegisterRecruitMethodPage';
-import RegisterRecruitContentPage from './pages/register/RegisterRecruitContentPage';
-import RegisterProfileCareerPage from './pages/register/RegisterProfileCareerPage';
-import RegisterProfileCareerAddPage from './pages/register/RegisterProfileCareerAddPage';
-import RegisterProfileIntroductionPage from './pages/register/RegisterProfileIntroductionPage';
-import RegisterProfileConditionPage from './pages/register/RegisterProfileConditionPage';
+import RegisterRecruitFieldPage from './pages/recruit/RegisterRecruitFieldPage';
+import RegisterRecruitMethodPage from './pages/recruit/RegisterRecruitMethodPage';
+import RegisterRecruitContentPage from './pages/recruit/RegisterRecruitContentPage';
+import RegisterProfileCareerPage from './pages/career/RegisterProfileCareerPage';
+import RegisterProfileCareerAddPage from './pages/career/RegisterProfileCareerAddPage';
+import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntroductionPage';
+import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
+import ViewRecruitList from './pages/recruit/ViewRecruitList';
+import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 
 const App: React.FC = () => {
   return (
@@ -29,7 +31,7 @@ const App: React.FC = () => {
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
-
+        {/* 구인글 등록 */}
         <Route
           path="/register/recruit/field"
           element={<RegisterRecruitFieldPage />}
@@ -42,7 +44,13 @@ const App: React.FC = () => {
           path="/register/recruit/content"
           element={<RegisterRecruitContentPage />}
         />
-
+        {/* 구인글 조회 */}
+        <Route path="/view/recruit/list" element={<ViewRecruitList />} />
+        <Route
+          path="/view/recruit/:recruitId"
+          element={<ViewRecruitDetail />}
+        />
+        {/* 경력 프로필 등록 */}
         <Route
           path="/register/profile/career"
           element={<RegisterProfileCareerPage />}
@@ -59,7 +67,6 @@ const App: React.FC = () => {
           path="/register/profile/condition"
           element={<RegisterProfileConditionPage />}
         />
-
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

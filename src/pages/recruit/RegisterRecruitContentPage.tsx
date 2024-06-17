@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import InputPrice from '../../components/common/InputPrice';
-import Modal from '../../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import useRecruitState from '../../store/RecruitState';
 import { instance } from '../../api/instance';
+import ExitHeader from '../../components/header/ExitHeader';
 
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const RegisterRecruitContentPage = () => {
 
   const registerRecruit = () => {
     try {
-      instance.post('/register/recruit', {
+      instance.post('/recruit', {
         title: recruitState.title,
         content: recruitState.content,
         method: recruitState.method,
@@ -43,13 +42,6 @@ const RegisterRecruitContentPage = () => {
     }
   };
 
-  // 모달 열고 닫기
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const openModal = () => setIsOpenModal(true);
-  const cancelModal = () => setIsOpenModal(false);
-  // 모달 > 확인하기 버튼 클릭 시 동작되는 함수
-  const confirmModal = () => {};
-
   const navigateToMethod = () => {
     navigate('/register/recruit/method');
   };
@@ -60,9 +52,7 @@ const RegisterRecruitContentPage = () => {
 
   return (
     <WrapContent>
-      <ButtonWrap onClick={openModal}>
-        <StopWritingButton />
-      </ButtonWrap>
+      <ExitHeader navigateTo={'/home'} />
       <ProgressBar status={2} type={'nari'} />
       <TitleText>{`마지막으로,\n내 구인글을 소개해보세요!`}</TitleText>
       <Input
@@ -101,29 +91,13 @@ const RegisterRecruitContentPage = () => {
           onClick={registerRecruit}
         ></Button>
       </WrapButton>
-      <Modal
-        isOpen={isModalOpen}
-        title={'정말 나가시겠습니까?'}
-        content={`지금 나가면 \n작성했던 모든 내용이 사라져요.`}
-        cancelText={'취소'}
-        confirmText={'나가기'}
-        confirmModal={confirmModal}
-        cancelModal={cancelModal}
-      />
     </WrapContent>
   );
 };
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
 `;
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
-`;
+
 const TitleText = styled.div`
   font-size: 1.5rem;
   font-family: 'NanumSquareR';

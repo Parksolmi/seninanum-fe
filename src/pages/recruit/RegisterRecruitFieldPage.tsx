@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
@@ -8,6 +7,7 @@ import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import useRecruitState from '../../store/RecruitState';
+import ExitHeader from '../../components/header/ExitHeader';
 
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
@@ -54,10 +54,7 @@ const RegisterRecruitFieldPage = () => {
           },
         }}
       />
-
-      <ButtonWrap>
-        <StopWritingButton />
-      </ButtonWrap>
+      <ExitHeader navigateTo={'/home'} />
       <ProgressBar status={0} type={'nari'}></ProgressBar>
       <TitleText>
         어떤 분야의 동백님을 <br /> 찾으시나요?
@@ -83,15 +80,6 @@ const RegisterRecruitFieldPage = () => {
 
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
 `;
 
 const TitleText = styled.div`
