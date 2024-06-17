@@ -44,6 +44,14 @@ const ViewRecruitDetail = () => {
     }
   }, []);
 
+  //확인용
+  useEffect(() => {
+    if (recruit !== null) {
+      console.log(recruit.birthyear);
+      console.log(calcAge(recruit.birthyear));
+    }
+  }, [recruit]);
+
   return (
     <>
       {recruit === null ? (
@@ -59,7 +67,14 @@ const ViewRecruitDetail = () => {
             />
             <div>
               <TitleText>{recruit.title}</TitleText>
-              <ContentText>{recruit.content}</ContentText>
+              <ContentText>
+                {recruit.content.split('\n').map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </ContentText>
               <UploadTimeText>
                 <img src="/assets/common/clock-icon.svg" alt="clock" />
                 <p>{formatDate(recruit.createdAt)}</p>
@@ -78,25 +93,29 @@ const ViewRecruitDetail = () => {
                 age={calcAge(recruit.birthyear)}
               />
             </div>
-            <div>
+            <div className="last-content">
               <TitleText>모집조건</TitleText>
               <ConditionText>
                 <tbody>
                   <tr>
                     <th>분야</th>
-                    <td>교육</td>
+                    <td>{recruit.field}</td>
                   </tr>
                   <tr>
                     <th>활동방식</th>
-                    <td>대면</td>
+                    <td>{recruit.method.replace('서비스', '')}</td>
                   </tr>
-                  <tr>
-                    <th>활동지역</th>
-                    <td>서울시 동작구</td>
-                  </tr>
+                  {recruit.region !== '' && (
+                    <tr>
+                      <th>활동지역</th>
+                      <td>서울시 {recruit.region}</td>
+                    </tr>
+                  )}
                   <tr>
                     <th>급여</th>
-                    <td>건당 10000원</td>
+                    <td>
+                      {recruit.priceType} {recruit.price}원
+                    </td>
                   </tr>
                 </tbody>
               </ConditionText>
@@ -124,6 +143,10 @@ const WrapContent = styled.div`
   gap: 2rem;
   padding: 0 1.1rem;
   margin-bottom: 1.5rem;
+
+  .last-content {
+    margin-bottom: 7rem;
+  }
 `;
 
 const TitleText = styled.h3`
