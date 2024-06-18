@@ -1,22 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import ageState from './../../constants/ageState';
 import categoryState from '../../constants/categoryState';
-import RegionDropDown from '../../components/common/RegionDropDown';
 import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import regionState from '../../constants/regionState';
+import Dropdown from '../../components/common/DropDown';
+import useCareerProfileState from '../../store/CareerProfileState';
+import { instance } from '../../api/instance';
 
 const RegisterProfileConditionPage = () => {
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { careerProfileState, setCareerProfileState } = useCareerProfileState();
 
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [selectedRegion, setSelectedRegion] = useState<string>('');
+
+  const handleButtonClick = (method: string) => {
+    setSelectedMethod(method);
+  };
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedPriceType, setSelectedPriceType] = useState('');
+
+  const registerCareer = () => {
+    try {
+      instance.post('/career', {
+        introduce: careerProfileState.introduce,
+        age: careerProfileState.age,
+        field: careerProfileState.field,
+        service: careerProfileState.service,
+        method: careerProfileState.method,
+        region: careerProfileState.region,
+        priceType: careerProfileState.priceType,
+        price: careerProfileState.price,
+      });
+      window.alert('등록되었습니다.');
+      navigate('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const hadnleClickAgeTag = (tag) => {
     setSelectedAgeTags((prevTags) => {
@@ -46,16 +75,30 @@ const RegisterProfileConditionPage = () => {
       }
     });
   };
-  const hadnleOnChagne = () => {};
-  const handleButtonClick = (method: string) => {
-    setSelectedMethod(method);
+  const hadnleOnChagne = (e) => {
+    const { name, value } = e.target;
+    setCareerProfileState({ [name]: value });
   };
-  const handleNextButtonClick = () => {};
-  const navigate = useNavigate();
   const navigateToRegisterIntroduction = () => {
     navigate('/register/profile/introduction');
   };
 
+  useEffect(() => {
+    setCareerProfileState({
+      age: selectedAgeTags.join(','),
+      field: selectedTags.join(','),
+      region: selectedRegion,
+      method: selectedMethod,
+      priceType: selectedPriceType,
+    });
+  }, [
+    setCareerProfileState,
+    selectedAgeTags,
+    selectedTags,
+    selectedRegion,
+    selectedMethod,
+    selectedPriceType,
+  ]);
   return (
     <WrapContent>
       <ButtonWrap>
@@ -97,8 +140,17 @@ const RegisterProfileConditionPage = () => {
           </MethodButton>
         ))}
       </MethodButtonContainer>
-      <TitleText>희망 활동 지역</TitleText>
-      <RegionDropDown></RegionDropDown>
+      {(selectedMethod === '대면 서비스' || selectedMethod === '모두 선택') && (
+        <>
+          <TitleText>희망 활동 지역</TitleText>
+          <Dropdown
+            placeholder="지역선택"
+            list={regionState.list}
+            selected={selectedRegion}
+            onSelect={setSelectedRegion}
+          />
+        </>
+      )}
 
       <TitleText>희망 금액</TitleText>
       <InputPrice
@@ -122,7 +174,7 @@ const RegisterProfileConditionPage = () => {
             type={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={handleNextButtonClick}
+            onClick={registerCareer}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
