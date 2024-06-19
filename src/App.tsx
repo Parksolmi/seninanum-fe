@@ -20,6 +20,8 @@ import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntro
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
+import ChatPageDong from './pages/chat/ChatPageDong';
+import ChatPageNari from './pages/chat/ChatPageNari';
 import ViewProfileCareer from './pages/career/ViewProfileCareer';
 
 const App: React.FC = () => {
@@ -73,6 +75,9 @@ const App: React.FC = () => {
           path="/view/profile/career/:profileId"
           element={<ViewProfileCareer />}
         />
+        {/* 채팅 */}
+        <Route path="/chatroom/dong" element={<ChatPageDong />} />
+        <Route path="/chatroom/nari" element={<ChatPageNari />} />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

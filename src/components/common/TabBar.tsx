@@ -108,6 +108,7 @@ const StyledNav = styled.nav`
   background-color: #fff;
   border-top: #ededed solid 1px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  padding-bottom: 0.8rem;
 `;
 
 const WrapItem = styled.div`

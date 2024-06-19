@@ -14,12 +14,20 @@ const UserTypeButton: React.FC<ButtonProps> = ({
 }: ButtonProps) => {
   return (
     <StyleBoxContainer
-      $setType={types}
+      $type={types}
       onClick={() => onClick(types)}
       $isSelected={isSelected}
     >
-      <UserType $setType={types}>
+      <CharacterImg>
+        {types === 'dong' ? (
+          <img src="/assets/signIn/dong-jump-charac.png" alt="동백" />
+        ) : (
+          <img src="/assets/signIn/nari-jump-charac.png" alt="나리" />
+        )}
+      </CharacterImg>
+      <UserType $type={types}>
         {types !== null ? (types === 'dong' ? '동백' : '나리') : null}
+        <Badge src={`/assets/common/badge-${types}.png`} />
       </UserType>
       <Content>
         {types === 'dong'
@@ -37,8 +45,9 @@ const UserTypeButton: React.FC<ButtonProps> = ({
 
 const StyleBoxContainer = styled.div<{
   $isSelected: boolean;
-  $setType: string;
+  $type: string;
 }>`
+  position: relative;
   display: flex;
   margin-bottom: 0.94rem;
   padding-top: 1.88rem;
@@ -48,35 +57,48 @@ const StyleBoxContainer = styled.div<{
   height: 10rem;
   flex-shrink: 0;
   border-radius: 0.625rem;
-  border: ${({ $isSelected, $setType }) =>
+  border: ${({ $isSelected, $type }) =>
     $isSelected
-      ? $setType === 'dong'
+      ? $type === 'dong'
         ? '2px solid var(--Primary-dong)'
         : '2px solid var(--Primary-nari)'
       : `var(--Base-White)`};
-  background-color: ${({ $isSelected, $setType }) =>
+  background-color: ${({ $isSelected, $type }) =>
     $isSelected
-      ? $setType === 'dong'
+      ? $type === 'dong'
         ? `var(--Secondary-dong-2)`
         : `var(--Secondary-nari-2)`
       : `var(--Base-White)`};
 
   box-shadow: 0px 1px 7.4px 3px rgba(150, 150, 150, 0.25);
   transition: background-color 0.5s ease;
+  overflow: hidden;
 `;
 
-const UserType = styled.div<{ $setType: string }>`
+const CharacterImg = styled.div`
+  img {
+    height: 90%;
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+  }
+`;
+
+const UserType = styled.div<{ $type: string }>`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
   margin-bottom: 0.81rem;
-  color: ${({ $setType }) =>
-    $setType === 'dong' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
+  color: ${({ $type }) =>
+    $type === 'dong' ? `var(--Primary-dong)` : `var(--Primary-nari)`};
   font-size: 1.5rem;
   font-family: Nanum_Square;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
+`;
+
+const Badge = styled.img`
+  margin-left: 0.3rem;
+  height: 18px;
 `;
 
 const Content = styled.div`
