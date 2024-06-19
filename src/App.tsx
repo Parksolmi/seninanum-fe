@@ -20,6 +20,7 @@ import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntro
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
+import ChatPageDong from './pages/chat/ChatPageDong';
 
 const App: React.FC = () => {
   return (
@@ -67,6 +68,9 @@ const App: React.FC = () => {
           path="/register/profile/condition"
           element={<RegisterProfileConditionPage />}
         />
+        {/* 채팅 */}
+        <Route path="/chatroom/dong" element={<ChatPageDong />} />
+
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
