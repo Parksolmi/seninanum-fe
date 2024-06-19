@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useAnimate, stagger, motion } from 'framer-motion';
+import { useAnimate } from 'framer-motion';
 
 function useMenuAnimation(visible: boolean) {
   const [scope, animate] = useAnimate();
@@ -19,7 +19,7 @@ function useMenuAnimation(visible: boolean) {
         duration: 0.4,
       }
     );
-  }, [visible]);
+  }, [visible, animate]);
 
   return scope;
 }
