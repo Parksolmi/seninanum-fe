@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
-const MessageInput = () => {
+interface MessageInputProps {
+  setVisible: () => void;
+}
+const MessageInput = ({ setVisible }: MessageInputProps) => {
   return (
     <MeassageInputContainer>
       <WrapButton>
         <img src={'/assets/chat/plus-icon.png'} alt="신고하기" />
       </WrapButton>
       <WrapInputForm>
-        <Input placeholder="메시지를 입려해주세요" disabled />
-        <WrapButton type="submit">
+        <Input placeholder="메시지를 입려해주세요" />
+        <WrapButton type="submit" onClick={setVisible}>
           <img src={'/assets/chat/send-icon.png'} alt="보내기" />
         </WrapButton>
       </WrapInputForm>
@@ -43,7 +46,7 @@ const Input = styled.input`
   }
 `;
 
-const WrapInputForm = styled.form`
+const WrapInputForm = styled.div`
   display: flex;
   flex: 1;
   align-items: center;

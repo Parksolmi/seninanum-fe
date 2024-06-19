@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import BaneerButton from '../../components/chat/BannerButton';
+import MessageBox from '../../components/chat/MessageBox';
 import MessageInput from '../../components/chat/MessageInput';
 
 const ChatPageDong = () => {
+  const navigate = useNavigate();
+
+  //임시
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <WrapHeader>
-        <BackButton>
+        <BackButton onClick={() => navigate('/home')}>
           <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
         </BackButton>
         <TitleText>해당글 보러가기</TitleText>
@@ -20,9 +27,10 @@ const ChatPageDong = () => {
       </WrapBanner>
       <WrapChat>
         <div className="date">6월 19일 수요일</div>
+        <MessageBox visible={visible} />
       </WrapChat>
 
-      <MessageInput />
+      <MessageInput setVisible={() => setVisible(true)} />
     </>
   );
 };
@@ -71,7 +79,7 @@ const WrapChat = styled.div`
     font-family: NanumSquare;
     font-size: 1.125rem;
     font-weight: 400;
-    padding: 1.2rem 0;
+    padding: 1.5rem 0 0 0;
   }
 `;
 
