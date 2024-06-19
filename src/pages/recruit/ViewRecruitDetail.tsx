@@ -117,7 +117,7 @@ const ViewRecruitDetail = () => {
                 disabled={false}
                 type={'dong'}
                 // 임시
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/chatroom/dong')}
               >
                 지원하기
               </Button>
@@ -194,6 +194,7 @@ const WrapButton = styled.div`
   left: 1.1rem;
   right: 1.1rem;
   bottom: 1.5rem;
+  background-color: white;
 `;
 
 const WrapLoader = styled.div`

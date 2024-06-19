@@ -12,12 +12,11 @@ function useMenuAnimation(visible: boolean) {
         clipPath: visible ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 0% 0%)',
         scale: visible ? 1 : 0,
         opacity: visible ? 1 : 0,
-        transformOrigin: 'top right',
       },
       {
         type: 'spring',
         bounce: 0,
-        duration: 0.5,
+        duration: 0.4,
       }
     );
   }, [visible]);
@@ -48,7 +47,7 @@ const TextContainer = styled.div<{ $visible: boolean }>`
   ${({ $visible }) =>
     $visible
       ? `
-      visibility: visible
+      visibility: visible;
           `
       : `visibility: hidden`};
   height: 400px;
@@ -58,6 +57,7 @@ const MessageByMe = styled.div`
   margin: 16px;
   display: flex;
   justify-content: flex-end;
+  transform-origin: top right;
 
   > .message-container {
     display: flex;
