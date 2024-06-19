@@ -26,13 +26,11 @@ const TextAreaStyle = styled.textarea`
   border-radius: 10px;
   padding-left: 0.8rem;
   padding-top: 0.75rem;
-  text &::placeholder {
-    color: var(--Base-Gray2, #5b5b5b);
+  &::placeholder {
+    color: #5b5b5b;
     font-family: NanumSquare;
-    font-size: 1.25rem;
-    font-style: normal;
+    font-size: 1.3rem;
     font-weight: 400;
-    line-height: normal;
   }
 `;
 

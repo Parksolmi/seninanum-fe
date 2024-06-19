@@ -41,6 +41,7 @@ const RegisterProfileIntroductionPage = () => {
         inputPlaceholder="동백님을 소개해주세요."
         onChange={handleOnChange}
       ></TextArea>
+      <div className="margin"></div>
 
       <WrapButtonContainer>
         <WrapButton>
@@ -63,6 +64,10 @@ const RegisterProfileIntroductionPage = () => {
 };
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
+
+  .margin {
+    margin-bottom: 10rem;
+  }
 `;
 
 const ButtonWrap = styled.div`
@@ -75,16 +80,12 @@ const ButtonWrap = styled.div`
 `;
 
 const CategoryText = styled.div`
-  color: #000;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  margin-top: 2rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const SubText = styled.div`

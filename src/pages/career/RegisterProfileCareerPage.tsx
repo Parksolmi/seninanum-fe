@@ -136,16 +136,12 @@ const ButtonWrap = styled.div`
 `;
 
 const CategoryText = styled.div`
-  color: #000;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  margin-top: 2rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const TotalCareer = styled.div`
