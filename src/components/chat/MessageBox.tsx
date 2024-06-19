@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useAnimate, stagger, motion } from 'framer-motion';
+import { useAnimate } from 'framer-motion';
 
 function useMenuAnimation(visible: boolean) {
   const [scope, animate] = useAnimate();
@@ -19,26 +19,38 @@ function useMenuAnimation(visible: boolean) {
         duration: 0.4,
       }
     );
-  }, [visible]);
+  }, [visible, animate]);
 
   return scope;
 }
 
 interface MessageBoxProps {
   visible: boolean;
+  type: string;
 }
-const MessageBox = ({ visible }: MessageBoxProps) => {
+const MessageBox = ({ visible, type }: MessageBoxProps) => {
   const scope = useMenuAnimation(visible);
   return (
     <TextContainer $visible={visible} ref={scope}>
-      <MessageByMe className="message-by-me">
-        <div className="message-container">
-          <div className="message">
-            <div>안녕하세요? 나리님!</div>
+      {type === 'dong' ? (
+        <MessageByMe className="message-by-me" $type={type}>
+          <div className="message-container">
+            <div className="message">
+              <div>안녕하세요? 나리님!</div>
+            </div>
+            <div className="time">오후 3:58</div>
           </div>
-          <div className="time">오후 3:58</div>
-        </div>
-      </MessageByMe>
+        </MessageByMe>
+      ) : (
+        <MessageByMe className="message-by-me" $type={type}>
+          <div className="message-container">
+            <div className="message">
+              <div>안녕하세요? 동백님!</div>
+            </div>
+            <div className="time">오후 3:58</div>
+          </div>
+        </MessageByMe>
+      )}
     </TextContainer>
   );
 };
@@ -53,7 +65,7 @@ const TextContainer = styled.div<{ $visible: boolean }>`
   height: 400px;
 `;
 
-const MessageByMe = styled.div`
+const MessageByMe = styled.div<{ $type: string }>`
   margin: 16px;
   display: flex;
   justify-content: flex-end;
@@ -75,7 +87,8 @@ const MessageByMe = styled.div`
 
     > .message {
       width: fit-content;
-      background-color: var(--Primary-dong);
+      background-color: ${({ $type }) =>
+        $type === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-Deep-nari)'};
       padding: 10px;
 
       line-height: 1.5;

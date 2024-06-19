@@ -21,6 +21,7 @@ import RegisterProfileConditionPage from './pages/career/RegisterProfileConditio
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 import ChatPageDong from './pages/chat/ChatPageDong';
+import ChatPageNari from './pages/chat/ChatPageNari';
 
 const App: React.FC = () => {
   return (
@@ -70,6 +71,7 @@ const App: React.FC = () => {
         />
         {/* 채팅 */}
         <Route path="/chatroom/dong" element={<ChatPageDong />} />
+        <Route path="/chatroom/nari" element={<ChatPageNari />} />
 
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />

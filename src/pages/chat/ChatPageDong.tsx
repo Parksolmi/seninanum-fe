@@ -27,7 +27,7 @@ const ChatPageDong = () => {
       </WrapBanner>
       <WrapChat>
         <div className="date">6월 19일 수요일</div>
-        <MessageBox visible={visible} />
+        <MessageBox type="dong" visible={visible} />
       </WrapChat>
 
       <MessageInput setVisible={() => setVisible(true)} />
