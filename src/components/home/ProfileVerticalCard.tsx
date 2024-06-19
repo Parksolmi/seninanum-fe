@@ -8,6 +8,8 @@ interface ProfileProps {
   age: string;
   gender: string;
   tagText: string;
+  introduce?: string;
+  naviagateTo: () => void;
 }
 
 const ProfileVerticalCard = ({
@@ -16,9 +18,11 @@ const ProfileVerticalCard = ({
   age,
   gender,
   tagText,
+  introduce,
+  naviagateTo,
 }: ProfileProps) => {
   return (
-    <WrapCard>
+    <WrapCard onClick={naviagateTo}>
       <ProfileImage
         src={process.env.PUBLIC_URL + '/assets/common/profile.png'}
       ></ProfileImage>

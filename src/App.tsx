@@ -20,6 +20,7 @@ import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntro
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
+import ViewProfileCareer from './pages/career/ViewProfileCareer';
 
 const App: React.FC = () => {
   return (
@@ -66,6 +67,11 @@ const App: React.FC = () => {
         <Route
           path="/register/profile/condition"
           element={<RegisterProfileConditionPage />}
+        />
+        {/* 경력 프로필 조회 */}
+        <Route
+          path="/view/profile/career/:profileId"
+          element={<ViewProfileCareer />}
         />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
