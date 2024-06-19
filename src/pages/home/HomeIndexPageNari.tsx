@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/home/ShortcutButton';
@@ -7,13 +7,50 @@ import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 import LogoHeader from '../../components/header/LogoHeader';
+import { instance } from '../../api/instance';
+import { calcAge } from '../../utils/calcAge';
 
+interface CareerCard {
+  profileId: number;
+  introduce: string;
+  age: string;
+  field: string;
+  nickname: string;
+  gender: string;
+  birthyear: string;
+}
 const USER_TYPE = 'nari';
 const CARD_TYPE = 'dong';
 
-const HomeIndexPageNari: React.FC = () => {
+const HomeIndexPageNari = () => {
   const navigate = useNavigate();
+  //const { profileId } = useParams<{ profileId: string }>();
 
+  const [profile, setProfile] = useState<CareerCard[]>([]);
+
+  useEffect(() => {
+    const getBriefProfile = async () => {
+      try {
+        const res = await instance.get('/career/list');
+        // 중복 제거 로직
+        const uniqueProfiles: CareerCard[] = [];
+        const seenNicknames = new Set<string>();
+
+        res.data.forEach((profile: CareerCard) => {
+          if (!seenNicknames.has(profile.nickname)) {
+            seenNicknames.add(profile.nickname);
+            uniqueProfiles.push(profile);
+          }
+        });
+
+        setProfile(uniqueProfiles);
+        console.log(uniqueProfiles);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBriefProfile();
+  }, []);
   return (
     <>
       <LogoHeader />
@@ -46,38 +83,25 @@ const HomeIndexPageNari: React.FC = () => {
           ></ShortcutButton>
         </WrapShortcutButtons>
         <TitleText>
-          교육•예체능•디지털 분야의 <br />
+          {/* 교육 분야의 <br /> */}
           동백님들을 추천해드릴게요!
         </TitleText>
         <WrapVerticalProfiles>
-          <ProfileVerticalCard
-            nickname={'닉네임'}
-            types={CARD_TYPE}
-            age="60대"
-            gender="여자"
-            tagText="경력많음"
-          />
-          <ProfileVerticalCard
-            nickname={'닉네임'}
-            types={CARD_TYPE}
-            age="60대"
-            gender="여자"
-            tagText="경력많음"
-          />
-          <ProfileVerticalCard
-            nickname={'닉네임'}
-            types={CARD_TYPE}
-            age="60대"
-            gender="여자"
-            tagText="경력많음"
-          />
-          <ProfileVerticalCard
-            nickname={'닉네임'}
-            types={CARD_TYPE}
-            age="60대"
-            gender="여자"
-            tagText="경력많음"
-          />
+          {profile &&
+            profile.map((profile) => (
+              <ProfileVerticalCard
+                types={CARD_TYPE}
+                key={profile.profileId}
+                nickname={profile.nickname}
+                age={calcAge(profile.birthyear)}
+                gender={profile.gender === 'F' ? '여자' : '남자'}
+                tagText="리뷰 좋음"
+                introduce={profile.introduce}
+                naviagateTo={() =>
+                  navigate(`/view/profile/career/${profile.profileId}`)
+                }
+              />
+            ))}
         </WrapVerticalProfiles>
 
         <TitleText>원하는 동백님을 직접 찾아봐요!</TitleText>
