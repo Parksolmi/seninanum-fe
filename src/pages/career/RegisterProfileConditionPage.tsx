@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
-import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import ageState from './../../constants/ageState';
 import categoryState from '../../constants/categoryState';
 import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
 import useCareerProfileState from '../../store/CareerProfileState';
 import { instance } from '../../api/instance';
+import { useOutletContext } from 'react-router-dom';
 
+interface ProgressContextType {
+  incrementStatus: () => void;
+  decrementStatus: () => void;
+}
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
+  const { decrementStatus } = useOutletContext<ProgressContextType>();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>('');
@@ -80,6 +84,7 @@ const RegisterProfileConditionPage = () => {
     setCareerProfileState({ [name]: value });
   };
   const navigateToRegisterIntroduction = () => {
+    decrementStatus();
     navigate('/register/profile/introduction');
   };
 
@@ -100,22 +105,7 @@ const RegisterProfileConditionPage = () => {
     selectedPriceType,
   ]);
   return (
-    <WrapContent>
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 150,
-        }}
-        toastOptions={{
-          style: {
-            fontSize: '16px',
-          },
-        }}
-      />
-      <ButtonWrap>
-        <StopWritingButton />
-      </ButtonWrap>
-      <ProgressBar status={2} type={'dong'}></ProgressBar>
+    <>
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
       <TitleText>희망 연령대</TitleText>
       <Category
@@ -176,42 +166,29 @@ const RegisterProfileConditionPage = () => {
       <WrapButtonContainer>
         <WrapButton>
           <Button
-            type={null}
+            userType={null}
             disabled={false}
             children={'이전'}
             onClick={navigateToRegisterIntroduction}
           ></Button>
           <Button
-            type={'dong'}
+            userType={'dong'}
             disabled={false}
             children={'다음'}
             onClick={registerCareer}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
-    </WrapContent>
+    </>
   );
 };
-
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
-`;
 
 const CategoryText = styled.div`
   font-family: NanumSquare;
   font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: 0.03rem;
-  margin-top: 2rem;
+  margin-top: 3rem;
   margin-bottom: 1.56rem;
 `;
 

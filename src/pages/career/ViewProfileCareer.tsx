@@ -136,7 +136,7 @@ const ViewProfileCareer = () => {
             <WrapButton>
               <Button
                 disabled={false}
-                type={'nari'}
+                userType={'nari'}
                 // 임시
                 onClick={() => navigate('/chat')}
               >
