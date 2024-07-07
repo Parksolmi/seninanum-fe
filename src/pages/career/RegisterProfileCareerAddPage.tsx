@@ -133,14 +133,17 @@ const RegisterProfileCareerAddPage = () => {
           onChange={handleOnChange}
           name="content"
         ></TextArea>
-        <WrapButton>
-          <Button
-            children="등록"
-            disabled={false}
-            type={'dong'}
-            onClick={addNewCareer}
-          ></Button>
-        </WrapButton>
+        <GapButton />
+        <WrapButtonContainer>
+          <WrapButton>
+            <Button
+              userType={'dong'}
+              disabled={false}
+              children="등록"
+              onClick={addNewCareer}
+            ></Button>
+          </WrapButton>
+        </WrapButtonContainer>
       </div>
     </WrapContent>
   );
@@ -163,9 +166,7 @@ const CategoryText = styled.div`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: 0.03rem;
   margin-bottom: 1rem;
   white-space: pre-line;
@@ -176,9 +177,7 @@ const YearText = styled.div`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: 0.0875rem;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
@@ -188,9 +187,7 @@ const InputYearMonthText = styled.input`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   opacity: 0.5;
   border-width: 0 0 1px;
   width: 25%;
@@ -199,9 +196,7 @@ const InputYearMonthText = styled.input`
     color: #000;
     font-family: NanumSquare;
     font-size: 1.125rem;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
     opacity: 0.5;
   }
 `;
@@ -210,9 +205,7 @@ const InputAreaText = styled.div`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   opacity: 0.5;
 `;
 
@@ -222,13 +215,22 @@ const InputArea = styled.div`
   gap: 1rem;
 `;
 
-const WrapButton = styled.div`
+const GapButton = styled.div`
+  margin-bottom: 8rem;
+`;
+
+const WrapButtonContainer = styled.div`
+  background-color: #fff;
   position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.1rem 4rem 1.1rem;
+`;
+
+const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: 4rem;
   gap: 1rem;
 `;
 

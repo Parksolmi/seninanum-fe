@@ -10,7 +10,7 @@ const ProgressBar = ({ status, type }: ProgressType) => {
   const [activeStatus, setActiveStatus] = useState(status);
   const progressArr = [1, 2, 3];
 
-  const getIndicatiorColor = (type: string) => {
+  const getProgressColor = (type: string) => {
     switch (type) {
       case 'dong':
         return 'var(--Primary-dong)';
@@ -36,6 +36,7 @@ const ProgressBar = ({ status, type }: ProgressType) => {
           {progressArr.map((index) => (
             <Circle
               key={index}
+              color={getProgressColor(type)}
               className={
                 index < activeStatus
                   ? 'active'
@@ -50,7 +51,7 @@ const ProgressBar = ({ status, type }: ProgressType) => {
           <ProgressBarContainer>
             <Indicator
               width={(activeStatus - 1) * 50}
-              color={getIndicatiorColor(type)}
+              color={getProgressColor(type)}
             ></Indicator>
           </ProgressBarContainer>
         </Steps>
@@ -91,7 +92,9 @@ const Steps = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const Circle = styled.span`
+const Circle = styled.span<{
+  color: string;
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,14 +102,14 @@ const Circle = styled.span`
   height: 75%;
   border-radius: 50%;
   background-color: #fff;
-  border: 5px solid var(--Primary-dong);
+  border: 5px solid ${({ color }) => color};
   transition: all 300ms ease;
   z-index: 10;
   position: relative;
 
   &.active {
-    border-color: var(--Primary-dong);
-    background-color: var(--Primary-dong);
+    border-color: ${({ color }) => color};
+    background-color: ${({ color }) => color};
   }
 
   &.inactive {
@@ -115,7 +118,7 @@ const Circle = styled.span`
 
   &.current {
     background-color: #fff;
-    border: 5px solid var(--Primary-dong);
+    border: 5px solid ${({ color }) => color};
   }
 `;
 const draw = keyframes`
