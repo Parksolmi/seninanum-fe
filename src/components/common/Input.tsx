@@ -27,8 +27,15 @@ const InputBox = styled.input`
   border: 1px solid #5b5b5b;
   border-radius: 10px;
   padding-left: 0.8rem;
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.3rem;
+  font-weight: 400;
   text &::placeholder {
     color: #5b5b5b;
+    font-family: NanumSquare;
+    font-size: 1.3rem;
+    font-weight: 400;
   }
 `;
 
