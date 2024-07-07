@@ -1,31 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface InputProps {
+interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  placeholder: string;
-  name: string;
-  value?: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  register: any;
+  readonly userType: string | null;
 }
 
-const InputText = ({
+const InputText: React.FC<InputTextProps> = ({
   label,
-  placeholder,
-  name,
-  value,
-  onChange,
-}: InputProps) => {
+  register,
+  userType,
+  ...inputProps
+}) => {
   return (
     <InputContainer>
       <Label>{label}</Label>
-      <InputBox
-        name={name}
-        value={value}
-        type="text"
-        placeholder={placeholder}
-        onChange={onChange}
-      ></InputBox>
+      <InputBox $userType={userType} {...inputProps} {...register} />
     </InputContainer>
   );
 };
@@ -40,7 +31,7 @@ const Label = styled.label`
   font-weight: 600;
   font-family: Nanum_Square;
 `;
-const InputBox = styled.input`
+const InputBox = styled.input<{ $userType: string | null }>`
   width: 100%;
   height: 3rem;
   border: 1px solid var(--Base-Deep-Gray);
@@ -58,7 +49,10 @@ const InputBox = styled.input`
 
   &:focus {
     outline: none;
-    border: 1.5px solid var(--Primary-dong);
+    border: ${({ $userType }) =>
+      $userType === 'dong'
+        ? '1.5px solid var(--Primary-dong)'
+        : '1.5px solid var(--Primary-nari)'};
     border-radius: 0.8rem;
   }
 `;

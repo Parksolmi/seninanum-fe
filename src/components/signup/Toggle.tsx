@@ -1,30 +1,41 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface ToggleProps {
+  label: string;
+  register: any;
   readonly options: string[];
-  setState: (value: string) => void;
+  readonly userType: string | null;
 }
 
-const Toggle = ({ options, setState }: ToggleProps) => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+const Toggle = ({ label, options, userType, register }: ToggleProps) => {
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
 
-  useEffect(() => {
-    setState(activeIndex === 1 ? 'F' : 'M');
-  }, [setState, activeIndex]);
+  const handleClick = (index: number) => {
+    setActiveIndex(index);
+  };
 
   return (
     <ToggleContainer>
-      <Label>성별</Label>
+      <Label>{label}</Label>
       <WrapToggle>
         {options.map((option, index) => (
-          <ToggleOption
-            key={index}
-            $isActive={index === activeIndex ? 1 : 0}
-            $option={option}
-            onClick={() => setActiveIndex(index)}
-          >
-            {option}
+          <ToggleOption key={index}>
+            <HiddenRadio
+              id={`option-${index}`}
+              value={option}
+              checked={index === activeIndex}
+              onChange={() => handleClick(index)}
+              {...register}
+            />
+            <RadioLabel
+              htmlFor={`option-${index}`}
+              $isActive={index === activeIndex}
+              onClick={() => handleClick(index)}
+              $userType={userType}
+            >
+              {option}
+            </RadioLabel>
           </ToggleOption>
         ))}
       </WrapToggle>
@@ -32,9 +43,9 @@ const Toggle = ({ options, setState }: ToggleProps) => {
   );
 };
 
-interface ToggleActive {
-  $isActive: number;
-  $option: string;
+interface RadioLabelProps {
+  $isActive: boolean;
+  $userType: string | null;
 }
 
 const ToggleContainer = styled.div`
@@ -54,24 +65,42 @@ const WrapToggle = styled.div`
   gap: 0.5rem;
 `;
 
-const ToggleOption = styled.div<ToggleActive>`
+const ToggleOption = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RadioLabel = styled.label<RadioLabelProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  border: 1.5px solid #d9d9d9;
+  border: 1.5px solid;
   border-radius: 0.8rem;
-  width: 23%;
+  width: 100px;
   height: 50px;
   padding: 10px 20px;
   font-size: 1.2rem;
   font-weight: 600;
-  font-family: Nanum_Square;
   white-space: nowrap;
-  border-color: ${({ $isActive }) =>
-    $isActive ? 'var(--Primary-dong)' : 'black'};
-  color: ${({ $isActive }) => ($isActive ? 'var(--Primary-dong)' : 'black')};
+
+  border-color: ${({ $isActive, $userType }) =>
+    $isActive
+      ? $userType === 'dong'
+        ? 'var(--Primary-dong)'
+        : 'var(--Primary-nari)'
+      : 'var(--Base-Deep-Gray)'};
+  color: ${({ $isActive, $userType }) =>
+    $isActive
+      ? $userType === 'dong'
+        ? 'var(--Primary-dong)'
+        : 'var(--Primary-Deep-nari)'
+      : 'var(--Base-Deep-Gray)'};
   transition: border-color 0.3s, color 0.3s;
+  cursor: pointer;
+`;
+
+const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  display: none;
 `;
 
 export default Toggle;
