@@ -79,13 +79,13 @@ const RegisterRecruitContentPage = () => {
       />
       <WrapButton>
         <Button
-          type={null}
+          userType={null}
           disabled={false}
           children={'이전'}
           onClick={navigateToMethod}
         ></Button>
         <Button
-          type={'nari'}
+          userType={'nari'}
           disabled={false}
           children={'다음'}
           onClick={registerRecruit}

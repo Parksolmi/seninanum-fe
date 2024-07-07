@@ -2,18 +2,18 @@ import styled from 'styled-components';
 import React from 'react';
 
 // chilren: 버튼 텍스트
-// type: dong / nari / 비활성화
+// userType: dong / nari / 비활성화
 interface ButtonProps {
   children: string;
   disabled: boolean;
-  readonly type: string | null;
+  readonly userType: string | null;
   onClick: () => void;
 }
 
-const Button = ({ children, disabled, type, onClick }: ButtonProps) => {
+const Button = ({ children, disabled, userType, onClick }: ButtonProps) => {
   return (
     <WrapButton>
-      <StyledButton disabled={disabled} $type={type} onClick={onClick}>
+      <StyledButton disabled={disabled} $type={userType} onClick={onClick}>
         {children}
       </StyledButton>
     </WrapButton>

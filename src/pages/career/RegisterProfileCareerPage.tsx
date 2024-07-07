@@ -110,7 +110,7 @@ const RegisterProfileCareerPage = () => {
       <WrapButtonContainer>
         <WrapButton>
           <Button
-            type={'dong'}
+            userType={'dong'}
             disabled={false}
             children={'다음'}
             onClick={navigateToRegisterProfileIntroduction}
@@ -122,16 +122,12 @@ const RegisterProfileCareerPage = () => {
 };
 
 const CategoryText = styled.div`
-  color: #000;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: 0.03rem;
   margin-top: 3rem;
   margin-bottom: 1.56rem;
-  white-space: pre-line;
 `;
 
 const TotalCareer = styled.div`
