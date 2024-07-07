@@ -39,7 +39,7 @@ const ChooseTypePage: React.FC = () => {
       <WrapButton>
         <Button
           disabled={isDisabled}
-          type={selectedType}
+          userType={selectedType}
           onClick={navigateToPolicy}
         >
           다음
