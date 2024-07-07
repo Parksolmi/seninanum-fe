@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
-import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import ageState from './../../constants/ageState';
 import categoryState from '../../constants/categoryState';
@@ -13,9 +11,15 @@ import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
 import useCareerProfileState from '../../store/CareerProfileState';
 import { instance } from '../../api/instance';
+import { useOutletContext } from 'react-router-dom';
 
+interface ProgressContextType {
+  incrementStatus: () => void;
+  decrementStatus: () => void;
+}
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
+  const { decrementStatus } = useOutletContext<ProgressContextType>();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>('');
@@ -80,6 +84,7 @@ const RegisterProfileConditionPage = () => {
     setCareerProfileState({ [name]: value });
   };
   const navigateToRegisterIntroduction = () => {
+    decrementStatus();
     navigate('/register/profile/introduction');
   };
 
@@ -100,11 +105,7 @@ const RegisterProfileConditionPage = () => {
     selectedPriceType,
   ]);
   return (
-    <WrapContent>
-      <ButtonWrap>
-        <StopWritingButton />
-      </ButtonWrap>
-      <ProgressBar status={2} type={'dong'}></ProgressBar>
+    <>
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
       <TitleText>희망 연령대</TitleText>
       <Category
@@ -178,22 +179,9 @@ const RegisterProfileConditionPage = () => {
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
-    </WrapContent>
+    </>
   );
 };
-
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
-`;
 
 const CategoryText = styled.div`
   color: #000;
@@ -203,7 +191,7 @@ const CategoryText = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  margin-top: 3rem;
   margin-bottom: 1.56rem;
   white-space: pre-line;
 `;

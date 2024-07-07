@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
-import ProgressBar from '../../components/common/ProgressBar';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import useCareerProfileState from '../../store/CareerProfileState';
+import { useOutletContext } from 'react-router-dom';
 
+interface ProgressContextType {
+  incrementStatus: () => void;
+  decrementStatus: () => void;
+}
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
   const { setCareerProfileState } = useCareerProfileState();
+  const { incrementStatus, decrementStatus } =
+    useOutletContext<ProgressContextType>();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -17,18 +22,16 @@ const RegisterProfileIntroductionPage = () => {
   };
 
   const navigateToRegisterProfileCareer = () => {
+    decrementStatus();
     navigate('/register/profile/career');
   };
   const navigateToRegisterProfileCondition = () => {
+    incrementStatus();
     navigate('/register/profile/condition');
   };
 
   return (
-    <WrapContent>
-      <ButtonWrap>
-        <StopWritingButton />
-      </ButtonWrap>
-      <ProgressBar status={1} type={'dong'}></ProgressBar>
+    <>
       <CategoryText>{`동백님은 어떤 사람인가요?`}</CategoryText>
       <SubText>프로필 사진</SubText>
       <LastSubText>{`얼굴이 잘 나온 사진은 \n상대에게 좋은 인상을 줄 수 있어요!`}</LastSubText>
@@ -58,21 +61,9 @@ const RegisterProfileIntroductionPage = () => {
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
-    </WrapContent>
+    </>
   );
 };
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
-`;
 
 const CategoryText = styled.div`
   color: #000;
@@ -82,7 +73,7 @@ const CategoryText = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  margin-top: 3rem;
   margin-bottom: 1.56rem;
   white-space: pre-line;
 `;

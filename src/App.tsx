@@ -23,6 +23,8 @@ import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 import ChatPageDong from './pages/chat/ChatPageDong';
 import ChatPageNari from './pages/chat/ChatPageNari';
 import ViewProfileCareer from './pages/career/ViewProfileCareer';
+import CareerIndexPage from './pages/career/CareerIndexPage';
+import ProgressLayout from './layouts/ProgressLayout';
 
 const App: React.FC = () => {
   return (
@@ -54,21 +56,22 @@ const App: React.FC = () => {
           element={<ViewRecruitDetail />}
         />
         {/* 경력 프로필 등록 */}
-        <Route
-          path="/register/profile/career"
-          element={<RegisterProfileCareerPage />}
-        />
+        <Route path="/register/profile" element={<CareerIndexPage />}>
+          <Route element={<ProgressLayout />}>
+            <Route path="career" element={<RegisterProfileCareerPage />} />
+            <Route
+              path="introduction"
+              element={<RegisterProfileIntroductionPage />}
+            />
+            <Route
+              path="condition"
+              element={<RegisterProfileConditionPage />}
+            />
+          </Route>
+        </Route>
         <Route
           path="/register/profile/career/add"
           element={<RegisterProfileCareerAddPage />}
-        />
-        <Route
-          path="/register/profile/introduction"
-          element={<RegisterProfileIntroductionPage />}
-        />
-        <Route
-          path="/register/profile/condition"
-          element={<RegisterProfileConditionPage />}
         />
         {/* 경력 프로필 조회 */}
         <Route

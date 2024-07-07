@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import StopWritingButton from '../../components/common/StopWritingButton';
-import ProgressBar from '../../components/common/ProgressBar';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import useCareerItemState from '../../store/CareerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
+import { useOutletContext } from 'react-router-dom';
+
+interface ProgressContextType {
+  incrementStatus: () => void;
+  decrementStatus: () => void;
+}
 
 const RegisterProfileCareerPage = () => {
   const { careers } = useCareerItemState();
   const navigate = useNavigate();
+  const { incrementStatus } = useOutletContext<ProgressContextType>();
 
   // useEffect(() => {
   //   const fetchCareers = async () => {
@@ -65,19 +70,13 @@ const RegisterProfileCareerPage = () => {
     navigate('/register/profile/career/add');
   };
 
-  const navigateToRegisterProfile = () => {
-    navigate('/home');
-  };
   const navigateToRegisterProfileIntroduction = () => {
+    incrementStatus();
     navigate('/register/profile/introduction');
   };
 
   return (
-    <WrapContent>
-      <ButtonWrap onClick={navigateToRegisterProfile}>
-        <StopWritingButton />
-      </ButtonWrap>
-      <ProgressBar status={0} type={'dong'} />
+    <>
       <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
       <TotalCareer>
         <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
@@ -107,7 +106,7 @@ const RegisterProfileCareerPage = () => {
       </HelpTextBox>
       <FileAddButton addText={'파일 추가'}></FileAddButton>
 
-      <GapButton />
+      <GapButton></GapButton>
       <WrapButtonContainer>
         <WrapButton>
           <Button
@@ -118,22 +117,9 @@ const RegisterProfileCareerPage = () => {
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
-    </WrapContent>
+    </>
   );
 };
-
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  float: right;
-  width: 5.7rem;
-  height: 2.2rem;
-  flex-shrink: 0;
-  margin-bottom: 1.63rem;
-`;
 
 const CategoryText = styled.div`
   color: #000;
@@ -143,7 +129,7 @@ const CategoryText = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.03rem;
-  margin-top: 5.1rem;
+  margin-top: 3rem;
   margin-bottom: 1.56rem;
   white-space: pre-line;
 `;
@@ -168,13 +154,12 @@ const TotalCareerText = styled.div`
 const ButtonBox = styled.div``;
 
 const LineStyle = styled.div`
-  width: 100%;
-  left: 0;
+  width: calc(100% + 2.2rem); /* Add the horizontal padding value */
   height: 0.625rem;
   background: #ebeceb;
-  position: absolute;
+  position: relative;
+  left: -1.1rem; /* Adjust to account for the left padding value */
   margin-top: 3.3rem;
-  margin-bottom: 3.3rem;
 `;
 
 const HelpTextBox = styled.div`
