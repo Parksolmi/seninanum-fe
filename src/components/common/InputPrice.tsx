@@ -48,7 +48,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   display: flex;
   align-items: center;
-  margin-top: 0.8rem;
 `;
 
 const Container = styled.div`
@@ -96,6 +95,8 @@ const InputArea = styled.div`
   margin-left: 1.2rem;
 
   span {
+    font-family: NanumSquare;
+    color: #000;
     font-size: 1.125rem;
     font-weight: 400;
     margin-left: 0.6rem;
@@ -107,14 +108,16 @@ const InputField = styled.input`
   text-align: center;
   padding: 0.2rem 0;
   width: 100%;
+  color: #000;
+  font-family: NanumSquare;
   font-size: 1.125rem;
-  border-width: 0 0 2px;
-  border-color: #8e8e8e;
+  font-weight: 400;
+  border-width: 0 0 1px;
 
   &::placeholder {
     font-weight: 300;
     line-height: 1rem;
-    color: #989898;
+    color: #5b5b5b;
   }
   &:focus {
     outline: none;
