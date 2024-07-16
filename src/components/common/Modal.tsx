@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from './Button';
 
 interface ModalProps {
+  userType;
   isOpen;
   title;
   content;
@@ -13,6 +14,7 @@ interface ModalProps {
 }
 
 const Modal = ({
+  userType,
   isOpen,
   title,
   content,
@@ -30,13 +32,13 @@ const Modal = ({
             <ModalContentText>{content}</ModalContentText>
             <WrapButton>
               <Button
-                type={null}
+                userType={null}
                 disabled={false}
                 children={cancelText}
                 onClick={cancelModal}
               ></Button>
               <Button
-                type={'nari'}
+                userType={userType}
                 disabled={false}
                 children={confirmText}
                 onClick={confirmModal}

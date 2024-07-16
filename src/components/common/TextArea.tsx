@@ -28,12 +28,12 @@ const TextAreaStyle = styled.textarea`
   padding-top: 0.75rem;
   color: #000;
   font-family: NanumSquare;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 400;
   &::placeholder {
     color: #5b5b5b;
     font-family: NanumSquare;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 400;
   }
 `;

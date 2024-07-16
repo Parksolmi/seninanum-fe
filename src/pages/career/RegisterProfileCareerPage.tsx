@@ -8,8 +8,8 @@ import CareerDetail from './../../components/common/CareerDetail';
 import { useOutletContext } from 'react-router-dom';
 
 interface ProgressContextType {
-  incrementStatus: () => void;
-  decrementStatus: () => void;
+  incrementStatus: (status) => void;
+  decrementStatus: (status) => void;
 }
 
 const RegisterProfileCareerPage = () => {
@@ -71,7 +71,7 @@ const RegisterProfileCareerPage = () => {
   };
 
   const navigateToRegisterProfileIntroduction = () => {
-    incrementStatus();
+    incrementStatus(2);
     navigate('/register/profile/introduction');
   };
 
@@ -138,42 +138,37 @@ const TotalCareer = styled.div`
 `;
 
 const TotalCareerText = styled.div`
-  color: var(--Primary-dong, #ff314a);
+  color: var(--Primary-dong);
   text-align: center;
   font-family: NanumSquare;
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
 `;
 
 const ButtonBox = styled.div``;
 
 const LineStyle = styled.div`
-  width: calc(100% + 2.2rem); /* Add the horizontal padding value */
+  width: calc(100% + 2.2rem);
   height: 0.625rem;
   background: #ebeceb;
   position: relative;
-  left: -1.1rem; /* Adjust to account for the left padding value */
+  left: -1.1rem;
   margin-top: 3.3rem;
 `;
 
 const HelpTextBox = styled.div`
   width: 100%;
-  height: 8.3125rem;
-  flex-shrink: 0;
+  height: auto;
   border-radius: 0.625rem;
-  border: 1px solid var(--Primary-dong, #ff314a);
-  padding: 1.3rem 1.2rem 1rem 1.2rem;
+  border: 1px solid var(--Primary-dong);
+  padding: 1.2rem;
 `;
 
 const HelpText = styled.span`
-  color: var(--Primary-dong, #ff314a);
+  color: var(--Primary-dong);
   font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   white-space: pre;
 `;
 

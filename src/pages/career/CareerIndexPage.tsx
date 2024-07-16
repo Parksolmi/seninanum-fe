@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ProgressBar from '../../components/common/ProgressBar';
 import { Outlet } from 'react-router-dom';
 import ExitHeader from '../../components/header/ExitHeader';
+import progressStore from '../../store/CareerProgressState';
 
 const CareerIndexPage = () => {
-  const [status, setStatus] = useState(1);
-  const incrementStatus = () => {
-    setStatus((prev) => Math.min(prev + 1, 3));
+  const { status, setStatus } = progressStore();
+  const incrementStatus = (status) => {
+    setStatus(status);
   };
 
-  const decrementStatus = () => {
-    setStatus((prev) => Math.max(prev - 1, 1));
+  const decrementStatus = (status) => {
+    setStatus(status);
   };
   return (
     <Container>
       <ExitBtn>
-        <ExitHeader navigateTo={'/home'} />
+        <ExitHeader userType="dong" navigateTo={'/home'} />
       </ExitBtn>
       <ProgressBar status={status} type="dong" />
       <Outlet context={{ incrementStatus, decrementStatus }} />
