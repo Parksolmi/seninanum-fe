@@ -7,8 +7,8 @@ import useCareerProfileState from '../../store/CareerProfileState';
 import { useOutletContext } from 'react-router-dom';
 
 interface ProgressContextType {
-  incrementStatus: () => void;
-  decrementStatus: () => void;
+  incrementStatus: (status) => void;
+  decrementStatus: (status) => void;
 }
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
@@ -22,23 +22,19 @@ const RegisterProfileIntroductionPage = () => {
   };
 
   const navigateToRegisterProfileCareer = () => {
-    decrementStatus();
+    decrementStatus(1);
     navigate('/register/profile/career');
   };
   const navigateToRegisterProfileCondition = () => {
-    incrementStatus();
+    incrementStatus(3);
     navigate('/register/profile/condition');
   };
 
   return (
     <>
       <CategoryText>{`동백님은 어떤 사람인가요?`}</CategoryText>
-      <SubText>프로필 사진</SubText>
-      <LastSubText>{`얼굴이 잘 나온 사진은 \n상대에게 좋은 인상을 줄 수 있어요!`}</LastSubText>
-      <PictureArea>
-        <img src="/assets/common/camera-icon.svg" alt="사진" />
-      </PictureArea>
       <SubText>자기소개</SubText>
+      <LastSubText>{`자신을 잘 나타낼 수 있는 키워드를\n넣어 자기 소개를 완성해보세요!\n`}</LastSubText>
       <TextArea
         name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
@@ -46,6 +42,7 @@ const RegisterProfileIntroductionPage = () => {
       ></TextArea>
       <div className="margin"></div>
 
+      <GapButton></GapButton>
       <WrapButtonContainer>
         <WrapButton>
           <Button
@@ -79,34 +76,22 @@ const SubText = styled.div`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   letter-spacing: 0.0275rem;
-  margin-top: 1.3rem;
   margin-bottom: 0.8rem;
 `;
 
 const LastSubText = styled.div`
-  color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+  color: #8e8e8e;
   font-family: NanumSquare;
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  margin-bottom: 1rem;
+  white-space: pre;
 `;
 
-const PictureArea = styled.div`
-  width: 5.8125rem;
-  height: 5.8125rem;
-  flex-shrink: 0;
-  border-radius: 0.625rem;
-  background: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+const GapButton = styled.div`
+  margin-bottom: 8rem;
 `;
 
 const WrapButtonContainer = styled.div`
@@ -117,6 +102,7 @@ const WrapButtonContainer = styled.div`
   bottom: 0;
   padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
+
 const WrapButton = styled.div`
   display: flex;
   flex-direction: row;

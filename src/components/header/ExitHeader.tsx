@@ -6,9 +6,10 @@ import Modal from '../../components/common/Modal';
 
 interface ExitHeaderProps {
   navigateTo: string;
+  userType: string;
 }
 
-const ExitHeader = ({ navigateTo }: ExitHeaderProps) => {
+const ExitHeader = ({ navigateTo, userType }: ExitHeaderProps) => {
   const navigate = useNavigate();
 
   // 모달 열고 닫기
@@ -22,6 +23,7 @@ const ExitHeader = ({ navigateTo }: ExitHeaderProps) => {
   return (
     <>
       <Modal
+        userType={userType}
         isOpen={isModalOpen}
         title={'정말 나가시겠습니까?'}
         content={`지금 나가면 \n작성했던 모든 내용이 사라져요.`}

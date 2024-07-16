@@ -14,8 +14,8 @@ import { instance } from '../../api/instance';
 import { useOutletContext } from 'react-router-dom';
 
 interface ProgressContextType {
-  incrementStatus: () => void;
-  decrementStatus: () => void;
+  incrementStatus: (status) => void;
+  decrementStatus: (status) => void;
 }
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const RegisterProfileConditionPage = () => {
     setCareerProfileState({ [name]: value });
   };
   const navigateToRegisterIntroduction = () => {
-    decrementStatus();
+    decrementStatus(2);
     navigate('/register/profile/introduction');
   };
 
@@ -107,7 +107,7 @@ const RegisterProfileConditionPage = () => {
   return (
     <>
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
-      <TitleText>희망 연령대</TitleText>
+      <TagText>희망 연령대</TagText>
       <Category
         label=""
         list={ageState.list}
@@ -115,6 +115,7 @@ const RegisterProfileConditionPage = () => {
         selectedTags={selectedAgeTags}
         onClickTag={hadnleClickAgeTag}
       ></Category>
+      <LineStyle />
       <TitleText>희망 활동 분야</TitleText>
       <SubText>전문 분야</SubText>
       <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
@@ -125,10 +126,12 @@ const RegisterProfileConditionPage = () => {
         selectedTags={selectedTags}
         onClickTag={hadnleClickTag}
       ></Category>
-      <SubText>
+      <LineStyle />
+      <TitleText>
         <div>제공할 서비스</div>
-      </SubText>
+      </TitleText>
       <InputService placeholder="ex. 컨설팅, 맞춤 과외 등"></InputService>
+      <LineStyle />
       <TitleText>희망 활동 형태</TitleText>
       <MethodButtonContainer>
         {['대면', '비대면', '모두 선택'].map((method) => (
@@ -141,18 +144,21 @@ const RegisterProfileConditionPage = () => {
           </MethodButton>
         ))}
       </MethodButtonContainer>
-      {(selectedMethod === '대면 서비스' || selectedMethod === '모두 선택') && (
+      {selectedMethod === '대면' || selectedMethod === '모두 선택' ? (
         <>
           <TitleText>희망 활동 지역</TitleText>
           <Dropdown
+            userType="dong"
             placeholder="지역선택"
             list={regionState.list}
             selected={selectedRegion}
             onSelect={setSelectedRegion}
           />
         </>
+      ) : (
+        ''
       )}
-
+      <LineStyle />
       <TitleText>희망 금액</TitleText>
       <InputPrice
         name="price"
@@ -190,27 +196,32 @@ const CategoryText = styled.div`
   letter-spacing: 0.03rem;
   margin-top: 3rem;
   margin-bottom: 1.56rem;
+  white-space: pre;
+`;
+
+const TagText = styled.div`
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: 0.0275rem;
 `;
 
 const TitleText = styled.div`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   letter-spacing: 0.0275rem;
-  margin-top: 2rem;
+  margin-top: 1.56rem;
   margin-bottom: 0.8rem;
 `;
 
 const SubText = styled.div`
-  color: var(--Base-Black, #000);
+  color: #000;
   font-family: NanumSquare;
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   margin-bottom: 0.5rem;
   div {
     margin-top: 1rem;
@@ -218,7 +229,7 @@ const SubText = styled.div`
 `;
 
 const LastSubText = styled.div`
-  color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+  color: #8e8e8e;
   font-family: NanumSquare;
   font-size: 1.25rem;
   font-style: normal;
@@ -226,24 +237,26 @@ const LastSubText = styled.div`
   line-height: normal;
 `;
 
+const LineStyle = styled.div`
+  width: 100%;
+  height: 0.625rem;
+  border-bottom: 1px solid #ebeceb;
+  margin-top: 1.5rem;
+`;
+
 const InputService = styled.input`
   color: #000;
   font-family: NanumSquare;
   font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  opacity: 0.5;
+  font-weight: 400;
   border-width: 0 0 1px;
   width: 100%;
-
+  margin-top: 0.5rem;
   &::placeholder {
-    color: var(--Base-Gray2, #5b5b5b);
+    color: #5b5b5b;
     font-family: NanumSquare;
     font-size: 1.25rem;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
   }
 `;
 

@@ -7,6 +7,7 @@ interface DropdownProps {
   list: string[];
   selected: string;
   onSelect: (region: string) => void;
+  userType: string;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -14,6 +15,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   list,
   selected,
   onSelect,
+  userType,
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useDetectClose(dropdownRef, false);
@@ -24,7 +26,11 @@ const Dropdown: React.FC<DropdownProps> = ({
         <p>서울시</p>
       </Label>
       <Label>
-        <DropdownButton onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
+        <DropdownButton
+          onClick={() => setIsOpen(!isOpen)}
+          $isOpen={isOpen}
+          $userType={userType}
+        >
           {selected || placeholder}
           <img
             src={
@@ -73,9 +79,14 @@ const Label = styled.button`
   }
 `;
 
-const DropdownButton = styled.div<{ $isOpen: boolean }>`
+const DropdownButton = styled.div<{ $isOpen: boolean; $userType: string }>`
   background-color: #fff;
-  color: ${({ $isOpen }) => ($isOpen ? 'var(--Primary-Deep-nari)' : '#000000')};
+  color: ${({ $isOpen, $userType }) =>
+    $isOpen
+      ? $userType === 'nari'
+        ? 'var(--Primary-Deep-nari)'
+        : 'var(--Primary-dong)'
+      : '#000000'};
   font-size: 1.5rem;
   font-weight: 600;
   white-space: nowrap;
