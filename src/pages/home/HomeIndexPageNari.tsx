@@ -10,6 +10,10 @@ import LogoHeader from '../../components/header/LogoHeader';
 import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
 
+interface RandomImgProps {
+  randomImg: string;
+}
+
 interface CareerCard {
   profileId: number;
   introduce: string;
@@ -22,12 +26,15 @@ interface CareerCard {
 const USER_TYPE = 'nari';
 const CARD_TYPE = 'dong';
 
-const HomeIndexPageNari = () => {
+const HomeIndexPageNari: React.FC<RandomImgProps> = ({ randomImg }) => {
   const navigate = useNavigate();
   //const { profileId } = useParams<{ profileId: string }>();
-
+  const [bannerImage, setBannerImage] = useState(randomImg);
   const [profile, setProfile] = useState<CareerCard[]>([]);
 
+  useEffect(() => {
+    setBannerImage(randomImg);
+  }, [randomImg]);
   useEffect(() => {
     const getBriefProfile = async () => {
       try {
@@ -55,7 +62,7 @@ const HomeIndexPageNari = () => {
     <>
       <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner2.png"
+        src={`/assets/home/${bannerImage}`}
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
@@ -6,17 +6,26 @@ import { useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
 
+interface RandomImgProps {
+  randomImg: string;
+}
+
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
 
-const HomeIndexPageDong: React.FC = () => {
+const HomeIndexPageDong: React.FC<RandomImgProps> = ({ randomImg }) => {
   const navigate = useNavigate();
+  const [bannerImage, setBannerImage] = useState(randomImg);
+
+  useEffect(() => {
+    setBannerImage(randomImg);
+  }, [randomImg]);
 
   return (
     <>
       <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner.png"
+        src={`/assets/home/${bannerImage}`}
         alt="배너이미지"
       ></BannerContainer>
 
