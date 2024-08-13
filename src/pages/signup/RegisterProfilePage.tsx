@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/UserState';
@@ -16,7 +16,7 @@ const RegisterProfilePage: React.FC = () => {
   interface Inputs {
     nickname: string;
     gender: string;
-    birthYear: number;
+    birthYear: string;
   }
 
   const {
@@ -58,7 +58,9 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
-          register={register('nickname')}
+          register={register('nickname', {
+            validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
+          })}
         />
         <Toggle
           userType={userState.userType}
@@ -70,7 +72,9 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="출생년도"
           placeholder="예시) 1876"
-          register={register('birthYear')}
+          register={register('birthYear', {
+            validate: (value) => /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!'
+          })}
         />
         <InputSubmit
           $userType={userState.userType}
