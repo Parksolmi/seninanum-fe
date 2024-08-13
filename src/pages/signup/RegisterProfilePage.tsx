@@ -48,7 +48,11 @@ const RegisterProfilePage: React.FC = () => {
   return (
     <WrapContent>
       <PrevHeader navigateTo="/signup/policy" />
-      <HeaderText>사용자님의 정보를 알려주세요!</HeaderText>
+      {
+        userState.userType === 'dong' ? 
+        <HeaderText>동백님의 정보를 알려주세요!</HeaderText>
+        : <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
+      }
       <WrapFrom onSubmit={handleSubmit(onSubmit)}>
         <InputText
           userType={userState.userType}

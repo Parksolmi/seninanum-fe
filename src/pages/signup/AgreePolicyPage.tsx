@@ -88,7 +88,7 @@ const AgreePolicyPage: React.FC = () => {
       <WrapButton>
         <Button
           disabled={isDisabled}
-          type={userState.userType}
+          userType={userState.userType}
           onClick={onClickBtn}
         >
           다음
