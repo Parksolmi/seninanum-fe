@@ -24,8 +24,6 @@ const Toggle = ({ label, options, userType, register }: ToggleProps) => {
             <HiddenRadio
               id={`option-${index}`}
               value={option}
-              checked={index === activeIndex}
-              onChange={() => handleClick(index)}
               {...register}
             />
             <RadioLabel

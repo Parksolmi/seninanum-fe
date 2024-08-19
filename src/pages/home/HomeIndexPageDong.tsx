@@ -2,30 +2,29 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
-
-interface RandomImgProps {
-  randomImg: string;
-}
+import getRandomNumber from '../../utils/getRandomNumber';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
 
-const HomeIndexPageDong: React.FC<RandomImgProps> = ({ randomImg }) => {
+const HomeIndexPageDong: React.FC = () => {
   const navigate = useNavigate();
-  const [bannerImage, setBannerImage] = useState(randomImg);
+  const location = useLocation();
+
+  const [bannerIndex, setBannerIndex] = useState(getRandomNumber());
 
   useEffect(() => {
-    setBannerImage(randomImg);
-  }, [randomImg]);
+    setBannerIndex(getRandomNumber());
+  }, [location.pathname]);
 
   return (
     <>
       <LogoHeader />
       <BannerContainer
-        src={`/assets/home/${bannerImage}`}
+        src={`/assets/home/banner-image${bannerIndex}.svg`}
         alt="배너이미지"
       ></BannerContainer>
 

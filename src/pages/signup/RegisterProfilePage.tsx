@@ -16,7 +16,7 @@ const RegisterProfilePage: React.FC = () => {
   interface Inputs {
     nickname: string;
     gender: string;
-    birthYear: number;
+    birthYear: string;
   }
 
   const {
@@ -47,14 +47,18 @@ const RegisterProfilePage: React.FC = () => {
 
   return (
     <WrapContent>
-      <PrevHeader navigateTo="/signup/policy" />
-      <HeaderText>사용자님의 정보를 알려주세요!</HeaderText>
+      <PrevHeader title="회원가입" navigateTo="/signup/policy" />
+      <Title>
+        {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를 알려주세요!
+      </Title>
       <WrapFrom onSubmit={handleSubmit(onSubmit)}>
         <InputText
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
-          register={register('nickname')}
+          register={register('nickname', {
+            validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
+          })}
         />
         <Toggle
           userType={userState.userType}
@@ -66,7 +70,10 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="출생년도"
           placeholder="예시) 1876"
-          register={register('birthYear')}
+          register={register('birthYear', {
+            validate: (value) =>
+              /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
+          })}
         />
         <InputSubmit
           $userType={userState.userType}
@@ -82,22 +89,18 @@ const RegisterProfilePage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-
-const HeaderText = styled.div`
-  margin-top: 2.25rem;
-  margin-bottom: 0.75rem;
-  color: #000;
-  font-size: 1.5rem;
+const Title = styled.div`
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  font-family: 'NanumSquareR';
+  font-size: 1.375rem;
   font-weight: 800;
-  letter-spacing: 0.03rem;
-  font-family: Nanum_Square;
+  letter-spacing: 0.0275rem;
 `;
 const WrapFrom = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 4rem;
-  font-family: Nanum_Square;
 `;
 
 const InputSubmit = styled.input<{ $userType: string }>`
