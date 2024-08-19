@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/UserState';
@@ -47,12 +47,10 @@ const RegisterProfilePage: React.FC = () => {
 
   return (
     <WrapContent>
-      <PrevHeader navigateTo="/signup/policy" />
-      {
-        userState.userType === 'dong' ? 
-        <HeaderText>동백님의 정보를 알려주세요!</HeaderText>
-        : <HeaderText>나리님의 정보를 알려주세요!</HeaderText>
-      }
+      <PrevHeader title="회원가입" navigateTo="/signup/policy" />
+      <Title>
+        {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를 알려주세요!
+      </Title>
       <WrapFrom onSubmit={handleSubmit(onSubmit)}>
         <InputText
           userType={userState.userType}
@@ -73,7 +71,8 @@ const RegisterProfilePage: React.FC = () => {
           label="출생년도"
           placeholder="예시) 1876"
           register={register('birthYear', {
-            validate: (value) => /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!'
+            validate: (value) =>
+              /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
           })}
         />
         <InputSubmit
@@ -90,22 +89,18 @@ const RegisterProfilePage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-
-const HeaderText = styled.div`
-  margin-top: 2.25rem;
-  margin-bottom: 0.75rem;
-  color: #000;
-  font-size: 1.5rem;
+const Title = styled.div`
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  font-family: 'NanumSquareR';
+  font-size: 1.375rem;
   font-weight: 800;
-  letter-spacing: 0.03rem;
-  font-family: Nanum_Square;
+  letter-spacing: 0.0275rem;
 `;
 const WrapFrom = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 4rem;
-  font-family: Nanum_Square;
 `;
 
 const InputSubmit = styled.input<{ $userType: string }>`

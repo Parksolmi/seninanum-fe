@@ -50,10 +50,8 @@ const AgreePolicyPage: React.FC = () => {
 
   return (
     <WrapContent>
-      <PrevHeader navigateTo={'/signup/usertype'} />
-
-      <Text1>시니나눔이 처음이시네요!</Text1>
-      <Text2>이용약관에 동의해주세요.</Text2>
+      <PrevHeader title="회원가입" navigateTo={'/signup/usertype'} />
+      <Title>이용약관에 동의해주세요.</Title>
       <WrapCheckBox>
         <CheckBox
           id="selectAll"
@@ -101,18 +99,13 @@ const AgreePolicyPage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
-
-const Text1 = styled.div`
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  font-size: 1.5rem;
+const Title = styled.div`
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  font-family: 'NanumSquareR';
+  font-size: 1.375rem;
   font-weight: 800;
-`;
-const Text2 = styled.div`
-  margin-bottom: 4rem;
-  color: var(--Base-Deep-Gray);
-  font-size: 1.25rem;
-  font-weight: 700;
+  letter-spacing: 0.0275rem;
 `;
 const WrapButton = styled.div`
   position: fixed;
