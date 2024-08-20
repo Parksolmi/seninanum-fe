@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
 import progressStore from '../../store/CareerProgressState';
+import getRandomNumber from '../../utils/getRandomNumber';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
 
 const HomeIndexPageDong: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [bannerIndex, setBannerIndex] = useState(getRandomNumber());
+
+  useEffect(() => {
+    setBannerIndex(getRandomNumber());
+  }, [location.pathname]);
 
   const { status } = progressStore();
 
@@ -19,7 +27,7 @@ const HomeIndexPageDong: React.FC = () => {
     <>
       <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner.png"
+        src={`/assets/home/banner-image${bannerIndex}.svg`}
         alt="배너이미지"
       ></BannerContainer>
 

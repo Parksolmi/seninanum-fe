@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
@@ -9,6 +9,7 @@ import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 import LogoHeader from '../../components/header/LogoHeader';
 import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
+import getRandomNumber from '../../utils/getRandomNumber';
 
 interface CareerCard {
   profileId: number;
@@ -22,11 +23,17 @@ interface CareerCard {
 const USER_TYPE = 'nari';
 const CARD_TYPE = 'dong';
 
-const HomeIndexPageNari = () => {
+const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
-  //const { profileId } = useParams<{ profileId: string }>();
+  const location = useLocation();
 
+  //const { profileId } = useParams<{ profileId: string }>();
+  const [bannerIndex, setBannerIndex] = useState(getRandomNumber());
   const [profile, setProfile] = useState<CareerCard[]>([]);
+
+  useEffect(() => {
+    setBannerIndex(getRandomNumber());
+  }, [location.pathname]);
 
   useEffect(() => {
     const getBriefProfile = async () => {
@@ -55,7 +62,7 @@ const HomeIndexPageNari = () => {
     <>
       <LogoHeader />
       <BannerContainer
-        src="/assets/home/home-banner2.png"
+        src={`/assets/home/banner-image${bannerIndex}.svg`}
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>

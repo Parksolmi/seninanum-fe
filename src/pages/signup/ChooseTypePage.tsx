@@ -4,6 +4,7 @@ import UserTypeButton from '../../components/signup/UserTypeButton';
 import Button from '../../components/common/Button';
 import useUserState from '../../store/UserState';
 import { useNavigate } from 'react-router-dom';
+import PrevHeader from '../../components/header/PrevHeader';
 
 const ChooseTypePage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const ChooseTypePage: React.FC = () => {
 
   return (
     <WrapContent>
+      <PrevHeader title="회원가입" />
       <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
         types="dong"
@@ -53,14 +55,11 @@ const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
 const Title = styled.div`
-  margin-top: 5.5rem;
-  margin-bottom: 3.5rem;
-  color: #000;
-  font-family: Nanum_Square;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  font-family: 'NanumSquareR';
   font-size: 1.375rem;
-  font-style: normal;
   font-weight: 800;
-  line-height: normal;
   letter-spacing: 0.0275rem;
 `;
 const WrapButton = styled.div`

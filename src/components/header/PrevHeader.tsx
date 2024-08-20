@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 interface PrevHeaderProps {
   title?: string;
-  navigateTo: string;
+  navigateTo?: string;
 }
 
 const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
@@ -12,9 +12,11 @@ const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
 
   return (
     <WrapHeader>
-      <BackButton onClick={() => navigate(navigateTo)}>
-        <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
-      </BackButton>
+      {navigateTo && (
+        <BackButton onClick={() => navigate(navigateTo)}>
+          <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
+        </BackButton>
+      )}
       <TitleText>{title}</TitleText>
     </WrapHeader>
   );
@@ -28,7 +30,7 @@ const WrapHeader = styled.div`
 
 const BackButton = styled.div`
   img {
-    width: 1.5rem;
+    width: 0.8rem;
   }
 `;
 
@@ -38,7 +40,7 @@ const TitleText = styled.div`
   justify-content: center;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: -0.075rem;
 `;
 

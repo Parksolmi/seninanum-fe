@@ -5,7 +5,6 @@ import HomeIndexPageNari from './HomeIndexPageNari';
 
 const HomeIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
-
   return (
     <>{userType === 'dong' ? <HomeIndexPageDong /> : <HomeIndexPageNari />}</>
   );
