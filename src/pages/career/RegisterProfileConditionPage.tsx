@@ -11,15 +11,11 @@ import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
 import useCareerProfileState from '../../store/CareerProfileState';
 import { instance } from '../../api/instance';
-import { useOutletContext } from 'react-router-dom';
+import progressStore from '../../store/CareerProgressState';
 
-interface ProgressContextType {
-  incrementStatus: (status) => void;
-  decrementStatus: (status) => void;
-}
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
-  const { decrementStatus } = useOutletContext<ProgressContextType>();
+  const { setStatus } = progressStore();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>('');
@@ -84,7 +80,7 @@ const RegisterProfileConditionPage = () => {
     setCareerProfileState({ [name]: value });
   };
   const navigateToRegisterIntroduction = () => {
-    decrementStatus(2);
+    setStatus(2);
     navigate('/register/profile/introduction');
   };
 

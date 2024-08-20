@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import Dropdown from '../../components/common/DropDown';
 import regionState from './../../constants/regionState';
 import useRecruitState from '../../store/RecruitState';
-import ExitHeader from '../../components/header/ExitHeader';
+import progressStore from '../../store/CareerProgressState';
 
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
+  const { setStatus } = progressStore();
+
   const { setRecruitState } = useRecruitState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>('');
@@ -23,9 +24,11 @@ const RegisterRecruitMethodPage = () => {
   };
 
   const navigateToField = () => {
+    setStatus(1);
     navigate('/register/recruit/field');
   };
   const navigateToContent = () => {
+    setStatus(3);
     navigate('/register/recruit/content');
   };
 
@@ -34,9 +37,7 @@ const RegisterRecruitMethodPage = () => {
   }, [setRecruitState, selectedMethod, selectedRegion]);
 
   return (
-    <WrapContent>
-      <ExitHeader navigateTo={'/home'} />
-      <ProgressBar status={1} type={'nari'} />
+    <>
       <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
         {['대면 서비스', '비대면 서비스', '모두 선택'].map((method) => (
@@ -53,6 +54,7 @@ const RegisterRecruitMethodPage = () => {
         <>
           <TitleText>희망 지역을 선택해주세요.</TitleText>
           <Dropdown
+            userType="nari"
             placeholder="지역선택"
             list={regionState.list}
             selected={selectedRegion}
@@ -63,24 +65,22 @@ const RegisterRecruitMethodPage = () => {
 
       <WrapButton>
         <Button
-          type={null}
+          userType={null}
           disabled={false}
           children={'이전'}
           onClick={navigateToField}
         ></Button>
         <Button
-          type={'nari'}
+          userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
           onClick={navigateToContent}
         ></Button>
       </WrapButton>
-    </WrapContent>
+    </>
   );
 };
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
+
 const TitleText = styled.div`
   font-size: 1.5rem;
   font-family: 'NanumSquareR';

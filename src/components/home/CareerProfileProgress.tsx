@@ -9,7 +9,19 @@ interface ProgressProps {
 const CareerProfileProgress = ({ status }: ProgressProps) => {
   const navigate = useNavigate();
   const navigateToRegisterProfile = () => {
-    navigate('/register/profile/career');
+    switch (status) {
+      case 1:
+        navigate('/register/profile/career');
+        break;
+      case 2:
+        navigate('/register/profile/introduction');
+        break;
+      case 3:
+        navigate('/register/profile/condition');
+        break;
+      default:
+        navigate('/register/profile/career');
+    }
   };
 
   return (
@@ -24,7 +36,7 @@ const CareerProfileProgress = ({ status }: ProgressProps) => {
         />
       </Title>
       <img
-        src={`/assets/home/career-progress-${status}.svg`}
+        src={`/assets/home/career-progress-${status - 1}.svg`}
         alt="progress bar"
       />
     </InputContainer>

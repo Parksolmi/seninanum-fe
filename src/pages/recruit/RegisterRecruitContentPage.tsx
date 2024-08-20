@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ProgressBar from '../../components/common/ProgressBar';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
@@ -8,10 +7,12 @@ import InputPrice from '../../components/common/InputPrice';
 import { useNavigate } from 'react-router-dom';
 import useRecruitState from '../../store/RecruitState';
 import { instance } from '../../api/instance';
-import ExitHeader from '../../components/header/ExitHeader';
+import progressStore from '../../store/CareerProgressState';
 
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
+  const { setStatus } = progressStore();
+
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [inputCount, setInputCount] = useState(0);
@@ -43,6 +44,7 @@ const RegisterRecruitContentPage = () => {
   };
 
   const navigateToMethod = () => {
+    setStatus(2);
     navigate('/register/recruit/method');
   };
 
@@ -51,9 +53,7 @@ const RegisterRecruitContentPage = () => {
   }, [setRecruitState, selectedPriceType]);
 
   return (
-    <WrapContent>
-      <ExitHeader navigateTo={'/home'} />
-      <ProgressBar status={2} type={'nari'} />
+    <>
       <TitleText>{`마지막으로,\n내 구인글을 소개해보세요!`}</TitleText>
       <Input
         name="title"
@@ -91,12 +91,9 @@ const RegisterRecruitContentPage = () => {
           onClick={registerRecruit}
         ></Button>
       </WrapButton>
-    </WrapContent>
+    </>
   );
 };
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
 
 const TitleText = styled.div`
   font-size: 1.5rem;
