@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ProgressBar from '../../components/common/ProgressBar';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import useRecruitState from '../../store/RecruitState';
-import ExitHeader from '../../components/header/ExitHeader';
+import progressStore from '../../store/CareerProgressState';
 
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
+  const { setStatus } = progressStore();
 
   const { setRecruitState } = useRecruitState();
 
@@ -34,6 +34,7 @@ const RegisterRecruitFieldPage = () => {
   };
 
   const navigateToMethod = () => {
+    setStatus(2);
     navigate('/register/recruit/method');
   };
 
@@ -42,7 +43,7 @@ const RegisterRecruitFieldPage = () => {
   }, [setRecruitState, selectedTags]);
 
   return (
-    <WrapContent>
+    <>
       <Toaster
         position="bottom-center"
         containerStyle={{
@@ -54,8 +55,8 @@ const RegisterRecruitFieldPage = () => {
           },
         }}
       />
-      <ExitHeader navigateTo={'/home'} />
-      <ProgressBar status={0} type={'nari'}></ProgressBar>
+      {/* <ExitHeader navigateTo={'/home'} />
+      <ProgressBar status={0} type={'nari'}></ProgressBar> */}
       <TitleText>
         어떤 분야의 동백님을 <br /> 찾으시나요?
         <p>분야는 3개까지 선택이 가능합니다.</p>
@@ -68,19 +69,15 @@ const RegisterRecruitFieldPage = () => {
       ></Category>
       <WrapButton>
         <Button
-          type={'nari'}
+          userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
           onClick={navigateToMethod}
         ></Button>
       </WrapButton>
-    </WrapContent>
+    </>
   );
 };
-
-const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
 
 const TitleText = styled.div`
   font-size: 1.5rem;

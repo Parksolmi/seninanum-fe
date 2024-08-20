@@ -4,17 +4,12 @@ import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import useCareerProfileState from '../../store/CareerProfileState';
-import { useOutletContext } from 'react-router-dom';
+import progressStore from '../../store/CareerProgressState';
 
-interface ProgressContextType {
-  incrementStatus: (status) => void;
-  decrementStatus: (status) => void;
-}
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
   const { setCareerProfileState } = useCareerProfileState();
-  const { incrementStatus, decrementStatus } =
-    useOutletContext<ProgressContextType>();
+  const { setStatus } = progressStore();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -22,11 +17,11 @@ const RegisterProfileIntroductionPage = () => {
   };
 
   const navigateToRegisterProfileCareer = () => {
-    decrementStatus(1);
+    setStatus(1);
     navigate('/register/profile/career');
   };
   const navigateToRegisterProfileCondition = () => {
-    incrementStatus(3);
+    setStatus(3);
     navigate('/register/profile/condition');
   };
 
