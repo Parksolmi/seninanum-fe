@@ -4,9 +4,9 @@ import styled from 'styled-components';
 const SignupIndexPage = () => {
   const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
   const REDIRECT_URI =
-    process.env.NODE_ENV === 'development'
-      ? process.env.REACT_APP_DEV_REDIRECT_URI
-      : process.env.REACT_APP_PRD_REDIRECT_URI;
+    process.env.NODE_ENV === 'production'
+      ? process.env.REACT_APP_PRD_REDIRECT_URI
+      : process.env.REACT_APP_DEV_REDIRECT_URI;
   const KAKAO_AUTH_PATH = 'https://kauth.kakao.com/oauth/authorize';
 
   const kakaoURL = `${KAKAO_AUTH_PATH}?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
