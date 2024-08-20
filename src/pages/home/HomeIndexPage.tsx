@@ -6,11 +6,6 @@ import HomeIndexPageNari from './HomeIndexPageNari';
 const HomeIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
 
-  //확인용
-  useEffect(() => {
-    console.log('현재 노드', process.env.NODE_ENV);
-  }, []);
-
   return (
     <>{userType === 'dong' ? <HomeIndexPageDong /> : <HomeIndexPageNari />}</>
   );
