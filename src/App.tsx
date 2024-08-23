@@ -24,6 +24,7 @@ import ChatPageDong from './pages/chat/ChatPageDong';
 import ChatPageNari from './pages/chat/ChatPageNari';
 import ViewProfileCareer from './pages/career/ViewProfileCareer';
 import ProgressLayout from './layouts/ProgressLayout';
+import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
+        <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}
         <Route path="/register/recruit" element={<ProgressLayout />}>
           <Route path="field" element={<RegisterRecruitFieldPage />} />
