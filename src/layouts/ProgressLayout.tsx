@@ -1,24 +1,32 @@
 import React from 'react';
-import { Outlet, useOutletContext } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-interface ProgressContextType {
-  incrementStatus: () => void;
-  decrementStatus: () => void;
-}
+import ExitHeader from '../components/header/ExitHeader';
+import ProgressBar from '../components/common/ProgressBar';
+import progressStore from '../store/CareerProgressState';
 
 const ProgressLayout: React.FC = () => {
-  const { incrementStatus, decrementStatus } =
-    useOutletContext<ProgressContextType>();
+  const { status, setStatus } = progressStore();
+
   return (
     <>
       <Container>
-        <Outlet context={{ incrementStatus, decrementStatus }} />
+        <ExitBtn>
+          <ExitHeader userType="dong" navigateTo={'/home'} />
+        </ExitBtn>
+        <ProgressBar status={status} type="dong" />
+        <Outlet context={setStatus} />
       </Container>
     </>
   );
 };
 const Container = styled.div`
+  padding: 1.3rem 1.1rem;
   display: flex;
   flex-direction: column;
+`;
+
+const ExitBtn = styled.div`
+  float: right;
 `;
 export default ProgressLayout;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import userTypeStore from '../../store/userTypeState';
 import HomeIndexPageDong from './HomeIndexPageDong';
 import HomeIndexPageNari from './HomeIndexPageNari';

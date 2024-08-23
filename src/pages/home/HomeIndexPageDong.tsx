@@ -5,6 +5,7 @@ import ShortcutButton from '../../components/home/ShortcutButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
+import progressStore from '../../store/CareerProgressState';
 import getRandomNumber from '../../utils/getRandomNumber';
 
 const USER_TYPE = 'dong';
@@ -20,6 +21,8 @@ const HomeIndexPageDong: React.FC = () => {
     setBannerIndex(getRandomNumber());
   }, [location.pathname]);
 
+  const { status } = progressStore();
+
   return (
     <>
       <LogoHeader />
@@ -29,7 +32,7 @@ const HomeIndexPageDong: React.FC = () => {
       ></BannerContainer>
 
       <ContentContainer>
-        <CareerProfileProgress status={0} />
+        <CareerProfileProgress status={status} />
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton

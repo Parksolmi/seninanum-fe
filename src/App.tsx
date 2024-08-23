@@ -23,8 +23,8 @@ import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 import ChatPageDong from './pages/chat/ChatPageDong';
 import ChatPageNari from './pages/chat/ChatPageNari';
 import ViewProfileCareer from './pages/career/ViewProfileCareer';
-import CareerIndexPage from './pages/career/CareerIndexPage';
 import ProgressLayout from './layouts/ProgressLayout';
+import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 
 const App: React.FC = () => {
   return (
@@ -36,19 +36,13 @@ const App: React.FC = () => {
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
+        <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}
-        <Route
-          path="/register/recruit/field"
-          element={<RegisterRecruitFieldPage />}
-        />
-        <Route
-          path="/register/recruit/method"
-          element={<RegisterRecruitMethodPage />}
-        />
-        <Route
-          path="/register/recruit/content"
-          element={<RegisterRecruitContentPage />}
-        />
+        <Route path="/register/recruit" element={<ProgressLayout />}>
+          <Route path="field" element={<RegisterRecruitFieldPage />} />
+          <Route path="method" element={<RegisterRecruitMethodPage />} />
+          <Route path="content" element={<RegisterRecruitContentPage />} />
+        </Route>
         {/* 구인글 조회 */}
         <Route path="/view/recruit/list" element={<ViewRecruitList />} />
         <Route
@@ -56,18 +50,13 @@ const App: React.FC = () => {
           element={<ViewRecruitDetail />}
         />
         {/* 경력 프로필 등록 */}
-        <Route path="/register/profile" element={<CareerIndexPage />}>
-          <Route element={<ProgressLayout />}>
-            <Route path="career" element={<RegisterProfileCareerPage />} />
-            <Route
-              path="introduction"
-              element={<RegisterProfileIntroductionPage />}
-            />
-            <Route
-              path="condition"
-              element={<RegisterProfileConditionPage />}
-            />
-          </Route>
+        <Route path="/register/profile" element={<ProgressLayout />}>
+          <Route path="career" element={<RegisterProfileCareerPage />} />
+          <Route
+            path="introduction"
+            element={<RegisterProfileIntroductionPage />}
+          />
+          <Route path="condition" element={<RegisterProfileConditionPage />} />
         </Route>
         <Route
           path="/register/profile/career/add"

@@ -5,17 +5,12 @@ import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import useCareerItemState from '../../store/CareerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
-import { useOutletContext } from 'react-router-dom';
-
-interface ProgressContextType {
-  incrementStatus: (status) => void;
-  decrementStatus: (status) => void;
-}
+import progressStore from '../../store/CareerProgressState';
 
 const RegisterProfileCareerPage = () => {
   const { careers } = useCareerItemState();
   const navigate = useNavigate();
-  const { incrementStatus } = useOutletContext<ProgressContextType>();
+  const { setStatus } = progressStore();
 
   // useEffect(() => {
   //   const fetchCareers = async () => {
@@ -71,7 +66,7 @@ const RegisterProfileCareerPage = () => {
   };
 
   const navigateToRegisterProfileIntroduction = () => {
-    incrementStatus(2);
+    setStatus(2);
     navigate('/register/profile/introduction');
   };
 
