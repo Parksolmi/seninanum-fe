@@ -32,16 +32,20 @@ const WalkThroughIndexPage = () => {
   const CustomNextArrow = (props) => {
     const { onClick } = props;
     return (
-      <WrapButtonContainer onClick={onClick}>
-        <WrapButton>
-          <Button
-            children={currentSlide === totalSlide - 1 ? '시작하기' : '다음'}
-            disabled={false}
-            userType={'dong'}
-            onClick={currentSlide === totalSlide - 1 ? navigateToHome : onClick}
-          ></Button>
-        </WrapButton>
-      </WrapButtonContainer>
+      <>
+        <WrapButtonContainer onClick={onClick}>
+          <WrapButton>
+            <Button
+              children={currentSlide === totalSlide - 1 ? '시작하기' : '다음'}
+              disabled={false}
+              userType={'dong'}
+              onClick={
+                currentSlide === totalSlide - 1 ? navigateToHome : onClick
+              }
+            ></Button>
+          </WrapButton>
+        </WrapButtonContainer>
+      </>
     );
   };
   const sliderSettings = {
@@ -73,6 +77,7 @@ const WalkThroughIndexPage = () => {
         <AssetArray userType={'dong'} index={3}></AssetArray>
         <AssetArray userType={'dong'} index={4}></AssetArray>
       </StyledSlider>
+      <GapButton />
     </WrapContent>
   );
 };
@@ -168,11 +173,15 @@ const TitleText = styled.div`
 
 const CustomDots = styled.div`
   width: 100%;
-  position: fixed;
-  top: 65%;
+  position: relative;
+  margin-top: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const GapButton = styled.div`
+  margin-bottom: 10rem;
 `;
 
 const WrapButtonContainer = styled.div`
@@ -182,6 +191,7 @@ const WrapButtonContainer = styled.div`
   right: 0;
   bottom: 0;
   padding: 1.1rem 1.1rem 4rem 1.1rem;
+  z-index: 10;
 `;
 
 const WrapButton = styled.div`
