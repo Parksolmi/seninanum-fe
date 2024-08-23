@@ -18,7 +18,7 @@ const WalkThroughIndexPage = () => {
   const navigateToHome = () => {
     navigate('/home');
   };
-  // 커스텀 이전 버튼
+
   const CustomPrevArrow = (props) => {
     const { onClick } = props;
     if (currentSlide === 0) return null;
@@ -29,7 +29,6 @@ const WalkThroughIndexPage = () => {
     );
   };
 
-  // 커스텀 다음 버튼
   const CustomNextArrow = (props) => {
     const { onClick } = props;
     return (
