@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';
@@ -9,7 +9,7 @@ import PrevHeader from '../../components/header/PrevHeader';
 const AgreePolicyPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { userState } = useUserState();
+  const { setUserState, userState } = useUserState();
 
   const [checkboxes, setCheckboxes] = useState({
     selectAll: false,
@@ -33,6 +33,12 @@ const AgreePolicyPage: React.FC = () => {
         madatory2: checked,
         option1: checked,
       });
+
+      setUserState({
+        agreeAgePolicy: true,
+        agreeServicePolicy: true,
+        agreeMarketingPolicy: true,
+      });
     } else {
       const newCheckboxes = { ...checkboxes, [id]: checked };
       const allMandatoryChecked =
@@ -42,11 +48,18 @@ const AgreePolicyPage: React.FC = () => {
         selectAll: allMandatoryChecked,
       });
     }
+
+    console.log();
   };
 
   const onClickBtn = () => {
     navigate('/signup/profile');
   };
+
+  // 확인용
+  useEffect(() => {
+    console.log('사용자 정보 >>>>>>', userState);
+  }, [userState]);
 
   return (
     <WrapContent>

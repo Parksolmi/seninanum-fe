@@ -1,27 +1,34 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserTypeButton from '../../components/signup/UserTypeButton';
 import Button from '../../components/common/Button';
-import useUserState from '../../store/UserState';
+import useUserStore from '../../store/UserState';
 import { useNavigate } from 'react-router-dom';
 import PrevHeader from '../../components/header/PrevHeader';
 
 const ChooseTypePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { setUserState } = useUserState();
+  const { setUserState, userState } = useUserStore();
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const isDisabled = selectedType === 'null';
 
   const handleSelectType = (type: string) => {
-    setUserState({ userType: type });
+    setUserState({
+      userType: type,
+    });
     setSelectedType((prevSelected) => (prevSelected === type ? null : type));
   };
 
   const navigateToPolicy = () => {
     navigate('/signup/policy');
   };
+
+  //확인용
+  useEffect(() => {
+    console.log('사용자 정보 >>>>>>', userState);
+  }, [userState]);
 
   return (
     <WrapContent>

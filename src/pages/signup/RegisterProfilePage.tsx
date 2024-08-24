@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/UserState';
@@ -9,15 +9,16 @@ import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import PrevHeader from '../../components/header/PrevHeader';
 
+interface Inputs {
+  nickname: string;
+  gender: string;
+  birthYear: string;
+}
+
 const RegisterProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
   const { userState } = useUserState();
-  interface Inputs {
-    nickname: string;
-    gender: string;
-    birthYear: string;
-  }
 
   const {
     register,
@@ -27,6 +28,7 @@ const RegisterProfilePage: React.FC = () => {
     shouldUseNativeValidation: true,
   });
 
+  //회원가입
   const onSubmit = async (data) => {
     try {
       await instance.post('/auth/signup', {

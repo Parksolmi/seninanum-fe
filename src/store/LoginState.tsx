@@ -6,14 +6,16 @@ export const login = async (value) => {
       userId: value,
     });
 
-    const token = response.data.token;
+    if (response.data.message === 'LOGIN') {
+      const accessToken = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
 
-    localStorage.setItem('token', token);
-    localStorage.removeItem('userState');
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    }
 
-    window.location.href = '/home';
+    return response.data.message;
   } catch (err) {
-    window.location.href = '/signup/usertype';
     console.log(err);
   }
 };

@@ -1,30 +1,36 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { login } from '../../store/LoginState';
-import useUserState from '../../store/UserState';
+import useUserStore from '../../store/UserState';
 import { instance } from '../../api/instance';
 import { SyncLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom';
 
 const KakaoAuthHandle = () => {
-  const { setUserState } = useUserState();
+  const navigate = useNavigate();
+  const { setUserState } = useUserStore();
 
   useEffect(() => {
     let code = new URL(window.location.href).searchParams.get('code');
 
+    // 카카오 사용자 정보 요청
     const kakaoLogin = async () => {
       try {
-        const response = await instance.get(`/auth/kakao/token?code=${code}`);
+        const response = await instance.get(`/auth/kakao?code=${code}`);
 
         let userData = response.data;
         console.log(response.data);
 
+        // KakaoAuthHandle
         setUserState({
           userId: userData.id,
           nickname: userData.kakao_account.profile.nickname,
           profile: userData.kakao_account.profile.profile_image_url,
         });
 
-        login(userData.id);
+        const userState = await login(userData.id);
+        if (userState === 'LOGIN') navigate('/home');
+        else navigate('/signup/usertype');
       } catch (err) {
         console.log('error', err);
       }
