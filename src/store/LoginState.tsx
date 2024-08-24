@@ -1,4 +1,4 @@
-import { convertCompilerOptionsFromJson } from 'typescript';
+import axios from 'axios';
 import { instance } from '../api/instance';
 
 export const login = async (value: any) => {
@@ -19,10 +19,13 @@ export const login = async (value: any) => {
 };
 
 export const refresh = async (value: any) => {
-  const response = await instance.post('/refresh', {
-    refreshToken: value.refreshToken,
-  });
+  const response = await axios.post(
+    `${process.env.REACT_APP_BACKEND_API_URL}/auth/refresh`,
+    {
+      refreshToken: value.refreshToken,
+    }
+  );
 
-  const { accessToken } = response.data;
+  const accessToken = response.data.accessToken;
   localStorage.setItem('accessToken', accessToken);
 };

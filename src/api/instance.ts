@@ -23,7 +23,7 @@ instance.interceptors.response.use(
     const message = error?.response?.data.message;
 
     // accessToken 만료
-    if (status === 403 && message === 'JWT has expired') {
+    if (status === 401 && message === '액세스 토큰이 만료되었습니다.') {
       // refreshToken으로 accessToken 갱신
       await refresh({
         refreshToken: localStorage.getItem('refreshToken'),
