@@ -18,22 +18,24 @@ interface UserStateType {
   setUserState: (userState: Partial<UserState>) => void;
 }
 
-const useUserStore = create<UserStateType>((set) => ({
-  userState: {
-    userId: '',
-    userType: '',
-    nickname: '',
-    gender: '',
-    birthYear: '',
-    profile: '',
-    agreeAgePolicy: false,
-    agreeServicePolicy: false,
-    agreeMarketingPolicy: false,
-  },
-  setUserState: (userState: Partial<UserState>) =>
-    set((state) => ({
-      userState: { ...state.userState, ...userState },
-    })),
-}));
+const useUserStore = create<UserStateType>()(
+  devtools((set) => ({
+    userState: {
+      userId: '',
+      userType: '',
+      nickname: '',
+      gender: '',
+      birthYear: '',
+      profile: '',
+      agreeAgePolicy: false,
+      agreeServicePolicy: false,
+      agreeMarketingPolicy: false,
+    },
+    setUserState: (userState: Partial<UserState>) =>
+      set((state) => ({
+        userState: { ...state.userState, ...userState },
+      })),
+  }))
+);
 
 export default useUserStore;

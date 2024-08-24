@@ -13,15 +13,15 @@ const AgreePolicyPage: React.FC = () => {
 
   const [checkboxes, setCheckboxes] = useState({
     selectAll: false,
-    madatory1: false,
-    madatory2: false,
-    option1: false,
+    agreeAgePolicy: false,
+    agreeServicePolicy: false,
+    agreeMarketingPolicy: false,
   });
 
   const isDisabled =
     checkboxes.selectAll === false ||
-    checkboxes.madatory1 === false ||
-    checkboxes.madatory2 === false;
+    checkboxes.agreeAgePolicy === false ||
+    checkboxes.agreeServicePolicy === false;
 
   const handleSelectChange = (e) => {
     const { id, checked } = e.target;
@@ -29,37 +29,28 @@ const AgreePolicyPage: React.FC = () => {
     if (id === 'selectAll') {
       setCheckboxes({
         selectAll: checked,
-        madatory1: checked,
-        madatory2: checked,
-        option1: checked,
-      });
-
-      setUserState({
-        agreeAgePolicy: true,
-        agreeServicePolicy: true,
-        agreeMarketingPolicy: true,
+        agreeAgePolicy: checked,
+        agreeServicePolicy: checked,
+        agreeMarketingPolicy: checked,
       });
     } else {
       const newCheckboxes = { ...checkboxes, [id]: checked };
       const allMandatoryChecked =
-        newCheckboxes.madatory1 && newCheckboxes.madatory2;
+        newCheckboxes.agreeAgePolicy && newCheckboxes.agreeServicePolicy;
       setCheckboxes({
         ...newCheckboxes,
         selectAll: allMandatoryChecked,
       });
     }
 
-    console.log();
+    setUserState({
+      [e.target.id]: e.target.checked,
+    });
   };
 
   const onClickBtn = () => {
     navigate('/signup/profile');
   };
-
-  // 확인용
-  useEffect(() => {
-    console.log('사용자 정보 >>>>>>', userState);
-  }, [userState]);
 
   return (
     <WrapContent>
@@ -75,23 +66,23 @@ const AgreePolicyPage: React.FC = () => {
         />
         <SplitLine />
         <CheckBox
-          id="madatory1"
+          id="agreeAgePolicy"
           label="(필수) 만 14세 이상입니다"
-          checked={checkboxes.madatory1}
+          checked={checkboxes.agreeAgePolicy}
           onChange={handleSelectChange}
           userType={userState.userType}
         />
         <CheckBox
-          id="madatory2"
+          id="agreeServicePolicy"
           label="(필수) 이용약관"
-          checked={checkboxes.madatory2}
+          checked={checkboxes.agreeServicePolicy}
           onChange={handleSelectChange}
           userType={userState.userType}
         />
         <CheckBox
-          id="option1"
+          id="agreeMarketingPolicy"
           label="(선택) 마케팅 수신동의"
-          checked={checkboxes.option1}
+          checked={checkboxes.agreeMarketingPolicy}
           onChange={handleSelectChange}
           userType={userState.userType}
         />

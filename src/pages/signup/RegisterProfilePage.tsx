@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/UserState';
@@ -58,6 +58,7 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
+          defaultValue={userState.nickname ? userState.nickname : ''}
           register={register('nickname', {
             validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
           })}

@@ -9,7 +9,7 @@ import PrevHeader from '../../components/header/PrevHeader';
 const ChooseTypePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { setUserState, userState } = useUserStore();
+  const { setUserState } = useUserStore();
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const isDisabled = selectedType === 'null';
@@ -24,11 +24,6 @@ const ChooseTypePage: React.FC = () => {
   const navigateToPolicy = () => {
     navigate('/signup/policy');
   };
-
-  //확인용
-  useEffect(() => {
-    console.log('사용자 정보 >>>>>>', userState);
-  }, [userState]);
 
   return (
     <WrapContent>
