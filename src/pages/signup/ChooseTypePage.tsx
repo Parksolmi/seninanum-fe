@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import UserTypeButton from '../../components/signup/UserTypeButton';
 import Button from '../../components/common/Button';
 import useUserStore from '../../store/UserState';

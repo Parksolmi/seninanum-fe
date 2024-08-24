@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';

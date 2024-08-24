@@ -36,7 +36,7 @@ const KakaoAuthHandle = () => {
       }
     };
     kakaoLogin();
-  }, [setUserState]);
+  }, [setUserState, navigate]);
 
   return (
     <WrapContent>
