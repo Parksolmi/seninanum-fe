@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
 interface CareerProfileState {
   introduce: string;
@@ -18,31 +18,24 @@ interface CareerProfileStateType {
 }
 
 const useCareerProfileState = create<CareerProfileStateType>()(
-  devtools(
-    persist(
-      (set) => ({
+  devtools((set) => ({
+    careerProfileState: {
+      introduce: '',
+      age: '',
+      field: '',
+      service: '',
+      method: '',
+      region: '',
+      priceType: '',
+      price: -1,
+    },
+    setCareerProfileState: (careerProfileState) =>
+      set((state) => ({
         careerProfileState: {
-          introduce: '',
-          age: '',
-          field: '',
-          service: '',
-          method: '',
-          region: '',
-          priceType: '',
-          price: -1,
+          ...state.careerProfileState,
+          ...careerProfileState,
         },
-        setCareerProfileState: (careerProfileState) =>
-          set((state) => ({
-            careerProfileState: {
-              ...state.careerProfileState,
-              ...careerProfileState,
-            },
-          })),
-      }),
-      {
-        name: 'careerProfileState',
-      }
-    )
-  )
+      })),
+  }))
 );
 export default useCareerProfileState;

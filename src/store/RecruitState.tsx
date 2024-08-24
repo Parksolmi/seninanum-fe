@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
 interface RecruitState {
   title: string;
@@ -16,28 +16,21 @@ interface RecruitStateType {
 }
 
 const useRecruitState = create<RecruitStateType>()(
-  devtools(
-    persist(
-      (set) => ({
-        recruitState: {
-          title: '',
-          content: '',
-          method: '',
-          priceType: '',
-          price: -1,
-          region: '',
-          field: '',
-        },
-        setRecruitState: (recruitState) =>
-          set((state) => ({
-            recruitState: { ...state.recruitState, ...recruitState },
-          })),
-      }),
-      {
-        name: 'recruitState',
-      }
-    )
-  )
+  devtools((set) => ({
+    recruitState: {
+      title: '',
+      content: '',
+      method: '',
+      priceType: '',
+      price: -1,
+      region: '',
+      field: '',
+    },
+    setRecruitState: (recruitState) =>
+      set((state) => ({
+        recruitState: { ...state.recruitState, ...recruitState },
+      })),
+  }))
 );
 
 export default useRecruitState;
