@@ -9,15 +9,16 @@ import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import PrevHeader from '../../components/header/PrevHeader';
 
+interface Inputs {
+  nickname: string;
+  gender: string;
+  birthYear: string;
+}
+
 const RegisterProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
   const { userState } = useUserState();
-  interface Inputs {
-    nickname: string;
-    gender: string;
-    birthYear: string;
-  }
 
   const {
     register,
@@ -27,6 +28,7 @@ const RegisterProfilePage: React.FC = () => {
     shouldUseNativeValidation: true,
   });
 
+  //회원가입
   const onSubmit = async (data) => {
     try {
       await instance.post('/auth/signup', {
@@ -56,6 +58,7 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
+          defaultValue={userState.nickname ? userState.nickname : ''}
           register={register('nickname', {
             validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
           })}

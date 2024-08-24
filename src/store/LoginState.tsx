@@ -1,19 +1,31 @@
+import axios from 'axios';
 import { instance } from '../api/instance';
 
-export const login = async (value) => {
+export const login = async (value: any) => {
   try {
     const response = await instance.post('/auth/login', {
       userId: value,
     });
 
-    const token = response.data.token;
+    if (response.data.message === 'LOGIN') {
+      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
+    }
 
-    localStorage.setItem('token', token);
-    localStorage.removeItem('userState');
-
-    window.location.href = '/home';
+    return response.data.message;
   } catch (err) {
-    window.location.href = '/signup/usertype';
     console.log(err);
   }
+};
+
+export const refresh = async (value: any) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_BACKEND_API_URL}/auth/refresh`,
+    {
+      refreshToken: value.refreshToken,
+    }
+  );
+
+  const accessToken = response.data.accessToken;
+  localStorage.setItem('accessToken', accessToken);
 };

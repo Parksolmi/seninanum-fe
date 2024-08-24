@@ -14,7 +14,7 @@ const userTypeStore = create<UserTypeState>()(
         setUserType: (type: string) => set({ userType: type }),
       }),
       {
-        name: 'userTypeStae',
+        name: 'userTypeState',
       }
     )
   )

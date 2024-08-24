@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
 interface UserState {
   userId: string;
@@ -8,34 +8,34 @@ interface UserState {
   gender: string;
   birthYear: string;
   profile: string;
+  agreeAgePolicy: boolean;
+  agreeServicePolicy: boolean;
+  agreeMarketingPolicy: boolean;
 }
+
 interface UserStateType {
   userState: UserState;
   setUserState: (userState: Partial<UserState>) => void;
 }
 
-const useUserState = create<UserStateType>()(
-  devtools(
-    persist(
-      (set) => ({
-        userState: {
-          userId: '',
-          userType: '',
-          nickname: '',
-          gender: '',
-          birthYear: '',
-          profile: '',
-        },
-        setUserState: (userState) =>
-          set((state) => ({
-            userState: { ...state.userState, ...userState },
-          })),
-      }),
-      {
-        name: 'userState',
-      }
-    )
-  )
+const useUserStore = create<UserStateType>()(
+  devtools((set) => ({
+    userState: {
+      userId: '',
+      userType: '',
+      nickname: '',
+      gender: '',
+      birthYear: '',
+      profile: '',
+      agreeAgePolicy: false,
+      agreeServicePolicy: false,
+      agreeMarketingPolicy: false,
+    },
+    setUserState: (userState: Partial<UserState>) =>
+      set((state) => ({
+        userState: { ...state.userState, ...userState },
+      })),
+  }))
 );
 
-export default useUserState;
+export default useUserStore;
