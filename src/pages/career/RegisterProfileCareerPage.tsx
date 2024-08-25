@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useCareerItemState from '../../store/CareerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import progressStore from '../../store/CareerProgressState';
+import { calcTotalCareer } from '../../utils/calcTotalCareer';
 
 const RegisterProfileCareerPage = () => {
   const { careers } = useCareerItemState();
@@ -33,33 +34,6 @@ const RegisterProfileCareerPage = () => {
   //   }
   // };
   const onDelete = () => {};
-  // const calculateTotalPeriod = (): string => {
-  //   let totalYears = 0;
-  //   let totalMonths = 0;
-
-  //   careers.forEach((career) => {
-  //     const startYear = career.startYear;
-  //     const startMonth = career.startMonth;
-  //     const endYear = career.endYear;
-  //     const endMonth = career.endMonth;
-
-  //     let years = endYear - startYear;
-  //     let months = endMonth - startMonth;
-
-  //     if (months < 0) {
-  //       years -= 1;
-  //       months += 12;
-  //     }
-
-  //     totalYears += years;
-  //     totalMonths += months;
-  //   });
-
-  //   totalYears += Math.floor(totalMonths / 12);
-  //   totalMonths = totalMonths % 12;
-
-  //   return `총 경력 ${totalYears}년 ${totalMonths}개월`;
-  // };
 
   const navigateToAddPage = () => {
     navigate('/register/profile/career/add');
@@ -75,7 +49,7 @@ const RegisterProfileCareerPage = () => {
       <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
       <TotalCareer>
         <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-        <TotalCareerText></TotalCareerText>
+        <TotalCareerText>{calcTotalCareer(careers)}</TotalCareerText>
       </TotalCareer>
       {careers.map((career) => (
         <CareerDetail

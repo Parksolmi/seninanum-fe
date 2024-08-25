@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { calcTotalCareer } from '../utils/calcTotalCareer';
 
-interface CareerItemState {
+export interface CareerItemState {
   title: string;
   startYear: number;
   startMonth: number;
@@ -32,9 +33,17 @@ const useCareerItemState = create<CareerAddState>()(
     careers: [],
     setCareers: (careers) => set({ careers }),
     addCareer: (career) =>
-      set((state) => ({
-        careers: [...state.careers, career],
-      })),
+      set((state) => {
+        const newCareers = [...state.careers, career];
+        const totalPeriod = calcTotalCareer(newCareers);
+
+        return {
+          careers: newCareers.map((c) => ({
+            ...c,
+            period: totalPeriod,
+          })),
+        };
+      }),
     //   removeCareer: (careerId) =>
     //     set((state) => ({
     //       careers: state.careers.filter(
