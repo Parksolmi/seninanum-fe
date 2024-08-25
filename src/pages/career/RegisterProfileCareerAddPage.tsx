@@ -6,6 +6,7 @@ import Button from '../../components/common/Button';
 import TextArea from '../../components/common/TextArea';
 import useCareerItemState from '../../store/CareerItemState';
 import { instance } from '../../api/instance';
+import toast from 'react-hot-toast';
 
 const RegisterProfileCareerAddPage = () => {
   const navigate = useNavigate();
@@ -18,7 +19,19 @@ const RegisterProfileCareerAddPage = () => {
   const [period, setPeriod] = useState('');
   const [content, setContent] = useState('');
 
+  const validatePeriod = () => {
+    const startDate = new Date(startYear, startMonth - 1);
+    const endDate = new Date(endYear, endMonth - 1);
+    return startDate <= endDate;
+  };
+
   const addNewCareer = async () => {
+    if (!validatePeriod()) {
+      toast.error(
+        '기간을 다시 입력해주세요. (입사일이 퇴사일보다 늦을 수 없습니다.)'
+      );
+      return;
+    }
     const newCareer = {
       title,
       startYear,
