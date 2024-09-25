@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ const TabBar = () => {
   const { userType, setProfileStep, setUserType } = userTypeStore();
 
   // 유저 타입 가져오기
-  const getUserType = async () => {
+  const getUserType = useCallback(async () => {
     try {
       const res = await instance.get('/user/userType');
       setUserType(res.data.userType);
@@ -29,7 +29,7 @@ const TabBar = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [setUserType, setProfileStep]);
 
   const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
@@ -77,7 +77,7 @@ const TabBar = () => {
 
   useEffect(() => {
     getUserType();
-  }, []);
+  }, [getUserType]);
 
   return (
     <StyledNav>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
@@ -147,7 +147,7 @@ const RegisterProfileCareerPage = () => {
       }
     };
     fetchCareerItems();
-  }, [profileId]);
+  }, [profileId, setCareers]);
 
   useEffect(() => {
     setStatus(1);
