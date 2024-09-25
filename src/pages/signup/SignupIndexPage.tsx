@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const SignupIndexPage = () => {
@@ -14,6 +14,14 @@ const SignupIndexPage = () => {
   const handleLogin = () => {
     window.location.href = kakaoURL;
   };
+
+  //상태바 색상 변경
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#FF314A');
+    }
+  }, []);
 
   return (
     <Background>

@@ -3,14 +3,18 @@ import styled from 'styled-components';
 import MyIndexPageDong from './MyIndexPageDong';
 import MyIndexPageNari from './MyIndexPageNari';
 import userTypeStore from '../../store/userState';
+import TitleHeader from '../../components/header/TitleHeader';
 
 const MyIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
 
   return (
-    <WrapContent>
-      {userType === 'dong' ? <MyIndexPageDong /> : <MyIndexPageNari />}
-    </WrapContent>
+    <>
+      <TitleHeader title="내 정보" isShowAlert={true} />
+      <WrapContent>
+        {userType === 'dong' ? <MyIndexPageDong /> : <MyIndexPageNari />}
+      </WrapContent>
+    </>
   );
 };
 const WrapContent = styled.div`

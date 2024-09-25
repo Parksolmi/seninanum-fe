@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/home/ShortcutButton';
 import SummaryCard from '../../components/common/SummaryCard';
@@ -9,7 +9,6 @@ import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 import LogoHeader from '../../components/header/LogoHeader';
 import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
-import getRandomNumber from '../../utils/getRandomNumber';
 
 interface CareerCard {
   profileId: number;
@@ -25,15 +24,7 @@ const CARD_TYPE = 'dong';
 
 const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  //const { profileId } = useParams<{ profileId: string }>();
-  const [bannerIndex, setBannerIndex] = useState(getRandomNumber());
   const [profile, setProfile] = useState<CareerCard[]>([]);
-
-  useEffect(() => {
-    setBannerIndex(getRandomNumber());
-  }, [location.pathname]);
 
   useEffect(() => {
     const getBriefProfile = async () => {
@@ -57,12 +48,19 @@ const HomeIndexPageNari: React.FC = () => {
       }
     };
     getBriefProfile();
+
+    //상태바 색상 변경
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#FF9085');
+    }
   }, []);
+
   return (
     <>
       <LogoHeader />
       <BannerContainer
-        src={`/assets/home/banner-image${bannerIndex}.svg`}
+        src={`/assets/home/banner-image-nari.png`}
         alt="배너이미지"
       ></BannerContainer>
       <WrapContent>
