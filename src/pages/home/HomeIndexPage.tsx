@@ -12,10 +12,10 @@ const HomeIndexPage: React.FC = () => {
   useEffect(() => {
     const fetchProfileProgress = async () => {
       try {
-        const response = await instance.get(`/userType`);
-        setProgressStep(response.data.career);
+        const response = await instance.get(`/user/userType`);
+        setProgressStep(response.data.career.progressStep);
       } catch (error) {
-        console.error('경력프로필 조회에 실패하였습니다.');
+        console.log(error);
       }
     };
 
