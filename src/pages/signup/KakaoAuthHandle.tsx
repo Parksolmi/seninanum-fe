@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { login } from '../../store/LoginState';
+import { login } from '../../store/loginState';
 import useUserStore from '../../store/userSignupState';
 import { instance } from '../../api/instance';
 import { SyncLoader } from 'react-spinners';

@@ -3,10 +3,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
-import progressStore from '../store/CareerProgressState';
+import progressStore from '../store/careerProgressState';
 import { instance } from '../api/instance';
 import userTypeStore from '../store/userState';
-import useCareerProfileState from '../store/CareerProfileState';
+import useCareerProfileState from '../store/careerProfileState';
 
 const ProgressLayout: React.FC = () => {
   const { pathname } = useLocation();

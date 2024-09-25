@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import useFieldState from '../../store/FieldState';
+import useFieldState from '../../store/fieldState';
 
 interface FieldsProps {
   list: string[];

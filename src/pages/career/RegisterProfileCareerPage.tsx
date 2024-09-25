@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
-import useCareerItemState from '../../store/CareerItemState';
+import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { instance } from '../../api/instance';
