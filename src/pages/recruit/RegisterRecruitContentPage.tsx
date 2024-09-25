@@ -5,9 +5,9 @@ import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import InputPrice from '../../components/common/InputPrice';
 import { useNavigate } from 'react-router-dom';
-import useRecruitState from '../../store/RecruitState';
+import useRecruitState from '../../store/recruitState';
 import { instance } from '../../api/instance';
-import progressStore from '../../store/CareerProgressState';
+import progressStore from '../../store/careerProgressState';
 
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();

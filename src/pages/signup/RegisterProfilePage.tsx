@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/userSignupState';
 import { instance } from '../../api/instance';
-import { login } from '../../store/LoginState';
+import { login } from '../../store/loginState';
 import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';

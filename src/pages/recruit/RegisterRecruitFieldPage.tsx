@@ -4,8 +4,8 @@ import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import useRecruitState from '../../store/RecruitState';
-import progressStore from '../../store/CareerProgressState';
+import useRecruitState from '../../store/recruitState';
+import progressStore from '../../store/careerProgressState';
 import { useToast } from '../../hooks/useToast';
 
 const RegisterRecruitFieldPage = () => {
