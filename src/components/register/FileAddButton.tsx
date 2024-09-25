@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface FileProps {
@@ -6,11 +6,11 @@ interface FileProps {
   addText: string;
 }
 const FileAddButton = ({ onFileUpload, addText }: FileProps) => {
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      // setFile(e.target.files[0]);
       onFileUpload(e.target.files[0]);
     }
   };
