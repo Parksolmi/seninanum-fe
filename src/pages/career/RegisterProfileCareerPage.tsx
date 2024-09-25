@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
@@ -35,20 +35,14 @@ const RegisterProfileCareerPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const profileId = pathname.split('/').pop() ?? null;
-
+  const [careerId, setCareerId] = useState<number>(0);
   const { careers, setCareers } = useCareerItemState();
   const {
     setStatus,
     careerProfileState,
-    setCareerProfileState,
+    // setCareerProfileState,
     calculateProgress,
   } = useOutletContext<OutletContext>();
-
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const cancelModal = () => setIsOpenModal(false);
-  const confirmModal = () => {
-    handleFileRemove();
-  };
 
   const [fileName, setFileName] = useState<string>(
     careerProfileState.fileName || ''
@@ -60,14 +54,34 @@ const RegisterProfileCareerPage = () => {
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
+  // 경력 항목 조회 함수
+  const fetchCareerItems = useCallback(async () => {
+    try {
+      const response = await instance.get(`/career/item/list/${profileId}`);
+      setCareers(response.data);
+    } catch (error) {
+      console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
+    }
+  }, [profileId, setCareers]);
+
+  // 컴포넌트 마운트 시 경력 항목 조회
+  useEffect(() => {
+    fetchCareerItems();
+  }, [fetchCareerItems]);
+
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item`, { data: { careerId } });
+      // 경력 삭제 후 목록 다시 조회
+      await fetchCareerItems();
     } catch (error) {
-      console.error('경력항목 삭제 중 에러가 발생했습니다.', error);
+      console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
     }
   };
 
+  const handleAddCareer = () => {
+    navigate('/register/profile/career/add', { state: { profileId } });
+  };
   const updateCareer = async () => {
     try {
       const res = instance.patch('/career', {
@@ -114,20 +128,20 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  const handleFileRemove = async () => {
-    try {
-      await instance.delete(`/career/file/${profileId}`);
-      setFileName('');
-      setFileProgress('');
-      alert('파일이 성공적으로 삭제되었습니다.');
-      setCareerProfileState({
-        progressStep: careerProfileState.progressStep - 1,
-      });
-    } catch (error) {
-      console.error('파일 삭제 중 오류가 발생했습니다.', error);
-      alert('파일 삭제 중 오류가 발생했습니다.');
-    }
-  };
+  // const handleFileRemove = async () => {
+  //   try {
+  //     await instance.delete(`/career/file/${profileId}`);
+  //     setFileName('');
+  //     setFileProgress('');
+  //     alert('파일이 성공적으로 삭제되었습니다.');
+  //     setCareerProfileState({
+  //       progressStep: careerProfileState.progressStep - 1,
+  //     });
+  //   } catch (error) {
+  //     console.error('파일 삭제 중 오류가 발생했습니다.', error);
+  //     alert('파일 삭제 중 오류가 발생했습니다.');
+  //   }
+  // };
 
   const handleNextBtn = () => {
     //중간저장
@@ -135,19 +149,16 @@ const RegisterProfileCareerPage = () => {
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
-
-  // 컴포넌트 마운트 시 경력 항목 조회
-  useEffect(() => {
-    const fetchCareerItems = async () => {
-      try {
-        const response = await instance.get(`/career/item/list/${profileId}`);
-        setCareers(response.data);
-      } catch (error) {
-        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-      }
-    };
-    fetchCareerItems();
-  }, [profileId, setCareers]);
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+  const cancelModal = () => setIsOpenModal(false);
+  const removeCareer = (careerId) => {
+    setIsOpenModal(true);
+    setCareerId(careerId);
+  };
+  const confirmModal = () => {
+    handleRemoveCareer(careerId);
+    setIsOpenModal(false);
+  };
 
   useEffect(() => {
     setStatus(1);
@@ -179,10 +190,10 @@ const RegisterProfileCareerPage = () => {
           endYear={career.endYear}
           endMonth={career.endMonth}
           content={career.content}
-          onDelete={() => handleRemoveCareer(career.careerId)}
+          onDelete={() => removeCareer(career.careerId)}
         />
       ))}
-      <ButtonBox onClick={() => navigate(`/register/profile/career/add`)}>
+      <ButtonBox onClick={handleAddCareer}>
         <CareerAddButton addText={'경력 추가'}></CareerAddButton>
       </ButtonBox>
       <LineStyle />
