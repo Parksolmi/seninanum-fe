@@ -75,6 +75,10 @@ const TabBar = () => {
     setCurrentPage(location.pathname);
   }, [location]);
 
+  useEffect(() => {
+    getUserType();
+  }, []);
+
   return (
     <StyledNav>
       <WrapItem>

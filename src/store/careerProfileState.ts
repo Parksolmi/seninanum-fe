@@ -8,7 +8,7 @@ interface CareerProfileState {
   fileProgress: string;
   introduce: string;
   age: string;
-  field: string;
+  field: string; // 이게뭐야?
   service: string;
   method: string;
   region: string;

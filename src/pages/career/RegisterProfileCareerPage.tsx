@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
-import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import useCareerItemState from '../../store/CareerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
@@ -15,7 +15,6 @@ import Modal from '../../components/common/Modal';
 interface OutletContext {
   setStatus: (status: number) => void;
   careerProfileState: {
-    profileId: number;
     progressStep: number;
     fileName: string;
     fileProgress: string;
@@ -23,7 +22,6 @@ interface OutletContext {
   };
   setCareerProfileState: (
     state: Partial<{
-      profileId: number;
       progressStep: number;
       fileName: string;
       fileProgress: string;
@@ -32,7 +30,12 @@ interface OutletContext {
   ) => void;
   calculateProgress: () => void;
 }
+
 const RegisterProfileCareerPage = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const profileId = pathname.split('/').pop() ?? null;
+
   const { careers, setCareers } = useCareerItemState();
   const {
     setStatus,
@@ -40,8 +43,7 @@ const RegisterProfileCareerPage = () => {
     setCareerProfileState,
     calculateProgress,
   } = useOutletContext<OutletContext>();
-  const navigate = useNavigate();
-  const { profileId } = useParams<{ profileId: string }>();
+
   const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
   const cancelModal = () => setIsOpenModal(false);
   const confirmModal = () => {
@@ -55,19 +57,9 @@ const RegisterProfileCareerPage = () => {
     careerProfileState.fileProgress || '제출'
   );
 
-  const fetchCareerItems = useCallback(async () => {
-    try {
-      const response = await instance.get(`/career/item/list/${profileId}`);
-      setCareers(response.data);
-    } catch (error) {
-      console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-    }
-  }, [profileId, setCareers]);
-
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item`, { data: { careerId } });
-      fetchCareerItems();
     } catch (error) {
       console.error('경력항목 삭제 중 에러가 발생했습니다.', error);
     }
@@ -75,8 +67,16 @@ const RegisterProfileCareerPage = () => {
 
   // 컴포넌트 마운트 시 경력 항목 조회
   useEffect(() => {
+    const fetchCareerItems = async () => {
+      try {
+        const response = await instance.get(`/career/item/list/${profileId}`);
+        setCareers(response.data);
+      } catch (error) {
+        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
+      }
+    };
     fetchCareerItems();
-  }, [fetchCareerItems]);
+  }, [profileId]);
 
   const updateCareer = async () => {
     try {
@@ -128,16 +128,15 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  const navigateToAddPage = () => {
-    navigate(`/register/profile/career/add`);
-  };
-
-  const navigateToRegisterProfileIntroduction = () => {
+  const handleNextBtn = () => {
+    //토스트 메세지
     setTimeout(() => {
       toast.success('자동저장되었습니다.');
     }, 0);
     toast.dismiss();
     updateCareer();
+
+    //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
 
@@ -184,7 +183,7 @@ const RegisterProfileCareerPage = () => {
           onDelete={() => handleRemoveCareer(career.careerId)}
         />
       ))}
-      <ButtonBox onClick={navigateToAddPage}>
+      <ButtonBox onClick={() => navigate(`/register/profile/career/add`)}>
         <CareerAddButton addText={'경력 추가'}></CareerAddButton>
       </ButtonBox>
       <LineStyle />
@@ -213,7 +212,7 @@ const RegisterProfileCareerPage = () => {
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={navigateToRegisterProfileIntroduction}
+            onClick={handleNextBtn}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
