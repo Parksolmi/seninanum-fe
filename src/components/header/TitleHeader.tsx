@@ -42,7 +42,7 @@ const TitleText = styled.div`
   flex: 1;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.03rem;
 `;
 
