@@ -25,7 +25,6 @@ const TabBar = () => {
       const res = await instance.get('/user/userType');
       setUserType(res.data.userType);
       setProfileStep(res.data.career.progressStep);
-      console.log(res.data.career.progressStep);
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,32 @@
 import React from 'react';
+import styled from 'styled-components';
+import BasicProfile from '../../components/mypage/BasicProfile';
+import GroupMenu from '../../components/mypage/GroupMenu';
+import PayMenu from '../../components/mypage/PayMenu';
+
 const MyIndexPageNari: React.FC = () => {
-  return <h1>마이페이지-나리</h1>;
+  return (
+    <>
+      <WrapProfile>
+        <BasicProfile userType="nari" />
+      </WrapProfile>
+      <WrapMenu>
+        <PayMenu userType="nari" />
+        <GroupMenu />
+      </WrapMenu>
+    </>
+  );
 };
+
+const WrapProfile = styled.div`
+  margin-top: 1.2rem;
+  margin-bottom: 4rem;
+`;
+const WrapMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  margin-bottom: 2rem;
+`;
+
 export default MyIndexPageNari;
