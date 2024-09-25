@@ -9,8 +9,8 @@ import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { instance } from '../../api/instance';
 import CareerAddButton from '../../components/register/CareerAddButton';
 import CareerFileBox from '../../components/register/CareerFileBox';
-import toast, { Toaster } from 'react-hot-toast';
 import Modal from '../../components/common/Modal';
+import { usePromiseToast } from '../../hooks/useToast';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -57,6 +57,9 @@ const RegisterProfileCareerPage = () => {
     careerProfileState.fileProgress || '제출'
   );
 
+  //토스트 메세지
+  const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
+
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item`, { data: { careerId } });
@@ -65,30 +68,28 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  // 컴포넌트 마운트 시 경력 항목 조회
-  useEffect(() => {
-    const fetchCareerItems = async () => {
-      try {
-        const response = await instance.get(`/career/item/list/${profileId}`);
-        setCareers(response.data);
-      } catch (error) {
-        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-      }
-    };
-    fetchCareerItems();
-  }, [profileId]);
-
   const updateCareer = async () => {
     try {
-      calculateProgress();
-      await instance.patch('/career', {
+      const res = instance.patch('/career', {
         profileId: profileId,
         progressStep: careerProfileState.progressStep,
         fileName: careerProfileState.fileName,
         fileProgress: careerProfileState.fileProgress,
       });
-    } catch (error) {
-      console.error('자동저장에 실패하였습니다.', error);
+
+      showAutoSaveToast(
+        res,
+        (res) => {
+          return '자동저장되었습니다.';
+        },
+        (error) => {
+          console.log(error);
+          return '자동저장에 실패하였습니다.';
+        }
+      );
+      calculateProgress();
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -129,33 +130,31 @@ const RegisterProfileCareerPage = () => {
   };
 
   const handleNextBtn = () => {
-    //토스트 메세지
-    setTimeout(() => {
-      toast.success('자동저장되었습니다.');
-    }, 0);
-    toast.dismiss();
+    //중간저장
     updateCareer();
-
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
 
+  // 컴포넌트 마운트 시 경력 항목 조회
+  useEffect(() => {
+    const fetchCareerItems = async () => {
+      try {
+        const response = await instance.get(`/career/item/list/${profileId}`);
+        setCareers(response.data);
+      } catch (error) {
+        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
+      }
+    };
+    fetchCareerItems();
+  }, [profileId]);
+
   useEffect(() => {
     setStatus(1);
   }, [setStatus]);
+
   return (
     <>
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 150,
-        }}
-        toastOptions={{
-          style: {
-            fontSize: '16px',
-          },
-        }}
-      />
       <Modal
         userType={'dong'}
         isOpen={isModalOpen}

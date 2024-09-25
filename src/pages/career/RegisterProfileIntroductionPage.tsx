@@ -4,7 +4,7 @@ import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { instance } from '../../api/instance';
-import toast, { Toaster } from 'react-hot-toast';
+import { usePromiseToast } from '../../hooks/useToast';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -51,6 +51,9 @@ const RegisterProfileIntroductionPage = () => {
     careerProfileState.introduce || ''
   );
 
+  //토스트 메세지
+  const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     if (name === 'introduce') {
@@ -58,23 +61,12 @@ const RegisterProfileIntroductionPage = () => {
     }
     setCareerProfileState({ [name]: value });
   };
-  const navigateToRegisterProfileCareer = () => {
-    navigate(`/register/profile/career/${profileId}`);
-  };
-  const navigateToRegisterProfileCondition = () => {
-    setTimeout(() => {
-      toast.success('자동저장되었습니다.');
-    }, 0);
-    toast.dismiss();
-    updateIntroduction();
-    navigate(`/register/profile/condition/${profileId}`);
-  };
 
   const updateIntroduction = async () => {
     try {
-      calculateProgress();
+      calculateProgress(); //? 이거 안해도 되지 않나?
 
-      await instance.patch('/career', {
+      const res = instance.patch('/career', {
         profileId: profileId,
         introduce: careerProfileState.introduce,
         progressStep: careerProfileState.progressStep,
@@ -86,9 +78,25 @@ const RegisterProfileIntroductionPage = () => {
         priceType: careerProfileState.priceType,
         price: careerProfileState.price,
       });
+
+      showAutoSaveToast(
+        res,
+        (res) => {
+          return '자동저장되었습니다.';
+        },
+        (error) => {
+          console.log(error);
+          return '자동저장에 실패하였습니다.';
+        }
+      );
     } catch (error) {
       console.error('자동저장에 실패하였습니다.', error);
     }
+  };
+
+  const navigateCondition = () => {
+    updateIntroduction();
+    navigate(`/register/profile/condition/${profileId}`);
   };
 
   useEffect(() => {
@@ -98,19 +106,9 @@ const RegisterProfileIntroductionPage = () => {
   useEffect(() => {
     setStatus(2);
   }, [setStatus]);
+
   return (
     <>
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 150,
-        }}
-        toastOptions={{
-          style: {
-            fontSize: '16px',
-          },
-        }}
-      />
       <CategoryText>{`동백님은 어떤 사람인가요?`}</CategoryText>
       <SubText>자기소개</SubText>
       <LastSubText>{`자신을 잘 나타낼 수 있는 키워드를\n넣어 자기 소개를 완성해보세요!\n`}</LastSubText>
@@ -131,13 +129,13 @@ const RegisterProfileIntroductionPage = () => {
             userType={null}
             disabled={false}
             children={'이전'}
-            onClick={navigateToRegisterProfileCareer}
+            onClick={() => navigate(`/register/profile/career/${profileId}`)}
           ></Button>
           <Button
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={navigateToRegisterProfileCondition}
+            onClick={navigateCondition}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>

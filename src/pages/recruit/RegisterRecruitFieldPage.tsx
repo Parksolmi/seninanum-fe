@@ -4,9 +4,9 @@ import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
 import useRecruitState from '../../store/RecruitState';
 import progressStore from '../../store/CareerProgressState';
+import { useToast } from '../../hooks/useToast';
 
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
@@ -18,14 +18,18 @@ const RegisterRecruitFieldPage = () => {
 
   const isDisabled = selectedTags.length < 1;
 
+  const { showToast: showSelectionError } = useToast(
+    () => <span>분야는 3개까지 선택이 가능합니다.</span>,
+    'select-exceed-error',
+    'bottom-center'
+  );
+
   const hadnleClickTag = (tag) => {
     setSelectedTags((prevTags) => {
       if (prevTags.includes(tag)) {
         return prevTags.filter((t) => t !== tag);
       } else if (prevTags.length >= 3) {
-        setTimeout(() => {
-          toast.error('분야는 3개까지 선택이 가능합니다.');
-        }, 0);
+        showSelectionError();
         return prevTags;
       } else {
         return [...prevTags, tag];
@@ -44,17 +48,6 @@ const RegisterRecruitFieldPage = () => {
 
   return (
     <>
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 150,
-        }}
-        toastOptions={{
-          style: {
-            fontSize: '16px',
-          },
-        }}
-      />
       {/* <ExitHeader navigateTo={'/home'} />
       <ProgressBar status={0} type={'nari'}></ProgressBar> */}
       <TitleText>
