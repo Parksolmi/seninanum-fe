@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import UserTypeButton from '../../components/signup/UserTypeButton';
 import Button from '../../components/common/Button';
-import useUserStore from '../../store/UserState';
+import useUserStore from '../../store/userState';
 import { useNavigate } from 'react-router-dom';
 import PrevHeader from '../../components/header/PrevHeader';
 

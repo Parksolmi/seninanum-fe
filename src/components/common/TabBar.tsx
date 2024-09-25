@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import TabMenu from '../../store/TabContext';
+import tabMenu from '../../store/tabContext';
 import userTypeStore from '../../store/userTypeState';
 import { instance } from '../../api/instance';
 
@@ -22,14 +22,14 @@ const TabBar = () => {
   // 유저 타입 가져오기
   const getUserType = async () => {
     try {
-      const response = await instance.get('/user/userType');
-      setUserType(response.data.userType);
+      const res = await instance.get('/user/userType');
+      setUserType(res.data.userType);
     } catch (error) {
-      console.error('ErError fetching user type:', error);
+      console.log(error);
     }
   };
 
-  const { setTabMenuState } = TabMenu((state) => ({
+  const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
   }));
 
@@ -72,11 +72,6 @@ const TabBar = () => {
   useEffect(() => {
     setCurrentPage(location.pathname);
   }, [location]);
-
-  // 유저 타입 설정
-  useEffect(() => {
-    getUserType();
-  }, []);
 
   return (
     <StyledNav>

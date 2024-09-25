@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import useCareerItemState from './CareerItemState';
+import useCareerItemState from './careerItemState';
 
 interface CareerProfileState {
   progressStep: number;
