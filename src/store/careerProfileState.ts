@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import useCareerItemState from './CareerItemState';
+import useCareerItemState from './careerItemState';
 
 interface CareerProfileState {
   progressStep: number;
@@ -8,7 +8,7 @@ interface CareerProfileState {
   fileProgress: string;
   introduce: string;
   age: string;
-  field: string;
+  field: string; // 이게뭐야?
   service: string;
   method: string;
   region: string;

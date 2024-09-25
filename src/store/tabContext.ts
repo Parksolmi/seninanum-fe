@@ -6,10 +6,10 @@ interface TabContextType {
   setTabMenuState: (menu: number) => void;
 }
 
-const TabMenu = create<TabContextType>()(
+const tabMenu = create<TabContextType>()(
   devtools((set) => ({
     tabMenuState: 0,
     setTabMenuState: (menu: number) => set({ tabMenuState: menu }),
   }))
 );
-export default TabMenu;
+export default tabMenu;

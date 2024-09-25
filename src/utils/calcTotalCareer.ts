@@ -1,4 +1,4 @@
-import { CareerItemState } from './../store/CareerItemState';
+import { CareerItemState } from '../store/careerItemState';
 export const calcTotalCareer = (careers: CareerItemState[]) => {
   let totalPeriod = 0;
 

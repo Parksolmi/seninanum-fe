@@ -1,16 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import TabMenu from '../../store/TabContext';
+import tabMenu from '../../store/tabContext';
+import userTypeStore from '../../store/userState';
+import { instance } from '../../api/instance';
 
-interface TabBarProps {
-  userType: string;
-  getUserType: () => void;
+interface MenuItem {
+  id: number;
+  name: string;
+  path: string;
+  icon: string;
+  iconActive: string;
 }
 
-const TabBar: React.FC<TabBarProps> = ({ userType, getUserType }) => {
-  const { setTabMenuState } = TabMenu((state) => ({
+const TabBar = () => {
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState('/');
+  const { userType, setProfileStep, setUserType } = userTypeStore();
+
+  // 유저 타입 가져오기
+  const getUserType = useCallback(async () => {
+    try {
+      const res = await instance.get('/user/userType');
+      setUserType(res.data.userType);
+      setProfileStep(res.data.career.progressStep);
+      console.log(res.data.career.progressStep);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setUserType, setProfileStep]);
+
+  const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
   }));
 
@@ -18,17 +39,6 @@ const TabBar: React.FC<TabBarProps> = ({ userType, getUserType }) => {
     setTabMenuState(tab);
     getUserType();
   };
-
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState('/');
-
-  interface MenuItem {
-    id: number;
-    name: string;
-    path: string;
-    icon: string;
-    iconActive: string;
-  }
 
   const menus: MenuItem[] = [
     {
@@ -64,6 +74,10 @@ const TabBar: React.FC<TabBarProps> = ({ userType, getUserType }) => {
   useEffect(() => {
     setCurrentPage(location.pathname);
   }, [location]);
+
+  useEffect(() => {
+    getUserType();
+  }, [getUserType]);
 
   return (
     <StyledNav>

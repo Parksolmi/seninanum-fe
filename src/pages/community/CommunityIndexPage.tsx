@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CommunityIndexPageDong from './CommunityIndexPageDong';
 import CommunityIndexPageNari from './CommunityIndexPageNari';
-import userTypeStore from '../../store/userTypeState';
+import userTypeStore from '../../store/userState';
 
 const CommunityIndexPage: React.FC = () => {
   const { userType } = userTypeStore();

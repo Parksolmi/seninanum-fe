@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useUserState from '../../store/UserState';
+import useUserState from '../../store/userSignupState';
 import { instance } from '../../api/instance';
 import { login } from '../../store/LoginState';
 import { useForm } from 'react-hook-form';

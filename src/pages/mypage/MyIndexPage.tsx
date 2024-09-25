@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MyIndexPageDong from './MyIndexPageDong';
 import MyIndexPageNari from './MyIndexPageNari';
-import userTypeStore from '../../store/userTypeState';
+import userTypeStore from '../../store/userState';
 
 const MyIndexPage: React.FC = () => {
   const { userType } = userTypeStore();

@@ -7,7 +7,7 @@ import Button from '../../components/common/Button';
 import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
-import useCareerItemState from '../../store/CareerItemState';
+import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from '../../components/common/CareerDetail';
 
 interface Career {

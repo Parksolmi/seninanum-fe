@@ -10,7 +10,7 @@ import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
 import { instance } from '../../api/instance';
 import Modal from '../../components/common/Modal';
-import toast, { Toaster } from 'react-hot-toast';
+import { useToast } from '../../hooks/useToast';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -79,6 +79,12 @@ const RegisterProfileConditionPage = () => {
     setSelectedMethod(method);
   };
 
+  const { showToast: showSelectionError } = useToast(
+    () => <span>분야는 3개까지 선택이 가능합니다.</span>,
+    'select-exceed-error',
+    'bottom-center'
+  );
+
   const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
   const cancelModal = () => setIsOpenModal(false);
   const confirmModal = () => {
@@ -114,9 +120,7 @@ const RegisterProfileConditionPage = () => {
       if (prevTags.includes(tag)) {
         return prevTags.filter((t) => t !== tag);
       } else if (prevTags.length >= 3) {
-        setTimeout(() => {
-          toast.error('희망 연령대는 3개까지 선택이 가능합니다.');
-        }, 0);
+        showSelectionError();
         return prevTags;
       } else {
         return [...prevTags, tag];
@@ -128,9 +132,7 @@ const RegisterProfileConditionPage = () => {
       if (prevTags.includes(tag)) {
         return prevTags.filter((t) => t !== tag);
       } else if (prevTags.length >= 3) {
-        setTimeout(() => {
-          toast.error('분야는 3개까지 선택이 가능합니다.');
-        }, 0);
+        showSelectionError();
         return prevTags;
       } else {
         return [...prevTags, tag];
@@ -190,17 +192,6 @@ const RegisterProfileConditionPage = () => {
   }, [setStatus]);
   return (
     <>
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 150,
-        }}
-        toastOptions={{
-          style: {
-            fontSize: '16px',
-          },
-        }}
-      />
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
       <TagText>희망 연령대</TagText>
       <Category

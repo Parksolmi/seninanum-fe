@@ -5,54 +5,30 @@ import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
 import progressStore from '../store/CareerProgressState';
 import { instance } from '../api/instance';
-import userTypeStore from '../store/userTypeState';
+import userTypeStore from '../store/userState';
 import useCareerProfileState from '../store/CareerProfileState';
 
 const ProgressLayout: React.FC = () => {
-  const { status, setStatus } = progressStore();
-  const { userType, setUserType } = userTypeStore();
   const { pathname } = useLocation();
-  const [previousProfileId, setPreviousProfileId] = useState<string | null>(
-    null
-  );
+
+  const { status, setStatus } = progressStore();
+  const { userType } = userTypeStore();
   const { careerProfileState, setCareerProfileState, calculateProgress } =
     useCareerProfileState();
 
-  useEffect(() => {
-    const getUserType = async () => {
-      try {
-        const response = await instance.get('/user/userType');
-        setUserType(response.data);
-      } catch (error) {
-        console.error('ErError fetching user type:', error);
-      }
-    };
+  const [previousProfileId, setPreviousProfileId] = useState<string | null>(
+    null
+  );
 
-    getUserType();
-  }, [setUserType]);
-
-  // useEffect(() => {
-  //   const fetchProfileProgress = async () => {
-  //     try {
-  //       const response = await instance.get(
-  //         `/career/${profileId[profileId.length - 1]}`
-  //       );
-  //       setCareerProfileState(response.data);
-  //     } catch (error) {
-  //       console.error('경력프로필 조회에 실패하였습니다.');
-  //     }
-  //   };
-
-  //   fetchProfileProgress();
-  // }, []);
   useEffect(() => {
     const profileId = pathname.split('/').pop() ?? null;
+    // 이전 profileId와 다를 때만 api 호출
     if (profileId !== previousProfileId) {
       const fetchProfileProgress = async () => {
         try {
           const response = await instance.get(`/career/${profileId}`);
           setCareerProfileState(response.data);
-          setPreviousProfileId(profileId); // 이전 profileId를 기록하여 중복 호출 방지
+          setPreviousProfileId(profileId);
         } catch (error) {
           console.error('경력 프로필 조회에 실패하였습니다.', error);
         }
@@ -61,6 +37,7 @@ const ProgressLayout: React.FC = () => {
       fetchProfileProgress();
     }
   }, [pathname, previousProfileId, setCareerProfileState]);
+
   return (
     <>
       <Container>
