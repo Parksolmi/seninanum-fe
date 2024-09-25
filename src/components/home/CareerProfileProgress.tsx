@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StepProgressBar from './StepProgressBar';
 import { instance } from '../../api/instance';
-// import useCareerProfileState from '../../store/CareerProfileState';
 
 interface progressStepProps {
   progressStep: number;
 }
 
-const CareerProfileProgress: React.FC<progressStepProps> = (progressStep) => {
+const CareerProfileProgress: React.FC<progressStepProps> = ({
+  progressStep,
+}) => {
   const navigate = useNavigate();
-  // const { careerProfileState, setCareerProfileState } = useCareerProfileState();
-
   const fetchProfileId = async () => {
     try {
       const response = await instance.post('/career', {});
@@ -21,19 +20,6 @@ const CareerProfileProgress: React.FC<progressStepProps> = (progressStep) => {
       console.error('사용자 정보 조회에 실패하였습니다.');
     }
   };
-
-  // useEffect(() => {
-  //   const fetchProfileProgress = async () => {
-  //     try {
-  //       const response = await instance.get(`/userType`);
-  //       setCareerProfileState({ progressStep: response.data.career });
-  //     } catch (error) {
-  //       console.error('경력프로필 조회에 실패하였습니다.');
-  //     }
-  //   };
-
-  //   fetchProfileProgress(); // profileId가 존재할 때만 호출
-  // }, [setCareerProfileState]); // profileId가 변경될 때 useEffect가 실행됨
 
   return (
     <InputContainer>

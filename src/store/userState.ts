@@ -1,41 +1,27 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
-interface UserState {
-  userId: string;
+interface UserTypeState {
   userType: string;
-  nickname: string;
-  gender: string;
-  birthYear: string;
-  profile: string;
-  agreeAgePolicy: boolean;
-  agreeServicePolicy: boolean;
-  agreeMarketingPolicy: boolean;
+  profileStep: number;
+  setUserType: (type: string) => void;
+  setProfileStep: (step: number) => void;
 }
 
-interface UserStateType {
-  userState: UserState;
-  setUserState: (userState: Partial<UserState>) => void;
-}
-
-const useUserStore = create<UserStateType>()(
-  devtools((set) => ({
-    userState: {
-      userId: '',
-      userType: '',
-      nickname: '',
-      gender: '',
-      birthYear: '',
-      profile: '',
-      agreeAgePolicy: false,
-      agreeServicePolicy: false,
-      agreeMarketingPolicy: false,
-    },
-    setUserState: (userState: Partial<UserState>) =>
-      set((state) => ({
-        userState: { ...state.userState, ...userState },
-      })),
-  }))
+const userTypeStore = create<UserTypeState>()(
+  devtools(
+    persist(
+      (set) => ({
+        userType: '',
+        profileStep: -1,
+        setUserType: (type: string) => set({ userType: type }),
+        setProfileStep: (step: number) => set({ profileStep: step }),
+      }),
+      {
+        name: 'userTypeState',
+      }
+    )
+  )
 );
 
-export default useUserStore;
+export default userTypeStore;

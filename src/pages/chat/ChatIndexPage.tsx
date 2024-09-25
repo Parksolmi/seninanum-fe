@@ -2,7 +2,7 @@ import React from 'react';
 import ChatIndexPageNari from './ChatIndexPageNari';
 import ChatIndexPageDong from './ChatIndexPageDong';
 import styled from 'styled-components';
-import userTypeStore from '../../store/userTypeState';
+import userTypeStore from '../../store/userState';
 
 const ChatIndexPage: React.FC = () => {
   const { userType } = userTypeStore();

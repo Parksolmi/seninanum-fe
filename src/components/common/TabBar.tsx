@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import tabMenu from '../../store/tabContext';
-import userTypeStore from '../../store/userTypeState';
+import userTypeStore from '../../store/userState';
 import { instance } from '../../api/instance';
 
 interface MenuItem {
@@ -17,13 +17,15 @@ interface MenuItem {
 const TabBar = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('/');
-  const { userType, setUserType } = userTypeStore();
+  const { userType, setProfileStep, setUserType } = userTypeStore();
 
   // 유저 타입 가져오기
   const getUserType = async () => {
     try {
       const res = await instance.get('/user/userType');
       setUserType(res.data.userType);
+      setProfileStep(res.data.career.progressStep);
+      console.log(res.data.career.progressStep);
     } catch (error) {
       console.log(error);
     }

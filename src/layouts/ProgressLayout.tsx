@@ -5,7 +5,7 @@ import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
 import progressStore from '../store/CareerProgressState';
 import { instance } from '../api/instance';
-import userTypeStore from '../store/userTypeState';
+import userTypeStore from '../store/userState';
 import useCareerProfileState from '../store/CareerProfileState';
 
 const ProgressLayout: React.FC = () => {

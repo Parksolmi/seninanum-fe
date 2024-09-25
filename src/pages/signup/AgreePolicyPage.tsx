@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckBox from '../../components/common/CheckBox';
 import Button from '../../components/common/Button';
-import useUserState from '../../store/userState';
+import useUserState from '../../store/userSignupState';
 import { useNavigate } from 'react-router-dom';
 import PrevHeader from '../../components/header/PrevHeader';
 
