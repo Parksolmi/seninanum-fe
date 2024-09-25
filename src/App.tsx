@@ -25,6 +25,7 @@ import ChatPageNari from './pages/chat/ChatPageNari';
 import ViewProfileCareer from './pages/career/ViewProfileCareer';
 import ProgressLayout from './layouts/ProgressLayout';
 import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
+import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertificatePage';
 
 const App: React.FC = () => {
   return (
@@ -67,6 +68,10 @@ const App: React.FC = () => {
         <Route
           path="/register/profile/career/add"
           element={<RegisterProfileCareerAddPage />}
+        />
+        <Route
+          path="/register/profile/certificate"
+          element={<RegisterProfileCertificatePage />}
         />
         {/* 경력 프로필 조회 */}
         <Route

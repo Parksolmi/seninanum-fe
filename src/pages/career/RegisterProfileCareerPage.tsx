@@ -82,6 +82,9 @@ const RegisterProfileCareerPage = () => {
   const handleAddCareer = () => {
     navigate('/register/profile/career/add', { state: { profileId } });
   };
+  const handleAddCertificate = () => {
+    navigate('/register/profile/certificate', { state: { profileId } });
+  };
   const updateCareer = async () => {
     try {
       const res = instance.patch('/career', {
@@ -212,7 +215,7 @@ const RegisterProfileCareerPage = () => {
         />
       )}
       <FileAddButton
-        onFileUpload={handleFileUpload}
+        onClick={handleAddCertificate}
         addText={'파일 추가'}
       ></FileAddButton>
       <GapButton></GapButton>
