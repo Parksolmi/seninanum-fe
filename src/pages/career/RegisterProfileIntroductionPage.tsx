@@ -1,40 +1,127 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
-import useCareerProfileState from '../../store/CareerProfileState';
-import progressStore from '../../store/CareerProgressState';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { instance } from '../../api/instance';
+import toast, { Toaster } from 'react-hot-toast';
 
+interface OutletContext {
+  setStatus: (status: number) => void;
+  careerProfileState: {
+    introduce: string;
+    progressStep: number;
+    age: string;
+    field: string;
+    service: string;
+    method: string;
+    region: string;
+    priceType: string;
+    price: number;
+    // 기타 필요한 상태 값들
+  };
+  setCareerProfileState: (
+    state: Partial<{
+      introduce: string;
+      progressStep: number;
+      age: string;
+      field: string;
+      service: string;
+      method: string;
+      region: string;
+      priceType: string;
+      price: number;
+      // 기타 필요한 상태 값들
+    }>
+  ) => void;
+  calculateProgress: () => void;
+}
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
-  const { setCareerProfileState } = useCareerProfileState();
-  const { setStatus } = progressStore();
+  const { profileId } = useParams<{ profileId: string }>();
+  const {
+    setStatus,
+    setCareerProfileState,
+    careerProfileState,
+    calculateProgress,
+  } = useOutletContext<OutletContext>();
+  // const { setCareerProfileState, careerProfileState, calculateProgress } =
+  //   useCareerProfileState();
+  const [selectedIntroduce, setSelectedIntroduce] = useState<string>(
+    careerProfileState.introduce || ''
+  );
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'introduce') {
+      setSelectedIntroduce(value);
+    }
     setCareerProfileState({ [name]: value });
   };
-
   const navigateToRegisterProfileCareer = () => {
-    setStatus(1);
-    navigate('/register/profile/career');
+    navigate(`/register/profile/career/${profileId}`);
   };
   const navigateToRegisterProfileCondition = () => {
-    setStatus(3);
-    navigate('/register/profile/condition');
+    setTimeout(() => {
+      toast.success('자동저장되었습니다.');
+    }, 0);
+    toast.dismiss();
+    updateIntroduction();
+    navigate(`/register/profile/condition/${profileId}`);
   };
 
+  const updateIntroduction = async () => {
+    try {
+      calculateProgress();
+
+      await instance.patch('/career', {
+        profileId: profileId,
+        introduce: careerProfileState.introduce,
+        progressStep: careerProfileState.progressStep,
+        age: careerProfileState.age,
+        field: careerProfileState.field,
+        service: careerProfileState.service,
+        method: careerProfileState.method,
+        region: careerProfileState.region,
+        priceType: careerProfileState.priceType,
+        price: careerProfileState.price,
+      });
+    } catch (error) {
+      console.error('자동저장에 실패하였습니다.', error);
+    }
+  };
+
+  useEffect(() => {
+    setCareerProfileState({ introduce: selectedIntroduce });
+  }, [setCareerProfileState, selectedIntroduce]);
+
+  useEffect(() => {
+    setStatus(2);
+  }, [setStatus]);
   return (
     <>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 150,
+        }}
+        toastOptions={{
+          style: {
+            fontSize: '16px',
+          },
+        }}
+      />
       <CategoryText>{`동백님은 어떤 사람인가요?`}</CategoryText>
       <SubText>자기소개</SubText>
       <LastSubText>{`자신을 잘 나타낼 수 있는 키워드를\n넣어 자기 소개를 완성해보세요!\n`}</LastSubText>
+
       <TextArea
         name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
         onChange={handleOnChange}
+        value={selectedIntroduce}
       ></TextArea>
+
       <div className="margin"></div>
 
       <GapButton></GapButton>

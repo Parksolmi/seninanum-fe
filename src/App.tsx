@@ -51,12 +51,18 @@ const App: React.FC = () => {
         />
         {/* 경력 프로필 등록 */}
         <Route path="/register/profile" element={<ProgressLayout />}>
-          <Route path="career" element={<RegisterProfileCareerPage />} />
           <Route
-            path="introduction"
+            path="career/:profileId"
+            element={<RegisterProfileCareerPage />}
+          />
+          <Route
+            path="introduction/:profileId"
             element={<RegisterProfileIntroductionPage />}
           />
-          <Route path="condition" element={<RegisterProfileConditionPage />} />
+          <Route
+            path="condition/:profileId"
+            element={<RegisterProfileConditionPage />}
+          />
         </Route>
         <Route
           path="/register/profile/career/add"

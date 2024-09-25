@@ -1,20 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface FileProps {
+  onFileUpload: (file: File) => void;
   addText: string;
 }
-const FileAddButton = ({ addText }: FileProps) => {
+const FileAddButton = ({ onFileUpload, addText }: FileProps) => {
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+      onFileUpload(e.target.files[0]);
+    }
+  };
   return (
-    <WrapButton>
-      <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
-      <AddArea>
-        <AddIcon src="/assets/common/add.svg" alt="추가아이콘"></AddIcon>
-        <AddText>{addText}</AddText>
-      </AddArea>
-    </WrapButton>
+    <label>
+      <input
+        type="file"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+      <FileAddButtonWrapper>
+        <WrapButton>
+          <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
+          <AddArea>
+            <AddIcon src="/assets/common/add.svg" alt="추가아이콘"></AddIcon>
+            <AddText>{addText}</AddText>
+          </AddArea>
+        </WrapButton>
+      </FileAddButtonWrapper>
+    </label>
   );
 };
+
+const FileAddButtonWrapper = styled.div`
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+`;
 
 const WrapButton = styled.div`
   width: 100%;

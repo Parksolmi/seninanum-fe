@@ -4,27 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import TextArea from '../../components/common/TextArea';
-import useCareerItemState from '../../store/CareerItemState';
 import { instance } from '../../api/instance';
 import toast from 'react-hot-toast';
 
 const RegisterProfileCareerAddPage = () => {
   const navigate = useNavigate();
-  const { addCareer } = useCareerItemState();
   const [title, setTitle] = useState('');
   const [startYear, setStartYear] = useState(0);
   const [startMonth, setStartMonth] = useState(0);
   const [endYear, setEndYear] = useState(0);
   const [endMonth, setEndMonth] = useState(0);
-  const [period, setPeriod] = useState('');
   const [content, setContent] = useState('');
-
   const validatePeriod = () => {
     const startDate = new Date(startYear, startMonth - 1);
     const endDate = new Date(endYear, endMonth - 1);
     return startDate <= endDate;
   };
-
+  const fetchProfileId = async () => {
+    try {
+      const response = await instance.post('/career', {});
+      navigate(`/register/profile/career/${response.data.profileId}`);
+    } catch (error) {
+      console.error('사용자 정보 조회에 실패하였습니다.');
+    }
+  };
   const addNewCareer = async () => {
     if (!validatePeriod()) {
       toast.error(
@@ -38,15 +41,12 @@ const RegisterProfileCareerAddPage = () => {
       startMonth,
       endYear,
       endMonth,
-      period,
       content,
     };
     try {
-      const response = await instance.post('/career/item', newCareer);
-      console.log(response.data);
-      addCareer({ ...newCareer }); // 서버에서 반환된 새 경력 항목 사용
+      await instance.post('/career/item', newCareer);
       window.alert('등록되었습니다.');
-      navigate('/register/profile/career');
+      fetchProfileId();
     } catch (error) {
       console.error(
         'Failed to add career',
@@ -74,9 +74,6 @@ const RegisterProfileCareerAddPage = () => {
       case 'endMonth':
         setEndMonth(Number(value));
         break;
-      case 'period':
-        setPeriod(value);
-        break;
       case 'content':
         setContent(value);
         break;
@@ -86,7 +83,7 @@ const RegisterProfileCareerAddPage = () => {
   };
 
   const navigateToRegisterProfile = () => {
-    navigate('/register/profile/career');
+    navigate(-1);
   };
 
   return (

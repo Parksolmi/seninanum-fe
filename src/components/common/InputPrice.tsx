@@ -5,6 +5,7 @@ interface RadioButtonProps {
   name: string;
   userType: 'dong' | 'nari';
   selected: string;
+  value: number;
   onChange: (e: any) => void;
   onClickMethod: (method: string) => void;
 }
@@ -14,6 +15,7 @@ const InputPrice: React.FC<RadioButtonProps> = ({
   name,
   userType,
   selected,
+  value,
   onChange,
   onClickMethod,
 }) => {
@@ -37,6 +39,7 @@ const InputPrice: React.FC<RadioButtonProps> = ({
           placeholder="희망가격"
           type="number"
           onChange={onChange}
+          value={value === -1 ? '' : value}
         />
         <span>원</span>
       </InputArea>
