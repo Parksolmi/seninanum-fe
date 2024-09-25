@@ -6,21 +6,28 @@ interface TextAreaProps {
   name?: string;
   inputPlaceholder: string;
   onChange: (e: any) => void;
+  value?: string;
 }
 
-const TextArea = ({ name, inputPlaceholder, onChange }: TextAreaProps) => {
+const TextArea: React.FC<TextAreaProps> = ({
+  name,
+  inputPlaceholder,
+  onChange,
+  value,
+}) => {
   return (
     <TextAreaStyle
       name={name}
       placeholder={inputPlaceholder}
       onChange={onChange}
+      value={value}
     ></TextAreaStyle>
   );
 };
 
 const TextAreaStyle = styled.textarea`
   width: 100%;
-  height: 18.1875rem;
+  height: 27rem;
   display: flex;
   border: 1px solid #5b5b5b;
   border-radius: 10px;

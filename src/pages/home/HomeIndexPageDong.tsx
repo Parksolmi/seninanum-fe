@@ -5,13 +5,16 @@ import ShortcutButton from '../../components/home/ShortcutButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
-import progressStore from '../../store/CareerProgressState';
 import getRandomNumber from '../../utils/getRandomNumber';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
 
-const HomeIndexPageDong: React.FC = () => {
+interface progressStepProps {
+  progressStep: number;
+}
+
+const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,8 +23,6 @@ const HomeIndexPageDong: React.FC = () => {
   useEffect(() => {
     setBannerIndex(getRandomNumber());
   }, [location.pathname]);
-
-  const { status } = progressStore();
 
   return (
     <>
@@ -32,7 +33,7 @@ const HomeIndexPageDong: React.FC = () => {
       ></BannerContainer>
 
       <ContentContainer>
-        <CareerProfileProgress status={status} />
+        <CareerProfileProgress progressStep={progressStep} />
         <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton

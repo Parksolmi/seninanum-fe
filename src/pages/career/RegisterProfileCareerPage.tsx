@@ -1,51 +1,172 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/register/FileAddButton';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
 import useCareerItemState from '../../store/CareerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
-import progressStore from '../../store/CareerProgressState';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
+import { instance } from '../../api/instance';
+import CareerAddButton from '../../components/register/CareerAddButton';
+import CareerFileBox from '../../components/register/CareerFileBox';
+import toast, { Toaster } from 'react-hot-toast';
+import Modal from '../../components/common/Modal';
 
+interface OutletContext {
+  setStatus: (status: number) => void;
+  careerProfileState: {
+    profileId: number;
+    progressStep: number;
+    fileName: string;
+    fileProgress: string;
+    // 기타 필요한 상태 값들
+  };
+  setCareerProfileState: (
+    state: Partial<{
+      profileId: number;
+      progressStep: number;
+      fileName: string;
+      fileProgress: string;
+      // 기타 필요한 상태 값들
+    }>
+  ) => void;
+  calculateProgress: () => void;
+}
 const RegisterProfileCareerPage = () => {
-  const { careers } = useCareerItemState();
+  const { careers, setCareers } = useCareerItemState();
+  const {
+    setStatus,
+    careerProfileState,
+    setCareerProfileState,
+    calculateProgress,
+  } = useOutletContext<OutletContext>();
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { profileId } = useParams<{ profileId: string }>();
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+  const cancelModal = () => setIsOpenModal(false);
+  const confirmModal = () => {
+    handleFileRemove();
+  };
 
-  // useEffect(() => {
-  //   const fetchCareers = async () => {
-  //     try {
-  //       const response = await instance.get('/career/item/list');
-  //       setCareers(response.data);
-  //     } catch (error) {
-  //       console.error('Failed to fetch careers from server', error);
-  //     }
-  //   };
-  //   fetchCareers();
-  // }, [setCareers]);
+  const [fileName, setFileName] = useState<string>(
+    careerProfileState.fileName || ''
+  );
+  const [fileProgress, setFileProgress] = useState(
+    careerProfileState.fileProgress || '제출'
+  );
 
-  // const handleRemoveCareer = async (careerId) => {
-  //   try {
-  //     await instance.delete('/career/item', careerId );
-  //     removeCareer(careerId);
-  //   } catch (error) {
-  //     console.error('Failed to remove career', error);
-  //   }
-  // };
-  const onDelete = () => {};
+  const fetchCareerItems = useCallback(async () => {
+    try {
+      const response = await instance.get(`/career/item/list/${profileId}`);
+      setCareers(response.data);
+    } catch (error) {
+      console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
+    }
+  }, [profileId, setCareers]);
+
+  const handleRemoveCareer = async (careerId: number) => {
+    try {
+      await instance.delete(`/career/item`, { data: { careerId } });
+      fetchCareerItems();
+    } catch (error) {
+      console.error('경력항목 삭제 중 에러가 발생했습니다.', error);
+    }
+  };
+
+  // 컴포넌트 마운트 시 경력 항목 조회
+  useEffect(() => {
+    fetchCareerItems();
+  }, [fetchCareerItems]);
+
+  const updateCareer = async () => {
+    try {
+      calculateProgress();
+      await instance.patch('/career', {
+        profileId: profileId,
+        progressStep: careerProfileState.progressStep,
+        fileName: careerProfileState.fileName,
+        fileProgress: careerProfileState.fileProgress,
+      });
+    } catch (error) {
+      console.error('자동저장에 실패하였습니다.', error);
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      await instance.post('/career/certificate', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('파일이 성공적으로 업로드되었습니다.');
+      // 파일명 설정
+      setFileName(file.name);
+      // 파일 프로그레스바 설정
+      setFileProgress(fileProgress);
+    } catch (error) {
+      console.error('파일 업로드 중 오류가 발생했습니다.', error);
+      alert('파일 업로드 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleFileRemove = async () => {
+    try {
+      await instance.delete(`/career/file/${profileId}`);
+      setFileName('');
+      setFileProgress('');
+      alert('파일이 성공적으로 삭제되었습니다.');
+      setCareerProfileState({
+        progressStep: careerProfileState.progressStep - 1,
+      });
+    } catch (error) {
+      console.error('파일 삭제 중 오류가 발생했습니다.', error);
+      alert('파일 삭제 중 오류가 발생했습니다.');
+    }
+  };
 
   const navigateToAddPage = () => {
-    navigate('/register/profile/career/add');
+    navigate(`/register/profile/career/add`);
   };
 
   const navigateToRegisterProfileIntroduction = () => {
-    setStatus(2);
-    navigate('/register/profile/introduction');
+    setTimeout(() => {
+      toast.success('자동저장되었습니다.');
+    }, 0);
+    toast.dismiss();
+    updateCareer();
+    navigate(`/register/profile/introduction/${profileId}`);
   };
 
+  useEffect(() => {
+    setStatus(1);
+  }, [setStatus]);
   return (
     <>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 150,
+        }}
+        toastOptions={{
+          style: {
+            fontSize: '16px',
+          },
+        }}
+      />
+      <Modal
+        userType={'dong'}
+        isOpen={isModalOpen}
+        title={'정말 삭제하시겠습니까?'}
+        content={``}
+        cancelText={'취소'}
+        confirmText={'삭제하기'}
+        confirmModal={confirmModal}
+        cancelModal={cancelModal}
+      />
       <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
       <TotalCareer>
         <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
@@ -53,18 +174,18 @@ const RegisterProfileCareerPage = () => {
       </TotalCareer>
       {careers.map((career) => (
         <CareerDetail
-          key={career.title}
+          key={career.careerId}
           title={career.title}
           startYear={career.startYear}
           startMonth={career.startMonth}
           endYear={career.endYear}
           endMonth={career.endMonth}
           content={career.content}
-          onDelete={() => onDelete}
+          onDelete={() => handleRemoveCareer(career.careerId)}
         />
       ))}
       <ButtonBox onClick={navigateToAddPage}>
-        <FileAddButton addText={'경력 추가'}></FileAddButton>
+        <CareerAddButton addText={'경력 추가'}></CareerAddButton>
       </ButtonBox>
       <LineStyle />
       <CategoryText>경력증명서</CategoryText>
@@ -73,8 +194,18 @@ const RegisterProfileCareerPage = () => {
         <img src="/assets/common/certification-mark-dong.svg" alt="확인마크" />
         <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
       </HelpTextBox>
-      <FileAddButton addText={'파일 추가'}></FileAddButton>
 
+      {fileName && (
+        <CareerFileBox
+          activeStatus={fileProgress}
+          uploadedFileName={fileName}
+          onDelete={() => setIsOpenModal(true)}
+        />
+      )}
+      <FileAddButton
+        onFileUpload={handleFileUpload}
+        addText={'파일 추가'}
+      ></FileAddButton>
       <GapButton></GapButton>
       <WrapButtonContainer>
         <WrapButton>

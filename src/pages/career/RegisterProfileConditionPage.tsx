@@ -5,33 +5,94 @@ import ageState from './../../constants/ageState';
 import categoryState from '../../constants/categoryState';
 import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
-import useCareerProfileState from '../../store/CareerProfileState';
 import { instance } from '../../api/instance';
-import progressStore from '../../store/CareerProgressState';
+import Modal from '../../components/common/Modal';
+import toast, { Toaster } from 'react-hot-toast';
+
+interface OutletContext {
+  setStatus: (status: number) => void;
+  careerProfileState: {
+    progressStep: number;
+    age: string;
+    field: string;
+    service: string;
+    method: string;
+    region: string;
+    priceType: string;
+    price: number;
+    introduce: string;
+  };
+  setCareerProfileState: (
+    state: Partial<{
+      progressStep: number;
+      age: string;
+      field: string;
+      service: string;
+      method: string;
+      region: string;
+      priceType: string;
+      price: number;
+      introduce: string;
+    }>
+  ) => void;
+  calculateProgress: () => void;
+}
 
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
-  const { careerProfileState, setCareerProfileState } = useCareerProfileState();
+  const {
+    setStatus,
+    careerProfileState,
+    setCareerProfileState,
+    calculateProgress,
+  } = useOutletContext<OutletContext>();
+  const { profileId } = useParams<{ profileId: string }>();
 
-  const [selectedMethod, setSelectedMethod] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('');
+  const [selectedMethod, setSelectedMethod] = useState<string>(
+    careerProfileState.method || ''
+  );
+  const [selectedRegion, setSelectedRegion] = useState<string>(
+    careerProfileState.region || ''
+  );
+  const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>(
+    careerProfileState.age ? careerProfileState.age.split(',') : []
+  );
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    careerProfileState.field ? careerProfileState.field.split(',') : []
+  );
+  const [selectedPriceType, setSelectedPriceType] = useState(
+    careerProfileState.priceType || ''
+  );
+
+  const [selectedService, setSelectedService] = useState<string>(
+    careerProfileState.service || ''
+  );
+
+  const [selectedPrice, setSelectedPrice] = useState<number>(
+    careerProfileState.price || -1
+  );
 
   const handleButtonClick = (method: string) => {
     setSelectedMethod(method);
   };
-  const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedPriceType, setSelectedPriceType] = useState('');
 
-  const registerCareer = () => {
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+  const cancelModal = () => setIsOpenModal(false);
+  const confirmModal = () => {
+    setSelectedMethod('');
+    registerCareer();
+    navigate('/home');
+  };
+
+  const registerCareer = async () => {
     try {
-      instance.post('/career', {
-        introduce: careerProfileState.introduce,
+      calculateProgress();
+      await instance.patch('/career', {
+        profileId: profileId,
+        progressStep: careerProfileState.progressStep,
         age: careerProfileState.age,
         field: careerProfileState.field,
         service: careerProfileState.service,
@@ -39,9 +100,10 @@ const RegisterProfileConditionPage = () => {
         region: careerProfileState.region,
         priceType: careerProfileState.priceType,
         price: careerProfileState.price,
+        introduce: careerProfileState.introduce,
       });
-      window.alert('등록되었습니다.');
-      navigate('/home');
+
+      alert('등록되었습니다.');
     } catch (error) {
       console.log(error);
     }
@@ -75,40 +137,77 @@ const RegisterProfileConditionPage = () => {
       }
     });
   };
+  // "다음" 버튼 활성화 여부 결정
+  const isNextButtonDisabled = () => {
+    if (
+      (selectedMethod === '대면' || selectedMethod === '모두 선택') &&
+      selectedRegion === ''
+    ) {
+      setIsOpenModal(true); // 지역 선택이 없으면 모달 띄우기
+    } else {
+      registerCareer();
+      navigate('/home');
+      setStatus(1);
+    }
+  };
   const hadnleOnChagne = (e) => {
     const { name, value } = e.target;
+    if (name === 'service') {
+      setSelectedService(value);
+    }
+    if (name === 'price') {
+      setSelectedPrice(value);
+    }
     setCareerProfileState({ [name]: value });
   };
   const navigateToRegisterIntroduction = () => {
-    setStatus(2);
-    navigate('/register/profile/introduction');
+    // setStatus(2);
+    navigate(`/register/profile/introduction/${profileId}`);
   };
 
   useEffect(() => {
     setCareerProfileState({
       age: selectedAgeTags.join(','),
       field: selectedTags.join(','),
+      service: selectedService,
       region: selectedRegion,
       method: selectedMethod,
       priceType: selectedPriceType,
+      price: selectedPrice,
     });
   }, [
     setCareerProfileState,
     selectedAgeTags,
     selectedTags,
+    selectedService,
     selectedRegion,
     selectedMethod,
     selectedPriceType,
+    selectedPrice,
   ]);
+  useEffect(() => {
+    setStatus(3);
+  }, [setStatus]);
   return (
     <>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 150,
+        }}
+        toastOptions={{
+          style: {
+            fontSize: '16px',
+          },
+        }}
+      />
       <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
       <TagText>희망 연령대</TagText>
       <Category
         label=""
         list={ageState.list}
         type={'dong'}
-        selectedTags={selectedAgeTags}
+        selectedTags={selectedAgeTags === null ? [] : selectedAgeTags}
         onClickTag={hadnleClickAgeTag}
       ></Category>
       <LineStyle />
@@ -126,7 +225,12 @@ const RegisterProfileConditionPage = () => {
       <TitleText>
         <div>제공할 서비스</div>
       </TitleText>
-      <InputService placeholder="ex. 컨설팅, 맞춤 과외 등"></InputService>
+      <InputService
+        name="service"
+        onChange={hadnleOnChagne}
+        placeholder="ex. 컨설팅, 맞춤 과외 등"
+        value={selectedService}
+      ></InputService>
       <LineStyle />
       <TitleText>희망 활동 형태</TitleText>
       <MethodButtonContainer>
@@ -162,6 +266,7 @@ const RegisterProfileConditionPage = () => {
         userType={'dong'}
         selected={selectedPriceType}
         onClickMethod={setSelectedPriceType}
+        value={selectedPrice}
       ></InputPrice>
       <GapButton></GapButton>
 
@@ -176,11 +281,23 @@ const RegisterProfileConditionPage = () => {
           <Button
             userType={'dong'}
             disabled={false}
-            children={'다음'}
-            onClick={registerCareer}
+            children={'등록하기'}
+            onClick={isNextButtonDisabled}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
+      <>
+        <Modal
+          userType={'dong'}
+          isOpen={isModalOpen}
+          title={'희망 지역을 등록해주세요!'}
+          content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
+          cancelText={'취소'}
+          confirmText={'이대로 제출하기'}
+          confirmModal={confirmModal}
+          cancelModal={cancelModal}
+        />
+      </>
     </>
   );
 };
