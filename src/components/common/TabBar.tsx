@@ -151,7 +151,8 @@ const Label = styled.div<LabelProps>`
   color: ${(props) =>
     props.$active === 'active' ? `var(--Primary-${props.$type})` : 'black'};
   font-size: 1.2rem;
-  font-weight: 800;
+  font-family: NanumSquare;
+  font-weight: 700;
   white-space: nowrap;
 `;
 
