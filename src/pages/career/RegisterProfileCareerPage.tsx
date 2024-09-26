@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import FileAddButton from '../../components/register/FileAddButton';
+import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { instance } from '../../api/instance';
-import CareerAddButton from '../../components/register/CareerAddButton';
-import CareerFileBox from '../../components/register/CareerFileBox';
+import CareerAddButton from '../../components/career/CareerAddButton';
+import CareerFileBox from '../../components/career/CareerFileBox';
 import Modal from '../../components/common/Modal';
 import { usePromiseToast } from '../../hooks/useToast';
+import HelpBox from '../../components/career/HelpBox';
 
 interface OutletContext {
   setStatus: (status: number) => void;
   careerProfileState: {
     progressStep: number;
-    fileName: string;
-    fileProgress: string;
+    certificateName: string;
+    certificate: string;
     // 기타 필요한 상태 값들
   };
   setCareerProfileState: (
     state: Partial<{
       progressStep: number;
-      fileName: string;
-      fileProgress: string;
+      certificateName: string;
+      certificate: string;
       // 기타 필요한 상태 값들
     }>
   ) => void;
@@ -35,7 +36,7 @@ const RegisterProfileCareerPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const profileId = pathname.split('/').pop() ?? null;
-
+  const [careerId, setCareerId] = useState<number>(0);
   const { careers, setCareers } = useCareerItemState();
   const {
     setStatus,
@@ -44,37 +45,47 @@ const RegisterProfileCareerPage = () => {
     calculateProgress,
   } = useOutletContext<OutletContext>();
 
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const cancelModal = () => setIsOpenModal(false);
-  const confirmModal = () => {
-    handleFileRemove();
-  };
-
-  const [fileName, setFileName] = useState<string>(
-    careerProfileState.fileName || ''
-  );
-  const [fileProgress, setFileProgress] = useState(
-    careerProfileState.fileProgress || '제출'
-  );
-
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
+
+  // 경력 항목 조회 함수
+  const fetchCareerItems = useCallback(async () => {
+    try {
+      const response = await instance.get(`/career/item/list/${profileId}`);
+      setCareers(response.data);
+    } catch (error) {
+      console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
+    }
+  }, [profileId, setCareers]);
+
+  // 컴포넌트 마운트 시 경력 항목 조회
+  useEffect(() => {
+    fetchCareerItems();
+  }, [fetchCareerItems]);
 
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item`, { data: { careerId } });
+      // 경력 삭제 후 목록 다시 조회
+      await fetchCareerItems();
     } catch (error) {
-      console.error('경력항목 삭제 중 에러가 발생했습니다.', error);
+      console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
     }
   };
 
+  const handleAddCareer = () => {
+    navigate('/register/profile/career/add', { state: { profileId } });
+  };
+  const handleAddCertificate = () => {
+    navigate('/register/profile/certificate', { state: { profileId } });
+  };
   const updateCareer = async () => {
     try {
       const res = instance.patch('/career', {
         profileId: profileId,
         progressStep: careerProfileState.progressStep,
-        fileName: careerProfileState.fileName,
-        fileProgress: careerProfileState.fileProgress,
+        certificateName: careerProfileState.certificateName,
+        certificate: careerProfileState.certificate,
       });
 
       showAutoSaveToast(
@@ -93,7 +104,7 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  const handleFileUpload = async (file: File) => {
+  /*const handleFileUpload = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -112,42 +123,45 @@ const RegisterProfileCareerPage = () => {
       console.error('파일 업로드 중 오류가 발생했습니다.', error);
       alert('파일 업로드 중 오류가 발생했습니다.');
     }
-  };
+  };*/
 
-  const handleFileRemove = async () => {
-    try {
-      await instance.delete(`/career/file/${profileId}`);
-      setFileName('');
-      setFileProgress('');
-      alert('파일이 성공적으로 삭제되었습니다.');
-      setCareerProfileState({
-        progressStep: careerProfileState.progressStep - 1,
-      });
-    } catch (error) {
-      console.error('파일 삭제 중 오류가 발생했습니다.', error);
-      alert('파일 삭제 중 오류가 발생했습니다.');
-    }
-  };
+  // const handleFileRemove = async () => {
+  //   try {
+  //     await instance.delete(`/career/file/${profileId}`);
+  //     setFileName('');
+  //     setFileProgress('');
+  //     alert('파일이 성공적으로 삭제되었습니다.');
+  //     setCareerProfileState({
+  //       progressStep: careerProfileState.progressStep - 1,
+  //     });
+  //   } catch (error) {
+  //     console.error('파일 삭제 중 오류가 발생했습니다.', error);
+  //     alert('파일 삭제 중 오류가 발생했습니다.');
+  //   }
+  // };
 
   const handleNextBtn = () => {
-    //중간저장
-    updateCareer();
+    // 경력증명서 상태를 검토로 바꿈
+    if (
+      careerProfileState.certificate === '제출'
+        ? setCareerProfileState({ certificate: '검토' })
+        : ''
+    )
+      //중간저장
+      updateCareer();
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
-
-  // 컴포넌트 마운트 시 경력 항목 조회
-  useEffect(() => {
-    const fetchCareerItems = async () => {
-      try {
-        const response = await instance.get(`/career/item/list/${profileId}`);
-        setCareers(response.data);
-      } catch (error) {
-        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-      }
-    };
-    fetchCareerItems();
-  }, [profileId, setCareers]);
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+  const cancelModal = () => setIsOpenModal(false);
+  const removeCareer = (careerId) => {
+    setIsOpenModal(true);
+    setCareerId(careerId);
+  };
+  const confirmModal = () => {
+    handleRemoveCareer(careerId);
+    setIsOpenModal(false);
+  };
 
   useEffect(() => {
     setStatus(1);
@@ -164,9 +178,9 @@ const RegisterProfileCareerPage = () => {
         confirmText={'삭제하기'}
         confirmModal={confirmModal}
         cancelModal={cancelModal}
-      />
-      <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
-      <div>
+      />{' '}
+      <WrapSection>
+        <h3>{`동백님의 경력을 알려주세요!`}</h3>
         <TotalCareer>
           <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
           <p>총 경력 {calcTotalCareer(careers)}</p>
@@ -180,65 +194,63 @@ const RegisterProfileCareerPage = () => {
             endYear={career.endYear}
             endMonth={career.endMonth}
             content={career.content}
-            onDelete={() => handleRemoveCareer(career.careerId)}
+            onDelete={() => removeCareer(career.careerId)}
           />
         ))}
-        <ButtonBox onClick={() => navigate(`/register/profile/career/add`)}>
-          <CareerAddButton addText={'경력 추가'}></CareerAddButton>
-        </ButtonBox>
-      </div>
+        <CareerAddButton
+          onClick={handleAddCareer}
+          addText={'경력 추가'}
+        ></CareerAddButton>
+      </WrapSection>
       <LineStyle />
-      <div>
-        <CategoryText>경력증명서</CategoryText>
-        <HelpTextBox>
-          <HelpText>{`·증빙자료를 첨부하시면 담당자 검토 후,\n확인마크`}</HelpText>
-          <img
-            src="/assets/common/certification-mark-dong.svg"
-            alt="확인마크"
-          />
-          <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
-        </HelpTextBox>
-
-        {fileName && (
+      <WrapSection className="last-content">
+        <h3>경력증명서</h3>
+        <HelpBox />
+        {careerProfileState.certificateName && (
           <CareerFileBox
-            activeStatus={fileProgress}
-            uploadedFileName={fileName}
+            activeStatus={careerProfileState.certificate}
+            uploadedFileName={careerProfileState.certificateName}
             onDelete={() => setIsOpenModal(true)}
           />
         )}
-        <FileAddButton
-          onFileUpload={handleFileUpload}
-          addText={'파일 추가'}
-        ></FileAddButton>
-        <GapButton></GapButton>
-        <WrapButtonContainer>
-          <WrapButton>
-            <Button
-              userType={'dong'}
-              disabled={false}
-              children={'다음'}
-              onClick={handleNextBtn}
-            ></Button>
-          </WrapButton>
-        </WrapButtonContainer>
-      </div>
+        <FileAddButton onClick={handleAddCertificate} addText={'파일 추가'} />
+      </WrapSection>
+      <WrapButtonContainer>
+        <Button
+          userType={'dong'}
+          disabled={false}
+          children={'다음'}
+          onClick={handleNextBtn}
+        />
+      </WrapButtonContainer>
     </>
   );
 };
+const WrapSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-const CategoryText = styled.div`
-  font-family: NanumSquare;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.03rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.1rem;
+
+  &.last-content {
+    margin-bottom: 8rem;
+  }
+
+  h3 {
+    font-family: NanumSquare;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
+    margin: 1rem 0;
+  }
 `;
 
 const TotalCareer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.3rem;
-  margin: 2rem 0 1rem 0;
 
   p {
     color: var(--Primary-dong);
@@ -250,35 +262,13 @@ const TotalCareer = styled.div`
   }
 `;
 
-const ButtonBox = styled.div``;
-
 const LineStyle = styled.div`
-  width: calc(100% + 2.2rem);
+  position: relative;
+  width: 100%;
   height: 0.625rem;
   background: #ebeceb;
-  position: relative;
-  left: -1.1rem;
-  margin-top: 3.3rem;
-`;
-
-const HelpTextBox = styled.div`
-  width: 100%;
-  height: auto;
-  border-radius: 0.625rem;
-  border: 1px solid var(--Primary-dong);
-  padding: 1.2rem;
-`;
-
-const HelpText = styled.span`
-  color: var(--Primary-dong);
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-weight: 400;
-  white-space: pre;
-`;
-
-const GapButton = styled.div`
-  margin-bottom: 8rem;
+  left: 0;
+  right: 0;
 `;
 
 const WrapButtonContainer = styled.div`
@@ -287,13 +277,7 @@ const WrapButtonContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
-`;
-
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  padding: 1.1rem 1.1rem 3rem 1.1rem;
 `;
 
 export default RegisterProfileCareerPage;

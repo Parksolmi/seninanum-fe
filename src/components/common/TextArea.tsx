@@ -32,7 +32,7 @@ const TextAreaStyle = styled.textarea`
   border: 1px solid #5b5b5b;
   border-radius: 10px;
   padding-left: 0.8rem;
-  padding-top: 0.75rem;
+  padding-top: 1.5rem;
   color: #000;
   font-family: NanumSquare;
   font-size: 1.25rem;

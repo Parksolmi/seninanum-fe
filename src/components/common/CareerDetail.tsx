@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { calcCareerPeroid } from '../../utils/calcCareerPeroid';
 
 interface CareerDetailProps {
   title: string;
@@ -20,31 +21,16 @@ const CareerDetail = ({
   content,
   onDelete,
 }: CareerDetailProps) => {
-  // 입사 기간 계산
-  const calculatePeriod = (
-    startYear: number,
-    startMonth: number,
-    endYear: number,
-    endMonth: number
-  ) => {
-    let years = endYear - startYear;
-    let months = endMonth - startMonth;
-
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-    return `${years}년 ${months}개월`;
-  };
-
-  const period = calculatePeriod(startYear, startMonth, endYear, endMonth);
+  const period = calcCareerPeroid(startYear, startMonth, endYear, endMonth);
   return (
     <InputContainer>
       <span className="first-div">
         <h1>{title}</h1>
-        <span className="delete" onClick={onDelete}>
-          삭제하기
-        </span>
+        <img
+          src={'/assets/common/cancel-button.png'}
+          alt="delete"
+          onClick={onDelete}
+        />
       </span>
       <div>
         <p>{`${startYear}-${startMonth
@@ -82,15 +68,8 @@ const InputContainer = styled.div`
     align-items: center;
   }
 
-  .delete {
-    color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
-    text-align: center;
-    font-family: NanumSquare;
-    font-size: 1.25rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-decoration-line: underline;
+  img {
+    width: 1rem;
   }
 
   div {

@@ -7,13 +7,25 @@ interface ButtonProps {
   children: string;
   disabled: boolean;
   readonly userType: string | null;
-  onClick: () => void;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset'; // 추가된 타입 속성
 }
 
-const Button = ({ children, disabled, userType, onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  disabled,
+  userType,
+  onClick,
+  type = 'button',
+}: ButtonProps) => {
   return (
     <WrapButton>
-      <StyledButton disabled={disabled} $type={userType} onClick={onClick}>
+      <StyledButton
+        disabled={disabled}
+        $type={userType}
+        onClick={onClick}
+        type={type}
+      >
         {children}
       </StyledButton>
     </WrapButton>

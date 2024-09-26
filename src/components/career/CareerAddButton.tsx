@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 interface FileProps {
   addText: string;
+  onClick: () => void;
 }
-const CareerAddButton = ({ addText }: FileProps) => {
+const CareerAddButton = ({ addText, onClick }: FileProps) => {
   return (
-    <WrapButton>
+    <WrapButton onClick={onClick}>
       <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
       <AddArea>
         <AddIcon src="/assets/common/add.svg" alt="추가아이콘"></AddIcon>
@@ -19,7 +20,6 @@ const CareerAddButton = ({ addText }: FileProps) => {
 const WrapButton = styled.div`
   width: 100%;
   height: 100%;
-  margin-top: 0.75rem;
   position: relative;
 `;
 const BtnImage = styled.img`
