@@ -4,14 +4,12 @@ import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import { instance } from '../../api/instance';
 import useCareerProfileState from '../../store/careerProfileState';
+import PrevHeader from '../../components/header/PrevHeader';
 
 const RegisterProfileCertificatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const profileId = location.state?.profileId || 0;
-  const navigateToRegisterProfile = () => {
-    navigate(-1);
-  };
 
   const [file, setFile] = useState<File | null>(null);
   // 파일 상태를 기본값으로 "제출"로 설정
@@ -71,9 +69,7 @@ const RegisterProfileCertificatePage = () => {
   return (
     <WrapContent>
       <form onSubmit={handleSubmit}>
-        <WrapCloseIcon onClick={navigateToRegisterProfile}>
-          <ClosePage src="/assets/common/page-close.svg" alt="닫기" />
-        </WrapCloseIcon>
+        <PrevHeader navigateTo={'-1'} />
         <MainText>경력증명서를 등록해주세요!</MainText>
         <SideText>{`대표 경력증명서 하나만 제출해주세요\n부적합할 경우 반려될 수 있어요.`}</SideText>
         <BoxContainer onClick={handleBoxClick}>
@@ -118,17 +114,7 @@ const RegisterProfileCertificatePage = () => {
   );
 };
 const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const WrapCloseIcon = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const ClosePage = styled.img`
-  margin-top: 0.4rem;
+  padding: 0 1.1rem 1.3rem 1.1rem;
 `;
 
 const ImgArea = styled.img`

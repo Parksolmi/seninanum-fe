@@ -142,13 +142,14 @@ const RegisterProfileCareerPage = () => {
 
   const handleNextBtn = () => {
     // 경력증명서 상태를 검토로 바꿈
-    if (
-      careerProfileState.certificate === '제출'
-        ? setCareerProfileState({ certificate: '검토' })
-        : ''
-    )
-      //중간저장
-      updateCareer();
+    // if (
+    //   careerProfileState.certificate === '제출'
+    //     ? setCareerProfileState({ certificate: '검토' })
+    //     : ''
+    // )
+
+    //중간저장
+    updateCareer();
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };

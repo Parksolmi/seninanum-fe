@@ -30,7 +30,7 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
       <BannerContainer
         src={`/assets/home/banner-image-dong.png`}
         alt="배너이미지"
-      ></BannerContainer>
+      />
 
       <ContentContainer>
         <CareerProfileProgress progressStep={progressStep} />
@@ -40,25 +40,19 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
             shortcutButtonText={`구인글\n조회하기`}
             navigateTo={() => navigate('/view/recruit/list')}
             type={USER_TYPE}
-          ></ShortcutButton>
+          />
           <ShortcutButton
             navigateTo={() => navigate('/')}
             shortcutButtonText={`리뷰\n작성하기`}
             type={USER_TYPE}
-          ></ShortcutButton>
+          />
         </ButtonHorizontal>
 
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
           {/* 임시 */}
-          <SummaryCard
-            type={'nari'}
-            fields={['IT', '예체능', '디지털']}
-          ></SummaryCard>
-          <SummaryCard
-            type={'nari'}
-            fields={['IT', '예체능', '디지털']}
-          ></SummaryCard>
+          <SummaryCard type={'nari'} fields={['IT', '예체능', '디지털']} />
+          <SummaryCard type={'nari'} fields={['IT', '예체능', '디지털']} />
         </NariCardVertical>
       </ContentContainer>
     </>
