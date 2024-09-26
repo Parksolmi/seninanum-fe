@@ -151,16 +151,6 @@ const WrapContent = styled.div`
   padding: 0 1.1rem 1.3rem 1.1rem;
 `;
 
-const WrapCloseIcon = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const ClosePage = styled.img`
-  margin-top: 0.4rem;
-`;
-
 const CategoryText = styled.div`
   color: #000;
   font-family: NanumSquare;

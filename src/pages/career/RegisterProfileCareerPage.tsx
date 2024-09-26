@@ -41,7 +41,7 @@ const RegisterProfileCareerPage = () => {
   const {
     setStatus,
     careerProfileState,
-    setCareerProfileState,
+    // setCareerProfileState,
     calculateProgress,
   } = useOutletContext<OutletContext>();
 
