@@ -28,6 +28,17 @@ const RegisterProfileCareerPage = () => {
   const { setCareerProfileState, careerProfileState, calculateProgress } =
     useCareerProfileState();
 
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+  const cancelModal = () => setIsOpenModal(false);
+  const removeCareer = (careerId) => {
+    setIsOpenModal(true);
+    setCareerId(careerId);
+  };
+  const confirmModal = () => {
+    handleRemoveCareer(careerId);
+    setIsOpenModal(false);
+  };
+
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
@@ -40,11 +51,6 @@ const RegisterProfileCareerPage = () => {
       console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
     }
   }, [profileId, setCareers]);
-
-  // 컴포넌트 마운트 시 경력 항목 조회
-  useEffect(() => {
-    fetchCareerItems();
-  }, [fetchCareerItems]);
 
   const handleRemoveCareer = async (careerId: number) => {
     try {
@@ -87,27 +93,6 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  /*const handleFileUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      await instance.post('/career/certificate', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      alert('파일이 성공적으로 업로드되었습니다.');
-      // 파일명 설정
-      setFileName(file.name);
-      // 파일 프로그레스바 설정
-      setFileProgress(fileProgress);
-    } catch (error) {
-      console.error('파일 업로드 중 오류가 발생했습니다.', error);
-      alert('파일 업로드 중 오류가 발생했습니다.');
-    }
-  };*/
-
   const handleFileRemove = async () => {
     setIsOpenModal(true);
     try {
@@ -125,28 +110,16 @@ const RegisterProfileCareerPage = () => {
   };
 
   const handleNextBtn = () => {
-    // 경력증명서 상태를 검토로 바꿈
-    // if (
-    //   careerProfileState.certificate === '제출'
-    //     ? setCareerProfileState({ certificate: '검토' })
-    //     : ''
-    // )
-
     //중간저장
     updateCareer();
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const cancelModal = () => setIsOpenModal(false);
-  const removeCareer = (careerId) => {
-    setIsOpenModal(true);
-    setCareerId(careerId);
-  };
-  const confirmModal = () => {
-    handleRemoveCareer(careerId);
-    setIsOpenModal(false);
-  };
+
+  // 컴포넌트 마운트 시 경력 항목 조회
+  useEffect(() => {
+    fetchCareerItems();
+  }, [fetchCareerItems]);
 
   useEffect(() => {
     setStatus(1);

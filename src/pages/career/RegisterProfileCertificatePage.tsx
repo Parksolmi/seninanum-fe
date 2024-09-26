@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
@@ -45,6 +45,7 @@ const RegisterProfileCertificatePage = () => {
     const formData = new FormData();
     formData.append('pdfFile', file);
     formData.append('profileId', profileId);
+
     try {
       setButtonDisabled(true); //버튼 연타 방지
 
