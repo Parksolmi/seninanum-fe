@@ -17,7 +17,7 @@ const ExitHeader = ({ navigateTo, userType }) => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         userType={userType}
         isOpen={isModalOpen}
         title={'정말 나가시겠습니까?'}
@@ -26,7 +26,7 @@ const ExitHeader = ({ navigateTo, userType }) => {
         confirmText={'나가기'}
         confirmModal={confirmModal}
         cancelModal={cancelModal}
-      />
+      /> */}
 
       <ButtonWrap onClick={openModal}>
         <StopWritingButton />

@@ -4,13 +4,13 @@ import Button from './Button';
 
 interface ModalProps {
   userType: string;
-  isOpen: boolean;
+  isOpen?: boolean;
   title: string;
   content: string;
   cancelText: string;
   confirmText: string;
-  confirmModal: () => void;
-  cancelModal: () => void;
+  onConfirm: (id?: number) => void;
+  onCancel: () => void;
 }
 
 const Modal = ({
@@ -20,10 +20,15 @@ const Modal = ({
   content,
   cancelText,
   confirmText,
-  confirmModal,
-  cancelModal,
+  onConfirm,
+  onCancel,
 }: ModalProps) => {
-  return isOpen ? (
+  const handleConfirm = () => {
+    onConfirm();
+    onCancel();
+  };
+
+  return (
     <>
       <ModalPosition>
         <ModalWrapper>
@@ -34,21 +39,19 @@ const Modal = ({
               userType={null}
               disabled={false}
               children={cancelText}
-              onClick={cancelModal}
+              onClick={onCancel}
             />
             <Button
               userType={userType}
               disabled={false}
               children={confirmText}
-              onClick={confirmModal}
+              onClick={handleConfirm}
             />
           </WrapButton>
         </ModalWrapper>
       </ModalPosition>
       <ModalBackground />
     </>
-  ) : (
-    <></>
   );
 };
 

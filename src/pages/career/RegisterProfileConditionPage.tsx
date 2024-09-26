@@ -126,7 +126,7 @@ const RegisterProfileConditionPage = () => {
 
   return (
     <WrapContent>
-      <Modal
+      {/* <Modal
         userType={'dong'}
         isOpen={isModalOpen}
         title={'희망 지역을 등록해주세요!'}
@@ -135,7 +135,7 @@ const RegisterProfileConditionPage = () => {
         confirmText={'이대로 제출하기'}
         confirmModal={confirmModal}
         cancelModal={cancelModal}
-      />
+      /> */}
       <h3>
         마지막으로,
         <br />

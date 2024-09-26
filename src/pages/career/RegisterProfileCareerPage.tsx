@@ -13,6 +13,7 @@ import Modal from '../../components/common/Modal';
 import { usePromiseToast } from '../../hooks/useToast';
 import HelpBox from '../../components/career/HelpBox';
 import useCareerProfileState from '../../store/careerProfileState';
+import useModal from '../../hooks/useModal';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -21,28 +22,32 @@ interface OutletContext {
 const RegisterProfileCareerPage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
-  const [careerId, setCareerId] = useState<number>(0);
   const { careers, setCareers } = useCareerItemState();
 
   const { setStatus } = useOutletContext<OutletContext>();
   const { setCareerProfileState, careerProfileState, calculateProgress } =
     useCareerProfileState();
 
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const cancelModal = () => setIsOpenModal(false);
-  const removeCareer = (careerId) => {
-    setIsOpenModal(true);
-    setCareerId(careerId);
-  };
-  const confirmModal = () => {
-    handleRemoveCareer(careerId);
-    setIsOpenModal(false);
-  };
+  //모달 창
+  const {
+    openModal: openCareerDeleteModal,
+    closeModal: closeCareerDeleteModal,
+  } = useModal((id) => (
+    <Modal
+      userType={'dong'}
+      title={'정말 삭제하시겠습니까?'}
+      content={``}
+      cancelText={'취소'}
+      confirmText={'삭제하기'}
+      onConfirm={() => handleRemoveCareer(id)}
+      onCancel={closeCareerDeleteModal}
+    />
+  ));
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  // 경력 항목 조회 함수
+  // 경력 항목 조회
   const fetchCareerItems = useCallback(async () => {
     try {
       const response = await instance.get(`/career/item/list/${profileId}`);
@@ -52,10 +57,12 @@ const RegisterProfileCareerPage = () => {
     }
   }, [profileId, setCareers]);
 
+  // 경력 항목 삭제
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item`, { data: { careerId } });
-      // 경력 삭제 후 목록 다시 조회
+      alert('항목이 삭제되었습니다.');
+      // 경력 삭제 후 목록 업데이트
       await fetchCareerItems();
     } catch (error) {
       console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
@@ -94,7 +101,6 @@ const RegisterProfileCareerPage = () => {
   };
 
   const handleFileRemove = async () => {
-    setIsOpenModal(true);
     try {
       await instance.delete(`/career/file/${profileId}`);
       // setFileName('');
@@ -127,16 +133,6 @@ const RegisterProfileCareerPage = () => {
 
   return (
     <>
-      <Modal
-        userType={'dong'}
-        isOpen={isModalOpen}
-        title={'정말 삭제하시겠습니까?'}
-        content={``}
-        cancelText={'취소'}
-        confirmText={'삭제하기'}
-        confirmModal={confirmModal}
-        cancelModal={cancelModal}
-      />
       <WrapSection>
         <h3>{`동백님의 경력을 알려주세요!`}</h3>
         <TotalCareer>
@@ -152,7 +148,7 @@ const RegisterProfileCareerPage = () => {
             endYear={career.endYear}
             endMonth={career.endMonth}
             content={career.content}
-            onDelete={() => removeCareer(career.careerId)}
+            onDelete={() => openCareerDeleteModal(career.careerId)}
           />
         ))}
         <CareerAddButton
@@ -168,7 +164,7 @@ const RegisterProfileCareerPage = () => {
           <CareerFileBox
             activeStatus={careerProfileState.certificate}
             uploadedFileName={careerProfileState.certificateName}
-            onDelete={() => setIsOpenModal(true)}
+            onDelete={() => {}} //임시
           />
         )}
         <FileAddButton onClick={handleAddCertificate} addText={'파일 추가'} />
