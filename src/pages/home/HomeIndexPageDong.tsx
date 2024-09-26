@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
-import getRandomNumber from '../../utils/getRandomNumber';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
@@ -16,19 +15,20 @@ interface progressStepProps {
 
 const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const [bannerIndex, setBannerIndex] = useState(getRandomNumber());
-
+  //상태바 색상 변경
   useEffect(() => {
-    setBannerIndex(getRandomNumber());
-  }, [location.pathname]);
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#384775');
+    }
+  }, []);
 
   return (
     <>
       <LogoHeader />
       <BannerContainer
-        src={`/assets/home/banner-image${bannerIndex}.svg`}
+        src={`/assets/home/banner-image-dong.png`}
         alt="배너이미지"
       ></BannerContainer>
 
