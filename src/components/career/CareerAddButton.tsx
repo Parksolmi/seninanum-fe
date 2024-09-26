@@ -10,7 +10,7 @@ const CareerAddButton = ({ addText, onClick }: FileProps) => {
     <WrapButton onClick={onClick}>
       <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
       <AddArea>
-        <AddIcon src="/assets/common/add.svg" alt="추가아이콘"></AddIcon>
+        <AddIcon src="/assets/common/add.svg" alt="추가아이콘" />
         <AddText>{addText}</AddText>
       </AddArea>
     </WrapButton>
@@ -50,5 +50,6 @@ const AddText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 0%; /* 0rem */
+  padding-left: 0.5rem;
 `;
 export default CareerAddButton;
