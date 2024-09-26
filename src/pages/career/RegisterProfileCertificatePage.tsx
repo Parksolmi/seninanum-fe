@@ -1,23 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import { instance } from '../../api/instance';
 import useCareerProfileState from '../../store/careerProfileState';
 import PrevHeader from '../../components/header/PrevHeader';
+import { usePromiseToast } from '../../hooks/useToast';
 
 const RegisterProfileCertificatePage = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const profileId = location.state?.profileId || 0;
 
   const [file, setFile] = useState<File | null>(null);
-  // 파일 상태를 기본값으로 "제출"로 설정
-  const [certificate, setCertificate] = useState<string>('제출');
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
   const { setCareerProfileState } = useCareerProfileState();
+
+  //토스트 메세지
+  const { showPromiseToast: showSendFileToast } = usePromiseToast();
 
   // 파일 선택 시 호출되는 함수
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setButtonDisabled(false); //버튼 활성화
     if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
     }
@@ -28,7 +32,7 @@ const RegisterProfileCertificatePage = () => {
     fileInputRef.current?.click();
   };
 
-  // 폼 제출 시 호출되는 함수
+  // 경력 증명서 제출 API
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -41,31 +45,35 @@ const RegisterProfileCertificatePage = () => {
     const formData = new FormData();
     formData.append('pdfFile', file);
     formData.append('profileId', profileId);
-    // FormData의 모든 값 출력
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
     try {
-      // POST 요청 보내기
-      const response = await instance.post('/career/certificate', formData, {
+      setButtonDisabled(true); //버튼 연타 방지
+
+      const res = instance.post('/career/certificate', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      alert('파일이 성공적으로 업로드되었습니다.');
-      setCareerProfileState({
-        certificateName: file.name,
-        certificate: certificate,
-      });
-      setCertificate('제출');
-      navigate(-1);
-      console.log(response.data);
+      await showSendFileToast(
+        res,
+        () => {
+          setCareerProfileState({
+            certificateName: file.name,
+            certificate: '검토',
+          });
+          return '파일이 업로드되었습니다.';
+        },
+        (error) => {
+          console.log(error);
+          return '파일 업로드에 실패했습니다.';
+        }
+      );
     } catch (error) {
-      console.error('파일 업로드 중 오류가 발생했습니다.', error);
+      console.log(error);
       alert('파일 업로드 중 오류가 발생했습니다.');
     }
   };
+
   return (
     <WrapContent>
       <form onSubmit={handleSubmit}>
@@ -81,13 +89,13 @@ const RegisterProfileCertificatePage = () => {
             ref={fileInputRef}
           />
           {file ? (
-            // 파일이 선택된 후 보여줄 UI
+            // 파일이 선택 후
             <>
               <ImgArea src="/assets/home/file-icon.svg" alt="파일 아이콘" />
               <FileNameText>{file.name}</FileNameText>
             </>
           ) : (
-            // 파일 선택 이전에 보여줄 UI
+            // 파일 선택 전
             <>
               <AddIcon
                 src="/assets/home/certificate-add.svg"
@@ -98,16 +106,14 @@ const RegisterProfileCertificatePage = () => {
             </>
           )}
         </BoxContainer>
-        <GapButton />
+
         <WrapButtonContainer>
-          <WrapButton>
-            <Button
-              userType={'dong'}
-              disabled={!file}
-              children="제출하기"
-              type="submit"
-            />
-          </WrapButton>
+          <Button
+            userType={'dong'}
+            disabled={buttonDisabled}
+            children="제출하기"
+            type="submit"
+          />
         </WrapButtonContainer>
       </form>
     </WrapContent>
@@ -142,10 +148,6 @@ const SideText = styled.div`
   letter-spacing: 0.045rem;
 `;
 
-const GapButton = styled.div`
-  margin-bottom: 8rem;
-`;
-
 const WrapButtonContainer = styled.div`
   background-color: #fff;
   position: fixed;
@@ -155,11 +157,6 @@ const WrapButtonContainer = styled.div`
   padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
 
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-`;
 const BoxContainer = styled.div`
   width: 100%;
   height: auto;

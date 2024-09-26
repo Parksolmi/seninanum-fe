@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
@@ -12,38 +12,21 @@ import CareerFileBox from '../../components/career/CareerFileBox';
 import Modal from '../../components/common/Modal';
 import { usePromiseToast } from '../../hooks/useToast';
 import HelpBox from '../../components/career/HelpBox';
+import useCareerProfileState from '../../store/careerProfileState';
 
 interface OutletContext {
   setStatus: (status: number) => void;
-  careerProfileState: {
-    progressStep: number;
-    certificateName: string;
-    certificate: string;
-    // 기타 필요한 상태 값들
-  };
-  setCareerProfileState: (
-    state: Partial<{
-      progressStep: number;
-      certificateName: string;
-      certificate: string;
-      // 기타 필요한 상태 값들
-    }>
-  ) => void;
-  calculateProgress: () => void;
 }
 
 const RegisterProfileCareerPage = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const profileId = pathname.split('/').pop() ?? null;
+  const { profileId } = useParams<{ profileId: string }>();
   const [careerId, setCareerId] = useState<number>(0);
   const { careers, setCareers } = useCareerItemState();
-  const {
-    setStatus,
-    careerProfileState,
-    // setCareerProfileState,
-    calculateProgress,
-  } = useOutletContext<OutletContext>();
+
+  const { setStatus } = useOutletContext<OutletContext>();
+  const { setCareerProfileState, careerProfileState, calculateProgress } =
+    useCareerProfileState();
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
@@ -125,20 +108,21 @@ const RegisterProfileCareerPage = () => {
     }
   };*/
 
-  // const handleFileRemove = async () => {
-  //   try {
-  //     await instance.delete(`/career/file/${profileId}`);
-  //     setFileName('');
-  //     setFileProgress('');
-  //     alert('파일이 성공적으로 삭제되었습니다.');
-  //     setCareerProfileState({
-  //       progressStep: careerProfileState.progressStep - 1,
-  //     });
-  //   } catch (error) {
-  //     console.error('파일 삭제 중 오류가 발생했습니다.', error);
-  //     alert('파일 삭제 중 오류가 발생했습니다.');
-  //   }
-  // };
+  const handleFileRemove = async () => {
+    setIsOpenModal(true);
+    try {
+      await instance.delete(`/career/file/${profileId}`);
+      // setFileName('');
+      // setFileProgress('');
+      alert('파일이 삭제되었습니다.');
+      setCareerProfileState({
+        progressStep: careerProfileState.progressStep - 1,
+      });
+    } catch (e) {
+      console.log(e);
+      alert('파일 삭제 중 오류가 발생했습니다.');
+    }
+  };
 
   const handleNextBtn = () => {
     // 경력증명서 상태를 검토로 바꿈
