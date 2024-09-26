@@ -79,7 +79,7 @@ const RegisterProfileCareerPage = () => {
 
       showAutoSaveToast(
         res,
-        (res) => {
+        () => {
           return '자동저장되었습니다.';
         },
         (error) => {
@@ -136,7 +136,7 @@ const RegisterProfileCareerPage = () => {
         confirmText={'삭제하기'}
         confirmModal={confirmModal}
         cancelModal={cancelModal}
-      />{' '}
+      />
       <WrapSection>
         <h3>{`동백님의 경력을 알려주세요!`}</h3>
         <TotalCareer>

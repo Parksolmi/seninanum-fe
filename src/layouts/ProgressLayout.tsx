@@ -80,7 +80,7 @@ const WrapHeader = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
-  z-index: 99;
+  z-index: 9;
   padding: 1.3rem 1.1rem 0 1.1rem;
 `;
 

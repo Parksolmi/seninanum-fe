@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import Button from './Button';
 
 interface ModalProps {
-  userType;
-  isOpen;
-  title;
-  content;
-  cancelText;
-  confirmText;
-  confirmModal;
-  cancelModal;
+  userType: string;
+  isOpen: boolean;
+  title: string;
+  content: string;
+  cancelText: string;
+  confirmText: string;
+  confirmModal: () => void;
+  cancelModal: () => void;
 }
 
 const Modal = ({
@@ -23,31 +23,32 @@ const Modal = ({
   confirmModal,
   cancelModal,
 }: ModalProps) => {
-  return (
-    isOpen && (
-      <ModalBackground>
-        <ModalPosition>
-          <ModalWrapper>
-            <ModalTitleText>{title}</ModalTitleText>
-            <ModalContentText>{content}</ModalContentText>
-            <WrapButton>
-              <Button
-                userType={null}
-                disabled={false}
-                children={cancelText}
-                onClick={cancelModal}
-              ></Button>
-              <Button
-                userType={userType}
-                disabled={false}
-                children={confirmText}
-                onClick={confirmModal}
-              ></Button>
-            </WrapButton>
-          </ModalWrapper>
-        </ModalPosition>
-      </ModalBackground>
-    )
+  return isOpen ? (
+    <>
+      <ModalPosition>
+        <ModalWrapper>
+          <h3 className="title">{title}</h3>
+          <p className="content">{content}</p>
+          <WrapButton>
+            <Button
+              userType={null}
+              disabled={false}
+              children={cancelText}
+              onClick={cancelModal}
+            />
+            <Button
+              userType={userType}
+              disabled={false}
+              children={confirmText}
+              onClick={confirmModal}
+            />
+          </WrapButton>
+        </ModalWrapper>
+      </ModalPosition>
+      <ModalBackground />
+    </>
+  ) : (
+    <></>
   );
 };
 
@@ -55,58 +56,57 @@ const ModalBackground = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 5;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
+  z-index: 99;
 `;
 
 const ModalPosition = styled.div`
-  position: absolute;
-  top: 30%;
-  right: 1.1rem;
-  left: 1.1rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - 2.2rem);
+  border-radius: 0.9375rem;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 999;
+  overflow: hidden;
 `;
 
 const ModalWrapper = styled.div`
   padding: 2rem 1rem 1rem 1rem;
   width: 100%;
-  height: 14.125rem;
+  /* height: auto; */
   flex-shrink: 0;
   border-radius: 0.9375rem;
   background: var(--Base-White, #fff);
   /* Shadow_dong */
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
-`;
 
-const ModalTitleText = styled.div`
-  color: var(--Base-Black, #000);
   text-align: center;
   font-family: NanumSquare;
-  font-size: 1.375rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-bottom: 1rem;
+
+  .title {
+    color: var(--Base-Black, #000);
+    font-size: 1.375rem;
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    color: var(--Base-Deep-Gray, #5b5b5b);
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
+  }
 `;
 
-const ModalContentText = styled.div`
-  color: var(--Base-Deep-Gray, #5b5b5b);
-  text-align: center;
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-bottom: 1.5rem;
-  white-space: pre-line;
-`;
 const WrapButton = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: row;
-  left: 1.1rem;
-  right: 1.1rem;
   gap: 1rem;
 `;
 
