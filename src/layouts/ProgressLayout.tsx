@@ -42,12 +42,7 @@ const ProgressLayout: React.FC = () => {
     <>
       <Container>
         <ExitBtn>
-          <ExitHeader
-            userType={userType}
-            navigateTo={'/home'}
-            careerProfileState={careerProfileState}
-            calculateProgress={calculateProgress}
-          />
+          <ExitHeader userType={userType} navigateTo={'/home'} />
         </ExitBtn>
         <ProgressBar status={status} type={userType} />
 

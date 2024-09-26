@@ -4,31 +4,7 @@ import styled from 'styled-components';
 import StopWritingButton from '../../components/common/StopWritingButton';
 import Modal from '../../components/common/Modal';
 
-interface ExitHeaderProps {
-  navigateTo: string;
-  userType: string;
-  careerProfileState: {
-    progressStep: number;
-    fileName: string;
-    fileProgress: string;
-    introduce: string;
-    age: string;
-    field: string;
-    service: string;
-    method: string;
-    region: string;
-    priceType: string;
-    price: number;
-  };
-  calculateProgress: () => void;
-}
-
-const ExitHeader = ({
-  navigateTo,
-  userType,
-  careerProfileState,
-  calculateProgress,
-}: ExitHeaderProps) => {
+const ExitHeader = ({ navigateTo, userType }) => {
   const navigate = useNavigate();
 
   // 모달 열고 닫기

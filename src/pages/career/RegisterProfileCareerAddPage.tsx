@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import TextArea from '../../components/common/TextArea';
@@ -15,19 +15,15 @@ const RegisterProfileCareerAddPage = () => {
   const [endYear, setEndYear] = useState(0);
   const [endMonth, setEndMonth] = useState(0);
   const [content, setContent] = useState('');
+  const location = useLocation();
+  const profileId = location.state?.profileId || 0;
+
   const validatePeriod = () => {
     const startDate = new Date(startYear, startMonth - 1);
     const endDate = new Date(endYear, endMonth - 1);
     return startDate <= endDate;
   };
-  const fetchProfileId = async () => {
-    try {
-      const response = await instance.post('/career', {});
-      navigate(`/register/profile/career/${response.data.profileId}`);
-    } catch (error) {
-      console.error('사용자 정보 조회에 실패하였습니다.');
-    }
-  };
+
   const addNewCareer = async () => {
     if (!validatePeriod()) {
       toast.error(
@@ -36,6 +32,7 @@ const RegisterProfileCareerAddPage = () => {
       return;
     }
     const newCareer = {
+      profileId,
       title,
       startYear,
       startMonth,
@@ -46,7 +43,7 @@ const RegisterProfileCareerAddPage = () => {
     try {
       await instance.post('/career/item', newCareer);
       window.alert('등록되었습니다.');
-      fetchProfileId();
+      navigate(-1);
     } catch (error) {
       console.error(
         'Failed to add career',

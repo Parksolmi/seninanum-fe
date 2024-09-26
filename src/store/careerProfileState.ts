@@ -4,8 +4,8 @@ import useCareerItemState from './careerItemState';
 
 interface CareerProfileState {
   progressStep: number;
-  fileName: string;
-  fileProgress: string;
+  certificateName: string;
+  certificate: string;
   introduce: string;
   age: string;
   field: string; // 이게뭐야?
@@ -26,8 +26,8 @@ const useCareerProfileState = create<CareerProfileStateType>()(
   devtools((set, get) => ({
     careerProfileState: {
       progressStep: 0,
-      fileName: '',
-      fileProgress: '',
+      certificateName: '',
+      certificate: '',
       introduce: '',
       age: '',
       field: '',
@@ -50,7 +50,7 @@ const useCareerProfileState = create<CareerProfileStateType>()(
       let progressCount = 0;
 
       if (careers.length > 0) progressCount++;
-      if (state.fileName) progressCount++;
+      if (state.certificateName) progressCount++;
       if (state.introduce) progressCount++;
       if (state.age) progressCount++;
       if (state.field) progressCount++;
