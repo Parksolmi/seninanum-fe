@@ -74,7 +74,7 @@ const Label = styled.button`
   border-color: transparent;
 
   p {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
   }
 `;
@@ -87,7 +87,7 @@ const DropdownButton = styled.div<{ $isOpen: boolean; $userType: string }>`
         ? 'var(--Primary-Deep-nari)'
         : 'var(--Primary-dong)'
       : '#000000'};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
 
@@ -131,7 +131,7 @@ const WrapItems = styled.div`
 const DropdownItem = styled.div`
   padding: 0.75rem 0;
   border-bottom: 1px solid #d9d9d9;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-align: left;
   white-space: nowrap;
   &:hover {

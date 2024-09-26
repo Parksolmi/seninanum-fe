@@ -2,23 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface FileProps {
-  onFileUpload?: (file: File) => void;
   addText: string;
   onClick: () => void;
 }
-const FileAddButton = ({ onFileUpload, addText, onClick }: FileProps) => {
+const FileAddButton = ({ addText, onClick }: FileProps) => {
   return (
-    <label>
-      <FileAddButtonWrapper>
-        <WrapButton onClick={onClick}>
-          <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
-          <AddArea>
-            <AddIcon src="/assets/common/add.svg" alt="추가아이콘"></AddIcon>
-            <AddText>{addText}</AddText>
-          </AddArea>
-        </WrapButton>
-      </FileAddButtonWrapper>
-    </label>
+    <FileAddButtonWrapper onClick={onClick}>
+      <WrapButton>
+        <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />
+        <AddArea>
+          <AddIcon src="/assets/common/add.svg" alt="추가아이콘" />
+          <AddText>{addText}</AddText>
+        </AddArea>
+      </WrapButton>
+    </FileAddButtonWrapper>
   );
 };
 
@@ -31,7 +28,6 @@ const FileAddButtonWrapper = styled.div`
 const WrapButton = styled.div`
   width: 100%;
   height: 100%;
-  margin-top: 0.75rem;
   position: relative;
 `;
 
@@ -66,6 +62,7 @@ const AddText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 0%; /* 0rem */
+  padding-left: 0.5rem;
 `;
 
 export default FileAddButton;

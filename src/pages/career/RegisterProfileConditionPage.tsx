@@ -191,53 +191,71 @@ const RegisterProfileConditionPage = () => {
     setStatus(3);
   }, [setStatus]);
   return (
-    <>
-      <CategoryText>{`마지막으로,\n희망 조건을 작성해보세요!`}</CategoryText>
-      <TagText>희망 연령대</TagText>
-      <Category
-        label=""
-        list={ageState.list}
-        type={'dong'}
-        selectedTags={selectedAgeTags === null ? [] : selectedAgeTags}
-        onClickTag={hadnleClickAgeTag}
-      ></Category>
-      <LineStyle />
-      <TitleText>희망 활동 분야</TitleText>
-      <SubText>전문 분야</SubText>
-      <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
-      <Category
-        label=""
-        list={categoryState.list}
-        type={'dong'}
-        selectedTags={selectedTags}
-        onClickTag={hadnleClickTag}
-      ></Category>
-      <LineStyle />
-      <TitleText>
-        <div>제공할 서비스</div>
-      </TitleText>
-      <InputService
-        name="service"
-        onChange={hadnleOnChagne}
-        placeholder="ex. 컨설팅, 맞춤 과외 등"
-        value={selectedService}
-      ></InputService>
-      <LineStyle />
-      <TitleText>희망 활동 형태</TitleText>
-      <MethodButtonContainer>
-        {['대면', '비대면', '모두 선택'].map((method) => (
-          <MethodButton
-            key={method}
-            $isSelected={selectedMethod === method}
-            onClick={() => handleButtonClick(method)}
-          >
-            {method}
-          </MethodButton>
-        ))}
-      </MethodButtonContainer>
-      {selectedMethod === '대면' || selectedMethod === '모두 선택' ? (
-        <>
-          <TitleText>희망 활동 지역</TitleText>
+    <WrapContent>
+      <Modal
+        userType={'dong'}
+        isOpen={isModalOpen}
+        title={'희망 지역을 등록해주세요!'}
+        content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
+        cancelText={'취소'}
+        confirmText={'이대로 제출하기'}
+        confirmModal={confirmModal}
+        cancelModal={cancelModal}
+      />
+      <h3>
+        마지막으로,
+        <br />
+        희망 조건을 작성해보세요!
+      </h3>
+      <WrapSection>
+        <div className="title">희망 연령대</div>
+        <Category
+          label=""
+          list={ageState.list}
+          type={'dong'}
+          selectedTags={selectedAgeTags === null ? [] : selectedAgeTags}
+          onClickTag={hadnleClickAgeTag}
+        />
+      </WrapSection>
+
+      <WrapSection>
+        <div className="title">희망 활동 분야</div>
+        <div className="sub-title">전문 분야</div>
+        <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
+        <Category
+          label=""
+          list={categoryState.list}
+          type={'dong'}
+          selectedTags={selectedTags}
+          onClickTag={hadnleClickTag}
+        ></Category>
+      </WrapSection>
+      <WrapSection>
+        <div className="title">제공할 서비스</div>
+        <InputService
+          name="service"
+          onChange={hadnleOnChagne}
+          placeholder="ex. 컨설팅, 맞춤 과외 등"
+          value={selectedService}
+        />
+      </WrapSection>
+      <WrapSection>
+        <div className="title">희망 활동 형태</div>
+        <MethodButtonContainer>
+          {['대면', '비대면', '모두 선택'].map((method) => (
+            <MethodButton
+              key={method}
+              $isSelected={selectedMethod === method}
+              onClick={() => handleButtonClick(method)}
+            >
+              {method}
+            </MethodButton>
+          ))}
+        </MethodButtonContainer>
+      </WrapSection>
+      {(selectedMethod === '대면' || selectedMethod === '모두 선택') && (
+        <WrapSection>
+          <div className="title">희망 활동 지역</div>
           <Dropdown
             userType="dong"
             placeholder="지역선택"
@@ -245,90 +263,79 @@ const RegisterProfileConditionPage = () => {
             selected={selectedRegion}
             onSelect={setSelectedRegion}
           />
-        </>
-      ) : (
-        ''
+        </WrapSection>
       )}
-      <LineStyle />
-      <TitleText>희망 금액</TitleText>
-      <InputPrice
-        name="price"
-        onChange={hadnleOnChagne}
-        userType={'dong'}
-        selected={selectedPriceType}
-        onClickMethod={setSelectedPriceType}
-        value={selectedPrice}
-      ></InputPrice>
-      <GapButton></GapButton>
+
+      <WrapSection className="last-section">
+        <div className="title">희망 금액</div>
+        <InputPrice
+          name="price"
+          onChange={hadnleOnChagne}
+          userType={'dong'}
+          selected={selectedPriceType}
+          onClickMethod={setSelectedPriceType}
+          value={selectedPrice}
+        />
+      </WrapSection>
 
       <WrapButtonContainer>
-        <WrapButton>
-          <Button
-            userType={null}
-            disabled={false}
-            children={'이전'}
-            onClick={navigateToRegisterIntroduction}
-          ></Button>
-          <Button
-            userType={'dong'}
-            disabled={false}
-            children={'등록하기'}
-            onClick={isNextButtonDisabled}
-          ></Button>
-        </WrapButton>
-      </WrapButtonContainer>
-      <>
-        <Modal
-          userType={'dong'}
-          isOpen={isModalOpen}
-          title={'희망 지역을 등록해주세요!'}
-          content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
-          cancelText={'취소'}
-          confirmText={'이대로 제출하기'}
-          confirmModal={confirmModal}
-          cancelModal={cancelModal}
+        <Button
+          userType={null}
+          disabled={false}
+          children={'이전'}
+          onClick={navigateToRegisterIntroduction}
         />
-      </>
-    </>
+        <Button
+          userType={'dong'}
+          disabled={false}
+          children={'등록하기'}
+          onClick={isNextButtonDisabled}
+        />
+      </WrapButtonContainer>
+    </WrapContent>
   );
 };
 
-const CategoryText = styled.div`
-  font-family: NanumSquare;
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
-  margin-top: 3rem;
-  margin-bottom: 1.56rem;
-  white-space: pre;
-`;
+const WrapContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-const TagText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 700;
-  letter-spacing: 0.0275rem;
-`;
+  padding: 1.1rem 1.1rem;
 
-const TitleText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 700;
-  letter-spacing: 0.0275rem;
-  margin-top: 1.56rem;
-  margin-bottom: 0.8rem;
-`;
-
-const SubText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.25rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  div {
+  h3 {
+    font-family: NanumSquare;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
     margin-top: 1rem;
+  }
+`;
+
+const WrapSection = styled.div`
+  padding: 1rem 0 2rem 0;
+  border-bottom: 1px solid #ebeceb;
+  .title {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 500;
+    letter-spacing: 0.0275rem;
+    margin-bottom: 1rem;
+  }
+
+  .sub-title {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+
+    margin-top: 1rem;
+  }
+
+  &.last-section {
+    margin-bottom: 8rem;
   }
 `;
 
@@ -339,13 +346,6 @@ const LastSubText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-`;
-
-const LineStyle = styled.div`
-  width: 100%;
-  height: 0.625rem;
-  border-bottom: 1px solid #ebeceb;
-  margin-top: 1.5rem;
 `;
 
 const InputService = styled.input`
@@ -400,11 +400,11 @@ const MethodButton = styled.div<MethodButtonProps>`
   justify-content: center;
 `;
 
-const GapButton = styled.div`
-  margin-bottom: 8rem;
-`;
-
 const WrapButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
   background-color: #fff;
   position: fixed;
   left: 0;
@@ -413,9 +413,4 @@ const WrapButtonContainer = styled.div`
   padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
 
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-`;
 export default RegisterProfileConditionPage;

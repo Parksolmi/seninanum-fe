@@ -41,38 +41,60 @@ const ProgressLayout: React.FC = () => {
   return (
     <>
       <Container>
-        <ExitBtn>
-          <ExitHeader userType={userType} navigateTo={'/home'} />
-        </ExitBtn>
-        <ProgressBar status={status} type={userType} />
+        <WrapHeader>
+          <ExitBtn>
+            <ExitHeader userType={userType} navigateTo={'/home'} />
+          </ExitBtn>
+          <ProgressBar status={status} type={userType} />
+        </WrapHeader>
 
-        {userType === 'dong' ? (
-          <Outlet
-            context={{
-              setStatus,
-              careerProfileState,
-              setCareerProfileState,
-              calculateProgress,
-            }}
-          />
-        ) : (
-          <Outlet
-            context={{
-              setStatus,
-            }}
-          />
-        )}
+        <ContentArea>
+          {userType === 'dong' ? (
+            <Outlet
+              context={{
+                setStatus,
+                careerProfileState,
+                setCareerProfileState,
+                calculateProgress,
+              }}
+            />
+          ) : (
+            <Outlet
+              context={{
+                setStatus,
+              }}
+            />
+          )}
+        </ContentArea>
       </Container>
     </>
   );
 };
+
 const Container = styled.div`
-  padding: 1.3rem 1.1rem;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  /* padding: 1.3rem 1.1rem; */
+`;
+
+const WrapHeader = styled.div`
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  z-index: 99;
+  padding: 1.3rem 1.1rem 0 1.1rem;
 `;
 
 const ExitBtn = styled.div`
   float: right;
 `;
+
+const ContentArea = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+`;
+
 export default ProgressLayout;

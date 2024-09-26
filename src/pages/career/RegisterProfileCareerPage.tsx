@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import FileAddButton from '../../components/register/FileAddButton';
+import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { instance } from '../../api/instance';
-import CareerAddButton from '../../components/register/CareerAddButton';
-import CareerFileBox from '../../components/register/CareerFileBox';
+import CareerAddButton from '../../components/career/CareerAddButton';
+import CareerFileBox from '../../components/career/CareerFileBox';
 import Modal from '../../components/common/Modal';
 import { usePromiseToast } from '../../hooks/useToast';
+import HelpBox from '../../components/career/HelpBox';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -177,114 +178,97 @@ const RegisterProfileCareerPage = () => {
         confirmText={'삭제하기'}
         confirmModal={confirmModal}
         cancelModal={cancelModal}
-      />
-      <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
-      <TotalCareer>
-        <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-        <TotalCareerText>{calcTotalCareer(careers)}</TotalCareerText>
-      </TotalCareer>
-      {careers.map((career) => (
-        <CareerDetail
-          key={career.careerId}
-          title={career.title}
-          startYear={career.startYear}
-          startMonth={career.startMonth}
-          endYear={career.endYear}
-          endMonth={career.endMonth}
-          content={career.content}
-          onDelete={() => removeCareer(career.careerId)}
-        />
-      ))}
-      <ButtonBox onClick={handleAddCareer}>
-        <CareerAddButton addText={'경력 추가'}></CareerAddButton>
-      </ButtonBox>
+      />{' '}
+      <WrapSection>
+        <h3>{`동백님의 경력을 알려주세요!`}</h3>
+        <TotalCareer>
+          <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
+          <p>총 경력 {calcTotalCareer(careers)}</p>
+        </TotalCareer>
+        {careers.map((career) => (
+          <CareerDetail
+            key={career.careerId}
+            title={career.title}
+            startYear={career.startYear}
+            startMonth={career.startMonth}
+            endYear={career.endYear}
+            endMonth={career.endMonth}
+            content={career.content}
+            onDelete={() => removeCareer(career.careerId)}
+          />
+        ))}
+        <CareerAddButton
+          onClick={handleAddCareer}
+          addText={'경력 추가'}
+        ></CareerAddButton>
+      </WrapSection>
       <LineStyle />
-      <CategoryText>경력증명서</CategoryText>
-      <HelpTextBox>
-        <HelpText>{`·증빙자료를 첨부하시면 담당자 검토 후,\n확인마크`}</HelpText>
-        <img src="/assets/common/certification-mark-dong.svg" alt="확인마크" />
-        <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
-      </HelpTextBox>
-
-      {careerProfileState.certificateName && (
-        <CareerFileBox
-          activeStatus={careerProfileState.certificate}
-          uploadedFileName={careerProfileState.certificateName}
-          onDelete={() => setIsOpenModal(true)}
-        />
-      )}
-      <FileAddButton
-        onClick={handleAddCertificate}
-        addText={'파일 추가'}
-      ></FileAddButton>
-      <GapButton></GapButton>
+      <WrapSection className="last-content">
+        <h3>경력증명서</h3>
+        <HelpBox />
+        {careerProfileState.certificateName && (
+          <CareerFileBox
+            activeStatus={careerProfileState.certificate}
+            uploadedFileName={careerProfileState.certificateName}
+            onDelete={() => setIsOpenModal(true)}
+          />
+        )}
+        <FileAddButton onClick={handleAddCertificate} addText={'파일 추가'} />
+      </WrapSection>
       <WrapButtonContainer>
-        <WrapButton>
-          <Button
-            userType={'dong'}
-            disabled={false}
-            children={'다음'}
-            onClick={handleNextBtn}
-          ></Button>
-        </WrapButton>
+        <Button
+          userType={'dong'}
+          disabled={false}
+          children={'다음'}
+          onClick={handleNextBtn}
+        />
       </WrapButtonContainer>
     </>
   );
 };
+const WrapSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-const CategoryText = styled.div`
-  font-family: NanumSquare;
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
-  margin-top: 3rem;
-  margin-bottom: 1.56rem;
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.1rem;
+
+  &.last-content {
+    margin-bottom: 8rem;
+  }
+
+  h3 {
+    font-family: NanumSquare;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
+    margin: 1rem 0;
+  }
 `;
 
 const TotalCareer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.3rem;
-  margin-bottom: 1rem;
-`;
 
-const TotalCareerText = styled.div`
-  color: var(--Primary-dong);
-  text-align: center;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 400;
+  p {
+    color: var(--Primary-dong);
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 600;
+    padding: 0.3rem 0 0 0.5rem;
+  }
 `;
-
-const ButtonBox = styled.div``;
 
 const LineStyle = styled.div`
-  width: calc(100% + 2.2rem);
+  position: relative;
+  width: 100%;
   height: 0.625rem;
   background: #ebeceb;
-  position: relative;
-  left: -1.1rem;
-  margin-top: 3.3rem;
-`;
-
-const HelpTextBox = styled.div`
-  width: 100%;
-  height: auto;
-  border-radius: 0.625rem;
-  border: 1px solid var(--Primary-dong);
-  padding: 1.2rem;
-`;
-
-const HelpText = styled.span`
-  color: var(--Primary-dong);
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-weight: 400;
-  white-space: pre;
-`;
-
-const GapButton = styled.div`
-  margin-bottom: 8rem;
+  left: 0;
+  right: 0;
 `;
 
 const WrapButtonContainer = styled.div`
@@ -293,13 +277,7 @@ const WrapButtonContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
-`;
-
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  padding: 1.1rem 1.1rem 3rem 1.1rem;
 `;
 
 export default RegisterProfileCareerPage;

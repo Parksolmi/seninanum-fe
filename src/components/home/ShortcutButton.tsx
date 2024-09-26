@@ -70,8 +70,8 @@ const ButtonText = styled.div`
 
 const WriteIcon = styled.img`
   margin-top: 0.8rem;
-  width: 1.5625rem;
-  height: 1.5625rem;
+  width: 2rem;
+  height: 2rem;
   flex-shrink: 0;
   margin-left: auto;
 `;
