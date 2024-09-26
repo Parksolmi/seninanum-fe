@@ -11,5 +11,7 @@ export const calcTotalCareer = (careers: CareerItemState[]) => {
   const years = Math.floor(totalPeriod / 12);
   const months = totalPeriod % 12;
 
-  return `${years}년 ${months}개월`;
+  if (months === 0) return `${years}년`;
+  else if (years === 0) return `${months}개월`;
+  else return `${years}년 ${months}개월`;
 };

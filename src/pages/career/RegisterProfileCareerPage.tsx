@@ -166,55 +166,62 @@ const RegisterProfileCareerPage = () => {
         cancelModal={cancelModal}
       />
       <CategoryText>{`동백님의 경력을 알려주세요!`}</CategoryText>
-      <TotalCareer>
-        <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-        <TotalCareerText>{calcTotalCareer(careers)}</TotalCareerText>
-      </TotalCareer>
-      {careers.map((career) => (
-        <CareerDetail
-          key={career.careerId}
-          title={career.title}
-          startYear={career.startYear}
-          startMonth={career.startMonth}
-          endYear={career.endYear}
-          endMonth={career.endMonth}
-          content={career.content}
-          onDelete={() => handleRemoveCareer(career.careerId)}
-        />
-      ))}
-      <ButtonBox onClick={() => navigate(`/register/profile/career/add`)}>
-        <CareerAddButton addText={'경력 추가'}></CareerAddButton>
-      </ButtonBox>
+      <div>
+        <TotalCareer>
+          <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
+          <p>총 경력 {calcTotalCareer(careers)}</p>
+        </TotalCareer>
+        {careers.map((career) => (
+          <CareerDetail
+            key={career.careerId}
+            title={career.title}
+            startYear={career.startYear}
+            startMonth={career.startMonth}
+            endYear={career.endYear}
+            endMonth={career.endMonth}
+            content={career.content}
+            onDelete={() => handleRemoveCareer(career.careerId)}
+          />
+        ))}
+        <ButtonBox onClick={() => navigate(`/register/profile/career/add`)}>
+          <CareerAddButton addText={'경력 추가'}></CareerAddButton>
+        </ButtonBox>
+      </div>
       <LineStyle />
-      <CategoryText>경력증명서</CategoryText>
-      <HelpTextBox>
-        <HelpText>{`·증빙자료를 첨부하시면 담당자 검토 후,\n확인마크`}</HelpText>
-        <img src="/assets/common/certification-mark-dong.svg" alt="확인마크" />
-        <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
-      </HelpTextBox>
+      <div>
+        <CategoryText>경력증명서</CategoryText>
+        <HelpTextBox>
+          <HelpText>{`·증빙자료를 첨부하시면 담당자 검토 후,\n확인마크`}</HelpText>
+          <img
+            src="/assets/common/certification-mark-dong.svg"
+            alt="확인마크"
+          />
+          <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
+        </HelpTextBox>
 
-      {fileName && (
-        <CareerFileBox
-          activeStatus={fileProgress}
-          uploadedFileName={fileName}
-          onDelete={() => setIsOpenModal(true)}
-        />
-      )}
-      <FileAddButton
-        onFileUpload={handleFileUpload}
-        addText={'파일 추가'}
-      ></FileAddButton>
-      <GapButton></GapButton>
-      <WrapButtonContainer>
-        <WrapButton>
-          <Button
-            userType={'dong'}
-            disabled={false}
-            children={'다음'}
-            onClick={handleNextBtn}
-          ></Button>
-        </WrapButton>
-      </WrapButtonContainer>
+        {fileName && (
+          <CareerFileBox
+            activeStatus={fileProgress}
+            uploadedFileName={fileName}
+            onDelete={() => setIsOpenModal(true)}
+          />
+        )}
+        <FileAddButton
+          onFileUpload={handleFileUpload}
+          addText={'파일 추가'}
+        ></FileAddButton>
+        <GapButton></GapButton>
+        <WrapButtonContainer>
+          <WrapButton>
+            <Button
+              userType={'dong'}
+              disabled={false}
+              children={'다음'}
+              onClick={handleNextBtn}
+            ></Button>
+          </WrapButton>
+        </WrapButtonContainer>
+      </div>
     </>
   );
 };
@@ -222,25 +229,25 @@ const RegisterProfileCareerPage = () => {
 const CategoryText = styled.div`
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 0.03rem;
-  margin-top: 3rem;
-  margin-bottom: 1.56rem;
+  margin-top: 2rem;
 `;
 
 const TotalCareer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.3rem;
-  margin-bottom: 1rem;
-`;
+  margin: 2rem 0 1rem 0;
 
-const TotalCareerText = styled.div`
-  color: var(--Primary-dong);
-  text-align: center;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 400;
+  p {
+    color: var(--Primary-dong);
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 600;
+    padding: 0.3rem 0 0 0.5rem;
+  }
 `;
 
 const ButtonBox = styled.div``;
