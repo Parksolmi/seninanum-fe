@@ -27,14 +27,14 @@ const ProgressContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  position: relative;
 `;
 
 const ProgressTrack = styled.div`
-  position: relative;
   width: 100%;
-  height: 20px;
+  height: 1.8rem;
   background-color: #d9d9d9;
-  border-radius: 10px;
+  border-radius: 1rem;
   box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 `;
@@ -49,6 +49,7 @@ const FilledBar = styled.div<{ $percent: number }>`
 
 const Step = styled.div<{ $activeStatus: number }>`
   position: absolute;
+  top: -0.3rem;
   left: ${({ $activeStatus }) =>
     `${$activeStatus === 0 ? 5 : 10 * $activeStatus}%`};
   transform: translateY(-50%);
@@ -57,5 +58,9 @@ const Step = styled.div<{ $activeStatus: number }>`
   display: block;
   align-items: center;
   justify-content: center;
+
+  img {
+    width: 4.5rem;
+  }
 `;
 export default StepProgressBar;
