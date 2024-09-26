@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface FileProps {
@@ -7,21 +7,8 @@ interface FileProps {
   onClick: () => void;
 }
 const FileAddButton = ({ onFileUpload, addText, onClick }: FileProps) => {
-  //const [file, setFile] = useState<File | null>(null);
-
-  /*const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-      onFileUpload(e.target.files[0]);
-    }
-  };*/
   return (
     <label>
-      {/*<input
-        type="file"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />*/}
       <FileAddButtonWrapper>
         <WrapButton onClick={onClick}>
           <BtnImage src="/assets/home/add-career-dong.svg" alt="파일추가버튼" />

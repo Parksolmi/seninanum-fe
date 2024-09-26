@@ -16,15 +16,15 @@ interface OutletContext {
   setStatus: (status: number) => void;
   careerProfileState: {
     progressStep: number;
-    fileName: string;
-    fileProgress: string;
+    certificateName: string;
+    certificate: string;
     // 기타 필요한 상태 값들
   };
   setCareerProfileState: (
     state: Partial<{
       progressStep: number;
-      fileName: string;
-      fileProgress: string;
+      certificateName: string;
+      certificate: string;
       // 기타 필요한 상태 값들
     }>
   ) => void;
@@ -40,16 +40,9 @@ const RegisterProfileCareerPage = () => {
   const {
     setStatus,
     careerProfileState,
-    // setCareerProfileState,
+    setCareerProfileState,
     calculateProgress,
   } = useOutletContext<OutletContext>();
-
-  const [fileName, setFileName] = useState<string>(
-    careerProfileState.fileName || ''
-  );
-  const [fileProgress, setFileProgress] = useState(
-    careerProfileState.fileProgress || '제출'
-  );
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
@@ -90,8 +83,8 @@ const RegisterProfileCareerPage = () => {
       const res = instance.patch('/career', {
         profileId: profileId,
         progressStep: careerProfileState.progressStep,
-        fileName: careerProfileState.fileName,
-        fileProgress: careerProfileState.fileProgress,
+        certificateName: careerProfileState.certificateName,
+        certificate: careerProfileState.certificate,
       });
 
       showAutoSaveToast(
@@ -110,7 +103,7 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  const handleFileUpload = async (file: File) => {
+  /*const handleFileUpload = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -129,7 +122,7 @@ const RegisterProfileCareerPage = () => {
       console.error('파일 업로드 중 오류가 발생했습니다.', error);
       alert('파일 업로드 중 오류가 발생했습니다.');
     }
-  };
+  };*/
 
   // const handleFileRemove = async () => {
   //   try {
@@ -147,8 +140,14 @@ const RegisterProfileCareerPage = () => {
   // };
 
   const handleNextBtn = () => {
-    //중간저장
-    updateCareer();
+    // 경력증명서 상태를 검토로 바꿈
+    if (
+      careerProfileState.certificate === '제출'
+        ? setCareerProfileState({ certificate: '검토' })
+        : ''
+    )
+      //중간저장
+      updateCareer();
     //라우터 이동
     navigate(`/register/profile/introduction/${profileId}`);
   };
@@ -207,10 +206,10 @@ const RegisterProfileCareerPage = () => {
         <HelpText>{`를 달아드려요.\n·첨부한 자료는 나리에게 노출되지 않고,\n담당자만 열람 가능해요.`}</HelpText>
       </HelpTextBox>
 
-      {fileName && (
+      {careerProfileState.certificateName && (
         <CareerFileBox
-          activeStatus={fileProgress}
-          uploadedFileName={fileName}
+          activeStatus={careerProfileState.certificate}
+          uploadedFileName={careerProfileState.certificateName}
           onDelete={() => setIsOpenModal(true)}
         />
       )}

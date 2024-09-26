@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
+import { instance } from '../../api/instance';
+import useCareerProfileState from '../../store/careerProfileState';
 
 const RegisterProfileCertificatePage = () => {
   const navigate = useNavigate();
@@ -10,50 +12,108 @@ const RegisterProfileCertificatePage = () => {
   const navigateToRegisterProfile = () => {
     navigate(-1);
   };
-  const addCertificate = () => {};
+
+  const [file, setFile] = useState<File | null>(null);
+  // 파일 상태를 기본값으로 "제출"로 설정
+  const [certificate, setCertificate] = useState<string>('제출');
+  const { setCareerProfileState } = useCareerProfileState();
+
+  // 파일 선택 시 호출되는 함수
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+    }
+  };
+  // 숨겨진 input 요소에 대한 참조
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleBoxClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // 폼 제출 시 호출되는 함수
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!file) {
+      alert('파일을 선택해주세요.');
+      return;
+    }
+
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append('pdfFile', file);
+    formData.append('profileId', profileId);
+    // FormData의 모든 값 출력
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    try {
+      // POST 요청 보내기
+      const response = await instance.post('/career/certificate', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      alert('파일이 성공적으로 업로드되었습니다.');
+      setCareerProfileState({
+        certificateName: file.name,
+        certificate: certificate,
+      });
+      setCertificate('제출');
+      navigate(-1);
+      console.log(response.data);
+    } catch (error) {
+      console.error('파일 업로드 중 오류가 발생했습니다.', error);
+      alert('파일 업로드 중 오류가 발생했습니다.');
+    }
+  };
   return (
     <WrapContent>
-      <WrapCloseIcon>
-        <ClosePage
-          src="/assets/common/page-close.svg"
-          onClick={navigateToRegisterProfile}
-        ></ClosePage>
-      </WrapCloseIcon>
-      <div>
+      <form onSubmit={handleSubmit}>
+        <WrapCloseIcon onClick={navigateToRegisterProfile}>
+          <ClosePage src="/assets/common/page-close.svg" alt="닫기" />
+        </WrapCloseIcon>
         <MainText>경력증명서를 등록해주세요!</MainText>
         <SideText>{`대표 경력증명서 하나만 제출해주세요\n부적합할 경우 반려될 수 있어요.`}</SideText>
-        {/*<Input
-          inputPlaceholder="회사명을 입력하세요."
-          onChange={handleOnChange}
-          maxLength={50}
-          name="title"
-        ></Input>*/}
-        <BoxContainer>
-          {/* 파일 선택 이전 */}
-
-          <AddIcon
-            src="/assets/home/certificate-add.svg"
-            alt="추가아이콘"
-          ></AddIcon>
-          <FileNameText>{'업로드 파일 선택'}</FileNameText>
-          <TextStyle>{`PDF 형식의 파일만 업로드 가능합니다.)`}</TextStyle>
-
-          {/* 파일 선택 이후 */}
-          {/*<ImgArea src="/assets/home/file-icon.svg" />*/}
-          {/*<FileNameText>{'카카오모빌리티'}</FileNameText>*/}
+        <BoxContainer onClick={handleBoxClick}>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleChange}
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+          />
+          {file ? (
+            // 파일이 선택된 후 보여줄 UI
+            <>
+              <ImgArea src="/assets/home/file-icon.svg" alt="파일 아이콘" />
+              <FileNameText>{file.name}</FileNameText>
+            </>
+          ) : (
+            // 파일 선택 이전에 보여줄 UI
+            <>
+              <AddIcon
+                src="/assets/home/certificate-add.svg"
+                alt="추가아이콘"
+              />
+              <FileNameText>{'업로드 파일 선택'}</FileNameText>
+              <TextStyle>{`PDF 형식의 파일만 업로드 가능합니다.`}</TextStyle>
+            </>
+          )}
         </BoxContainer>
         <GapButton />
         <WrapButtonContainer>
           <WrapButton>
             <Button
               userType={'dong'}
-              disabled={true}
+              disabled={!file}
               children="제출하기"
-              onClick={addCertificate}
-            ></Button>
+              type="submit"
+            />
           </WrapButton>
         </WrapButtonContainer>
-      </div>
+      </form>
     </WrapContent>
   );
 };
@@ -69,6 +129,11 @@ const WrapCloseIcon = styled.div`
 
 const ClosePage = styled.img`
   margin-top: 0.4rem;
+`;
+
+const ImgArea = styled.img`
+  display: block;
+  margin: auto;
 `;
 
 const MainText = styled.div`
