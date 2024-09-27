@@ -74,7 +74,7 @@ const RegisterProfileCareerPage = () => {
   // 경력 항목 삭제
   const handleRemoveCareer = async (careerId: number) => {
     try {
-      await instance.delete(`/career/item`, { data: { careerId } });
+      await instance.delete(`/career/item/${careerId}`);
       alert('항목이 삭제되었습니다.');
       // 경력 삭제 후 목록 업데이트
       await fetchCareerItems();
@@ -86,10 +86,10 @@ const RegisterProfileCareerPage = () => {
   // 경력 증명서 삭제
   const handleRemoveCertificate = async () => {
     try {
-      await instance.delete(`/career/file/${profileId}`);
+      await instance.delete(`/career/certificate/${profileId}`);
       // 증명서 삭제 후 목록 업데이트
-      await fetchCareerItems();
       alert('파일이 삭제되었습니다.');
+      window.location.reload(); // 페이지 새로고침
     } catch (e) {
       console.log(e);
       alert('파일 삭제 중 오류가 발생했습니다.');
