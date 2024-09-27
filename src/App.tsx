@@ -28,6 +28,7 @@ import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertificatePage';
 import ViewMyProfileDongPage from './pages/mypage/ViewMyProfileDongPage';
 import ViewMyProfileNariPage from './pages/mypage/ViewMyProfileNariPage';
+import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
 
 const App: React.FC = () => {
   return (
@@ -89,9 +90,10 @@ const App: React.FC = () => {
           element={<ViewMyProfileDongPage />}
         />
         <Route
-          path="/view/myprofile/nari/"
+          path="/view/myprofile/nari"
           element={<ViewMyProfileNariPage />}
         />
+        <Route path="/update/myinfo" element={<UpdateMyInfoPage />} />
 
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />

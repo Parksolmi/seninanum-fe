@@ -23,7 +23,8 @@ const BasicProfile = ({ userType }) => {
       } else {
         console.error('Profile ID를 가져오지 못했습니다.');
       }
-    } else {
+    } //나리 내 프로필 조회
+    else {
       navigate(`/view/myprofile/${userType}`);
     }
   };

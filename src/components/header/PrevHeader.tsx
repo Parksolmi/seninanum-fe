@@ -13,7 +13,11 @@ const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
   return (
     <WrapHeader>
       {navigateTo && (
-        <BackButton onClick={() => navigate(navigateTo)}>
+        <BackButton
+          onClick={() =>
+            navigateTo === 'back' ? navigate(-1) : navigate(navigateTo)
+          }
+        >
           <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
         </BackButton>
       )}

@@ -65,7 +65,7 @@ const ViewMyProfileDongPage = () => {
             disabled={false}
             userType={'dong'}
             // 임시
-            onClick={() => navigate('/chat')}
+            onClick={() => navigate(`/update/myinfo`)}
           >
             기본 프로필 수정하기
           </Button>
@@ -158,9 +158,9 @@ const ViewMyProfileDongPage = () => {
             disabled={false}
             userType={'dong'}
             // 임시
-            onClick={() => navigate('/chat')}
+            onClick={() => navigate(`/register/profile/career/${profileId}`)}
           >
-            채팅하기
+            경력 프로필 수정하기
           </Button>
         </WrapButton>
       </WrapContent>
