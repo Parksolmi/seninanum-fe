@@ -1,4 +1,3 @@
-import { Toaster } from 'react-hot-toast';
 import { useModalState } from '../store/modalState'; // 상태를 가져올 custom hook을 사용
 
 const GlobalModalContainer = () => {

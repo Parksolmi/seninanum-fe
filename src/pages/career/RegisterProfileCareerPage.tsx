@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
@@ -25,8 +25,7 @@ const RegisterProfileCareerPage = () => {
   const { careers, setCareers } = useCareerItemState();
 
   const { setStatus } = useOutletContext<OutletContext>();
-  const { setCareerProfileState, careerProfileState, calculateProgress } =
-    useCareerProfileState();
+  const { careerProfileState, calculateProgress } = useCareerProfileState();
 
   //모달 창
   const {
@@ -88,12 +87,9 @@ const RegisterProfileCareerPage = () => {
   const handleRemoveCertificate = async () => {
     try {
       await instance.delete(`/career/file/${profileId}`);
-      // setFileName('');
-      // setFileProgress('');
+      // 증명서 삭제 후 목록 업데이트
+      await fetchCareerItems();
       alert('파일이 삭제되었습니다.');
-      setCareerProfileState({
-        progressStep: careerProfileState.progressStep - 1,
-      });
     } catch (e) {
       console.log(e);
       alert('파일 삭제 중 오류가 발생했습니다.');

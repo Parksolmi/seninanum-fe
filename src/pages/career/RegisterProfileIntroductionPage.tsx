@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';

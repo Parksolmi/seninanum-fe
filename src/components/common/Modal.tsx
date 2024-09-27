@@ -4,7 +4,6 @@ import Button from './Button';
 
 interface ModalProps {
   userType: string;
-  isOpen?: boolean;
   title: string;
   content: string;
   cancelText: string;
@@ -15,7 +14,6 @@ interface ModalProps {
 
 const Modal = ({
   userType,
-  isOpen,
   title,
   content,
   cancelText,

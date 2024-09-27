@@ -12,6 +12,7 @@ import { instance } from '../../api/instance';
 import Modal from '../../components/common/Modal';
 import { useToast } from '../../hooks/useToast';
 import useCareerProfileState from '../../store/careerProfileState';
+import useModal from '../../hooks/useModal';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -32,19 +33,28 @@ const RegisterProfileConditionPage = () => {
     careerProfileState.field ? careerProfileState.field.split(',') : []
   );
 
+  // 모달
+  const {
+    openModal: openSelectRegionModal,
+    closeModal: closeSelectRegionModal,
+  } = useModal((id) => (
+    <Modal
+      userType={'dong'}
+      title={'희망 지역을 등록해주세요!'}
+      content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
+      cancelText={'취소'}
+      confirmText={'이대로 제출하기'}
+      onConfirm={registerCareer}
+      onCancel={closeSelectRegionModal}
+    />
+  ));
+
+  // 토스트 메세지
   const { showToast: showSelectionError } = useToast(
     () => <span>분야는 3개까지 선택이 가능합니다.</span>,
     'select-exceed-error',
     'bottom-center'
   );
-
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-  const cancelModal = () => setIsOpenModal(false);
-  const confirmModal = () => {
-    // setSelectedMethod('');
-    registerCareer();
-    navigate('/home');
-  };
 
   const registerCareer = async () => {
     try {
@@ -63,6 +73,7 @@ const RegisterProfileConditionPage = () => {
       });
 
       alert('등록되었습니다.');
+      navigate('/home');
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +111,8 @@ const RegisterProfileConditionPage = () => {
         careerProfileState.method === '모두 선택') &&
       careerProfileState.region === ''
     ) {
-      setIsOpenModal(true); // 지역 선택이 없으면 모달 띄우기
+      // 지역 선택이 없으면 모달 띄우기
+      openSelectRegionModal();
     } else {
       registerCareer();
       navigate('/home');
@@ -126,16 +138,6 @@ const RegisterProfileConditionPage = () => {
 
   return (
     <WrapContent>
-      {/* <Modal
-        userType={'dong'}
-        isOpen={isModalOpen}
-        title={'희망 지역을 등록해주세요!'}
-        content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
-        cancelText={'취소'}
-        confirmText={'이대로 제출하기'}
-        confirmModal={confirmModal}
-        cancelModal={cancelModal}
-      /> */}
       <h3>
         마지막으로,
         <br />
