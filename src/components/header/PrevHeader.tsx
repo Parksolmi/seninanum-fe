@@ -4,20 +4,24 @@ import styled from 'styled-components';
 
 interface PrevHeaderProps {
   title?: string;
-  navigateTo?: string;
+  navigateTo: string;
 }
 
 const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
   const navigate = useNavigate();
 
+  const handleNavigation = () => {
+    if (navigateTo === '-1') {
+      navigate(-1); // 브라우저 이전 페이지로 이동
+    } else {
+      navigate(navigateTo); // 그 외 다른 경로로 이동
+    }
+  };
+
   return (
     <WrapHeader>
       {navigateTo && (
-        <BackButton
-          onClick={() =>
-            navigateTo === 'back' ? navigate(-1) : navigate(navigateTo)
-          }
-        >
+        <BackButton onClick={handleNavigation}>
           <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
         </BackButton>
       )}

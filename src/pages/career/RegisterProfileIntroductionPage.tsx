@@ -1,71 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { instance } from '../../api/instance';
 import { usePromiseToast } from '../../hooks/useToast';
+import useCareerProfileState from '../../store/careerProfileState';
 
 interface OutletContext {
   setStatus: (status: number) => void;
-  careerProfileState: {
-    introduce: string;
-    progressStep: number;
-    age: string;
-    field: string;
-    service: string;
-    method: string;
-    region: string;
-    priceType: string;
-    price: number;
-    // 기타 필요한 상태 값들
-  };
-  setCareerProfileState: (
-    state: Partial<{
-      introduce: string;
-      progressStep: number;
-      age: string;
-      field: string;
-      service: string;
-      method: string;
-      region: string;
-      priceType: string;
-      price: number;
-      // 기타 필요한 상태 값들
-    }>
-  ) => void;
-  calculateProgress: () => void;
 }
+
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
-  const {
-    setStatus,
-    setCareerProfileState,
-    careerProfileState,
-    calculateProgress,
-  } = useOutletContext<OutletContext>();
-  // const { setCareerProfileState, careerProfileState, calculateProgress } =
-  //   useCareerProfileState();
-  const [selectedIntroduce, setSelectedIntroduce] = useState<string>(
-    careerProfileState.introduce || ''
-  );
+
+  const { setStatus } = useOutletContext<OutletContext>();
+  const { setCareerProfileState, careerProfileState, calculateProgress } =
+    useCareerProfileState();
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'introduce') {
-      setSelectedIntroduce(value);
-    }
-    setCareerProfileState({ [name]: value });
-  };
-
   const updateIntroduction = async () => {
     try {
-      calculateProgress(); //? 이거 안해도 되지 않나?
-
       const res = instance.patch('/career', {
         profileId: profileId,
         introduce: careerProfileState.introduce,
@@ -81,7 +39,8 @@ const RegisterProfileIntroductionPage = () => {
 
       showAutoSaveToast(
         res,
-        (res) => {
+        () => {
+          calculateProgress();
           return '자동저장되었습니다.';
         },
         (error) => {
@@ -89,19 +48,25 @@ const RegisterProfileIntroductionPage = () => {
           return '자동저장에 실패하였습니다.';
         }
       );
+      navigate(`/register/profile/condition/${profileId}`);
     } catch (error) {
       console.error('자동저장에 실패하였습니다.', error);
     }
   };
 
-  const navigateCondition = () => {
-    updateIntroduction();
-    navigate(`/register/profile/condition/${profileId}`);
-  };
+  // const navigateCondition = () => {
+  //   updateIntroduction();
+  //   navigate(`/register/profile/condition/${profileId}`);
+  // };
 
-  useEffect(() => {
-    setCareerProfileState({ introduce: selectedIntroduce });
-  }, [setCareerProfileState, selectedIntroduce]);
+  // useEffect(() => {
+  //   setCareerProfileState({ introduce: selectedIntroduce });
+  // }, [setCareerProfileState, selectedIntroduce]);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setCareerProfileState({ [name]: value });
+  };
 
   useEffect(() => {
     setStatus(2);
@@ -116,7 +81,7 @@ const RegisterProfileIntroductionPage = () => {
         name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
         onChange={handleOnChange}
-        value={selectedIntroduce}
+        value={careerProfileState.introduce || ''}
       ></TextArea>
 
       <div className="margin"></div>
@@ -134,7 +99,7 @@ const RegisterProfileIntroductionPage = () => {
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={navigateCondition}
+            onClick={updateIntroduction}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>

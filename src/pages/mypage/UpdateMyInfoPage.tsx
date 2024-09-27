@@ -28,7 +28,7 @@ const UpdateMyInfoPage = () => {
   return (
     <>
       <WrapContent>
-        <PrevHeader title={'프로필 수정'} navigateTo={'back'} />
+        <PrevHeader title={'프로필 수정'} navigateTo={'-1'} />
         <ShowInfoText>
           {userType === 'dong'
             ? '동백님의 정보를 알려주세요!'
