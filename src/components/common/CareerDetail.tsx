@@ -9,7 +9,7 @@ interface CareerDetailProps {
   endYear: number;
   endMonth: number;
   content: string;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 const CareerDetail = ({
@@ -24,11 +24,14 @@ const CareerDetail = ({
   const period = calcCareerPeroid(startYear, startMonth, endYear, endMonth);
   return (
     <InputContainer>
-      <img
-        src={'/assets/common/cancel-button.png'}
-        alt="delete"
-        onClick={onDelete}
-      />
+      {onDelete && (
+        <img
+          src={'/assets/common/cancel-button.png'}
+          alt="delete"
+          onClick={onDelete}
+        />
+      )}
+
       <h1>{title}</h1>
       <p className="total">{period}</p>
       <p className="period">{`${startYear}-${startMonth

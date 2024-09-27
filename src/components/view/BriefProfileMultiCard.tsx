@@ -10,7 +10,7 @@ interface BriefProfileCardProps {
   // content: string;
   gender: string;
   age: string;
-  introduce: string;
+  introduce?: string;
 }
 
 const BriefProfileMultiCard = ({
@@ -137,7 +137,8 @@ const ProfileInfo = styled.div`
     font-weight: 700;
   }
   span {
-    font-size: 1.25rem;
+    color: var(--Base-Black, #000);
+    font-size: 1.375rem;
   }
 `;
 
