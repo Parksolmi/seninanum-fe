@@ -11,47 +11,59 @@ const CareerFileBox: React.FC<CareerFileBoxProps> = ({
   activeStatus,
   onDelete,
 }) => {
-  const statusArr = ['제출', '검토', '승인'];
+  const statusArr = [
+    { state: 'DEFAULT', text: '제출' },
+    { state: 'PENDING', text: '검토' },
+    { state: 'SUCCESS', text: '승인' },
+  ];
   const statusMessage = {
-    제출: `서류가 ${statusArr[0]}되었어요!`,
-    검토: `관리자가 서류를 ${statusArr[1]}하고 있어요!`,
-    승인: `서류가 최종${statusArr[2]}되었어요!`,
+    // 제출: `서류가 ${statusArr[0]}되었어요!`,
+    PENDING: (
+      <p>
+        관리자가 서류를 <em>{statusArr[1].text}</em>하고 있어요!
+      </p>
+    ),
+    SUCCESS: (
+      <p>
+        서류가 최종<em>{statusArr[2].text}</em>되었어요!
+      </p>
+    ),
   };
+
   return (
     <BoxContainer>
       <DeleteButton src="/assets/common/page-close.svg" onClick={onDelete} />
       <ImgArea src="/assets/home/file-icon.svg" />
       <FileNameText>{uploadedFileName}</FileNameText>
       <TextStyle $isActive={false}>{statusMessage[activeStatus]}</TextStyle>
-      <StatusArea>
+      <StatusDiv>
         <BackStatusContainer>
           <Indicator
             $activeStatus={
-              activeStatus === '제출'
+              activeStatus === 'DEFAULT'
                 ? 0
-                : activeStatus === '검토'
+                : activeStatus === 'PENDING'
                 ? 1
-                : activeStatus === '승인'
+                : activeStatus === 'SUCCESS'
                 ? 2
                 : 0
             }
           />
         </BackStatusContainer>
-        <TextArea>
+        <WrapProgress>
           {statusArr.map((status, index) => (
-            <TextStyle $isActive={status === activeStatus} key={index}>
-              {status}
+            <TextStyle $isActive={status.state === activeStatus} key={index}>
+              {status.text}
             </TextStyle>
           ))}
-        </TextArea>
-      </StatusArea>
+        </WrapProgress>
+      </StatusDiv>
     </BoxContainer>
   );
 };
 
 const BoxContainer = styled.div`
   width: 100%;
-  height: 200px;
   margin-top: 1rem;
   border-radius: 5px;
   background: #f7f8f7;
@@ -80,7 +92,7 @@ const FileNameText = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const StatusArea = styled.div`
+const StatusDiv = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -107,11 +119,11 @@ const Indicator = styled.span<{
   background: #ff314a;
 `;
 
-const TextArea = styled.div`
+const WrapProgress = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  margin-top: 1rem;
+  padding: 0.5rem 0;
 `;
 
 const TextStyle = styled.div<{
@@ -122,6 +134,20 @@ const TextStyle = styled.div<{
   font-family: NanumSquare;
   font-size: 0.875rem;
   font-weight: 400;
+
+  p {
+    color: var(--Base-Deep-Gray, #5b5b5b);
+    font-family: NanumSquare;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0%;
+    text-align: left;
+    padding: 1.8rem 0 0 1rem;
+  }
+  em {
+    color: #ff314a;
+  }
 `;
 
 export default CareerFileBox;

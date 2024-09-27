@@ -8,7 +8,7 @@ interface CareerProfileState {
   certificate: string;
   introduce: string;
   age: string;
-  field: string; // 이게뭐야?
+  field: string;
   service: string;
   method: string;
   region: string;
@@ -55,7 +55,12 @@ const useCareerProfileState = create<CareerProfileStateType>()(
       if (state.age) progressCount++;
       if (state.field) progressCount++;
       if (state.service) progressCount++;
-      if (state.method) progressCount++;
+      if (state.method === '비대면' && state.region === '') progressCount++;
+      if (
+        (state.method === '대면' || state.method === '모두 선택') &&
+        state.region
+      )
+        progressCount++;
       if (state.priceType && state.price >= 0) progressCount++;
 
       set((state) => ({

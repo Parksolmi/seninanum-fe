@@ -6,6 +6,7 @@ import Button from '../../components/common/Button';
 import TextArea from '../../components/common/TextArea';
 import { instance } from '../../api/instance';
 import toast from 'react-hot-toast';
+import PrevHeader from '../../components/header/PrevHeader';
 
 const RegisterProfileCareerAddPage = () => {
   const navigate = useNavigate();
@@ -79,18 +80,9 @@ const RegisterProfileCareerAddPage = () => {
     }
   };
 
-  const navigateToRegisterProfile = () => {
-    navigate(-1);
-  };
-
   return (
     <WrapContent>
-      <WrapCloseIcon>
-        <ClosePage
-          src="/assets/common/page-close.svg"
-          onClick={navigateToRegisterProfile}
-        ></ClosePage>
-      </WrapCloseIcon>
+      <PrevHeader navigateTo={'-1'} />
       <div>
         <CategoryText>회사명</CategoryText>
         <Input
@@ -156,17 +148,7 @@ const RegisterProfileCareerAddPage = () => {
   );
 };
 const WrapContent = styled.div`
-  padding: 1.3rem 1.1rem;
-`;
-
-const WrapCloseIcon = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const ClosePage = styled.img`
-  margin-top: 0.4rem;
+  padding: 0 1.1rem 1.3rem 1.1rem;
 `;
 
 const CategoryText = styled.div`

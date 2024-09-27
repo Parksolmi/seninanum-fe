@@ -51,8 +51,8 @@ const Step = styled.div<{ $activeStatus: number }>`
   position: absolute;
   top: -0.3rem;
   left: ${({ $activeStatus }) =>
-    `${$activeStatus === 0 ? 5 : 10 * $activeStatus}%`};
-  transform: translateY(-50%);
+    `${$activeStatus === 0 ? -5 : 10 * $activeStatus}%`};
+  transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
   display: block;

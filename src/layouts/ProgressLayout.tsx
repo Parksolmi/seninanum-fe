@@ -13,8 +13,7 @@ const ProgressLayout: React.FC = () => {
 
   const { status, setStatus } = progressStore();
   const { userType } = userTypeStore();
-  const { careerProfileState, setCareerProfileState, calculateProgress } =
-    useCareerProfileState();
+  const { setCareerProfileState } = useCareerProfileState();
 
   const [previousProfileId, setPreviousProfileId] = useState<string | null>(
     null
@@ -53,9 +52,6 @@ const ProgressLayout: React.FC = () => {
             <Outlet
               context={{
                 setStatus,
-                careerProfileState,
-                setCareerProfileState,
-                calculateProgress,
               }}
             />
           ) : (
@@ -84,7 +80,7 @@ const WrapHeader = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
-  z-index: 99;
+  z-index: 9;
   padding: 1.3rem 1.1rem 0 1.1rem;
 `;
 
