@@ -44,6 +44,21 @@ const RegisterProfileCareerPage = () => {
     />
   ));
 
+  const {
+    openModal: openCertificateDeleteModal,
+    closeModal: closeCertificateDeleteModal,
+  } = useModal((id) => (
+    <Modal
+      userType={'dong'}
+      title={'정말 삭제하시겠습니까?'}
+      content={``}
+      cancelText={'취소'}
+      confirmText={'삭제하기'}
+      onConfirm={handleRemoveCertificate}
+      onCancel={closeCertificateDeleteModal}
+    />
+  ));
+
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
@@ -69,13 +84,24 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  const handleAddCareer = () => {
-    navigate('/register/profile/career/add', { state: { profileId } });
+  // 경력 증명서 삭제
+  const handleRemoveCertificate = async () => {
+    try {
+      await instance.delete(`/career/file/${profileId}`);
+      // setFileName('');
+      // setFileProgress('');
+      alert('파일이 삭제되었습니다.');
+      setCareerProfileState({
+        progressStep: careerProfileState.progressStep - 1,
+      });
+    } catch (e) {
+      console.log(e);
+      alert('파일 삭제 중 오류가 발생했습니다.');
+    }
   };
-  const handleAddCertificate = () => {
-    navigate('/register/profile/certificate', { state: { profileId } });
-  };
-  const updateCareer = async () => {
+
+  //  프로필 중간 저장
+  const updateProfile = async () => {
     try {
       const res = instance.patch('/career', {
         profileId: profileId,
@@ -95,31 +121,10 @@ const RegisterProfileCareerPage = () => {
         }
       );
       calculateProgress();
+      navigate(`/register/profile/introduction/${profileId}`);
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const handleFileRemove = async () => {
-    try {
-      await instance.delete(`/career/file/${profileId}`);
-      // setFileName('');
-      // setFileProgress('');
-      alert('파일이 삭제되었습니다.');
-      setCareerProfileState({
-        progressStep: careerProfileState.progressStep - 1,
-      });
-    } catch (e) {
-      console.log(e);
-      alert('파일 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
-  const handleNextBtn = () => {
-    //중간저장
-    updateCareer();
-    //라우터 이동
-    navigate(`/register/profile/introduction/${profileId}`);
   };
 
   // 컴포넌트 마운트 시 경력 항목 조회
@@ -152,7 +157,9 @@ const RegisterProfileCareerPage = () => {
           />
         ))}
         <CareerAddButton
-          onClick={handleAddCareer}
+          onClick={() =>
+            navigate('/register/profile/career/add', { state: { profileId } })
+          }
           addText={'경력 추가'}
         ></CareerAddButton>
       </WrapSection>
@@ -164,17 +171,22 @@ const RegisterProfileCareerPage = () => {
           <CareerFileBox
             activeStatus={careerProfileState.certificate}
             uploadedFileName={careerProfileState.certificateName}
-            onDelete={() => {}} //임시
+            onDelete={openCertificateDeleteModal}
           />
         )}
-        <FileAddButton onClick={handleAddCertificate} addText={'파일 추가'} />
+        <FileAddButton
+          onClick={() =>
+            navigate('/register/profile/certificate', { state: { profileId } })
+          }
+          addText={'파일 추가'}
+        />
       </WrapSection>
       <WrapButtonContainer>
         <Button
           userType={'dong'}
           disabled={false}
           children={'다음'}
-          onClick={handleNextBtn}
+          onClick={updateProfile}
         />
       </WrapButtonContainer>
     </>

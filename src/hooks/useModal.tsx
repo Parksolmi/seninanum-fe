@@ -7,7 +7,7 @@ import { useModalState } from '../store/modalState';
 const useModal = (modal) => {
   const { setModal } = useModalState();
 
-  const openModal = (id) => {
+  const openModal = (id?) => {
     setModal(modal(id));
     document.body.style.overflow = 'hidden';
   };
