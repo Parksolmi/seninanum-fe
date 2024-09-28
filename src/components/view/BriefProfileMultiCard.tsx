@@ -11,6 +11,7 @@ interface BriefProfileCardProps {
   gender: string;
   age: string;
   introduce?: string;
+  isMyProfile?: boolean;
 }
 
 const BriefProfileMultiCard = ({
@@ -23,6 +24,7 @@ const BriefProfileMultiCard = ({
   gender,
   age,
   introduce,
+  isMyProfile,
 }: BriefProfileCardProps) => {
   return (
     <>
@@ -33,14 +35,14 @@ const BriefProfileMultiCard = ({
             <WrapSideTop>
               <ProfileInfo>
                 <span>
-                  {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
+                  {nickname} {type === 'dong' && isMyProfile ? '나리' : '동백'}
                 </span>
               </ProfileInfo>
               <BadgeIcon
                 src={
-                  type === 'dong'
-                    ? '/assets/common/badge-dong.png'
-                    : '/assets/common/badge-nari.png'
+                  type === 'dong' && isMyProfile
+                    ? '/assets/common/badge-nari.png'
+                    : '/assets/common/badge-dong.png'
                 }
                 alt="badge"
               />
@@ -97,7 +99,7 @@ const WrapSideTop = styled.div`
 const BadgeIcon = styled.img`
   align-items: center;
   justify-content: center;
-  object-fit: cover;
+  object-fit: contain;
   width: 10%;
 `;
 
