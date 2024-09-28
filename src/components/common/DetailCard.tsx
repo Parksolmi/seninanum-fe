@@ -5,11 +5,12 @@ interface DetailCardProps {
   type: string;
   title: string;
   content: string;
-  nickname: string;
-  age: string;
+  nickname?: string;
+  age?: string;
   method: string;
   region?: string;
   navigateTo: () => void;
+  isMyProfile?: boolean;
 }
 
 const DetailCard = ({
@@ -21,22 +22,26 @@ const DetailCard = ({
   method,
   region,
   navigateTo,
+  isMyProfile,
 }: DetailCardProps) => {
   return (
     <InputContainer onClick={navigateTo}>
-      <WrapProfile>
-        <ProfileInfo>
-          <span>
-            {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
-          </span>
-        </ProfileInfo>
-      </WrapProfile>
+      {!isMyProfile && (
+        <WrapProfile>
+          <ProfileInfo>
+            <span>
+              {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
+            </span>
+          </ProfileInfo>
+        </WrapProfile>
+      )}
+
       <WrapTitle>{title}</WrapTitle>
       <WrapContent>{content}</WrapContent>
-      <WrapField>
-        <Field $type={type}>{method.replace('서비스', '')}</Field>
-        {region !== '' && <Field $type={type}>서울시 {region}</Field>}
-      </WrapField>
+      <WrapTag>
+        <Tag $type={type}>{method.replace('서비스', '')}</Tag>
+        {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
+      </WrapTag>
     </InputContainer>
   );
 };
@@ -99,19 +104,19 @@ const WrapContent = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-const WrapField = styled.div`
+const WrapTag = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 `;
-interface fieldType {
+interface tagType {
   $type: string;
 }
-const Field = styled.div<fieldType>`
+const Tag = styled.div<tagType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
     $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
-  color: var(--Base-Deep-Gray, #5b5b5b);
+  color: var(--Base-Deep-Gray, #414040);
   text-align: center;
   font-family: NanumSquare;
   font-size: 1.25rem;
