@@ -5,6 +5,8 @@ import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import { useNavigate } from 'react-router-dom';
 import DetailCard from '../../components/common/DetailCard';
+import ReviewRatingBar from '../../components/common/ReviewRatingBar';
+import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
@@ -32,6 +34,18 @@ const ViewMyProfileNariPage = () => {
         </WrapButton>
       </WrapContent>
 
+      <SplitLine />
+      <WrapContentSingle>
+        <TitleText>
+          리뷰 <span>2</span>
+        </TitleText>
+        <ReviewRatingBarWrapper>
+          <ReviewRatingBar />
+          <ReviewRatingBar />
+        </ReviewRatingBarWrapper>
+
+        <ReviewSummaryCard />
+      </WrapContentSingle>
       <SplitLine />
 
       <WrapContentSingle>
@@ -82,6 +96,12 @@ const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+`;
+
+const ReviewRatingBarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
 const SplitLine = styled.div`
