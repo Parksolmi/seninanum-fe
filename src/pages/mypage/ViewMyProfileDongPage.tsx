@@ -56,10 +56,10 @@ const ViewMyProfileDongPage = () => {
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="nari"
-          nickname={'000'}
+          nickname={'ooo'}
           gender={'F'}
           age={'20대'}
-          // introduce="자기소개입니다.자기소개입니다.자기소개입니다."
+          isMyProfile={true}
         />
         <WrapButton>
           <Button

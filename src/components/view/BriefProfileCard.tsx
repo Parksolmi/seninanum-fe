@@ -28,14 +28,14 @@ const BriefProfileCard = ({
       <ProfileInfo>
         <span>닉네임 {type === 'dong' ? '동백' : '나리'} </span>
       </ProfileInfo>
-      <Fields>
+      <Tags>
         {gender === 'F' ? (
-          <Field $type={type}>여성</Field>
+          <Tag $type={type}>여성</Tag>
         ) : (
-          <Field $type={type}>남성</Field>
+          <Tag $type={type}>남성</Tag>
         )}
-        <Field $type={type}>{age}</Field>
-      </Fields>
+        <Tag $type={type}>{age}</Tag>
+      </Tags>
     </WrapProfile>
   );
 };
@@ -71,15 +71,15 @@ const ProfileInfo = styled.div`
   }
 `;
 
-const Fields = styled.div`
+const Tags = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 `;
-interface fieldType {
+interface tagType {
   $type: string;
 }
-const Field = styled.div<fieldType>`
+const Tag = styled.div<tagType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
     $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};

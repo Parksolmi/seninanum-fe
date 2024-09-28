@@ -34,14 +34,25 @@ const BriefProfileMultiCard = ({
           <WrapTop>
             <ProfileInfo>
               <span>
-                {nickname} {type === 'dong' && isMyProfile ? '나리' : '동백'}{' '}
+                {nickname}{' '}
+                {isMyProfile
+                  ? type === 'dong'
+                    ? '나리'
+                    : '동백'
+                  : type === 'dong'
+                  ? '동백'
+                  : '나리'}{' '}
               </span>
             </ProfileInfo>
             <BadgeIcon
               src={
-                type === 'dong' && isMyProfile
-                  ? '/assets/common/badge-nari.png'
-                  : '/assets/common/badge-dong.png'
+                isMyProfile
+                  ? type === 'dong'
+                    ? '/assets/common/badge-nari.png'
+                    : '/assets/common/badge-dong.png'
+                  : type === 'dong'
+                  ? '/assets/common/badge-dong.png'
+                  : '/assets/common/badge-nari.png'
               }
               alt="badge"
             />
@@ -138,10 +149,10 @@ const Tags = styled.div`
   gap: 0.5rem;
 `;
 
-interface fieldType {
+interface tagType {
   $type: string;
 }
-const Tag = styled.div<fieldType>`
+const Tag = styled.div<tagType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
     $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
