@@ -27,63 +27,58 @@ const BriefProfileMultiCard = ({
   return (
     <>
       <WrapProfile>
-        <WrapTop>
-          <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
-          <WrapSide>
-            <WrapSideTop>
-              <ProfileInfo>
-                <span>
-                  {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
-                </span>
-              </ProfileInfo>
-              <BadgeIcon
-                src={
-                  type === 'dong'
-                    ? '/assets/common/badge-dong.png'
-                    : '/assets/common/badge-nari.png'
-                }
-                alt="badge"
-              />
-            </WrapSideTop>
-            <WrapSideBottom>
-              <Fields>
-                {gender === 'F' ? (
-                  <Field $type={type}>여성</Field>
-                ) : (
-                  <Field $type={type}>남성</Field>
-                )}
-                <Field $type={type}>{age}</Field>
-              </Fields>
-            </WrapSideBottom>
-          </WrapSide>
-        </WrapTop>
-        <WrapBottom>{introduce}</WrapBottom>
+        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <WrapProfileInfo>
+          <WrapTop>
+            <ProfileInfo>
+              <span>
+                {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
+              </span>
+            </ProfileInfo>
+            <BadgeIcon
+              src={
+                type === 'dong'
+                  ? '/assets/common/badge-dong.png'
+                  : '/assets/common/badge-nari.png'
+              }
+              alt="badge"
+            />
+          </WrapTop>
+          <WrapBottom>
+            <Tags>
+              <Tag $type={type}>{gender === 'F' ? '여성' : '남성'}</Tag>
+              <Tag $type={type}>{age}</Tag>
+            </Tags>
+          </WrapBottom>
+        </WrapProfileInfo>
       </WrapProfile>
+      {introduce && <WrapIntroduce>{introduce}</WrapIntroduce>}
     </>
   );
 };
 
 const WrapProfile = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   gap: 1.7rem;
 `;
 
-const WrapTop = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+const ProfileImg = styled.img`
+  border-radius: 50%;
+  width: 5.0625rem;
+  height: 5.0625rem;
+  flex-shrink: 0;
 `;
 
-const WrapSide = styled.div`
+const WrapProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   padding: 0.5rem;
 `;
 
-const WrapSideTop = styled.div`
+const WrapTop = styled.div`
   display: flex;
   flex-direction: row;
   color: var(--Base-Black, #000);
@@ -94,6 +89,24 @@ const WrapSideTop = styled.div`
   line-height: normal;
 `;
 
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  p {
+    font-size: 1.375rem;
+  }
+  strong {
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+  span {
+    color: var(--Base-Black, #000);
+    font-size: 1.375rem;
+  }
+`;
+
 const BadgeIcon = styled.img`
   align-items: center;
   justify-content: center;
@@ -101,7 +114,7 @@ const BadgeIcon = styled.img`
   width: 10%;
 `;
 
-const WrapSideBottom = styled.div`
+const WrapIntroduce = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
@@ -117,40 +130,16 @@ const WrapBottom = styled.div`
   text-align: left;
 `;
 
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 5.0625rem;
-  height: 5.0625rem;
-  flex-shrink: 0;
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  p {
-    font-size: 1.125rem;
-  }
-  strong {
-    font-size: 1.375rem;
-    font-weight: 700;
-  }
-  span {
-    color: var(--Base-Black, #000);
-    font-size: 1.375rem;
-  }
-`;
-
-const Fields = styled.div`
+const Tags = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 `;
+
 interface fieldType {
   $type: string;
 }
-const Field = styled.div<fieldType>`
+const Tag = styled.div<fieldType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
     $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
