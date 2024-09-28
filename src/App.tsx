@@ -33,7 +33,6 @@ import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
 const App: React.FC = () => {
   return (
     <>
-      {/* 글로벌스타일 */}
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<SignupIndexPage />} />
