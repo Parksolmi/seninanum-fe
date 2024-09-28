@@ -1,71 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { instance } from '../../api/instance';
 import { usePromiseToast } from '../../hooks/useToast';
+import useCareerProfileState from '../../store/careerProfileState';
 
 interface OutletContext {
   setStatus: (status: number) => void;
-  careerProfileState: {
-    introduce: string;
-    progressStep: number;
-    age: string;
-    field: string;
-    service: string;
-    method: string;
-    region: string;
-    priceType: string;
-    price: number;
-    // 기타 필요한 상태 값들
-  };
-  setCareerProfileState: (
-    state: Partial<{
-      introduce: string;
-      progressStep: number;
-      age: string;
-      field: string;
-      service: string;
-      method: string;
-      region: string;
-      priceType: string;
-      price: number;
-      // 기타 필요한 상태 값들
-    }>
-  ) => void;
-  calculateProgress: () => void;
 }
+
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
-  const {
-    setStatus,
-    setCareerProfileState,
-    careerProfileState,
-    calculateProgress,
-  } = useOutletContext<OutletContext>();
-  // const { setCareerProfileState, careerProfileState, calculateProgress } =
-  //   useCareerProfileState();
-  const [selectedIntroduce, setSelectedIntroduce] = useState<string>(
-    careerProfileState.introduce || ''
-  );
+
+  const { setStatus } = useOutletContext<OutletContext>();
+  const { setCareerProfileState, careerProfileState, calculateProgress } =
+    useCareerProfileState();
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'introduce') {
-      setSelectedIntroduce(value);
-    }
-    setCareerProfileState({ [name]: value });
-  };
-
   const updateIntroduction = async () => {
     try {
-      calculateProgress(); //? 이거 안해도 되지 않나?
-
       const res = instance.patch('/career', {
         profileId: profileId,
         introduce: careerProfileState.introduce,
@@ -81,7 +39,8 @@ const RegisterProfileIntroductionPage = () => {
 
       showAutoSaveToast(
         res,
-        (res) => {
+        () => {
+          calculateProgress();
           return '자동저장되었습니다.';
         },
         (error) => {
@@ -89,35 +48,40 @@ const RegisterProfileIntroductionPage = () => {
           return '자동저장에 실패하였습니다.';
         }
       );
+      navigate(`/register/profile/condition/${profileId}`);
     } catch (error) {
       console.error('자동저장에 실패하였습니다.', error);
     }
   };
 
-  const navigateCondition = () => {
-    updateIntroduction();
-    navigate(`/register/profile/condition/${profileId}`);
-  };
+  // const navigateCondition = () => {
+  //   updateIntroduction();
+  //   navigate(`/register/profile/condition/${profileId}`);
+  // };
 
-  useEffect(() => {
-    setCareerProfileState({ introduce: selectedIntroduce });
-  }, [setCareerProfileState, selectedIntroduce]);
+  // useEffect(() => {
+  //   setCareerProfileState({ introduce: selectedIntroduce });
+  // }, [setCareerProfileState, selectedIntroduce]);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setCareerProfileState({ [name]: value });
+  };
 
   useEffect(() => {
     setStatus(2);
   }, [setStatus]);
 
   return (
-    <>
-      <CategoryText>{`동백님은 어떤 사람인가요?`}</CategoryText>
-      <SubText>자기소개</SubText>
-      <LastSubText>{`자신을 잘 나타낼 수 있는 키워드를\n넣어 자기 소개를 완성해보세요!\n`}</LastSubText>
+    <WrapContent>
+      <h3>{`동백님은 어떤 사람인가요?`}</h3>
+      <p>자기소개</p>
 
       <TextArea
         name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
         onChange={handleOnChange}
-        value={selectedIntroduce}
+        value={careerProfileState.introduce || ''}
       ></TextArea>
 
       <div className="margin"></div>
@@ -135,39 +99,32 @@ const RegisterProfileIntroductionPage = () => {
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={navigateCondition}
+            onClick={updateIntroduction}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>
-    </>
+    </WrapContent>
   );
 };
 
-const CategoryText = styled.div`
-  font-family: NanumSquare;
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
-  margin-top: 3rem;
-  margin-bottom: 1.56rem;
-`;
+const WrapContent = styled.div`
+  padding: 1.1rem 1.1rem;
 
-const SubText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 700;
-  letter-spacing: 0.0275rem;
-  margin-bottom: 0.8rem;
-`;
+  h3 {
+    font-family: NanumSquare;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
+    margin: 1rem 0;
+  }
 
-const LastSubText = styled.div`
-  color: #8e8e8e;
-  font-family: NanumSquare;
-  font-size: 1.25rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
-  white-space: pre;
+  p {
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 400;
+    letter-spacing: 0.0275rem;
+    margin: 1.5rem 0 0.8rem 0;
+  }
 `;
 
 const GapButton = styled.div`

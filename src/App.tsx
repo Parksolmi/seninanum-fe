@@ -26,10 +26,14 @@ import ViewProfileCareer from './pages/career/ViewProfileCareer';
 import ProgressLayout from './layouts/ProgressLayout';
 import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertificatePage';
+import ViewMyProfileDongPage from './pages/mypage/ViewMyProfileDongPage';
+import ViewMyProfileNariPage from './pages/mypage/ViewMyProfileNariPage';
+import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
 
 const App: React.FC = () => {
   return (
     <>
+      {/* 글로벌스타일 */}
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<SignupIndexPage />} />
@@ -81,6 +85,17 @@ const App: React.FC = () => {
         {/* 채팅 */}
         <Route path="/chatroom/dong" element={<ChatPageDong />} />
         <Route path="/chatroom/nari" element={<ChatPageNari />} />
+        {/* 마이페이지 */}
+        <Route
+          path="/view/myprofile/dong/:profileId"
+          element={<ViewMyProfileDongPage />}
+        />
+        <Route
+          path="/view/myprofile/nari"
+          element={<ViewMyProfileNariPage />}
+        />
+        <Route path="/update/myinfo" element={<UpdateMyInfoPage />} />
+
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

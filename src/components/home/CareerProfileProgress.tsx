@@ -47,14 +47,14 @@ const InputContainer = styled.div`
   border-radius: 11px 71px 11px 11px;
   background: #fff;
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
-  padding: 1.2rem 1rem;
+  padding: 2rem 1rem 1rem 1rem;
 `;
 
 const Progress = styled.div`
   color: var(--Primary-dong);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-family: 'NanumSquareR';
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.32px;
 `;
 
@@ -64,7 +64,7 @@ const Title = styled.h3`
   font-family: NanumSquare;
   font-size: 1.375rem;
   font-weight: 800;
-  padding: 0.7rem 0;
+  padding: 0.7rem 0 0 0;
 
   img {
     padding-left: 0.5rem;
