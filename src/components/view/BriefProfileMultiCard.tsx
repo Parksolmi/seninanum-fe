@@ -11,6 +11,7 @@ interface BriefProfileCardProps {
   gender: string;
   age: string;
   introduce?: string;
+  isMyProfile?: boolean;
 }
 
 const BriefProfileMultiCard = ({
@@ -23,6 +24,7 @@ const BriefProfileMultiCard = ({
   gender,
   age,
   introduce,
+  isMyProfile,
 }: BriefProfileCardProps) => {
   return (
     <>
@@ -32,12 +34,23 @@ const BriefProfileMultiCard = ({
           <WrapTop>
             <ProfileInfo>
               <span>
-                {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
+                {nickname}{' '}
+                {isMyProfile
+                  ? type === 'dong'
+                    ? '나리'
+                    : '동백'
+                  : type === 'dong'
+                  ? '동백'
+                  : '나리'}{' '}
               </span>
             </ProfileInfo>
             <BadgeIcon
               src={
-                type === 'dong'
+                isMyProfile
+                  ? type === 'dong'
+                    ? '/assets/common/badge-nari.png'
+                    : '/assets/common/badge-dong.png'
+                  : type === 'dong'
                   ? '/assets/common/badge-dong.png'
                   : '/assets/common/badge-nari.png'
               }
@@ -110,7 +123,7 @@ const ProfileInfo = styled.div`
 const BadgeIcon = styled.img`
   align-items: center;
   justify-content: center;
-  object-fit: cover;
+  object-fit: contain;
   width: 10%;
 `;
 
@@ -136,10 +149,10 @@ const Tags = styled.div`
   gap: 0.5rem;
 `;
 
-interface fieldType {
+interface tagType {
   $type: string;
 }
-const Tag = styled.div<fieldType>`
+const Tag = styled.div<tagType>`
   border-radius: 0.5rem;
   background: ${({ $type }) =>
     $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
