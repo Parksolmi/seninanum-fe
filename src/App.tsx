@@ -86,7 +86,7 @@ const App: React.FC = () => {
         <Route path="/chatroom/nari" element={<ChatPageNari />} />
         {/* 마이페이지 */}
         <Route
-          path="/view/myprofile/dong/:profileId"
+          path="/view/myprofile/dong"
           element={<ViewMyProfileDongPage />}
         />
         <Route

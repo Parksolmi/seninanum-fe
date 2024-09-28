@@ -74,7 +74,7 @@ const WrapProfile = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 1.7rem;
+  gap: 0.5rem;
 `;
 
 const ProfileImg = styled.img`

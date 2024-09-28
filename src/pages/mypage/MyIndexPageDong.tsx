@@ -8,7 +8,7 @@ const MyIndexPageDong: React.FC = () => {
   return (
     <>
       <WrapProfile>
-        <BasicProfile userType="dong" />
+        <BasicProfile userType="dong" navigateTo={'/view/myprofile/dong'} />
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="dong" />
