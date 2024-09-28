@@ -8,7 +8,7 @@ const MyIndexPageNari: React.FC = () => {
   return (
     <>
       <WrapProfile>
-        <BasicProfile userType="nari" />
+        <BasicProfile userType="nari" navigateTo={'/view/myprofile/nari'} />
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="nari" />
