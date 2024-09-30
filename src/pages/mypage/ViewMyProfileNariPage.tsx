@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -7,19 +7,45 @@ import { useNavigate } from 'react-router-dom';
 import DetailCard from '../../components/common/DetailCard';
 import ReviewRatingBar from '../../components/common/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
+import { instance } from '../../api/instance';
+import { calcAge } from '../../utils/calcAge';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
+  const [userState, setUserState] = useState({
+    nickname: '',
+    gender: '',
+    birthYear: '',
+    profile: '',
+  });
 
+  // 기본 정보 조회 api 호출
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await instance.get(`/user/profile`);
+        setUserState({
+          nickname: res.data[0].nickname,
+          gender: res.data[0].gender,
+          birthYear: res.data[0].birthYear,
+          profile: res.data[0].profile,
+        });
+      } catch (err) {
+        console.error('기본정보 조회에 실패하였습니다.');
+      }
+    };
+    fetchProfile();
+  }, [setUserState]);
   return (
     <>
       <WrapContent>
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="dong"
-          nickname={'OOO'}
-          gender={'F'}
-          age={'20대'}
+          nickname={userState.nickname}
+          gender={userState.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userState.birthYear)}
+          profile={userState.profile}
           isMyProfile={true}
         />
         <WrapButton>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface BriefProfileCardProps {
-  // profile: string;
+  profile?: string;
   type: string;
   nickname: string;
   // age: string;
@@ -15,7 +15,7 @@ interface BriefProfileCardProps {
 }
 
 const BriefProfileMultiCard = ({
-  // profile,
+  profile,
   type,
   nickname,
   // age,
@@ -29,7 +29,7 @@ const BriefProfileMultiCard = ({
   return (
     <>
       <WrapProfile>
-        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <ProfileImg src={profile} alt="profile" />
         <WrapProfileInfo>
           <WrapTop>
             <ProfileInfo>

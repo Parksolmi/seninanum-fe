@@ -9,15 +9,41 @@ import useCareerProfileState from '../../store/careerProfileState';
 import Button from '../../components/common/Button';
 import CareerDetail from '../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
+import { calcAge } from '../../utils/calcAge';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
+  // GET API 수정 후 profileId 없어질 예정.
   const { profileId } = useParams<{ profileId: string }>();
   const [previousProfileId, setPreviousProfileId] = useState<string | null>(
     null
   );
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const { careers, setCareers } = useCareerItemState();
+  const [userState, setUserState] = useState({
+    nickname: '',
+    gender: '',
+    birthYear: '',
+    profile: '',
+  });
+
+  // 기본 정보 조회 api 호출
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await instance.get(`/user/profile`);
+        setUserState({
+          nickname: res.data[0].nickname,
+          gender: res.data[0].gender,
+          birthYear: res.data[0].birthYear,
+          profile: res.data[0].profile,
+        });
+      } catch (err) {
+        console.error('기본정보 조회에 실패하였습니다.');
+      }
+    };
+    fetchProfile();
+  }, [setUserState]);
 
   useEffect(() => {
     // 이전 profileId와 다를 때만 api 호출
@@ -56,9 +82,10 @@ const ViewMyProfileDongPage = () => {
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="nari"
-          nickname={'OOO'}
-          gender={'F'}
-          age={'20대'}
+          nickname={userState.nickname}
+          gender={userState.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userState.birthYear)}
+          profile={userState.profile}
           isMyProfile={true}
         />
         <WrapButton>

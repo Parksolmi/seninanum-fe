@@ -4,11 +4,30 @@ import BasicProfile from '../../components/mypage/BasicProfile';
 import GroupMenu from '../../components/mypage/GroupMenu';
 import PayMenu from '../../components/mypage/PayMenu';
 
-const MyIndexPageDong: React.FC = () => {
+interface UserState {
+  nickname: string;
+  gender: string;
+  birthYear: string;
+  profile: string;
+}
+
+interface UserStateProps {
+  userState: UserState;
+}
+
+const MyIndexPageDong: React.FC<UserStateProps> = ({ userState }) => {
+  // const { userState } = useUserStore();
+  // 기본 프로필 조회 API 호출
+  // 경력 프로필 조회 API 호출
+
   return (
     <>
       <WrapProfile>
-        <BasicProfile userType="dong" navigateTo={'/view/myprofile/dong'} />
+        <BasicProfile
+          userType="dong"
+          navigateTo={'/view/myprofile/dong'}
+          userState={userState}
+        />
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="dong" />
