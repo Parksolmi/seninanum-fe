@@ -9,14 +9,16 @@ import ReviewRatingBar from '../../components/common/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
 import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
+import useUserStore from '../../store/userSignupState';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
-  const [userState, setUserState] = useState({
-    nickname: '',
-    gender: '',
-    birthYear: '',
-    profile: '',
+  const { userState } = useUserStore();
+  const [userstate, setUserstate] = useState({
+    nickname: userState.nickname,
+    gender: userState.gender,
+    birthYear: userState.birthYear,
+    profile: userState.profile,
   });
 
   // 기본 정보 조회 api 호출
@@ -24,7 +26,7 @@ const ViewMyProfileNariPage = () => {
     const fetchProfile = async () => {
       try {
         const res = await instance.get(`/user/profile`);
-        setUserState({
+        setUserstate({
           nickname: res.data[0].nickname,
           gender: res.data[0].gender,
           birthYear: res.data[0].birthYear,
@@ -35,17 +37,17 @@ const ViewMyProfileNariPage = () => {
       }
     };
     fetchProfile();
-  }, [setUserState]);
+  }, [setUserstate]);
   return (
     <>
       <WrapContent>
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="dong"
-          nickname={userState.nickname}
-          gender={userState.gender === '여성' ? 'F' : 'M'}
-          age={calcAge(userState.birthYear)}
-          profile={userState.profile}
+          nickname={userstate.nickname}
+          gender={userstate.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userstate.birthYear)}
+          profile={userstate.profile}
           isMyProfile={true}
         />
         <WrapButton>

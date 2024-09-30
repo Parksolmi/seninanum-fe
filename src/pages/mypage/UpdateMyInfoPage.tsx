@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import { instance } from '../../api/instance';
+import useUserStore from '../../store/userSignupState';
 
 interface Inputs {
   nickname: string;
@@ -18,11 +19,12 @@ interface Inputs {
 const UpdateMyInfoPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
-  const [userState, setUserState] = useState({
-    nickname: '',
-    gender: '',
-    birthYear: '',
-    profile: '',
+  const { userState } = useUserStore();
+  const [userstate, setUserstate] = useState({
+    nickname: userState.nickname,
+    gender: userState.gender,
+    birthYear: userState.birthYear,
+    profile: userState.profile,
   });
 
   // 기본 정보 조회 api 호출
@@ -30,7 +32,7 @@ const UpdateMyInfoPage: React.FC = () => {
     const fetchProfile = async () => {
       try {
         const res = await instance.get(`/user/profile`);
-        setUserState({
+        setUserstate({
           nickname: res.data[0].nickname,
           gender: res.data[0].gender,
           birthYear: res.data[0].birthYear,
@@ -41,7 +43,7 @@ const UpdateMyInfoPage: React.FC = () => {
       }
     };
     fetchProfile();
-  }, [setUserState]);
+  }, [setUserstate]);
 
   const { register, handleSubmit } = useForm<Inputs>({
     shouldUseNativeValidation: true,
@@ -65,7 +67,7 @@ const UpdateMyInfoPage: React.FC = () => {
 
         <ProfileImgaeArea>
           <WrapProfile>
-            <img src={userState.profile} alt="profile" />
+            <img src={userstate.profile} alt="profile" />
           </WrapProfile>
           <CameraIcon
             src={`/assets/home/edit-image.svg`}
@@ -78,7 +80,7 @@ const UpdateMyInfoPage: React.FC = () => {
             userType={userType}
             label="이름/닉네임"
             placeholder="이름 혹은 닉네임을 입력해주세요."
-            defaultValue={userState.nickname ? userState.nickname : ''}
+            defaultValue={userstate.nickname ? userstate.nickname : ''}
             register={register('nickname', {
               validate: (value) =>
                 value.length < 5 || '5자리 이하로 지어주세요!',
@@ -89,7 +91,7 @@ const UpdateMyInfoPage: React.FC = () => {
             label="성별"
             options={['남성', '여성']}
             register={register('gender')}
-            defaultValue={userState.gender}
+            defaultValue={userstate.gender}
           />
           <InputText
             userType={userType}
@@ -99,7 +101,7 @@ const UpdateMyInfoPage: React.FC = () => {
               validate: (value) =>
                 /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
             })}
-            value={userState.birthYear}
+            value={userstate.birthYear}
           />
           {/* <InputSubmit
           $userType={userState.userType}
