@@ -4,38 +4,39 @@ import styled from 'styled-components';
 interface SummaryCardProps {
   // profile: string;
   type: string;
-  // nickname: string;
-  // age: string;
-  // method: string;
-  // content: string;
+  nickname: string;
+  age: string;
+  method: string;
+  content: string;
   fields: string[];
+  onClick: () => void;
 }
 
 const SummaryCard = ({
   // profile,
   type,
-  // nickname,
-  // age,
-  // method,
-  // content,
+  nickname,
+  age,
+  method,
+  content,
   fields,
+  onClick,
 }: SummaryCardProps) => {
   return (
-    <InputContainer>
+    <InputContainer onClick={onClick}>
       <WrapProfile>
         <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
         <ProfileInfo>
           <p>
-            <strong>닉네임</strong> {type === 'dong' ? '동백' : '나리'}
+            <strong>{nickname}</strong> {type === 'dong' ? '동백' : '나리'}
             <Badge src={`/assets/common/badge-${type}.png`} />
           </p>
-          <span>20대 | 대면</span>
+          <span>
+            {age} | {method}
+          </span>
         </ProfileInfo>
       </WrapProfile>
-      <WrapContent>
-        기후기술 창업대회 공모전 피드백 및 도와주실 전문가 구합니다.기후기술
-        창업대회 공모전 피드백 및 도와주실 전문가 구합니다.
-      </WrapContent>
+      <WrapContent>{content}</WrapContent>
       <WrapField>
         {fields.map((field, index) => (
           <Field key={index} $type={type}>

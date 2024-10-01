@@ -7,7 +7,7 @@ import Fields from '../../components/common/Fields';
 import PrevHeader from '../../components/header/PrevHeader';
 import { calcAge } from '../../utils/calcAge';
 
-const FIELDS = ['교육', '경제', '생활'];
+const FIELDS = ['교육', '경제', '생활']; //임시
 interface Recruit {
   recruitId: number;
   title: string;
@@ -25,7 +25,8 @@ const ViewRecruitList = () => {
   useEffect(() => {
     const getRecruitList = async () => {
       try {
-        const res = await instance.get('/recruit/list');
+        //수정필요
+        const res = await instance.get(`/recruit/filter`);
         setRecruitList(res.data);
         console.log(res.data);
       } catch (error) {

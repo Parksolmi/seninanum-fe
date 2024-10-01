@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/home/ShortcutButton';
-import SummaryCard from '../../components/common/SummaryCard';
 import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
@@ -48,12 +47,6 @@ const HomeIndexPageNari: React.FC = () => {
       }
     };
     getBriefProfile();
-
-    //상태바 색상 변경
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', '#FF9085');
-    }
   }, []);
 
   return (
@@ -111,7 +104,7 @@ const HomeIndexPageNari: React.FC = () => {
 
         <TitleText>원하는 동백님을 직접 찾아봐요!</TitleText>
         <FilterButton />
-        <WrapDongCards>
+        {/* <WrapDongCards>
           <SummaryCard
             type={CARD_TYPE}
             fields={['IT', '예체능', '디지털']}
@@ -123,7 +116,7 @@ const HomeIndexPageNari: React.FC = () => {
             type={CARD_TYPE}
             fields={['입시', '경제', '교육']}
           ></SummaryCard>
-        </WrapDongCards>
+        </WrapDongCards> */}
       </WrapContent>
     </>
   );
@@ -162,10 +155,10 @@ const WrapVerticalProfiles = styled.div`
   white-space: nowrap;
 `;
 
-const WrapDongCards = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.5rem;
-`;
+// const WrapDongCards = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 1rem;
+//   margin-top: 1.5rem;
+// `;
 export default HomeIndexPageNari;
