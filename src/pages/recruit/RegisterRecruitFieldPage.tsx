@@ -37,17 +37,16 @@ const RegisterRecruitFieldPage = () => {
     });
   };
 
-  const navigateToMethod = () => {
-    setStatus(2);
-    navigate('/register/recruit/method');
-  };
-
   useEffect(() => {
     setRecruitState({ field: selectedTags.join(',') });
   }, [setRecruitState, selectedTags]);
 
+  useEffect(() => {
+    setStatus(1);
+  }, [setStatus]);
+
   return (
-    <>
+    <WrapContent>
       {/* <ExitHeader navigateTo={'/home'} />
       <ProgressBar status={0} type={'nari'}></ProgressBar> */}
       <TitleText>
@@ -65,12 +64,16 @@ const RegisterRecruitFieldPage = () => {
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={navigateToMethod}
+          onClick={() => navigate('/register/recruit/method')}
         ></Button>
       </WrapButton>
-    </>
+    </WrapContent>
   );
 };
+
+const WrapContent = styled.div`
+  padding: 0 1.1rem 3rem 1.1rem;
+`;
 
 const TitleText = styled.div`
   font-size: 1.5rem;

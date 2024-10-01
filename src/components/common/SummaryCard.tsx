@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { calcAge } from '../../utils/calcAge';
 
 interface SummaryCardProps {
   // profile: string;
@@ -32,7 +33,7 @@ const SummaryCard = ({
             <Badge src={`/assets/common/badge-${type}.png`} />
           </p>
           <span>
-            {age} | {method}
+            {calcAge(age)} | {method}
           </span>
         </ProfileInfo>
       </WrapProfile>

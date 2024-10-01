@@ -19,32 +19,23 @@ const RegisterRecruitMethodPage = () => {
   const isDisabled =
     !selectedMethod || (!selectedRegion && selectedMethod !== '비대면 서비스');
 
-  const handleButtonClick = (method: string) => {
-    setSelectedMethod(method);
-  };
-
-  const navigateToField = () => {
-    setStatus(1);
-    navigate('/register/recruit/field');
-  };
-  const navigateToContent = () => {
-    setStatus(3);
-    navigate('/register/recruit/content');
-  };
-
   useEffect(() => {
     setRecruitState({ method: selectedMethod, region: selectedRegion });
   }, [setRecruitState, selectedMethod, selectedRegion]);
 
+  useEffect(() => {
+    setStatus(2);
+  }, [setStatus]);
+
   return (
-    <>
+    <WrapContent>
       <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
         {['대면 서비스', '비대면 서비스', '모두 선택'].map((method) => (
           <MethodButton
             key={method}
             $isSelected={selectedMethod === method}
-            onClick={() => handleButtonClick(method)}
+            onClick={() => setSelectedMethod(method)}
           >
             {method}
           </MethodButton>
@@ -68,18 +59,22 @@ const RegisterRecruitMethodPage = () => {
           userType={null}
           disabled={false}
           children={'이전'}
-          onClick={navigateToField}
+          onClick={() => navigate('/register/recruit/field')}
         ></Button>
         <Button
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={navigateToContent}
+          onClick={() => navigate('/register/recruit/content')}
         ></Button>
       </WrapButton>
-    </>
+    </WrapContent>
   );
 };
+
+const WrapContent = styled.div`
+  padding: 0 1.1rem 3rem 1.1rem;
+`;
 
 const TitleText = styled.div`
   font-size: 1.5rem;

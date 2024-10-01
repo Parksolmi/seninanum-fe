@@ -32,7 +32,7 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
     const getRecruitList = async () => {
       try {
         const res = await instance.get('/recruit/list');
-        setRecruitList(res.data);
+        setRecruitList(res.data.reverse());
         console.log(res.data);
       } catch (error) {
         console.log(error);

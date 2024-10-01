@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ShortcutButton from '../../components/home/ShortcutButton';
 import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
-import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
+// import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 import LogoHeader from '../../components/header/LogoHeader';
-import { instance } from '../../api/instance';
-import { calcAge } from '../../utils/calcAge';
+// import { instance } from '../../api/instance';
+// import { calcAge } from '../../utils/calcAge';
 
-interface CareerCard {
-  profileId: number;
-  introduce: string;
-  age: string;
-  field: string;
-  nickname: string;
-  gender: string;
-  birthyear: string;
-}
+// interface CareerCard {
+//   profileId: number;
+//   introduce: string;
+//   age: string;
+//   field: string;
+//   nickname: string;
+//   gender: string;
+//   birthyear: string;
+// }
 const USER_TYPE = 'nari';
-const CARD_TYPE = 'dong';
+// const CARD_TYPE = 'dong';
 
 const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<CareerCard[]>([]);
+  // const [profile, setProfile] = useState<CareerCard[]>([]);
 
-  useEffect(() => {
-    const getBriefProfile = async () => {
-      try {
-        const res = await instance.get('/career/list');
-        // 중복 제거 로직
-        const uniqueProfiles: CareerCard[] = [];
-        const seenNicknames = new Set<string>();
+  // useEffect(() => {
+  //   const getBriefProfile = async () => {
+  //     try {
+  //       const res = await instance.get('/career/list');
+  //       // 중복 제거 로직
+  //       const uniqueProfiles: CareerCard[] = [];
+  //       const seenNicknames = new Set<string>();
 
-        res.data.forEach((profile: CareerCard) => {
-          if (!seenNicknames.has(profile.nickname)) {
-            seenNicknames.add(profile.nickname);
-            uniqueProfiles.push(profile);
-          }
-        });
+  //       res.data.forEach((profile: CareerCard) => {
+  //         if (!seenNicknames.has(profile.nickname)) {
+  //           seenNicknames.add(profile.nickname);
+  //           uniqueProfiles.push(profile);
+  //         }
+  //       });
 
-        setProfile(uniqueProfiles);
-        console.log(uniqueProfiles);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getBriefProfile();
-  }, []);
+  //       setProfile(uniqueProfiles);
+  //       console.log(uniqueProfiles);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getBriefProfile();
+  // }, []);
 
   return (
     <>
@@ -84,7 +84,7 @@ const HomeIndexPageNari: React.FC = () => {
           {/* 교육 분야의 <br /> */}
           동백님들을 추천해드릴게요!
         </TitleText>
-        <WrapVerticalProfiles>
+        {/* <WrapVerticalProfiles>
           {profile &&
             profile.map((profile) => (
               <ProfileVerticalCard
@@ -100,7 +100,7 @@ const HomeIndexPageNari: React.FC = () => {
                 }
               />
             ))}
-        </WrapVerticalProfiles>
+        </WrapVerticalProfiles> */}
 
         <TitleText>원하는 동백님을 직접 찾아봐요!</TitleText>
         <FilterButton />
@@ -147,13 +147,13 @@ const WrapShortcutButtons = styled.div`
   gap: 1rem;
 `;
 
-const WrapVerticalProfiles = styled.div`
-  display: flex;
-  gap: 1rem;
-  padding: 0.3rem 0.5rem 0.5rem 0.5rem;
-  overflow-x: auto;
-  white-space: nowrap;
-`;
+// const WrapVerticalProfiles = styled.div`
+//   display: flex;
+//   gap: 1rem;
+//   padding: 0.3rem 0.5rem 0.5rem 0.5rem;
+//   overflow-x: auto;
+//   white-space: nowrap;
+// `;
 
 // const WrapDongCards = styled.div`
 //   display: flex;
