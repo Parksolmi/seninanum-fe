@@ -47,7 +47,7 @@ const WalkThroughIndexPage = () => {
               }
             />
           </WrapButton>
-          <SkipButton>건너뛰기</SkipButton>
+          <SkipButton onClick={() => navigate('/home')}>건너뛰기</SkipButton>
         </WrapButtonContainer>
       </>
     );
