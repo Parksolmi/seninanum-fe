@@ -17,7 +17,6 @@ interface UserStateProps {
 
 const MyIndexPageDong: React.FC<UserStateProps> = ({ userState }) => {
   // const { userState } = useUserStore();
-  // 경력 프로필 조회 API 호출
 
   return (
     <>

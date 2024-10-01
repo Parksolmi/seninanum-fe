@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -13,20 +13,14 @@ import useUserStore from '../../store/userSignupState';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
-  const { userState } = useUserStore();
-  const [userstate, setUserstate] = useState({
-    nickname: userState.nickname,
-    gender: userState.gender,
-    birthYear: userState.birthYear,
-    profile: userState.profile,
-  });
+  const { userState, setUserState } = useUserStore();
 
   // 기본 정보 조회 api 호출
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await instance.get(`/user/profile`);
-        setUserstate({
+        setUserState({
           nickname: res.data[0].nickname,
           gender: res.data[0].gender,
           birthYear: res.data[0].birthYear,
@@ -37,17 +31,17 @@ const ViewMyProfileNariPage = () => {
       }
     };
     fetchProfile();
-  }, [setUserstate]);
+  }, [setUserState]);
   return (
     <>
       <WrapContent>
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="dong"
-          nickname={userstate.nickname}
-          gender={userstate.gender === '여성' ? 'F' : 'M'}
-          age={calcAge(userstate.birthYear)}
-          profile={userstate.profile}
+          nickname={userState.nickname}
+          gender={userState.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userState.birthYear)}
+          profile={userState.profile}
           isMyProfile={true}
         />
         <WrapButton>

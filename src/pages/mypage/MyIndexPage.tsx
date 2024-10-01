@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MyIndexPageDong from './MyIndexPageDong';
 import MyIndexPageNari from './MyIndexPageNari';
 import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
 import { instance } from '../../api/instance';
+import useUserStore from '../../store/userSignupState';
 
 const MyIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
-  const [userState, setUserState] = useState({
-    nickname: '',
-    gender: '',
-    birthYear: '',
-    profile: '',
-  });
+  const { userState, setUserState } = useUserStore();
 
   useEffect(() => {
     const fetchProfile = async () => {
