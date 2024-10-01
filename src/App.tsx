@@ -29,6 +29,7 @@ import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertif
 import ViewMyProfileDongPage from './pages/mypage/ViewMyProfileDongPage';
 import ViewMyProfileNariPage from './pages/mypage/ViewMyProfileNariPage';
 import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
+import CompleteSignupPage from './pages/signup/CompleteSignupPage';
 
 const App: React.FC = () => {
   return (
@@ -36,10 +37,12 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<SignupIndexPage />} />
+        <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
         <Route path="/signup/usertype" element={<ChooseTypePage />} />
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
-        <Route path="/auth/kakao/callback" element={<KakaoAuthHandle />} />
+        <Route path="/signup/complete" element={<CompleteSignupPage />} />
+
         <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}
         <Route path="/register/recruit" element={<ProgressLayout />}>

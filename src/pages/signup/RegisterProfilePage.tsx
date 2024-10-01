@@ -23,9 +23,9 @@ const RegisterProfilePage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { errors, isValid },
   } = useForm<Inputs>({
-    shouldUseNativeValidation: true,
+    mode: 'onChange',
   });
 
   //회원가입
@@ -39,7 +39,9 @@ const RegisterProfilePage: React.FC = () => {
         birthYear: data.birthYear,
         profile: userState.profile,
       });
-      navigate('/home');
+      navigate('/signup/complete', {
+        state: { nickname: data.nickname, userType: userState.userType },
+      });
 
       login(userState.userId);
     } catch (err) {
@@ -68,11 +70,17 @@ const RegisterProfilePage: React.FC = () => {
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
-          defaultValue={userState.nickname ? userState.nickname : ''}
+          defaultValue={userState.nickname || ''}
           register={register('nickname', {
-            validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
+            required: '이름 혹은 닉네임을 입력해주세요.',
+            maxLength: {
+              value: 5,
+              message: '5자 이하로 입력해주세요!',
+            },
           })}
+          error={errors.nickname?.message}
         />
+
         <Toggle
           userType={userState.userType}
           label="성별"
@@ -82,11 +90,12 @@ const RegisterProfilePage: React.FC = () => {
         <InputText
           userType={userState.userType}
           label="출생년도"
-          placeholder="예시) 1876"
+          placeholder="예) 1990"
           register={register('birthYear', {
             validate: (value) =>
-              /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
+              /^[0-9]{4}$/.test(value) || '숫자 4자리로 입력해주세요!',
           })}
+          error={errors.birthYear?.message}
         />
         <InputSubmit
           $userType={userState.userType}

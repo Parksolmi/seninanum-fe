@@ -42,12 +42,13 @@ const WalkThroughIndexPage = () => {
               onClick={
                 currentSlide === totalSlide - 1 ? navigateToHome : onClick
               }
-            ></Button>
+            />
           </WrapButton>
         </WrapButtonContainer>
       </>
     );
   };
+
   const sliderSettings = {
     dots: true,
     infinite: false,
@@ -105,7 +106,6 @@ const StyledSlider = styled(Slider)`
   }
 
   .dots_custom {
-    margin-left: -18px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,7 +138,6 @@ const TitleArea = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  position: relative;
   padding: 0;
   margin: 0;
   margin-top: 1rem;
@@ -146,7 +145,7 @@ const TitleArea = styled.div`
 
 const PrevBtn = styled.div`
   position: absolute;
-  top: -22px;
+  top: -25px;
   left: 0;
   display: flex;
   justify-content: flex-start;
