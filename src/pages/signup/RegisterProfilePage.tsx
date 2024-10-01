@@ -39,6 +39,7 @@ const RegisterProfilePage: React.FC = () => {
         birthYear: data.birthYear,
         profile: userState.profile,
       });
+
       navigate('/signup/complete', {
         state: { nickname: data.nickname, userType: userState.userType },
       });

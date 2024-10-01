@@ -6,11 +6,14 @@ import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import AssetArray from './AssetArray';
 import { useNavigate } from 'react-router-dom';
+import userTypeStore from '../../store/userState';
 
 const WalkThroughIndexPage = () => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlide = 4;
+
+  const { userType } = userTypeStore();
 
   const handleBeforeChange = (oldIdx, newIdx) => {
     setCurrentSlide(newIdx);
@@ -38,12 +41,13 @@ const WalkThroughIndexPage = () => {
             <Button
               children={currentSlide === totalSlide - 1 ? '시작하기' : '다음'}
               disabled={false}
-              userType={'dong'}
+              userType={userType}
               onClick={
                 currentSlide === totalSlide - 1 ? navigateToHome : onClick
               }
             />
           </WrapButton>
+          <SkipButton>건너뛰기</SkipButton>
         </WrapButtonContainer>
       </>
     );
@@ -72,11 +76,11 @@ const WalkThroughIndexPage = () => {
       <TitleArea>
         <TitleText>가입완료</TitleText>
       </TitleArea>
-      <StyledSlider {...sliderSettings}>
-        <AssetArray userType={'dong'} index={1}></AssetArray>
-        <AssetArray userType={'dong'} index={2}></AssetArray>
-        <AssetArray userType={'dong'} index={3}></AssetArray>
-        <AssetArray userType={'dong'} index={4}></AssetArray>
+      <StyledSlider $userType={userType} {...sliderSettings}>
+        <AssetArray userType={userType} index={1}></AssetArray>
+        <AssetArray userType={userType} index={2}></AssetArray>
+        <AssetArray userType={userType} index={3}></AssetArray>
+        <AssetArray userType={userType} index={4}></AssetArray>
       </StyledSlider>
       <GapButton />
     </WrapContent>
@@ -115,7 +119,6 @@ const StyledSlider = styled(Slider)`
     list-style: none;
     display: inline-block;
     margin: 0 10px;
-    padding: 0;
   }
 
   .dots_custom li button {
@@ -126,11 +129,11 @@ const StyledSlider = styled(Slider)`
     height: 12px;
     width: 12px;
     border-radius: 100%;
-    padding: 0;
   }
 
   .dots_custom li.slick-active button {
-    background-color: #ff314a;
+    background-color: ${({ $userType }) =>
+      $userType === 'dong' ? '#ff314a' : '#FFD111'};
   }
 `;
 const TitleArea = styled.div`
@@ -166,7 +169,7 @@ const TitleText = styled.div`
   text-align: center;
   align-items: center;
   font-family: NanumSquare;
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 400;
 `;
 
@@ -197,6 +200,18 @@ const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+`;
+
+const SkipButton = styled.div`
+  color: var(--Base-Gray, #8e8e8e);
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  margin-top: 1rem;
 `;
 
 export default WalkThroughIndexPage;
