@@ -5,7 +5,7 @@ interface RadioButtonProps {
   name: string;
   userType: 'dong' | 'nari';
   selected: string;
-  value: number;
+  value?: number;
   onChange: (e: any) => void;
   onClickMethod: (method: string) => void;
 }

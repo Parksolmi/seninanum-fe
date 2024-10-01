@@ -20,22 +20,24 @@ const ProgressLayout: React.FC = () => {
   );
 
   useEffect(() => {
-    const profileId = pathname.split('/').pop() ?? null;
-    // 이전 profileId와 다를 때만 api 호출
-    if (profileId !== previousProfileId) {
-      const fetchProfileProgress = async () => {
-        try {
-          const response = await instance.get(`/career/${profileId}`);
-          setCareerProfileState(response.data);
-          setPreviousProfileId(profileId);
-        } catch (error) {
-          console.error('경력 프로필 조회에 실패하였습니다.', error);
-        }
-      };
+    if (userType === 'dong') {
+      const profileId = pathname.split('/').pop() ?? null;
+      // 이전 profileId와 다를 때만 api 호출
+      if (profileId !== previousProfileId) {
+        const fetchProfileProgress = async () => {
+          try {
+            const response = await instance.get(`/career/${profileId}`);
+            setCareerProfileState(response.data);
+            setPreviousProfileId(profileId);
+          } catch (error) {
+            console.error('경력 프로필 조회에 실패하였습니다.', error);
+          }
+        };
 
-      fetchProfileProgress();
+        fetchProfileProgress();
+      }
     }
-  }, [pathname, previousProfileId, setCareerProfileState]);
+  }, [userType, pathname, previousProfileId, setCareerProfileState]);
 
   return (
     <>

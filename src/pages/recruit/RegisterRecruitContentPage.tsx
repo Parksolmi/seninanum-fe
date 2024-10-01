@@ -30,7 +30,7 @@ const RegisterRecruitContentPage = () => {
       instance.post('/recruit', {
         title: recruitState.title,
         content: recruitState.content,
-        method: recruitState.method,
+        method: recruitState.method.replace('서비스', '').trim(),
         priceType: recruitState.priceType,
         price: recruitState.price,
         region: recruitState.region,
@@ -44,7 +44,6 @@ const RegisterRecruitContentPage = () => {
   };
 
   const navigateToMethod = () => {
-    setStatus(2);
     navigate('/register/recruit/method');
   };
 
@@ -52,31 +51,40 @@ const RegisterRecruitContentPage = () => {
     setRecruitState({ priceType: selectedPriceType });
   }, [setRecruitState, selectedPriceType]);
 
+  useEffect(() => {
+    setStatus(3);
+  }, [setStatus]);
+
   return (
     <>
-      <TitleText>{`마지막으로,\n내 구인글을 소개해보세요!`}</TitleText>
-      <Input
-        name="title"
-        inputPlaceholder={'제목을 입력하세요.'}
-        onChange={hadnleOnChagne}
-        maxLength={39}
-      ></Input>
-      <MaxText>
-        <span>{inputCount}</span>
-        <span>/40</span>
-      </MaxText>
-      <TextArea
-        name="content"
-        inputPlaceholder={'내용을 입력하세요.'}
-        onChange={hadnleOnChagne}
-      ></TextArea>
-      <InputPrice
-        name="price"
-        onChange={hadnleOnChagne}
-        userType={'nari'}
-        selected={selectedPriceType}
-        onClickMethod={setSelectedPriceType}
-      />
+      <WrapContent>
+        <TitleText>{`마지막으로,\n내 구인글을 소개해보세요!`}</TitleText>
+        <div>
+          <Input
+            name="title"
+            inputPlaceholder={'제목을 입력하세요.'}
+            onChange={hadnleOnChagne}
+            maxLength={39}
+          />
+          <MaxText>
+            <span>{inputCount}</span>
+            <span>/40</span>
+          </MaxText>
+          <TextArea
+            name="content"
+            inputPlaceholder={'내용을 입력하세요.'}
+            onChange={hadnleOnChagne}
+          />
+        </div>
+        <InputPrice
+          name="price"
+          onChange={hadnleOnChagne}
+          userType={'nari'}
+          selected={selectedPriceType}
+          onClickMethod={setSelectedPriceType}
+        />
+      </WrapContent>
+
       <WrapButton>
         <Button
           userType={null}
@@ -95,12 +103,21 @@ const RegisterRecruitContentPage = () => {
   );
 };
 
+const WrapContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  padding: 0 1.1rem 3rem 1.1rem;
+  overflow-y: auto;
+  margin-bottom: 5rem;
+`;
+
 const TitleText = styled.div`
   font-size: 1.5rem;
   font-family: 'NanumSquareR';
   font-weight: 700;
   margin-top: 2rem;
-  margin-bottom: 1.56rem;
 `;
 
 const MaxText = styled.span`
@@ -120,10 +137,12 @@ const WrapButton = styled.div`
   position: fixed;
   display: flex;
   flex-direction: row;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
   gap: 1rem;
+  padding: 1.1rem 1.1rem 4rem 1.1rem;
+  background-color: white;
 `;
 
 export default RegisterRecruitContentPage;

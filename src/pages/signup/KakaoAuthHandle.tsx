@@ -19,7 +19,6 @@ const KakaoAuthHandle = () => {
         const response = await instance.get(`/auth/kakao?code=${code}`);
 
         let userData = response.data;
-        console.log(response.data);
 
         // KakaoAuthHandle
         setUserState({
