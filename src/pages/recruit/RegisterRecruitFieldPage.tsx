@@ -47,8 +47,6 @@ const RegisterRecruitFieldPage = () => {
 
   return (
     <WrapContent>
-      {/* <ExitHeader navigateTo={'/home'} />
-      <ProgressBar status={0} type={'nari'}></ProgressBar> */}
       <TitleText>
         어떤 분야의 동백님을 <br /> 찾으시나요?
         <p>분야는 3개까지 선택이 가능합니다.</p>

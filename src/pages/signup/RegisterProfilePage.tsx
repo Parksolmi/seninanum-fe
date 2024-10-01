@@ -54,6 +54,16 @@ const RegisterProfilePage: React.FC = () => {
         {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를 알려주세요!
       </Title>
       <WrapFrom onSubmit={handleSubmit(onSubmit)}>
+        <WrapImageInput>
+          <label>프로필 사진</label>
+          <p>
+            얼굴이 잘 나온 사진은
+            <br />
+            상대에게 좋은 인상을 줄 수 있어요!
+          </p>
+          <img className="profile" src={userState.profile} alt="profile" />
+        </WrapImageInput>
+
         <InputText
           userType={userState.userType}
           label="이름/닉네임"
@@ -106,11 +116,38 @@ const WrapFrom = styled.form`
   gap: 2rem;
 `;
 
+const WrapImageInput = styled.div`
+  label {
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-family: Nanum_Square;
+  }
+
+  p {
+    color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0.5rem;
+  }
+
+  .profile {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    margin-top: 1.12rem;
+    object-fit: cover;
+    background-color: lightgray;
+  }
+`;
+
 const InputSubmit = styled.input<{ $userType: string }>`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 4rem;
+  bottom: 1.875rem;
 
   height: 3.7rem;
   text-align: center;
