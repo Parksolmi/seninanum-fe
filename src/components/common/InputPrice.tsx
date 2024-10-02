@@ -86,7 +86,7 @@ const Tag = styled.div<TagProps>`
      font-weight: 700;
     `
         : `
-    border: 2px solid var(--Primary-Deep-nari); 
+    border: 2px solid #FFD111; 
      color: var(--Primary-Deep-nari); 
      font-weight: 700;
     `
