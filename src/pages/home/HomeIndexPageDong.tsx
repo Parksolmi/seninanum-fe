@@ -22,6 +22,7 @@ interface Recruit {
   birthyear: string;
   method: string;
   region: string;
+  field: string;
 }
 
 const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {

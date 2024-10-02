@@ -4,11 +4,25 @@ import BasicProfile from '../../components/mypage/BasicProfile';
 import GroupMenu from '../../components/mypage/GroupMenu';
 import PayMenu from '../../components/mypage/PayMenu';
 
-const MyIndexPageNari: React.FC = () => {
+interface UserState {
+  nickname: string;
+  gender: string;
+  birthYear: string;
+  profile: string;
+}
+
+interface UserStateProps {
+  userState: UserState;
+}
+const MyIndexPageNari: React.FC<UserStateProps> = ({ userState }) => {
   return (
     <>
       <WrapProfile>
-        <BasicProfile userType="nari" navigateTo={'/view/myprofile/nari'} />
+        <BasicProfile
+          userType="nari"
+          navigateTo={'/view/myprofile/nari'}
+          userState={userState}
+        />
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="nari" />

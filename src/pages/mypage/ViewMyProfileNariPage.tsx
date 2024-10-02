@@ -1,23 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import { useNavigate } from 'react-router-dom';
 import DetailCard from '../../components/common/DetailCard';
+import ReviewRatingBar from '../../components/common/ReviewRatingBar';
+import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
+import { instance } from '../../api/instance';
+import { calcAge } from '../../utils/calcAge';
+import useUserStore from '../../store/userSignupState';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
+  const { userState, setUserState } = useUserStore();
 
+  // 기본 정보 조회 api 호출
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await instance.get(`/user/profile`);
+        setUserState({
+          nickname: res.data[0].nickname,
+          gender: res.data[0].gender,
+          birthYear: res.data[0].birthYear,
+          profile: res.data[0].profile,
+        });
+      } catch (err) {
+        console.error('기본정보 조회에 실패하였습니다.');
+      }
+    };
+    fetchProfile();
+  }, [setUserState]);
   return (
     <>
       <WrapContent>
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="dong"
-          nickname={'OOO'}
-          gender={'F'}
-          age={'20대'}
+          nickname={userState.nickname}
+          gender={userState.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userState.birthYear)}
+          profile={userState.profile}
           isMyProfile={true}
         />
         <WrapButton>
@@ -32,6 +56,18 @@ const ViewMyProfileNariPage = () => {
         </WrapButton>
       </WrapContent>
 
+      <SplitLine />
+      <WrapContentSingle>
+        <TitleText>
+          리뷰 <span>2</span>
+        </TitleText>
+        <ReviewRatingBarWrapper>
+          <ReviewRatingBar />
+          <ReviewRatingBar />
+        </ReviewRatingBarWrapper>
+
+        <ReviewSummaryCard />
+      </WrapContentSingle>
       <SplitLine />
 
       <WrapContentSingle>
@@ -82,6 +118,12 @@ const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+`;
+
+const ReviewRatingBarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
 const SplitLine = styled.div`

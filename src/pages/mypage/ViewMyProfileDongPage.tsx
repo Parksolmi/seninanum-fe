@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
@@ -9,32 +9,47 @@ import useCareerProfileState from '../../store/careerProfileState';
 import Button from '../../components/common/Button';
 import CareerDetail from '../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
+import { calcAge } from '../../utils/calcAge';
+import useUserStore from './../../store/userSignupState';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
+  // GET API 수정 후 profileId 없어질 예정.
   const { profileId } = useParams<{ profileId: string }>();
-  const [previousProfileId, setPreviousProfileId] = useState<string | null>(
-    null
-  );
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const { careers, setCareers } = useCareerItemState();
+  const { userState, setUserState } = useUserStore();
+
+  // 기본 정보 조회 api 호출
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await instance.get(`/user/profile`);
+        setUserState({
+          nickname: res.data[0].nickname,
+          gender: res.data[0].gender,
+          birthYear: res.data[0].birthYear,
+          profile: res.data[0].profile,
+        });
+      } catch (err) {
+        console.error('기본정보 조회에 실패하였습니다.');
+      }
+    };
+    fetchProfile();
+  }, [setUserState]);
 
   useEffect(() => {
-    // 이전 profileId와 다를 때만 api 호출
-    if (profileId && profileId !== previousProfileId) {
-      const fetchProfileProgress = async () => {
-        try {
-          const response = await instance.get(`/career`);
-          setCareerProfileState(response.data);
-          setPreviousProfileId(profileId);
-        } catch (error) {
-          console.error('경력 프로필 조회에 실패하였습니다.', error);
-        }
-      };
+    const fetchProfileProgress = async () => {
+      try {
+        const response = await instance.get(`/career`);
+        setCareerProfileState(response.data);
+      } catch (error) {
+        console.error('경력 프로필 조회에 실패하였습니다.', error);
+      }
+    };
 
-      fetchProfileProgress();
-    }
-  }, [profileId, previousProfileId, setCareerProfileState]);
+    fetchProfileProgress();
+  }, [profileId, setCareerProfileState]);
 
   // 경력 항목 조회 함수
   useEffect(() => {
@@ -56,9 +71,10 @@ const ViewMyProfileDongPage = () => {
         <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
         <BriefProfileMultiCard
           type="nari"
-          nickname={'OOO'}
-          gender={'F'}
-          age={'20대'}
+          nickname={userState.nickname}
+          gender={userState.gender === '여성' ? 'F' : 'M'}
+          age={calcAge(userState.birthYear)}
+          profile={userState.profile}
           isMyProfile={true}
         />
         <WrapButton>
@@ -77,7 +93,9 @@ const ViewMyProfileDongPage = () => {
 
       <WrapContentSingle>
         <TitleText>소개 한마디</TitleText>
-        <DetailText>"{careerProfileState.introduce}"</DetailText>
+        <DetailText>
+          {careerProfileState.introduce && `"${careerProfileState.introduce}"`}
+        </DetailText>
       </WrapContentSingle>
 
       <WrapContentSingle>
@@ -89,27 +107,26 @@ const ViewMyProfileDongPage = () => {
         <TitleText>희망조건</TitleText>
         <ConditionText>
           <tbody>
-            {careerProfileState.method !== '' && (
+            {careerProfileState.method && (
               <tr>
                 <th>활동방식</th>
                 <td>{careerProfileState.method}</td>
               </tr>
             )}
 
-            {careerProfileState.region !== '' && (
+            {careerProfileState.region && (
               <tr>
                 <th>활동지역</th>
                 <td>서울시 {careerProfileState.region}</td>
               </tr>
             )}
-            {careerProfileState.age !== '' && (
+            {careerProfileState.age && (
               <tr>
                 <th>선호연령</th>
                 <td>{careerProfileState.age}</td>
               </tr>
             )}
-            {(careerProfileState.priceType !== '' ||
-              careerProfileState.price > 0) && (
+            {careerProfileState.priceType && careerProfileState.price >= 0 && (
               <tr>
                 <th>급여</th>
                 <td>

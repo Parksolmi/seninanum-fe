@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import userTypeStore from '../../store/userState';
 import PrevHeader from '../../components/header/PrevHeader';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import useUserState from '../../store/userSignupState';
 import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
+import { instance } from '../../api/instance';
+import useUserStore from '../../store/userSignupState';
 
 interface Inputs {
   nickname: string;
@@ -15,10 +16,28 @@ interface Inputs {
   birthYear: string;
 }
 
-const UpdateMyInfoPage = () => {
+const UpdateMyInfoPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
-  const { userState } = useUserState();
+  const { userState, setUserState } = useUserStore();
+
+  // 기본 정보 조회 api 호출
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await instance.get(`/user/profile`);
+        setUserState({
+          nickname: res.data[0].nickname,
+          gender: res.data[0].gender,
+          birthYear: res.data[0].birthYear,
+          profile: res.data[0].profile,
+        });
+      } catch (err) {
+        console.error('기본정보 조회에 실패하였습니다.');
+      }
+    };
+    fetchProfile();
+  }, [setUserState]);
 
   const { register, handleSubmit } = useForm<Inputs>({
     shouldUseNativeValidation: true,
@@ -42,7 +61,7 @@ const UpdateMyInfoPage = () => {
 
         <ProfileImgaeArea>
           <WrapProfile>
-            <img src={`/assets/common/badge-dong.png`} alt="profile" />
+            <img src={userState.profile} alt="profile" />
           </WrapProfile>
           <CameraIcon
             src={`/assets/home/edit-image.svg`}
@@ -66,6 +85,7 @@ const UpdateMyInfoPage = () => {
             label="성별"
             options={['남성', '여성']}
             register={register('gender')}
+            defaultValue={userState.gender}
           />
           <InputText
             userType={userType}
@@ -75,6 +95,7 @@ const UpdateMyInfoPage = () => {
               validate: (value) =>
                 /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
             })}
+            value={userState.birthYear}
           />
           {/* <InputSubmit
           $userType={userState.userType}

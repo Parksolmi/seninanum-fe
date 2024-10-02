@@ -2,15 +2,34 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const BasicProfile = ({ userType, navigateTo }) => {
+interface UserState {
+  nickname: string;
+  gender: string;
+  birthYear: string;
+  profile: string;
+}
+
+interface BasicProfileProps {
+  userType: string;
+  navigateTo: string;
+  userState: UserState;
+}
+
+const BasicProfile: React.FC<BasicProfileProps> = ({
+  userType,
+  navigateTo,
+  userState,
+}) => {
   const navigate = useNavigate();
 
   return (
     <WrapBaseProfile>
       <WrapProfile>
-        <img src={`/assets/common/badge-dong.png`} alt="profile" />
+        <img src={userState.profile} alt="profile" />
       </WrapProfile>
-      <h2 className="nickname">000 {userType === 'dong' ? '동백' : '나리'}</h2>
+      <h2 className="nickname">
+        {userState.nickname} {userType === 'dong' ? '동백' : '나리'}
+      </h2>
       <p className="view-profile-btn" onClick={() => navigate(navigateTo)}>
         프로필 보기
       </p>
