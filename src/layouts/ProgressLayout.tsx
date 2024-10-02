@@ -24,8 +24,10 @@ const ProgressLayout: React.FC = () => {
         console.error('경력 프로필 조회에 실패하였습니다.', error);
       }
     };
-    fetchProfileProgress();
-  }, [setCareerProfileState]);
+    if (userType === 'dong') {
+      fetchProfileProgress();
+    }
+  }, [userType, setCareerProfileState]);
 
   return (
     <>

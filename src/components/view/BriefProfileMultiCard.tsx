@@ -82,6 +82,7 @@ const ProfileImg = styled.img`
   width: 5.0625rem;
   height: 5.0625rem;
   flex-shrink: 0;
+  object-fit: cover;
 `;
 
 const WrapProfileInfo = styled.div`
