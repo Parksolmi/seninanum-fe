@@ -44,20 +44,25 @@ const StyledButton = styled.button<styleButton>`
   width: 100%;
   height: 3.7rem;
   color: ${({ $type }) =>
-    $type !== null ? ($type === 'dong' ? '#ffffff' : '#464646') : '#5B5B5B'};
+    $type !== null
+      ? $type === 'dong'
+        ? '#ffffff'
+        : 'var(--Nari-Nari-Text)'
+      : 'var(--Base-Deep-Gray)'};
   background-color: ${({ $type }) =>
     $type !== null
       ? $type === 'dong'
         ? `var(--Primary-dong)`
-        : `var(--Primary-nari)`
+        : `var(--Nari-1)`
       : '#EBECEB'};
   text-align: center;
   font-size: 1.375rem;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 600;
   line-height: normal;
   border: none;
   border-radius: 0.625rem;
+  font-family: NanumSquare;
 
   transition: background-color 0.5s ease;
   &:disabled {

@@ -45,10 +45,24 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
   return (
     <>
       <LogoHeader />
-      <BannerContainer
-        src={`/assets/home/banner-image-dong.png`}
-        alt="배너이미지"
-      />
+      <BannerContainer>
+        <p className="caption">은퇴 이후 신나는 일상</p>
+        <div className="main">
+          나리들이
+          <br /> 동백님을
+          <br /> 기다리고 있어요!
+          <img
+            className="arrow"
+            src="/assets/common/long-arrow-gray.png"
+            alt="arrow"
+          />
+          <img
+            className="character"
+            src="/assets/home/home-dong.png"
+            alt="character"
+          />
+        </div>
+      </BannerContainer>
 
       <ContentContainer>
         <CareerProfileProgress progressStep={progressStep} />
@@ -87,9 +101,42 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
   );
 };
 
-const BannerContainer = styled.img`
-  object-fit: contain;
-  width: 100%;
+const BannerContainer = styled.div`
+  padding: 2rem 1.1rem 2rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+
+  .caption {
+    color: var(--Primary-dong, #ff314a);
+    font-family: Pretendard;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .main {
+    color: var(--Nari-Nari-Text, #464646);
+    font-family: NanumSquare;
+    font-size: 1.5625rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 2.2rem; /* 160% */
+    letter-spacing: -0.01563rem;
+    margin-top: 1.2rem;
+
+    .arrow {
+      width: 1.9rem;
+      margin-left: 0.3rem;
+    }
+
+    .character {
+      position: absolute;
+      top: 2rem;
+      right: -1rem;
+      width: 10rem;
+    }
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -99,8 +146,8 @@ const ContentContainer = styled.div`
 const TitleText = styled.div`
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.075rem;
+  font-weight: 700;
+  letter-spacing: 0.06rem;
   margin-top: 2.6rem;
   margin-bottom: 1rem;
 `;

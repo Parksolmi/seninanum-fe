@@ -52,10 +52,24 @@ const HomeIndexPageNari: React.FC = () => {
   return (
     <>
       <LogoHeader />
-      <BannerContainer
-        src={`/assets/home/banner-image-nari.png`}
-        alt="배너이미지"
-      ></BannerContainer>
+      <BannerContainer>
+        <p className="caption">언제나 신나는 배움</p>
+        <div className="main">
+          동백들이
+          <br /> 나리님을
+          <br /> 기다리고 있어요!
+          <img
+            className="arrow"
+            src="/assets/common/long-arrow-gray.png"
+            alt="arrow"
+          />
+          <img
+            className="character"
+            src="/assets/home/home-nari.png"
+            alt="character"
+          />
+        </div>
+      </BannerContainer>
       <WrapContent>
         <MyRecruitProgress
           myRecruit={0}
@@ -122,9 +136,42 @@ const HomeIndexPageNari: React.FC = () => {
   );
 };
 
-const BannerContainer = styled.img`
-  object-fit: contain;
-  width: 100%;
+const BannerContainer = styled.div`
+  padding: 2rem 1.1rem 2rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+
+  .caption {
+    color: var(--Primary-Deep-nari, #f48400);
+    font-family: Pretendard;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .main {
+    color: var(--Nari-Nari-Text, #464646);
+    font-family: NanumSquare;
+    font-size: 1.5625rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 2.2rem; /* 160% */
+    letter-spacing: -0.01563rem;
+    margin-top: 1.2rem;
+
+    .arrow {
+      width: 1.9rem;
+      margin-left: 0.3rem;
+    }
+
+    .character {
+      position: absolute;
+      top: 2rem;
+      right: -1rem;
+      width: 10rem;
+    }
+  }
 `;
 
 const WrapContent = styled.div`
@@ -135,9 +182,9 @@ const WrapContent = styled.div`
 const TitleText = styled.div`
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: normal;
-  letter-spacing: -0.075rem;
+  letter-spacing: 0.06rem;
   margin-top: 2.6rem;
   margin-bottom: 1rem;
 `;

@@ -24,23 +24,31 @@ const SignupIndexPage = () => {
   }, []);
 
   return (
-    <Background>
+    <WrapContent>
+      <WrapLogo>
+        <img src="/assets/signIn/seni-text-logo.png" alt="logo" />
+      </WrapLogo>
       <KakaoButton onClick={handleLogin}>
         <img src="/assets/signIn/kakao-logo.png" alt="kakao-logo" />
         카카오톡으로 계속하기
       </KakaoButton>
-    </Background>
+    </WrapContent>
   );
 };
 
-const Background = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-image: url('/assets/signIn/signIn-bg.png');
-  background-size: cover;
-  background-position: center;
+const WrapContent = styled.div`
   padding: 0 1rem;
+`;
+
+const WrapLogo = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 30%;
+
+  img {
+    width: 13rem;
+  }
 `;
 
 const KakaoButton = styled.button`
@@ -50,7 +58,9 @@ const KakaoButton = styled.button`
   gap: 1rem;
 
   width: 100%;
-  border: 4px solid #fff293;
+  /* border: 4px solid #fff293; */
+  border: none;
+  background-color: #ffec00;
   border-radius: 0.625rem;
 
   height: 3.75rem;
