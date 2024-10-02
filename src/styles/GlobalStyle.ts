@@ -7,6 +7,7 @@ const theme = {
     nari: '#FFD111',
     deepNari: '#F48400',
     deepGray: '#5B5B5B',
+    lightGray: '#8E8E8E',
   },
 };
 
@@ -26,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
     --Secondary-dong-2: #FFEDF0;
     --Secondary-nari-2: #ffebb2;
     --Base-Deep-Gray: ${theme.colors.deepGray};
+    --Base-Gray-3: ${theme.colors.lightGray};
   }
 `;
 

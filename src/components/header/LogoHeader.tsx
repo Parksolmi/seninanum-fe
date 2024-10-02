@@ -6,17 +6,33 @@ import styled from 'styled-components';
 // }
 
 const LogoHeader = () => {
-  return <LogoImg src="/assets/common/seni-white-logo.png" alt="logo" />;
+  return (
+    <WrapLogoHeader>
+      <img
+        className="logo"
+        src="/assets/signIn/seni-text-logo.png"
+        alt="logo"
+      />
+      <img className="alert" src="/assets/common/alert.png" alt="alert" />
+    </WrapLogoHeader>
+  );
 };
 
-const LogoImg = styled.img`
-  position: absolute;
-  top: 2rem;
-  left: 17.6px;
-  z-index: 999;
-  object-fit: contain;
+const WrapLogoHeader = styled.div`
+  padding: 2rem 1.1rem 1.2rem 1.1rem;
+  box-shadow: 0px 0px 10.9px 0px rgba(0, 0, 0, 0.25);
 
-  width: 8rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .logo {
+    width: 8rem;
+  }
+
+  .alert {
+    width: 1.5rem;
+  }
 `;
 
 export default LogoHeader;
