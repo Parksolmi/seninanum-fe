@@ -142,7 +142,7 @@ const BannerContainer = styled.div`
   overflow: hidden;
 
   .caption {
-    color: var(--Primary-nari-text, #f48400);
+    color: var(--Primary-Deep-nari, #f48400);
     font-family: Pretendard;
     font-size: 1.25rem;
     font-style: normal;
@@ -182,9 +182,9 @@ const WrapContent = styled.div`
 const TitleText = styled.div`
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: normal;
-  letter-spacing: -0.075rem;
+  letter-spacing: 0.06rem;
   margin-top: 2.6rem;
   margin-bottom: 1rem;
 `;
