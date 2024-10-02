@@ -3,23 +3,24 @@ import styled from 'styled-components';
 import useFieldState from '../../store/fieldState';
 
 interface FieldsProps {
-  list: string[];
+  list: { field: string; id: number }[];
   type: 'nari' | 'dong' | null;
 }
+
 const Fields = ({ list, type }: FieldsProps) => {
   const { fieldState, setFieldState } = useFieldState();
 
   return (
     <>
       <WrapTags>
-        {list.map((tag, index) => (
+        {list.map(({ field, id }, index) => (
           <Tag
-            key={tag}
+            key={id}
             onClick={() => setFieldState(index)}
             $isSelected={fieldState.field === index}
             $type={type}
           >
-            {tag}
+            {field}
           </Tag>
         ))}
       </WrapTags>

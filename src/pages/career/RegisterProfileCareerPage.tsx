@@ -86,7 +86,7 @@ const RegisterProfileCareerPage = () => {
   // 경력 증명서 삭제
   const handleRemoveCertificate = async () => {
     try {
-      await instance.delete(`/career/certificate`);
+      await instance.delete(`/career/certificate/${profileId}`);
       // 증명서 삭제 후 목록 업데이트
       alert('파일이 삭제되었습니다.');
       window.location.reload(); // 페이지 새로고침
