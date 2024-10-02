@@ -43,7 +43,6 @@ interface styleButton {
 const StyledButton = styled.button<styleButton>`
   width: 100%;
   height: 3.7rem;
-  /* color: ${({ $type }) => ($type === null ? '#5B5B5B' : '#ffffff')}; */
   color: ${({ $type }) =>
     $type !== null ? ($type === 'dong' ? '#ffffff' : '#464646') : '#5B5B5B'};
   background-color: ${({ $type }) =>
