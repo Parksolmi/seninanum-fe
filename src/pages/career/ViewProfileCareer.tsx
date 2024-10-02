@@ -1,61 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import PrevHeader from './../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import Button from '../../components/common/Button';
-import { instance } from '../../api/instance';
+// import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
 import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from '../../components/common/CareerDetail';
-
-interface Career {
-  introduce: string;
-  age: string;
-  field: string;
-  service: string;
-  method: string;
-  region: string;
-  priceType: string;
-  price: string;
-  nickname: string;
-  gender: string;
-  birthyear: string;
-}
+import useCareerProfileState from './../../store/careerProfileState';
+import useUserStore from '../../store/userSignupState';
 
 const ViewProfileCareer = () => {
   const navigate = useNavigate();
-  const { careers, setCareers } = useCareerItemState();
-  const { profileId } = useParams<{ profileId: string }>();
+  const { careerProfileState } = useCareerProfileState();
+  const { careers } = useCareerItemState();
+  const { userState } = useUserStore();
 
-  const [career, setCareer] = useState<Career | null>(null);
-  useEffect(() => {
-    const getCareerProfile = async () => {
-      try {
-        const res = await instance.get(`/career/${profileId}`);
-        setCareer(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getCareerProfile();
-  }, [profileId]);
-  useEffect(() => {
-    const fetchCareers = async () => {
-      try {
-        const response = await instance.get('/career/item/list');
-        setCareers(response.data);
-      } catch (error) {
-        console.error('Failed to fetch careers from server', error);
-      }
-    };
-    fetchCareers();
-  }, [setCareers]);
+  // 기본 정보 조회 api 호출
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await instance.get(`/user/profile`);
+  //       setUserState({
+  //         nickname: res.data[0].nickname,
+  //         gender: res.data[0].gender,
+  //         birthYear: res.data[0].birthYear,
+  //         profile: res.data[0].profile,
+  //       });
+  //     } catch (err) {
+  //       console.error('기본정보 조회에 실패하였습니다.');
+  //     }
+  //   };
+  //   fetchProfile();
+  // }, [setUserState]);
+
+  // useEffect(() => {
+  //   const getCareerProfile = async () => {
+  //     try {
+  //       const res = await instance.get(`/career`);
+  //       setCareerProfileState(res.data.careerProfile);
+  //       setCareers(res.data.careerItems);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getCareerProfile();
+  // }, [setCareerProfileState, setCareers]);
+
   const onDelete = () => {};
   return (
     <>
-      {career === null ? (
+      {careerProfileState === null ? (
         <WrapLoader>
           <SyncLoader color="var(--Primary-nari)" />
         </WrapLoader>
@@ -65,16 +62,16 @@ const ViewProfileCareer = () => {
             <PrevHeader title={'프로필 조회'} navigateTo={'/home'} />
             <BriefProfileMultiCard
               type="dong"
-              nickname={career.nickname}
-              gender={career.gender}
-              age={calcAge(career.birthyear)}
-              introduce={career.introduce}
+              nickname={userState.nickname}
+              gender={userState.gender}
+              age={calcAge(userState.birthYear)}
+              introduce={careerProfileState.introduce}
             />
           </WrapContent>
           <SplitLine />
           <WrapContentSingle>
             <TitleText>분야</TitleText>
-            <DetailText>{career.field}</DetailText>
+            <DetailText>{careerProfileState.field}</DetailText>
           </WrapContentSingle>
 
           <WrapContentSingle>
@@ -82,33 +79,35 @@ const ViewProfileCareer = () => {
               <TitleText>희망조건</TitleText>
               <ConditionText>
                 <tbody>
-                  {career.method !== '' && (
+                  {careerProfileState.method && (
                     <tr>
                       <th>활동방식</th>
-                      <td>{career.method}</td>
+                      <td>{careerProfileState.method}</td>
                     </tr>
                   )}
 
-                  {career.region !== '' && (
+                  {careerProfileState.region && (
                     <tr>
                       <th>활동지역</th>
-                      <td>서울시 {career.region}</td>
+                      <td>서울시 {careerProfileState.region}</td>
                     </tr>
                   )}
-                  {career.age !== '' && (
+                  {careerProfileState.age && (
                     <tr>
                       <th>선호연령</th>
-                      <td>아동,20대 {career.age}</td>
+                      <td>아동,20대 {careerProfileState.age}</td>
                     </tr>
                   )}
-                  {(career.priceType !== '' || career.price !== '') && (
-                    <tr>
-                      <th>급여</th>
-                      <td>
-                        {career.priceType} {career.price}원
-                      </td>
-                    </tr>
-                  )}
+                  {careerProfileState.priceType &&
+                    careerProfileState.price > 0 && (
+                      <tr>
+                        <th>급여</th>
+                        <td>
+                          {careerProfileState.priceType}{' '}
+                          {careerProfileState.price}원
+                        </td>
+                      </tr>
+                    )}
                 </tbody>
               </ConditionText>
             </div>
@@ -130,7 +129,7 @@ const ViewProfileCareer = () => {
           </WrapContentSingle>
           <WrapContentSingle>
             <TitleText>제공할 서비스</TitleText>
-            <DetailText>{career.service}</DetailText>
+            <DetailText>{careerProfileState.service}</DetailText>
           </WrapContentSingle>
           <WrapButtonContainer>
             <WrapButton>

@@ -7,6 +7,7 @@ import progressStore from '../store/careerProgressState';
 import { instance } from '../api/instance';
 import userTypeStore from '../store/userState';
 import useCareerProfileState from '../store/careerProfileState';
+import useCareerItemState from '../store/careerItemState';
 
 const ProgressLayout: React.FC = () => {
   // const { pathname } = useLocation();
@@ -14,12 +15,14 @@ const ProgressLayout: React.FC = () => {
   const { status, setStatus } = progressStore();
   const { userType } = userTypeStore();
   const { setCareerProfileState } = useCareerProfileState();
+  const { setCareers } = useCareerItemState();
 
   useEffect(() => {
     const fetchProfileProgress = async () => {
       try {
         const response = await instance.get(`/career`);
-        setCareerProfileState(response.data);
+        setCareerProfileState(response.data.careerProfile);
+        setCareers(response.data.careerItems);
       } catch (error) {
         console.error('경력 프로필 조회에 실패하였습니다.', error);
       }
@@ -27,7 +30,7 @@ const ProgressLayout: React.FC = () => {
     if (userType === 'dong') {
       fetchProfileProgress();
     }
-  }, [userType, setCareerProfileState]);
+  }, [userType, setCareerProfileState, setCareers]);
 
   return (
     <>

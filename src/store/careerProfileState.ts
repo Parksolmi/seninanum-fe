@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware';
 import useCareerItemState from './careerItemState';
 
 interface CareerProfileState {
+  profileId: string;
   progressStep: number;
   certificateName: string;
   certificate: string;
@@ -25,6 +26,7 @@ interface CareerProfileStateType {
 const useCareerProfileState = create<CareerProfileStateType>()(
   devtools((set, get) => ({
     careerProfileState: {
+      profileId: '',
       progressStep: 0,
       certificateName: '',
       certificate: '',
