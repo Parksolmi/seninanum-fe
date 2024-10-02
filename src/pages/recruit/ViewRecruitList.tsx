@@ -7,7 +7,6 @@ import Fields from '../../components/common/Fields';
 import PrevHeader from '../../components/header/PrevHeader';
 import { calcAge } from '../../utils/calcAge';
 
-const FIELDS = ['교육', '경제', '생활']; //임시
 interface Recruit {
   recruitId: number;
   title: string;
@@ -40,7 +39,10 @@ const ViewRecruitList = () => {
     <>
       <WrapContent>
         <PrevHeader title={'구인글 목록'} navigateTo={'/home'} />
-        <Fields list={FIELDS} type={'dong'} />
+        <Fields
+          list={recruitList.map((recruit) => recruit.field)}
+          type={'dong'}
+        />
       </WrapContent>
       <SplitLine />
       <WrapContent>

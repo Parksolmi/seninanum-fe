@@ -29,7 +29,9 @@ const Fields = ({ list, type }: FieldsProps) => {
 
 const WrapTags = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 `;
 
 interface TagProps {
