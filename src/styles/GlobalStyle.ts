@@ -4,7 +4,7 @@ import reset from 'styled-reset';
 const theme = {
   colors: {
     dong: '#FF314A',
-    nari: '#FFAA0E',
+    nari: '#FFD111',
     deepNari: '#F48400',
     deepGray: '#5B5B5B',
   },
