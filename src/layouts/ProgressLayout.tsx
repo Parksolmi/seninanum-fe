@@ -27,7 +27,7 @@ const ProgressLayout: React.FC = () => {
     if (userType === 'dong') {
       fetchProfileProgress();
     }
-  }, [setCareerProfileState]);
+  }, [userType, setCareerProfileState]);
 
   return (
     <>
