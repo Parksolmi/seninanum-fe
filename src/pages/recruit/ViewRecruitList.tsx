@@ -9,7 +9,7 @@ import { calcAge } from '../../utils/calcAge';
 import useFieldState from '../../store/fieldState';
 
 interface Recruit {
-  field: string; // 추가
+  field: string;
   list: {
     recruitId: number;
     title: string;

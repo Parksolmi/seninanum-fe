@@ -26,7 +26,7 @@ const ProgressLayout: React.FC = () => {
       if (profileId !== previousProfileId) {
         const fetchProfileProgress = async () => {
           try {
-            const response = await instance.get(`/career/${profileId}`);
+            const response = await instance.get(`/career`);
             setCareerProfileState(response.data);
             setPreviousProfileId(profileId);
           } catch (error) {

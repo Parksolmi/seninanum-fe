@@ -15,7 +15,7 @@ const Fields = ({ list, type }: FieldsProps) => {
       <WrapTags>
         {list.map(({ field, id }, index) => (
           <Tag
-            key={id}
+            key={id || index}
             onClick={() => setFieldState(index)}
             $isSelected={fieldState.field === index}
             $type={type}

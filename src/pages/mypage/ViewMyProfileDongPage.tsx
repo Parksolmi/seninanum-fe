@@ -24,7 +24,7 @@ const ViewMyProfileDongPage = () => {
     if (profileId && profileId !== previousProfileId) {
       const fetchProfileProgress = async () => {
         try {
-          const response = await instance.get(`/career/${profileId}`);
+          const response = await instance.get(`/career`);
           setCareerProfileState(response.data);
           setPreviousProfileId(profileId);
         } catch (error) {
