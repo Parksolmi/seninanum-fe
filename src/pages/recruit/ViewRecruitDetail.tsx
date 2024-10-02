@@ -95,7 +95,7 @@ const ViewRecruitDetail = () => {
                   </tr>
                   <tr>
                     <th>활동방식</th>
-                    <td>{recruit.method.replace('서비스', '')}</td>
+                    <td>{recruit.method?.replace('서비스', '')}</td>
                   </tr>
                   {recruit.region !== '' && (
                     <tr>
@@ -115,7 +115,7 @@ const ViewRecruitDetail = () => {
             <WrapButton>
               <Button
                 disabled={false}
-                type={'dong'}
+                userType={'dong'}
                 // 임시
                 onClick={() => navigate('/chatroom/dong')}
               >

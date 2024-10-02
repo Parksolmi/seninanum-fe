@@ -3,23 +3,24 @@ import styled from 'styled-components';
 import useFieldState from '../../store/fieldState';
 
 interface FieldsProps {
-  list: string[];
+  list: { field: string; id: number }[];
   type: 'nari' | 'dong' | null;
 }
+
 const Fields = ({ list, type }: FieldsProps) => {
   const { fieldState, setFieldState } = useFieldState();
 
   return (
     <>
       <WrapTags>
-        {list.map((tag, index) => (
+        {list.map(({ field, id }, index) => (
           <Tag
-            key={tag}
+            key={id || index}
             onClick={() => setFieldState(index)}
             $isSelected={fieldState.field === index}
             $type={type}
           >
-            {tag}
+            {field}
           </Tag>
         ))}
       </WrapTags>
@@ -29,7 +30,9 @@ const Fields = ({ list, type }: FieldsProps) => {
 
 const WrapTags = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 `;
 
 interface TagProps {

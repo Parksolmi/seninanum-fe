@@ -39,7 +39,7 @@ const DetailCard = ({
       <WrapTitle>{title}</WrapTitle>
       <WrapContent>{content}</WrapContent>
       <WrapTag>
-        <Tag $type={type}>{method.replace('서비스', '')}</Tag>
+        <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
         {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
       </WrapTag>
     </InputContainer>
