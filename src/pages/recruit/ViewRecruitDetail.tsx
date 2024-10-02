@@ -53,10 +53,7 @@ const ViewRecruitDetail = () => {
       ) : (
         <>
           <WrapContent>
-            <PrevHeader
-              title={'구인글 조회'}
-              navigateTo={'/view/recruit/list'}
-            />
+            <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
             <div>
               <TitleText>{recruit.title}</TitleText>
               <ContentText>
