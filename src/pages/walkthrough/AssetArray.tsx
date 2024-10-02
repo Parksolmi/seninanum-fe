@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import dong from '../../constants/walkThroughDongState';
-import nari from '../../constants/walkThroughNariState';
+import {
+  WALKTHROUGH_NARI,
+  WALKTHROUGH_DONG,
+} from '../../constants/walkThroughState';
 
 interface AssetArrayProps {
   userType: string;
@@ -24,13 +26,13 @@ const AssetArray: React.FC<AssetArrayProps> = ({ userType, index }) => {
       </ImgaeWrap>
       {userType === 'dong' ? (
         <>
-          <TitleTextStyle>{dong[index - 1].title}</TitleTextStyle>
-          <TextStyle>{dong[index - 1].text}</TextStyle>
+          <TitleTextStyle>{WALKTHROUGH_DONG[index - 1].title}</TitleTextStyle>
+          <TextStyle>{WALKTHROUGH_DONG[index - 1].text}</TextStyle>
         </>
       ) : (
         <>
-          <TitleTextStyle>{nari[index - 1].title}</TitleTextStyle>
-          <TextStyle>{nari[index - 1].text}</TextStyle>
+          <TitleTextStyle>{WALKTHROUGH_NARI[index - 1].title}</TitleTextStyle>
+          <TextStyle>{WALKTHROUGH_NARI[index - 1].text}</TextStyle>
         </>
       )}
     </>
@@ -38,8 +40,8 @@ const AssetArray: React.FC<AssetArrayProps> = ({ userType, index }) => {
 };
 const ImgaeWrap = styled.div`
   display: flex;
-  margin-top: 10rem;
   justify-content: center;
+  margin-top: 20%;
 `;
 const ImgaeStyle = styled.img`
   justify-content: center;

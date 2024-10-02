@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
 import ShortcutButton from '../../components/home/ShortcutButton';
 import { useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
+import { instance } from '../../api/instance';
 
 const USER_TYPE = 'dong';
 // const CARD_TYPE = 'nari';
@@ -13,15 +14,31 @@ interface progressStepProps {
   progressStep: number;
 }
 
+interface Recruit {
+  recruitId: number;
+  title: string;
+  content: string;
+  nickname: string;
+  birthyear: string;
+  method: string;
+  region: string;
+}
+
 const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
   const navigate = useNavigate();
+  const [recruitList, setRecruitList] = useState<Recruit[]>([]);
 
-  //상태바 색상 변경
   useEffect(() => {
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', '#384775');
-    }
+    const getRecruitList = async () => {
+      try {
+        const res = await instance.get('/recruit/list');
+        setRecruitList(res.data.reverse());
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRecruitList();
   }, []);
 
   return (
@@ -50,9 +67,19 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
 
         <TitleText>추천 구인글</TitleText>
         <NariCardVertical>
-          {/* 임시 */}
-          <SummaryCard type={'nari'} fields={['IT', '예체능', '디지털']} />
-          <SummaryCard type={'nari'} fields={['IT', '예체능', '디지털']} />
+          {/* 추후 infinite scroll 적용 */}
+          {recruitList.map((recruit) => (
+            <SummaryCard
+              key={recruit.recruitId}
+              type={'nari'}
+              nickname={recruit.nickname}
+              fields={recruit.field.split(',')}
+              age={recruit.birthyear}
+              method={recruit.method}
+              content={recruit.content}
+              onClick={() => navigate(`/view/recruit/${recruit.recruitId}`)}
+            />
+          ))}
         </NariCardVertical>
       </ContentContainer>
     </>
@@ -87,6 +114,7 @@ const NariCardVertical = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export default HomeIndexPageDong;

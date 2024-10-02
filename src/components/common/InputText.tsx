@@ -4,18 +4,23 @@ import styled from 'styled-components';
 interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   register: any;
+  error?: string;
   readonly userType: string | null;
 }
 
 const InputText: React.FC<InputTextProps> = ({
   label,
   register,
+  error,
   userType,
   ...inputProps
 }) => {
   return (
     <InputContainer>
-      <Label>{label}</Label>
+      <WrapLabel>
+        <label>{label}</label>
+        {error && <p>{error}</p>}
+      </WrapLabel>
       <InputBox $userType={userType} {...inputProps} {...register} />
     </InputContainer>
   );
@@ -26,11 +31,26 @@ const InputContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
 `;
-const Label = styled.label`
-  font-size: 1.4rem;
-  font-weight: 600;
-  font-family: Nanum_Square;
+
+const WrapLabel = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-family: Nanum_Square;
+  }
+
+  p {
+    color: #f00;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: NanumSquare;
+    padding-top: 0.5rem;
+  }
 `;
+
 const InputBox = styled.input<{ $userType: string | null }>`
   width: 100%;
   height: 3rem;

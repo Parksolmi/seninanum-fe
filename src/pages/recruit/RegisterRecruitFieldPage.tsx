@@ -37,19 +37,16 @@ const RegisterRecruitFieldPage = () => {
     });
   };
 
-  const navigateToMethod = () => {
-    setStatus(2);
-    navigate('/register/recruit/method');
-  };
-
   useEffect(() => {
     setRecruitState({ field: selectedTags.join(',') });
   }, [setRecruitState, selectedTags]);
 
+  useEffect(() => {
+    setStatus(1);
+  }, [setStatus]);
+
   return (
-    <>
-      {/* <ExitHeader navigateTo={'/home'} />
-      <ProgressBar status={0} type={'nari'}></ProgressBar> */}
+    <WrapContent>
       <TitleText>
         어떤 분야의 동백님을 <br /> 찾으시나요?
         <p>분야는 3개까지 선택이 가능합니다.</p>
@@ -65,12 +62,16 @@ const RegisterRecruitFieldPage = () => {
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={navigateToMethod}
+          onClick={() => navigate('/register/recruit/method')}
         ></Button>
       </WrapButton>
-    </>
+    </WrapContent>
   );
 };
+
+const WrapContent = styled.div`
+  padding: 0 1.1rem 3rem 1.1rem;
+`;
 
 const TitleText = styled.div`
   font-size: 1.5rem;

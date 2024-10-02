@@ -23,9 +23,9 @@ const RegisterProfilePage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { errors, isValid },
   } = useForm<Inputs>({
-    shouldUseNativeValidation: true,
+    mode: 'onChange',
   });
 
   //회원가입
@@ -39,7 +39,10 @@ const RegisterProfilePage: React.FC = () => {
         birthYear: data.birthYear,
         profile: userState.profile,
       });
-      navigate('/home');
+
+      navigate('/signup/complete', {
+        state: { nickname: data.nickname, userType: userState.userType },
+      });
 
       login(userState.userId);
     } catch (err) {
@@ -54,15 +57,31 @@ const RegisterProfilePage: React.FC = () => {
         {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를 알려주세요!
       </Title>
       <WrapFrom onSubmit={handleSubmit(onSubmit)}>
+        <WrapImageInput>
+          <label>프로필 사진</label>
+          <p>
+            얼굴이 잘 나온 사진은
+            <br />
+            상대에게 좋은 인상을 줄 수 있어요!
+          </p>
+          <img className="profile" src={userState.profile} alt="profile" />
+        </WrapImageInput>
+
         <InputText
           userType={userState.userType}
           label="이름/닉네임"
           placeholder="이름 혹은 닉네임을 입력해주세요."
-          defaultValue={userState.nickname ? userState.nickname : ''}
+          defaultValue={userState.nickname || ''}
           register={register('nickname', {
-            validate: (value) => value.length < 5 || '5자리 이하로 지어주세요!',
+            required: '이름 혹은 닉네임을 입력해주세요.',
+            maxLength: {
+              value: 5,
+              message: '5자 이하로 입력해주세요!',
+            },
           })}
+          error={errors.nickname?.message}
         />
+
         <Toggle
           userType={userState.userType}
           label="성별"
@@ -72,11 +91,12 @@ const RegisterProfilePage: React.FC = () => {
         <InputText
           userType={userState.userType}
           label="출생년도"
-          placeholder="예시) 1876"
+          placeholder="예) 1990"
           register={register('birthYear', {
             validate: (value) =>
-              /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
+              /^[0-9]{4}$/.test(value) || '숫자 4자리로 입력해주세요!',
           })}
+          error={errors.birthYear?.message}
         />
         <InputSubmit
           $userType={userState.userType}
@@ -106,11 +126,38 @@ const WrapFrom = styled.form`
   gap: 2rem;
 `;
 
+const WrapImageInput = styled.div`
+  label {
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-family: Nanum_Square;
+  }
+
+  p {
+    color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0.5rem;
+  }
+
+  .profile {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    margin-top: 1.12rem;
+    object-fit: cover;
+    background-color: lightgray;
+  }
+`;
+
 const InputSubmit = styled.input<{ $userType: string }>`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 4rem;
+  bottom: 1.875rem;
 
   height: 3.7rem;
   text-align: center;
