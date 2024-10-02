@@ -124,6 +124,7 @@ const ProfileInfo = styled.div`
 const BadgeIcon = styled.img`
   align-items: center;
   justify-content: center;
+  padding: 0 0 0.3rem 0.3rem;
   object-fit: contain;
   width: 10%;
 `;

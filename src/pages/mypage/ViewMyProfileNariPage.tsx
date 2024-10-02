@@ -149,7 +149,7 @@ const TitleText = styled.div`
   text-align: start;
 
   span {
-    color: var(--Primary-nari);
+    color: var(--Primary-Deep-nari);
   }
 `;
 
