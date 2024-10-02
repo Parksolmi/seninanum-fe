@@ -107,34 +107,33 @@ const ViewMyProfileDongPage = () => {
         <TitleText>희망조건</TitleText>
         <ConditionText>
           <tbody>
-            {careerProfileState.method !== '' && (
+            {careerProfileState.method && (
               <tr>
                 <th>활동방식</th>
                 <td>{careerProfileState.method}</td>
               </tr>
             )}
 
-            {careerProfileState.region !== '' && (
+            {careerProfileState.region && (
               <tr>
                 <th>활동지역</th>
                 <td>서울시 {careerProfileState.region}</td>
               </tr>
             )}
-            {careerProfileState.age !== '' && (
+            {careerProfileState.age && (
               <tr>
                 <th>선호연령</th>
                 <td>{careerProfileState.age}</td>
               </tr>
             )}
-            {careerProfileState.priceType !== '' &&
-              careerProfileState.price >= 0 && (
-                <tr>
-                  <th>급여</th>
-                  <td>
-                    {careerProfileState.priceType} {careerProfileState.price}원
-                  </td>
-                </tr>
-              )}
+            {careerProfileState.priceType && careerProfileState.price >= 0 && (
+              <tr>
+                <th>급여</th>
+                <td>
+                  {careerProfileState.priceType} {careerProfileState.price}원
+                </td>
+              </tr>
+            )}
           </tbody>
         </ConditionText>
       </WrapContentSingle>
