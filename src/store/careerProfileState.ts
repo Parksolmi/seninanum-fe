@@ -55,7 +55,7 @@ const useCareerProfileState = create<CareerProfileStateType>()(
       if (state.age) progressCount++;
       if (state.field) progressCount++;
       if (state.service) progressCount++;
-      if (state.method === '비대면' && state.region === '') progressCount++;
+      if (state.method === '비대면') progressCount++;
       if (
         (state.method === '대면' || state.method === '모두 선택') &&
         state.region

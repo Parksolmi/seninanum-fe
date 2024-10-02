@@ -1,15 +1,32 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ToggleProps {
   label: string;
   register: any;
   readonly options: string[];
   readonly userType: string | null;
+  defaultValue?: string;
 }
 
-const Toggle = ({ label, options, userType, register }: ToggleProps) => {
+const Toggle = ({
+  label,
+  options,
+  userType,
+  register,
+  defaultValue,
+}: ToggleProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  // useEffect를 사용하여 기본 값이 있을 경우 해당하는 인덱스를 설정
+  useEffect(() => {
+    if (defaultValue) {
+      const index = options.indexOf(defaultValue);
+      if (index !== -1) {
+        setActiveIndex(index);
+      }
+    }
+  }, [defaultValue, options]);
 
   const handleClick = (index: number) => {
     setActiveIndex(index);
@@ -21,11 +38,7 @@ const Toggle = ({ label, options, userType, register }: ToggleProps) => {
       <WrapToggle>
         {options.map((option, index) => (
           <ToggleOption key={index}>
-            <HiddenRadio
-              id={`option-${index}`}
-              value={option}
-              {...register}
-            />
+            <HiddenRadio id={`option-${index}`} value={option} {...register} />
             <RadioLabel
               htmlFor={`option-${index}`}
               $isActive={index === activeIndex}
