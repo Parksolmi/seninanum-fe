@@ -55,7 +55,7 @@ const HomeIndexPageNari: React.FC = () => {
       <BannerContainer>
         <p className="caption">언제나 신나는 배움</p>
         <div className="main">
-          동백님이
+          동백들이
           <br /> 나리님을
           <br /> 기다리고 있어요!
           <img

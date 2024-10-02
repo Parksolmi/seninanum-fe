@@ -48,8 +48,8 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
       <BannerContainer>
         <p className="caption">은퇴 이후 신나는 일상</p>
         <div className="main">
-          동백님이
-          <br /> 나리님을
+          나리들이
+          <br /> 동백님을
           <br /> 기다리고 있어요!
           <img
             className="arrow"
