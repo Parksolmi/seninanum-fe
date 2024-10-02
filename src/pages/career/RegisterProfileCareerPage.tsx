@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
@@ -61,23 +61,14 @@ const RegisterProfileCareerPage = () => {
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  // 경력 항목 조회
-  const fetchCareerItems = useCallback(async () => {
-    try {
-      const response = await instance.get(`/career/item/list/${profileId}`);
-      setCareers(response.data);
-    } catch (error) {
-      console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-    }
-  }, [profileId, setCareers]);
-
   // 경력 항목 삭제
   const handleRemoveCareer = async (careerId: number) => {
     try {
       await instance.delete(`/career/item/${careerId}`);
       alert('항목이 삭제되었습니다.');
       // 경력 삭제 후 목록 업데이트
-      await fetchCareerItems();
+      const response = await instance.get(`/career`);
+      setCareers(response.data.careerItems);
     } catch (error) {
       console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
     }
@@ -122,11 +113,6 @@ const RegisterProfileCareerPage = () => {
       console.log(e);
     }
   };
-
-  // 컴포넌트 마운트 시 경력 항목 조회
-  useEffect(() => {
-    fetchCareerItems();
-  }, [fetchCareerItems]);
 
   useEffect(() => {
     setStatus(1);

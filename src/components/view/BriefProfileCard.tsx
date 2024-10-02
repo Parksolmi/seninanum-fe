@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface BriefProfileCardProps {
   // profile: string;
   type: string;
-  // nickname: string;
+  nickname?: string;
   // age: string;
   // method: string;
   // content: string;
@@ -15,7 +15,7 @@ interface BriefProfileCardProps {
 const BriefProfileCard = ({
   // profile,
   type,
-  // nickname,
+  nickname,
   // age,
   // method,
   // content,
@@ -26,10 +26,12 @@ const BriefProfileCard = ({
     <WrapProfile>
       <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
       <ProfileInfo>
-        <span>닉네임 {type === 'dong' ? '동백' : '나리'} </span>
+        <span>
+          {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
+        </span>
       </ProfileInfo>
       <Tags>
-        {gender === 'F' ? (
+        {gender === '여성' ? (
           <Tag $type={type}>여성</Tag>
         ) : (
           <Tag $type={type}>남성</Tag>

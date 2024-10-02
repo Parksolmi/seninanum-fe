@@ -83,6 +83,7 @@ const ViewRecruitDetail = () => {
                 type="nari"
                 gender={recruit.gender}
                 age={calcAge(recruit.birthyear)}
+                nickname={recruit.nickname}
               />
             </div>
             <div className="last-content">

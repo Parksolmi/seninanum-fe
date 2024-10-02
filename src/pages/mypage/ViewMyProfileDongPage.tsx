@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import { instance } from '../../api/instance';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useCareerItemState from '../../store/careerItemState';
 import useCareerProfileState from '../../store/careerProfileState';
 import Button from '../../components/common/Button';
@@ -14,8 +14,6 @@ import useUserStore from './../../store/userSignupState';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
-  // GET API 수정 후 profileId 없어질 예정.
-  const { profileId } = useParams<{ profileId: string }>();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const { careers, setCareers } = useCareerItemState();
   const { userState, setUserState } = useUserStore();
@@ -41,29 +39,16 @@ const ViewMyProfileDongPage = () => {
   useEffect(() => {
     const fetchProfileProgress = async () => {
       try {
-        const response = await instance.get(`/career`);
-        setCareerProfileState(response.data);
+        const res = await instance.get(`/career`);
+        setCareerProfileState(res.data.careerProfile);
+        setCareers(res.data.careerItems);
       } catch (error) {
         console.error('경력 프로필 조회에 실패하였습니다.', error);
       }
     };
 
     fetchProfileProgress();
-  }, [profileId, setCareerProfileState]);
-
-  // 경력 항목 조회 함수
-  useEffect(() => {
-    const fetchCareerItems = async () => {
-      try {
-        const response = await instance.get(`/career/item/list/${profileId}`);
-        setCareers(response.data);
-      } catch (error) {
-        console.error('경력 항목 조회 중 에러가 발생했습니다.', error);
-      }
-    };
-
-    fetchCareerItems();
-  }, [profileId, setCareers]);
+  }, [setCareerProfileState, setCareers]);
 
   return (
     <>
@@ -176,7 +161,11 @@ const ViewMyProfileDongPage = () => {
             disabled={false}
             userType={'dong'}
             // 임시
-            onClick={() => navigate(`/register/profile/career/${profileId}`)}
+            onClick={() =>
+              navigate(
+                `/register/profile/career/${careerProfileState.profileId}`
+              )
+            }
           >
             경력 프로필 수정하기
           </Button>
