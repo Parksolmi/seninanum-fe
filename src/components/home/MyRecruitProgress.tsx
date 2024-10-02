@@ -140,7 +140,7 @@ const TextBox = styled.div`
   height: 3.125rem;
   flex-shrink: 0;
   border-radius: 0rem 0rem 0.6875rem 0.6875rem;
-  background: var(--Primary-nari, #ffaa0e);
+  background: #f48400;
   /* Shadow_dong */
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
   display: flex;
