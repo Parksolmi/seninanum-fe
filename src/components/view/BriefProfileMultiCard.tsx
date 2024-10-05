@@ -59,13 +59,12 @@ const BriefProfileMultiCard = ({
           </WrapTop>
           <WrapBottom>
             <Tags>
-              <Tag $type={type}>{gender === 'F' ? '여성' : '남성'}</Tag>
+              <Tag $type={type}>{gender}</Tag>
               <Tag $type={type}>{age}</Tag>
             </Tags>
           </WrapBottom>
         </WrapProfileInfo>
       </WrapProfile>
-      {introduce && <WrapIntroduce>{introduce}</WrapIntroduce>}
     </>
   );
 };
@@ -127,12 +126,6 @@ const BadgeIcon = styled.img`
   padding: 0 0 0.3rem 0.3rem;
   object-fit: contain;
   width: 10%;
-`;
-
-const WrapIntroduce = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
 `;
 
 const WrapBottom = styled.div`

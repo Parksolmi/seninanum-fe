@@ -42,7 +42,7 @@ const ViewMyProfileDongPage = () => {
           <BriefProfileMultiCard
             type="nari"
             nickname={user.nickname}
-            gender={user.gender === '여성' ? 'F' : 'M'}
+            gender={user.gender}
             age={calcAge(user.birthYear)}
             profile={user.profile}
             isMyProfile={true}

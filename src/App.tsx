@@ -22,7 +22,7 @@ import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 import ChatPageDong from './pages/chat/ChatPageDong';
 import ChatPageNari from './pages/chat/ChatPageNari';
-import ViewProfileCareer from './pages/career/ViewProfileCareer';
+import ViewProfileDong from './pages/profile/ViewProfileDong';
 import ProgressLayout from './layouts/ProgressLayout';
 import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertificatePage';
@@ -30,6 +30,7 @@ import ViewMyProfileDongPage from './pages/mypage/ViewMyProfileDongPage';
 import ViewMyProfileNariPage from './pages/mypage/ViewMyProfileNariPage';
 import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
 import CompleteSignupPage from './pages/signup/CompleteSignupPage';
+import ViewProfileNari from './pages/profile/ViewProfileNari';
 
 const App: React.FC = () => {
   return (
@@ -79,14 +80,16 @@ const App: React.FC = () => {
           path="/register/profile/certificate"
           element={<RegisterProfileCertificatePage />}
         />
-        {/* 경력 프로필 조회 */}
+        {/* 프로필 조회 */}
         <Route
           path="/view/profile/career/:profileId"
-          element={<ViewProfileCareer />}
+          element={<ViewProfileDong />}
         />
+        <Route path="view/profile/profileId" element={<ViewProfileNari />} />
         {/* 채팅 */}
         <Route path="/chatroom/dong" element={<ChatPageDong />} />
         <Route path="/chatroom/nari" element={<ChatPageNari />} />
+
         {/* 마이페이지 */}
         <Route
           path="/view/myprofile/dong"
