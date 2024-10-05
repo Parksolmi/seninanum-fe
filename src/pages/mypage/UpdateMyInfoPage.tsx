@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import userTypeStore from '../../store/userState';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -8,42 +8,54 @@ import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import { instance } from '../../api/instance';
-import useUserStore from '../../store/userSignupState';
+import { useFetchProfile } from '../../hooks/useFetchProfile';
 
 interface Inputs {
   nickname: string;
   gender: string;
   birthYear: string;
+  profile: string;
 }
 
 const UpdateMyInfoPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
-  const { userState, setUserState } = useUserStore();
-
-  // 기본 정보 조회 api 호출
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await instance.get(`/user/profile`);
-        setUserState({
-          nickname: res.data[0].nickname,
-          gender: res.data[0].gender,
-          birthYear: res.data[0].birthYear,
-          profile: res.data[0].profile,
-        });
-      } catch (err) {
-        console.error('기본정보 조회에 실패하였습니다.');
-      }
-    };
-    fetchProfile();
-  }, [setUserState]);
-
-  const { register, handleSubmit } = useForm<Inputs>({
-    shouldUseNativeValidation: true,
+  const { data: user } = useFetchProfile();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: 'onChange',
+    defaultValues: {
+      nickname: user?.nickname,
+      gender: user?.gender,
+      birthYear: user?.birthYear,
+      profile: user?.profile,
+    },
   });
 
-  const onSubmit = () => {};
+  const updateMyInfo = async (data: Inputs) => {
+    try {
+      const res = await instance.patch('/user/profile', {
+        nickname: data.nickname,
+        gender: data.gender,
+        birthYear: data.birthYear,
+        profile: data.profile,
+      });
+
+      console.log('수정 성공:', res.data);
+      navigate(`/view/myprofile/${userType}`);
+    } catch (error) {
+      console.error('수정 실패:', error);
+    }
+  };
+
+  // 폼 제출 함수
+  const onSubmit = (data: Inputs) => {
+    updateMyInfo(data);
+  };
+
   return (
     <>
       <WrapContent>
@@ -58,65 +70,64 @@ const UpdateMyInfoPage: React.FC = () => {
             ? '나리님에게 보여지는 정보예요.'
             : '동백님에게 보여지는 정보예요.'}
         </ShowSecondInfoText>
+        {user && (
+          <>
+            <ProfileImgaeArea>
+              <WrapProfile>
+                <img src={user.profile} alt="profile" />
+              </WrapProfile>
+              <CameraIcon
+                src={`/assets/home/edit-image.svg`}
+                alt="camera"
+              ></CameraIcon>
+            </ProfileImgaeArea>
 
-        <ProfileImgaeArea>
-          <WrapProfile>
-            <img src={userState.profile} alt="profile" />
-          </WrapProfile>
-          <CameraIcon
-            src={`/assets/home/edit-image.svg`}
-            alt="camera"
-          ></CameraIcon>
-        </ProfileImgaeArea>
-
-        <WrapFrom onSubmit={handleSubmit(onSubmit)}>
-          <InputText
-            userType={userType}
-            label="이름/닉네임"
-            placeholder="이름 혹은 닉네임을 입력해주세요."
-            defaultValue={userState.nickname ? userState.nickname : ''}
-            register={register('nickname', {
-              validate: (value) =>
-                value.length < 5 || '5자리 이하로 지어주세요!',
-            })}
-          />
-          <Toggle
-            userType={userType}
-            label="성별"
-            options={['남성', '여성']}
-            register={register('gender')}
-            defaultValue={userState.gender}
-          />
-          <InputText
-            userType={userType}
-            label="출생년도"
-            placeholder="예시) 1876"
-            register={register('birthYear', {
-              validate: (value) =>
-                /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
-            })}
-            value={userState.birthYear}
-          />
-          {/* <InputSubmit
-          $userType={userState.userType}
-          type="submit"
-          value="수정완료하기"
-          disabled={!isValid}
-        /> */}
-          {/* 버튼 */}
-          <WrapButtonContainer>
-            <WrapButton>
-              <Button
-                type="submit"
-                disabled={false}
+            <WrapFrom onSubmit={handleSubmit(onSubmit)}>
+              <InputText
                 userType={userType}
-                onClick={() => navigate(`/mypage`)}
-              >
-                수정완료하기
-              </Button>
-            </WrapButton>
-          </WrapButtonContainer>
-        </WrapFrom>
+                label="이름/닉네임"
+                placeholder="이름 혹은 닉네임을 입력해주세요."
+                defaultValue={user.nickname ? user.nickname : ''}
+                register={register('nickname', {
+                  required: '이름/닉네임은 필수입니다.',
+                  validate: (value) =>
+                    value.length < 5 || '5자리 이하로 지어주세요!',
+                })}
+              />
+              <Toggle
+                userType={userType}
+                label="성별"
+                options={['남성', '여성']}
+                register={register('gender', {
+                  required: '성별은 필수입니다.',
+                })}
+                defaultValue={user.gender}
+              />
+              <InputText
+                userType={userType}
+                label="출생년도"
+                placeholder="예시) 1876"
+                register={register('birthYear', {
+                  required: '출생년도는 필수입니다.',
+                  validate: (value) =>
+                    /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
+                })}
+                defaultValue={user.birthYear}
+              />
+              <WrapButtonContainer>
+                <WrapButton>
+                  <Button
+                    type="submit"
+                    disabled={Object.keys(errors).length > 0}
+                    userType={userType}
+                  >
+                    수정완료하기
+                  </Button>
+                </WrapButton>
+              </WrapButtonContainer>
+            </WrapFrom>
+          </>
+        )}
       </WrapContent>
     </>
   );
