@@ -34,6 +34,8 @@ const WrapHeader = styled.div`
   display: flex;
   align-items: center;
   margin-top: 1.8rem;
+  border-bottom: solid 1px var(--Base-Gray2, #ebeceb);
+  padding: 0 1.1rem 0.5rem 1.1rem;
 `;
 
 const BackButton = styled.div`
@@ -48,8 +50,10 @@ const TitleText = styled.div`
   justify-content: center;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: -0.075rem;
+  font-style: normal;
+  line-height: normal;
 `;
 
 export default PrevHeader;

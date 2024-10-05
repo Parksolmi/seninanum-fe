@@ -12,12 +12,10 @@ interface UserState {
 }
 
 interface UserStateProps {
-  userState: UserState;
+  userState: UserState | undefined;
 }
 
 const MyIndexPageDong: React.FC<UserStateProps> = ({ userState }) => {
-  // const { userState } = useUserStore();
-
   return (
     <>
       <WrapProfile>
