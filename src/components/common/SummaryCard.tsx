@@ -7,7 +7,8 @@ interface SummaryCardProps {
   type: string;
   nickname: string;
   age: string;
-  method: string;
+  method?: string;
+  gender?: string;
   content: string;
   fields: string[];
   onClick: () => void;
@@ -19,6 +20,7 @@ const SummaryCard = ({
   nickname,
   age,
   method,
+  gender,
   content,
   fields,
   onClick,
@@ -33,18 +35,20 @@ const SummaryCard = ({
             <Badge src={`/assets/common/badge-${type}.png`} />
           </p>
           <span>
-            {calcAge(age)} | {method}
+            {calcAge(age)} | {type === 'nari' ? method : gender}
           </span>
         </ProfileInfo>
       </WrapProfile>
-      <WrapContent>{content}</WrapContent>
-      <WrapField>
-        {fields.map((field, index) => (
-          <Field key={index} $type={type}>
-            {field}
-          </Field>
-        ))}
-      </WrapField>
+      {content && <WrapContent>{content}</WrapContent>}
+      {fields && fields.length > 0 && (
+        <WrapField>
+          {fields.map((field, index) => (
+            <Field key={index} $type={type}>
+              {field}
+            </Field>
+          ))}
+        </WrapField>
+      )}
     </InputContainer>
   );
 };

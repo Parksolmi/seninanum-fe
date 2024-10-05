@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FilterButton = () => {
+interface filterProps {
+  onClick: () => void;
+}
+const FilterButton: React.FC<filterProps> = ({ onClick }) => {
   return (
-    <WrapButton>
+    <WrapButton onClick={onClick}>
       <img src="/assets/home/filter-icon.svg" alt="filter" />
       <p>상세조건 설정</p>
     </WrapButton>
