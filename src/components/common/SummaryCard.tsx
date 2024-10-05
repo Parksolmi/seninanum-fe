@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { calcAge } from '../../utils/calcAge';
 
 interface SummaryCardProps {
-  // profile: string;
+  profile?: string;
   type: string;
   nickname: string;
   age: string;
@@ -15,7 +15,7 @@ interface SummaryCardProps {
 }
 
 const SummaryCard = ({
-  // profile,
+  profile,
   type,
   nickname,
   age,
@@ -28,7 +28,10 @@ const SummaryCard = ({
   return (
     <InputContainer onClick={onClick}>
       <WrapProfile>
-        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <ProfileImg
+          src={profile === '' ? '/assets/common/profile.png' : `${profile}`}
+          alt="profile"
+        />
         <ProfileInfo>
           <p>
             <strong>{nickname}</strong> {type === 'dong' ? '동백' : '나리'}
@@ -72,6 +75,8 @@ const WrapProfile = styled.div`
 const ProfileImg = styled.img`
   border-radius: 50%;
   width: 3.4375rem;
+  height: 3.4375rem;
+  object-fit: cover;
 `;
 const ProfileInfo = styled.div`
   display: flex;

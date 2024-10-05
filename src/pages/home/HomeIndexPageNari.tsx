@@ -17,6 +17,7 @@ interface CareerCard {
   nickname: string;
   gender: string;
   birthyear: string;
+  profile: string;
 }
 const USER_TYPE = 'nari';
 const CARD_TYPE = 'dong';
@@ -134,12 +135,15 @@ const HomeIndexPageNari: React.FC = () => {
               <SummaryCard
                 key={profileItem.profileId}
                 type={CARD_TYPE}
+                profile={profileItem.profile}
                 fields={profileItem.field ? profileItem.field.split(',') : []}
                 nickname={profileItem.nickname}
                 content={profileItem.introduce}
                 age={profileItem.birthyear}
                 gender={profileItem.gender === '여성' ? '여자' : '남자'}
-                onClick={() => navigate('home')}
+                onClick={() =>
+                  navigate(`/view/profile/career/${profileItem.profileId}`)
+                }
               />
             ))
           ) : (
