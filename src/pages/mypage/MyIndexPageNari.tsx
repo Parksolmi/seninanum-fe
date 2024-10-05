@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import BasicProfile from '../../components/mypage/BasicProfile';
 import GroupMenu from '../../components/mypage/GroupMenu';
 import PayMenu from '../../components/mypage/PayMenu';
 
-interface UserState {
+interface User {
   nickname: string;
   gender: string;
   birthYear: string;
   profile: string;
 }
 
-interface UserStateProps {
-  userState: UserState;
+interface UserProps {
+  userState: User | undefined;
 }
-const MyIndexPageNari: React.FC<UserStateProps> = ({ userState }) => {
+
+const MyIndexPageNari: React.FC<UserProps> = ({ userState }) => {
+  // user가 변경될 때마다 로그 출력
+  useEffect(() => {
+    console.log(userState);
+  }, [userState]); // user 상태가 업데이트될 때마다 실행
+
   return (
     <>
       <WrapProfile>

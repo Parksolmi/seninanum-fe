@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -7,43 +7,27 @@ import { useNavigate } from 'react-router-dom';
 import DetailCard from '../../components/common/DetailCard';
 import ReviewRatingBar from '../../components/common/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
-import { instance } from '../../api/instance';
 import { calcAge } from '../../utils/calcAge';
-import useUserStore from '../../store/userSignupState';
+import { useFetchProfile } from '../../hooks/useFetchProfile';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
-  const { userState, setUserState } = useUserStore();
+  const { data: user } = useFetchProfile();
 
-  // 기본 정보 조회 api 호출
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await instance.get(`/user/profile`);
-        setUserState({
-          nickname: res.data[0].nickname,
-          gender: res.data[0].gender,
-          birthYear: res.data[0].birthYear,
-          profile: res.data[0].profile,
-        });
-      } catch (err) {
-        console.error('기본정보 조회에 실패하였습니다.');
-      }
-    };
-    fetchProfile();
-  }, [setUserState]);
   return (
     <>
+      <PrevHeader title={'내 프로필'} navigateTo={'/mypage'} />
       <WrapContent>
-        <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
-        <BriefProfileMultiCard
-          type="dong"
-          nickname={userState.nickname}
-          gender={userState.gender === '여성' ? 'F' : 'M'}
-          age={calcAge(userState.birthYear)}
-          profile={userState.profile}
-          isMyProfile={true}
-        />
+        {user && (
+          <BriefProfileMultiCard
+            type="dong"
+            nickname={user.nickname}
+            gender={user.gender === '여성' ? 'F' : 'M'}
+            age={calcAge(user.birthYear)}
+            profile={user.profile}
+            isMyProfile={true}
+          />
+        )}
         <WrapButton>
           <Button
             disabled={false}
@@ -108,7 +92,7 @@ const WrapContent = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 0 1.1rem;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0;
   .last-content {
     margin-bottom: 7rem;
   }

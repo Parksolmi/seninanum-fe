@@ -12,7 +12,7 @@ interface UserState {
 interface BasicProfileProps {
   userType: string;
   navigateTo: string;
-  userState: UserState;
+  userState: UserState | undefined;
 }
 
 const BasicProfile: React.FC<BasicProfileProps> = ({
@@ -25,10 +25,10 @@ const BasicProfile: React.FC<BasicProfileProps> = ({
   return (
     <WrapBaseProfile>
       <WrapProfile>
-        <img src={userState.profile} alt="profile" />
+        <img src={userState?.profile} alt="profile" />
       </WrapProfile>
       <h2 className="nickname">
-        {userState.nickname} {userType === 'dong' ? '동백' : '나리'}
+        {userState?.nickname} {userType === 'dong' ? '동백' : '나리'}
       </h2>
       <p className="view-profile-btn" onClick={() => navigate(navigateTo)}>
         프로필 보기

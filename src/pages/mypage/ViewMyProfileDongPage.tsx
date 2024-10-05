@@ -10,32 +10,16 @@ import Button from '../../components/common/Button';
 import CareerDetail from '../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { calcAge } from '../../utils/calcAge';
-import useUserStore from './../../store/userSignupState';
+import { useFetchProfile } from '../../hooks/useFetchProfile';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
+  // const [careerProfileState, setCareerProfileState] = useState();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const { careers, setCareers } = useCareerItemState();
-  const { userState, setUserState } = useUserStore();
+  const { data: user } = useFetchProfile();
 
-  // 기본 정보 조회 api 호출
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await instance.get(`/user/profile`);
-        setUserState({
-          nickname: res.data[0].nickname,
-          gender: res.data[0].gender,
-          birthYear: res.data[0].birthYear,
-          profile: res.data[0].profile,
-        });
-      } catch (err) {
-        console.error('기본정보 조회에 실패하였습니다.');
-      }
-    };
-    fetchProfile();
-  }, [setUserState]);
-
+  // 경력 프로필 조회 api 호출
   useEffect(() => {
     const fetchProfileProgress = async () => {
       try {
@@ -52,16 +36,18 @@ const ViewMyProfileDongPage = () => {
 
   return (
     <>
+      <PrevHeader title={'내 프로필'} navigateTo={'/mypage'} />
       <WrapContent>
-        <PrevHeader title={'내 프로필 보기'} navigateTo={'/mypage'} />
-        <BriefProfileMultiCard
-          type="nari"
-          nickname={userState.nickname}
-          gender={userState.gender === '여성' ? 'F' : 'M'}
-          age={calcAge(userState.birthYear)}
-          profile={userState.profile}
-          isMyProfile={true}
-        />
+        {user && (
+          <BriefProfileMultiCard
+            type="nari"
+            nickname={user.nickname}
+            gender={user.gender === '여성' ? 'F' : 'M'}
+            age={calcAge(user.birthYear)}
+            profile={user.profile}
+            isMyProfile={true}
+          />
+        )}
         <WrapButton>
           <Button
             disabled={false}
@@ -181,7 +167,7 @@ const WrapContent = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 0 1.1rem;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0;
   .last-content {
     margin-bottom: 7rem;
   }
