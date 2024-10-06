@@ -17,7 +17,7 @@ const RegisterProfileCareerAddPage = () => {
   const [endMonth, setEndMonth] = useState(0);
   const [content, setContent] = useState('');
   const location = useLocation();
-  const profileId = location.state?.profileId || 0;
+  const careerProfileId = location.state?.careerProfileId || 0;
 
   const validatePeriod = () => {
     const startDate = new Date(startYear, startMonth - 1);
@@ -33,7 +33,7 @@ const RegisterProfileCareerAddPage = () => {
       return;
     }
     const newCareer = {
-      profileId,
+      careerProfileId,
       title,
       startYear,
       startMonth,
