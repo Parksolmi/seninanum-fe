@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -10,12 +10,19 @@ import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from '../../components/common/CareerDetail';
 import useCareerProfileState from '../../store/careerProfileState';
 import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
 
 const ViewProfileDong = () => {
   const navigate = useNavigate();
+
+  const [isProfileButtonClicked, setIsProfileButtonClicked] = useState(false);
+
   const { careerProfileState } = useCareerProfileState();
   const { careers } = useCareerItemState();
   const { data: user } = useFetchProfile();
+
+  // path에서 opponentid값 가져오기
+  const createChatRoom = useCreateChatRoom();
 
   return (
     <>

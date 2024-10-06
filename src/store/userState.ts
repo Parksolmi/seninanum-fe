@@ -9,19 +9,12 @@ interface UserTypeState {
 }
 
 const userTypeStore = create<UserTypeState>()(
-  devtools(
-    persist(
-      (set) => ({
-        userType: '',
-        profileStep: -1,
-        setUserType: (type: string) => set({ userType: type }),
-        setProfileStep: (step: number) => set({ profileStep: step }),
-      }),
-      {
-        name: 'userTypeState',
-      }
-    )
-  )
+  devtools((set) => ({
+    userType: '',
+    profileStep: -1,
+    setUserType: (type: string) => set({ userType: type }),
+    setProfileStep: (step: number) => set({ profileStep: step }),
+  }))
 );
 
 export default userTypeStore;

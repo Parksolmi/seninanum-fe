@@ -7,9 +7,12 @@ interface TabContextType {
 }
 
 const tabMenu = create<TabContextType>()(
-  devtools((set) => ({
-    tabMenuState: 0,
-    setTabMenuState: (menu: number) => set({ tabMenuState: menu }),
-  }))
+  devtools(
+    (set) => ({
+      tabMenuState: 0,
+      setTabMenuState: (menu: number) => set({ tabMenuState: menu }),
+    }),
+    { name: 'tabMenu' }
+  )
 );
 export default tabMenu;
