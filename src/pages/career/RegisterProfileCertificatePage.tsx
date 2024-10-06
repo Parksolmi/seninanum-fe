@@ -9,7 +9,7 @@ import { usePromiseToast } from '../../hooks/useToast';
 
 const RegisterProfileCertificatePage = () => {
   const location = useLocation();
-  const profileId = location.state?.profileId || 0;
+  const careerProfileId = location.state?.careerProfileId || 0;
 
   const [file, setFile] = useState<File | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -44,7 +44,7 @@ const RegisterProfileCertificatePage = () => {
     // FormData 객체 생성
     const formData = new FormData();
     formData.append('pdfFile', file);
-    formData.append('profileId', profileId);
+    formData.append('profileId', careerProfileId);
 
     try {
       setButtonDisabled(true); //버튼 연타 방지

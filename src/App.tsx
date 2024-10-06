@@ -63,15 +63,15 @@ const App: React.FC = () => {
         {/* 경력 프로필 등록 */}
         <Route path="/register/profile" element={<ProgressLayout />}>
           <Route
-            path="career/:profileId"
+            path="career/:careerProfileId"
             element={<RegisterProfileCareerPage />}
           />
           <Route
-            path="introduction/:profileId"
+            path="introduction/:careerProfileId"
             element={<RegisterProfileIntroductionPage />}
           />
           <Route
-            path="condition/:profileId"
+            path="condition/:careerProfileId"
             element={<RegisterProfileConditionPage />}
           />
         </Route>
@@ -90,10 +90,7 @@ const App: React.FC = () => {
           <Route path="price" element={<PriceFilterPage />} />
         </Route>
         {/* 프로필 조회 */}
-        <Route
-          path="/view/profile/career/:profileId"
-          element={<ViewProfileDong />}
-        />
+        <Route path="/view/profile/:profileId" element={<ViewProfileDong />} />
         <Route path="view/profile/profileId" element={<ViewProfileNari />} />
         {/* 채팅 */}
         <Route path="/chatroom/dong" element={<ChatPageDong />} />

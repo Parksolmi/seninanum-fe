@@ -21,7 +21,7 @@ interface OutletContext {
 
 const RegisterProfileCareerPage = () => {
   const navigate = useNavigate();
-  const { profileId } = useParams<{ profileId: string }>();
+  const { careerProfileId } = useParams<{ careerProfileId: string }>();
   const { careers, setCareers } = useCareerItemState();
 
   const { setStatus } = useOutletContext<OutletContext>();
@@ -62,9 +62,9 @@ const RegisterProfileCareerPage = () => {
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
   // 경력 항목 삭제
-  const handleRemoveCareer = async (careerId: number) => {
+  const handleRemoveCareer = async (profileCareerId: number) => {
     try {
-      await instance.delete(`/career/item/${careerId}`);
+      await instance.delete(`/career/item/${profileCareerId}`);
       alert('항목이 삭제되었습니다.');
       // 경력 삭제 후 목록 업데이트
       const response = await instance.get(`/career`);
@@ -77,7 +77,7 @@ const RegisterProfileCareerPage = () => {
   // 경력 증명서 삭제
   const handleRemoveCertificate = async () => {
     try {
-      await instance.delete(`/career/certificate/${profileId}`);
+      await instance.delete(`/career/certificate/${careerProfileId}`);
       // 증명서 삭제 후 목록 업데이트
       alert('파일이 삭제되었습니다.');
       window.location.reload(); // 페이지 새로고침
@@ -91,7 +91,7 @@ const RegisterProfileCareerPage = () => {
   const updateProfile = async () => {
     try {
       const res = instance.patch('/career', {
-        profileId: profileId,
+        careerProfileId: careerProfileId,
         progressStep: careerProfileState.progressStep,
         certificateName: careerProfileState.certificateName,
         certificate: careerProfileState.certificate,
@@ -108,7 +108,7 @@ const RegisterProfileCareerPage = () => {
         }
       );
       calculateProgress();
-      navigate(`/register/profile/introduction/${profileId}`);
+      navigate(`/register/profile/introduction/${careerProfileId}`);
     } catch (e) {
       console.log(e);
     }
@@ -140,7 +140,9 @@ const RegisterProfileCareerPage = () => {
         ))}
         <CareerAddButton
           onClick={() =>
-            navigate('/register/profile/career/add', { state: { profileId } })
+            navigate('/register/profile/career/add', {
+              state: { careerProfileId },
+            })
           }
           addText={'경력 추가'}
         ></CareerAddButton>
@@ -158,7 +160,9 @@ const RegisterProfileCareerPage = () => {
         )}
         <FileAddButton
           onClick={() =>
-            navigate('/register/profile/certificate', { state: { profileId } })
+            navigate('/register/profile/certificate', {
+              state: { careerProfileId },
+            })
           }
           addText={'파일 추가'}
         />

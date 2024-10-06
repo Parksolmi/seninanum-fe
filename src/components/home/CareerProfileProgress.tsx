@@ -15,7 +15,7 @@ const CareerProfileProgress: React.FC<progressStepProps> = ({
   const fetchProfileId = async () => {
     try {
       const res = await instance.post('/career');
-      navigate(`/register/profile/career/${res.data.profileId}`);
+      navigate(`/register/profile/career/${res.data.careerProfileId}`);
     } catch (error) {
       console.error('사용자 정보 조회에 실패하였습니다.');
     }
