@@ -7,6 +7,7 @@ import Button from '../../components/common/Button';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
 import CareerDetail from '../../components/common/CareerDetail';
+// import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
 import { instance } from '../../api/instance';
 
 interface CareerProfile {
@@ -35,6 +36,7 @@ interface CareerItem {
 
 const ViewProfileDong = () => {
   const navigate = useNavigate();
+
   const { profileId } = useParams<{ profileId: string }>();
   const [careerProfileState, setCareerProfileState] =
     useState<CareerProfile | null>(null);
@@ -66,6 +68,9 @@ const ViewProfileDong = () => {
 
     fetchProfileProgress();
   }, [profileId]);
+
+  // path에서 opponentid값 가져오기
+  // const createChatRoom = useCreateChatRoom();
 
   return (
     <>

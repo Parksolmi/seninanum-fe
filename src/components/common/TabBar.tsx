@@ -78,6 +78,12 @@ const TabBar = () => {
     getUserType();
   }, [getUserType]);
 
+  //확인용
+  const { tabMenuState } = tabMenu(); // 상태값 가져오기
+  useEffect(() => {
+    console.log(tabMenuState);
+  }, [tabMenuState]);
+
   return (
     <StyledNav>
       <WrapItem>
