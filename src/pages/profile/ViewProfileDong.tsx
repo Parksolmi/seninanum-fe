@@ -7,7 +7,7 @@ import Button from '../../components/common/Button';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
 import CareerDetail from '../../components/common/CareerDetail';
-import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
+// import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
 import { instance } from '../../api/instance';
 
 interface CareerProfile {
@@ -70,7 +70,7 @@ const ViewProfileDong = () => {
   }, [profileId]);
 
   // path에서 opponentid값 가져오기
-  const createChatRoom = useCreateChatRoom();
+  // const createChatRoom = useCreateChatRoom();
 
   return (
     <>
