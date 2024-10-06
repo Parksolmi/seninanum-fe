@@ -31,6 +31,9 @@ import ViewMyProfileNariPage from './pages/mypage/ViewMyProfileNariPage';
 import UpdateMyInfoPage from './pages/mypage/UpdateMyInfoPage';
 import CompleteSignupPage from './pages/signup/CompleteSignupPage';
 import ViewProfileNari from './pages/profile/ViewProfileNari';
+import FieldFilterPage from './pages/filter/FieldFilterPage';
+import MethodFilterPage from './pages/filter/MethodFilterPage';
+import PriceFilterPage from './pages/filter/PriceFilterPage';
 
 const App: React.FC = () => {
   return (
@@ -80,6 +83,12 @@ const App: React.FC = () => {
           path="/register/profile/certificate"
           element={<RegisterProfileCertificatePage />}
         />
+        {/* 경력프로필 필터링 조회 */}
+        <Route path="/filter/career" element={<ProgressLayout />}>
+          <Route path="field" element={<FieldFilterPage />} />
+          <Route path="method" element={<MethodFilterPage />} />
+          <Route path="price" element={<PriceFilterPage />} />
+        </Route>
         {/* 프로필 조회 */}
         <Route
           path="/view/profile/career/:profileId"

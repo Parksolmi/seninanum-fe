@@ -3,22 +3,24 @@ import styled from 'styled-components';
 import { calcAge } from '../../utils/calcAge';
 
 interface SummaryCardProps {
-  // profile: string;
+  profile?: string;
   type: string;
   nickname: string;
   age: string;
-  method: string;
+  method?: string;
+  gender?: string;
   content: string;
   fields: string[];
   onClick: () => void;
 }
 
 const SummaryCard = ({
-  // profile,
+  profile,
   type,
   nickname,
   age,
   method,
+  gender,
   content,
   fields,
   onClick,
@@ -26,25 +28,30 @@ const SummaryCard = ({
   return (
     <InputContainer onClick={onClick}>
       <WrapProfile>
-        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <ProfileImg
+          src={profile === '' ? '/assets/common/profile.png' : `${profile}`}
+          alt="profile"
+        />
         <ProfileInfo>
           <p>
             <strong>{nickname}</strong> {type === 'dong' ? '동백' : '나리'}
             <Badge src={`/assets/common/badge-${type}.png`} />
           </p>
           <span>
-            {calcAge(age)} | {method}
+            {calcAge(age)} | {type === 'nari' ? method : gender}
           </span>
         </ProfileInfo>
       </WrapProfile>
-      <WrapContent>{content}</WrapContent>
-      <WrapField>
-        {fields.map((field, index) => (
-          <Field key={index} $type={type}>
-            {field}
-          </Field>
-        ))}
-      </WrapField>
+      {content && <WrapContent>{content}</WrapContent>}
+      {fields && fields.length > 0 && (
+        <WrapField>
+          {fields.map((field, index) => (
+            <Field key={index} $type={type}>
+              {field}
+            </Field>
+          ))}
+        </WrapField>
+      )}
     </InputContainer>
   );
 };
@@ -68,6 +75,8 @@ const WrapProfile = styled.div`
 const ProfileImg = styled.img`
   border-radius: 50%;
   width: 3.4375rem;
+  height: 3.4375rem;
+  object-fit: cover;
 `;
 const ProfileInfo = styled.div`
   display: flex;

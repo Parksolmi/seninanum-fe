@@ -1,25 +1,73 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import Button from '../../components/common/Button';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
-import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from '../../components/common/CareerDetail';
-import useCareerProfileState from '../../store/careerProfileState';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
 import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
+import { instance } from '../../api/instance';
+
+interface CareerProfile {
+  introduce: string;
+  age: string;
+  field: string;
+  service: string;
+  method: string;
+  region: string;
+  priceType: string;
+  price: number;
+  nickname: string;
+  gender: string;
+  birthYear: string;
+  profile: string;
+}
+
+interface CareerItem {
+  title: string;
+  startYear: number;
+  startMonth: number;
+  endYear: number;
+  endMonth: number;
+  content: string;
+}
 
 const ViewProfileDong = () => {
   const navigate = useNavigate();
 
-  const [isProfileButtonClicked, setIsProfileButtonClicked] = useState(false);
+  const { profileId } = useParams<{ profileId: string }>();
+  const [careerProfileState, setCareerProfileState] =
+    useState<CareerProfile | null>(null);
+  const [careers, setCareers] = useState<CareerItem[]>([]);
 
-  const { careerProfileState } = useCareerProfileState();
-  const { careers } = useCareerItemState();
-  const { data: user } = useFetchProfile();
+  useEffect(() => {
+    const fetchProfileProgress = async () => {
+      try {
+        const res = await instance.get(`/career/${profileId}`);
+        setCareerProfileState({
+          introduce: res.data.introduce,
+          age: res.data.age,
+          field: res.data.field,
+          service: res.data.service,
+          method: res.data.method,
+          region: res.data.region,
+          priceType: res.data.priceType,
+          price: res.data.price,
+          nickname: res.data.nickname,
+          gender: res.data.gender,
+          birthYear: res.data.birthyear,
+          profile: res.data.profile,
+        });
+        setCareers(res.data.careerItems);
+      } catch (error) {
+        console.error('경력 프로필 조회에 실패하였습니다.', error);
+      }
+    };
+
+    fetchProfileProgress();
+  }, [profileId]);
 
   // path에서 opponentid값 가져오기
   const createChatRoom = useCreateChatRoom();
@@ -34,15 +82,13 @@ const ViewProfileDong = () => {
         <>
           <PrevHeader title={'프로필 조회'} navigateTo={'/home'} />
           <WrapContent>
-            {user && (
-              <BriefProfileMultiCard
-                type="dong"
-                nickname={user.nickname}
-                gender={user.gender}
-                age={calcAge(user.birthYear)}
-                profile={user.profile}
-              />
-            )}
+            <BriefProfileMultiCard
+              type="dong"
+              nickname={careerProfileState.nickname}
+              gender={careerProfileState.gender}
+              age={calcAge(careerProfileState.birthYear)}
+              profile={careerProfileState.profile}
+            />
             <WrapButton>
               <Button
                 disabled={false}
@@ -58,7 +104,9 @@ const ViewProfileDong = () => {
 
           <WrapContentSingle>
             <TitleText>분야</TitleText>
-            <DetailText>{careerProfileState.field}</DetailText>
+            {careerProfileState.field && (
+              <DetailText>{careerProfileState.field}</DetailText>
+            )}
           </WrapContentSingle>
 
           <WrapContentSingle>
@@ -82,7 +130,7 @@ const ViewProfileDong = () => {
                   {careerProfileState.age && (
                     <tr>
                       <th>선호연령</th>
-                      <td>아동,20대 {careerProfileState.age}</td>
+                      <td>{careerProfileState.age}</td>
                     </tr>
                   )}
                   {careerProfileState.priceType &&
