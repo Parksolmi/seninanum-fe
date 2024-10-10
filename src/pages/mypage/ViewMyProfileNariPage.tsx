@@ -99,7 +99,9 @@ const ViewMyProfileNariPage = () => {
               content={recruit.content}
               method={recruit.method}
               region={recruit.region ? recruit.region : ''}
-              navigateTo={() => navigate(`/mylist/${recruit.recruitId}`)}
+              navigateTo={() =>
+                navigate(`/view/myrecruit/${recruit.recruitId}`)
+              }
               isMyProfile={true}
             />
           ))

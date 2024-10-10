@@ -11,6 +11,7 @@ interface DetailCardProps {
   region?: string;
   navigateTo: () => void;
   isMyProfile?: boolean;
+  isEditable?: boolean;
 }
 
 const DetailCard = ({
@@ -23,6 +24,7 @@ const DetailCard = ({
   region,
   navigateTo,
   isMyProfile,
+  isEditable,
 }: DetailCardProps) => {
   return (
     <InputContainer>
@@ -47,8 +49,8 @@ const DetailCard = ({
       </ClickableArea>
 
       {/* 버튼 영역 */}
-      {isMyProfile &&
-        (type === 'dong' ? (
+      {isMyProfile && isEditable ? (
+        type === 'dong' ? (
           <ManageRecruitButton>
             <>
               <span>지원자</span>
@@ -79,7 +81,10 @@ const DetailCard = ({
               취소하기
             </button>
           </ManageApplicationButton>
-        ))}
+        )
+      ) : (
+        ''
+      )}
     </InputContainer>
   );
 };

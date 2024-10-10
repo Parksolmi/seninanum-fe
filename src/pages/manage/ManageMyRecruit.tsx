@@ -75,6 +75,7 @@ const ManageMyRecruit = () => {
                   navigate(`/view/myrecruit/${recruit.recruitId}`)
                 }
                 isMyProfile={true}
+                isEditable={true}
               />
             ))
           )}
