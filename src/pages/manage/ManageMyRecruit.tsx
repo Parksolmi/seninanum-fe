@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import DetailCard from '../../components/common/DetailCard';
 import { useNavigate } from 'react-router-dom';
+import { SyncLoader } from 'react-spinners';
 
 interface Recruit {
   recruitId: number;
@@ -56,7 +57,9 @@ const ManageMyRecruit = () => {
         </Tab>
         <WrapContentSingle>
           {loading ? (
-            <p>Loading...</p>
+            <WrapLoader>
+              <SyncLoader color="var(--Primary-nari)" />
+            </WrapLoader>
           ) : error ? (
             <p>Error fetching recruit list.</p>
           ) : (
@@ -68,7 +71,9 @@ const ManageMyRecruit = () => {
                 content={recruit.content}
                 method={recruit.method}
                 region={recruit.region ? recruit.region : ''}
-                navigateTo={() => navigate(`/mylist/${recruit.recruitId}`)}
+                navigateTo={() =>
+                  navigate(`/view/myrecruit/${recruit.recruitId}`)
+                }
                 isMyProfile={true}
               />
             ))
@@ -123,6 +128,16 @@ const WrapContentSingle = styled.div`
   gap: 1.5rem;
   margin-top: 2.8rem;
   margin-bottom: 2.5rem;
+`;
+
+const WrapLoader = styled.div`
+  padding: 0 1.1rem;
+  display: flex;
+  gap: 2.5rem;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ManageMyRecruit;

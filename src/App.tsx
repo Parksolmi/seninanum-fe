@@ -36,6 +36,7 @@ import MethodFilterPage from './pages/filter/MethodFilterPage';
 import PriceFilterPage from './pages/filter/PriceFilterPage';
 import ManageMyRecruit from './pages/manage/ManageMyRecruit';
 import ManageMyApplication from './pages/manage/ManageMyApplication';
+import ViewMyRecruitDetail from './pages/recruit/ViewMyRecruitDetail';
 
 const App: React.FC = () => {
   return (
@@ -110,6 +111,10 @@ const App: React.FC = () => {
         <Route path="/update/myinfo" element={<UpdateMyInfoPage />} />
         {/* 구인글 관리 */}
         <Route path="/manage/myrecruit" element={<ManageMyRecruit />} />
+        <Route
+          path="/view/myrecruit/:recruitId"
+          element={<ViewMyRecruitDetail />}
+        />
         {/* 지원내역 관리 */}
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
         <Route element={<NavLayout />}>
