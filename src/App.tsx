@@ -34,6 +34,8 @@ import ViewProfileNari from './pages/profile/ViewProfileNari';
 import FieldFilterPage from './pages/filter/FieldFilterPage';
 import MethodFilterPage from './pages/filter/MethodFilterPage';
 import PriceFilterPage from './pages/filter/PriceFilterPage';
+import ManageMyRecruit from './pages/manage/ManageMyRecruit';
+import ManageMyApplication from './pages/manage/ManageMyApplication';
 
 const App: React.FC = () => {
   return (
@@ -106,7 +108,10 @@ const App: React.FC = () => {
           element={<ViewMyProfileNariPage />}
         />
         <Route path="/update/myinfo" element={<UpdateMyInfoPage />} />
-
+        {/* 구인글 관리 */}
+        <Route path="/manage/myrecruit" element={<ManageMyRecruit />} />
+        {/* 지원내역 관리 */}
+        <Route path="/manage/myapplication" element={<ManageMyApplication />} />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

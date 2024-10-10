@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const GroupMenu = () => {
+interface GroupMenuProps {
+  userType: string;
+}
+
+const GroupMenu: React.FC<GroupMenuProps> = ({ userType }) => {
   const navigate = useNavigate();
 
   return (
@@ -17,6 +21,20 @@ const GroupMenu = () => {
           <div>작성한 리뷰 조회</div>
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
+        {userType === 'nari' ? (
+          <div className="menu" onClick={() => navigate('/manage/myrecruit')}>
+            <div>내 구인글 관리</div>
+            <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
+          </div>
+        ) : (
+          <div
+            className="menu"
+            onClick={() => navigate('/manage/myapplication')}
+          >
+            <div>지원 내역 조회</div>
+            <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
+          </div>
+        )}
       </WrapGroupMenu>
       <WrapGroupMenu>
         <h3 className="group-title">기타</h3>

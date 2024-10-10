@@ -27,7 +27,7 @@ const MyIndexPageDong: React.FC<UserStateProps> = ({ userState }) => {
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="dong" />
-        <GroupMenu />
+        <GroupMenu userType="dong" />
       </WrapMenu>
     </>
   );

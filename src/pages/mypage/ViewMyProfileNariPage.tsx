@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -9,10 +9,38 @@ import ReviewRatingBar from '../../components/common/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
 import { calcAge } from '../../utils/calcAge';
 import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { instance } from '../../api/instance';
+
+interface Recruit {
+  recruitId: number;
+  title: string;
+  content: string;
+  method: string;
+  region: string;
+  field: string;
+}
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
   const { data: user } = useFetchProfile();
+
+  const [recruitList, setRecruitList] = useState<Recruit[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecruitList = async () => {
+      try {
+        const res = await instance.get('/recruit/mylist');
+        setRecruitList(res.data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRecruitList();
+  }, []);
 
   return (
     <>
@@ -56,32 +84,26 @@ const ViewMyProfileNariPage = () => {
 
       <WrapContentSingle>
         <TitleText>
-          작성 구인글 <span>2</span>
+          작성 구인글 <span>{recruitList.length}</span>
         </TitleText>
-        <DetailCard
-          key={1}
-          type="dong"
-          title={'기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다.'}
-          content={
-            '환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받는 시간을...'
-          }
-          method={'대면'}
-          region={'강남구'}
-          navigateTo={() => navigate(``)}
-          isMyProfile={true}
-        />
-        <DetailCard
-          key={2}
-          type="dong"
-          title={'기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다.'}
-          content={
-            '환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받는 시간을...'
-          }
-          method={'대면'}
-          region={'강남구'}
-          navigateTo={() => navigate(``)}
-          isMyProfile={true}
-        />
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error fetching recruit list.</p>
+        ) : (
+          recruitList.map((recruit) => (
+            <DetailCard
+              key={recruit.recruitId}
+              type="dong"
+              title={recruit.title}
+              content={recruit.content}
+              method={recruit.method}
+              region={recruit.region ? recruit.region : ''}
+              navigateTo={() => navigate(`/mylist/${recruit.recruitId}`)}
+              isMyProfile={true}
+            />
+          ))
+        )}
       </WrapContentSingle>
     </>
   );
