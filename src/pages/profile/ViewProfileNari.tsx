@@ -10,12 +10,24 @@ import { useFetchProfile } from '../../hooks/useFetchProfile';
 import ReviewRatingBar from '../../components/review/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import DetailCard from '../../components/common/DetailCard';
+import { instance } from '../../api/instance';
 
 const ViewProfileNari = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
   const { data: user, isLoading } = useFetchProfile(profileId);
 
+  const createChatRoom = async () => {
+    try {
+      const res = await instance.post('/chatroom/create', {
+        oppProfileId: profileId,
+      });
+      // console.log(res.data);
+      navigate(`/chatroom/dong/${res.data.chatRoomId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {isLoading ? (
@@ -39,7 +51,7 @@ const ViewProfileNari = () => {
               <Button
                 disabled={false}
                 userType={'dong'}
-                onClick={() => navigate(`/chatroom/dong`)}
+                onClick={createChatRoom}
               >
                 채팅하기
               </Button>
