@@ -1,45 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-// import userTypeStore from '../../store/userState';
+import { instance } from '../../api/instance';
+import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
-import { formatTime } from '../../utils/formatTime';
+import { parseTime } from '../../utils/formatTime';
+
+interface ChatRoom {
+  chatRoomId: number;
+  profile: string;
+  roomName: string;
+  roomStatus: string;
+  // opponentId: number;
+  lastMessage: string;
+  createdAt: string; //lastMessageAt으로 수정
+  unreadCount: number;
+}
 
 const ChatIndexPage: React.FC = () => {
-  // const { userType } = userTypeStore();
+  const navigate = useNavigate();
+  const { userType } = userTypeStore();
+  const [chatList, setChatList] = useState<ChatRoom[]>([]);
 
-  const chatList = [
-    {
-      askedCount: 2,
-      profile: '/assets/common/badge-dong.png',
-      chatRoomId: 25,
-      createDt: '2024-09-26T22:12:30.509349',
-      nickname: '000 나리',
-      lastMessage: '마지막 메세지',
-      modifyDt: '2024-09-26T22:12:30.509349',
-      opponentMemberId: 49,
-    },
-    {
-      askedCount: 12,
-      profile: '/assets/common/badge-dong.png',
-      chatRoomId: 26,
-      createDt: '2024-09-26T22:12:30.509349',
-      nickname: '000 나리',
-      lastMessage:
-        '마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지',
-      modifyDt: '2024-09-26T22:12:30.509349',
-      opponentMemberId: 49,
-    },
-    {
-      askedCount: 2,
-      profile: '/assets/common/badge-dong.png',
-      chatRoomId: 27,
-      createDt: '2024-09-26T22:12:30.509349',
-      nickname: '000 나리',
-      lastMessage: '마지막 메세지',
-      modifyDt: '2024-09-26T22:12:30.509349',
-      opponentMemberId: 49,
-    },
-  ];
+  // 채팅 목록 불러오기
+  useEffect(() => {
+    const fetchChatList = async () => {
+      try {
+        const res = await instance.get('/chatroom/list');
+
+        //임시--------------
+        // 응답 데이터 처리 및 lastMessage에 기본값 설정
+        const modifiedChatList = res.data.map((chat: any) => ({
+          ...chat,
+          lastMessage: chat.lastMessage || '임시 메세지 입니다.',
+          unreadCount: chat.unreadCount || 2,
+        }));
+        setChatList(modifiedChatList);
+        //------------------
+
+        // setChatList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchChatList();
+  }, []);
 
   return (
     <>
@@ -48,26 +53,31 @@ const ChatIndexPage: React.FC = () => {
         <ChatListContainer>
           {chatList &&
             chatList.map((chat) => {
-              const timeDisplay = chat.modifyDt
-                ? formatTime(chat.modifyDt)
+              const timeDisplay = chat.createdAt
+                ? parseTime(chat.createdAt)
                 : '(알수없음)';
 
               return (
-                <ChatRoomContainer key={chat.chatRoomId}>
+                <ChatRoomContainer
+                  key={chat.chatRoomId}
+                  onClick={() =>
+                    navigate(`/chatroom/${userType}/${chat.chatRoomId}`)
+                  }
+                >
                   <ProfileImg>
                     <img src={chat.profile} alt="profile" />
                   </ProfileImg>
                   <WrapChatSection>
                     <div className="top">
                       <Profile>
-                        <div className="department">{chat.nickname}</div>
+                        <div className="department">{chat.roomName}</div>
                       </Profile>
                       <Time>{timeDisplay}</Time>
                     </div>
                     <div className="bottom">
                       <Message>{chat.lastMessage}</Message>
-                      {chat.askedCount > 0 ? (
-                        <UnreadCount>{chat.askedCount}</UnreadCount>
+                      {chat.unreadCount > 0 ? (
+                        <UnreadCount>{chat.unreadCount}</UnreadCount>
                       ) : (
                         <br />
                       )}

@@ -9,8 +9,7 @@ interface DetailCardProps {
   age?: string;
   method: string;
   region?: string;
-  navigateTo: () => void;
-  isMyProfile?: boolean;
+  navigateTo?: () => void;
 }
 
 const DetailCard = ({
@@ -22,11 +21,10 @@ const DetailCard = ({
   method,
   region,
   navigateTo,
-  isMyProfile,
 }: DetailCardProps) => {
   return (
     <InputContainer onClick={navigateTo}>
-      {!isMyProfile && (
+      {nickname && (
         <WrapProfile>
           <ProfileInfo>
             <span>
@@ -39,7 +37,14 @@ const DetailCard = ({
       <WrapTitle>{title}</WrapTitle>
       <WrapContent>{content}</WrapContent>
       <WrapTag>
-        <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
+        {method === '모두 선택' ? (
+          <>
+            <Tag $type={type}>대면</Tag>
+            <Tag $type={type}>비대면</Tag>
+          </>
+        ) : (
+          <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
+        )}
         {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
       </WrapTag>
     </InputContainer>

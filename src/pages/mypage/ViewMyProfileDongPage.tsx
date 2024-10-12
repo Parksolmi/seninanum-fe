@@ -10,14 +10,14 @@ import Button from '../../components/common/Button';
 import CareerDetail from '../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { calcAge } from '../../utils/calcAge';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
   // const [careerProfileState, setCareerProfileState] = useState();
   const { careerProfileState, setCareerProfileState } = useCareerProfileState();
   const { careers, setCareers } = useCareerItemState();
-  const { data: user } = useFetchProfile();
+  const { data: user } = useFetchMyProfile();
 
   // 경력 프로필 조회 api 호출
   useEffect(() => {
@@ -149,7 +149,7 @@ const ViewMyProfileDongPage = () => {
             // 임시
             onClick={() =>
               navigate(
-                `/register/profile/career/${careerProfileState.profileId}`
+                `/register/profile/career/${careerProfileState.careerProfileId}`
               )
             }
           >

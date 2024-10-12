@@ -5,14 +5,14 @@ import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import { useNavigate } from 'react-router-dom';
 import DetailCard from '../../components/common/DetailCard';
-import ReviewRatingBar from '../../components/common/ReviewRatingBar';
-import ReviewSummaryCard from '../../components/common/ReviewSummaryCard';
+import ReviewRatingBar from '../../components/review/ReviewRatingBar';
+import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import { calcAge } from '../../utils/calcAge';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
-  const { data: user } = useFetchProfile();
+  const { data: user } = useFetchMyProfile();
 
   return (
     <>
@@ -46,8 +46,20 @@ const ViewMyProfileNariPage = () => {
           리뷰 <span>2</span>
         </TitleText>
         <ReviewRatingBarWrapper>
-          <ReviewRatingBar />
-          <ReviewRatingBar />
+          <ReviewRatingBar
+            userType="nari"
+            title="활동 매너"
+            superGreat="6"
+            good="0"
+            notGood="0"
+          />
+          <ReviewRatingBar
+            userType="nari"
+            title="협의 사항 준수"
+            superGreat="6"
+            good="0"
+            notGood="0"
+          />
         </ReviewRatingBarWrapper>
 
         <ReviewSummaryCard />
@@ -68,7 +80,6 @@ const ViewMyProfileNariPage = () => {
           method={'대면'}
           region={'강남구'}
           navigateTo={() => navigate(``)}
-          isMyProfile={true}
         />
         <DetailCard
           key={2}
@@ -80,7 +91,6 @@ const ViewMyProfileNariPage = () => {
           method={'대면'}
           region={'강남구'}
           navigateTo={() => navigate(``)}
-          isMyProfile={true}
         />
       </WrapContentSingle>
     </>
