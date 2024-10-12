@@ -15,19 +15,18 @@ const ChatPageDong = () => {
     <>
       <WrapHeader>
         <BackButton onClick={() => navigate('/home')}>
-          <img src={'/assets/signIn/back-icon.svg'} alt="뒤로가기" />
+          <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
         </BackButton>
         <TitleText>해당글 보러가기</TitleText>
-        <img src={'/assets/chat/exit-icon.svg'} alt="나가기" />
       </WrapHeader>
       <Split />
-      <WrapBanner>
+      {/* <WrapBanner>
         <BaneerButton src={'/assets/chat/won-icon.png'} text="송금요청" />
         <BaneerButton src={'/assets/chat/calendar-icon.png'} text="약속잡기" />
-      </WrapBanner>
+      </WrapBanner> */}
       <WrapChat>
-        <div className="date">6월 19일 수요일</div>
-        <MessageBox type="dong" visible={visible} />
+        {/* <div className="date">6월 19일 수요일</div>
+        <MessageBox type="dong" visible={visible} /> */}
       </WrapChat>
 
       <MessageInput setVisible={() => setVisible(true)} />
@@ -48,7 +47,7 @@ const Split = styled.div`
 
 const BackButton = styled.div`
   img {
-    width: 1.5rem;
+    width: 0.8rem;
   }
 `;
 
@@ -56,12 +55,18 @@ const TitleText = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
-  font-family: NanumSquare;
+  font-family: 'NanumSquare';
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.075rem;
   white-space: nowrap;
   text-decoration-line: underline;
+
+  overflow: hidden;
+  color: var(--Base-Black, #000);
+  text-overflow: ellipsis;
+  font-style: normal;
+  line-height: normal;
 `;
 
 const WrapBanner = styled.div`

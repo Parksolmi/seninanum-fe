@@ -39,10 +39,14 @@ const Input = styled.input`
   background: transparent;
   width: 100%;
   padding: 0.2rem 0.4rem;
-
   font-size: 1.25rem;
+
   &::placeholder {
-    font-size: 1.25rem;
+    color: var(--Base-Gray-3, #8e8e8e);
+    font-family: NanumSquare;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
 
