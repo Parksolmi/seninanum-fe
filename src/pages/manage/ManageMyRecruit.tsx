@@ -5,6 +5,8 @@ import { instance } from '../../api/instance';
 import DetailCard from '../../components/common/DetailCard';
 import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/common/Modal';
 
 interface Recruit {
   recruitId: number;
@@ -23,6 +25,21 @@ const ManageMyRecruit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 모달 창
+  const {
+    openModal: openRecruitDeleteModal,
+    closeModal: closeRecruitDeleteModal,
+  } = useModal((id) => (
+    <Modal
+      userType={'nari'}
+      title={'정말 삭제하시겠습니까?'}
+      content={``}
+      cancelText={'취소'}
+      confirmText={'삭제하기'}
+      onConfirm={() => handleDelete(id)}
+      onCancel={closeRecruitDeleteModal}
+    />
+  ));
   useEffect(() => {
     const fetchRecruitList = async () => {
       try {
@@ -36,6 +53,21 @@ const ManageMyRecruit = () => {
     };
     fetchRecruitList();
   }, []);
+
+  // 구인글 삭제
+  const handleDelete = async (recruitId) => {
+    try {
+      await instance.delete(`/recruit/${recruitId}`);
+      alert('구인글이 삭제되었습니다.');
+      setRecruitList((prev) =>
+        prev.filter((recruit) => recruit.recruitId !== recruitId)
+      );
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -76,6 +108,7 @@ const ManageMyRecruit = () => {
                 }
                 isMyProfile={true}
                 isEditable={true}
+                onDelete={() => openRecruitDeleteModal(recruit.recruitId)}
               />
             ))
           )}

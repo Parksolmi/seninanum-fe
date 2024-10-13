@@ -8,6 +8,7 @@ import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 import LogoHeader from '../../components/header/LogoHeader';
 import { instance } from '../../api/instance';
 import SummaryCard from '../../components/common/SummaryCard';
+import useRecruitState from '../../store/recruitState';
 
 interface CareerCard {
   profileId: number;
@@ -26,10 +27,28 @@ const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<CareerCard[]>([]);
-
+  const { setRecruitState } = useRecruitState();
   const navigateToFilter = () => {
     navigate('/filter/career/field');
   };
+  // recruitState 초기화 후 페이지 이동 함수
+  const handleRecruitNavigation = () => {
+    // recruitState 초기화
+    setRecruitState({
+      recruitId: '',
+      title: '',
+      content: '',
+      price: 0,
+      priceType: '',
+      method: '',
+      region: '',
+      field: '',
+    });
+
+    // 페이지 이동
+    navigate('/register/recruit/field');
+  };
+
   // 필터링 페이지에서 전달된 데이터를 받음
   useEffect(() => {
     if (location.state && location.state.filteredProfiles) {
@@ -85,7 +104,7 @@ const HomeIndexPageNari: React.FC = () => {
         <MyRecruitProgress
           myRecruit={0}
           RecruitThisMonth={21}
-          navigateToRecruit={() => navigate('/register/recruit/field')}
+          navigateToRecruit={() => handleRecruitNavigation()}
         />
         {/* <MyRecruitProgress
           myRecruit={1}
@@ -95,7 +114,7 @@ const HomeIndexPageNari: React.FC = () => {
         <TitleText>간편 바로가기</TitleText>
         <WrapShortcutButtons>
           <ShortcutButton
-            navigateTo={() => navigate('/register/recruit/field')}
+            navigateTo={() => handleRecruitNavigation()}
             shortcutButtonText={`구인글\n작성하기`}
             type={USER_TYPE}
           ></ShortcutButton>

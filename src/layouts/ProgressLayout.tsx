@@ -8,17 +8,7 @@ import { instance } from '../api/instance';
 import userTypeStore from '../store/userState';
 import useCareerProfileState from '../store/careerProfileState';
 import useCareerItemState from '../store/careerItemState';
-
-interface Recruit {
-  recruitId: string;
-  title: string;
-  content: string;
-  method: string;
-  region: string;
-  price: number;
-  priceType: string;
-  field: string;
-}
+import useRecruitState from '../store/recruitState';
 
 const ProgressLayout: React.FC = () => {
   const { status, setStatus } = progressStore();
@@ -26,8 +16,7 @@ const ProgressLayout: React.FC = () => {
   const { setCareerProfileState } = useCareerProfileState();
   const { setCareers } = useCareerItemState();
   const { recruitId } = useParams<{ recruitId: string }>();
-  const [recruit, setRecruit] = useState<Recruit | null>(null);
-
+  const { setRecruitState } = useRecruitState();
   const location = useLocation();
   const [exitPath, setExitPath] = useState('/home'); // 기본 경로를 /home으로 설정
 
@@ -55,18 +44,18 @@ const ProgressLayout: React.FC = () => {
 
   useEffect(() => {
     if (recruitId) {
-      // recruitId가 있을 경우 기존 데이터를 불러옵니다 (수정 모드)
+      // recruitId가 있을 경우 기존 데이터를 불러오기 (수정 모드)
       const fetchRecruit = async () => {
         try {
           const response = await instance.get(`/recruit/mylist/${recruitId}`);
-          setRecruit(response.data);
+          setRecruitState(response.data);
         } catch (error) {
           console.error('구인글 불러오기 실패:', error);
         }
       };
       fetchRecruit();
     }
-  }, [recruitId]);
+  }, [recruitId, setRecruitState]);
   return (
     <>
       <Container>
@@ -88,7 +77,6 @@ const ProgressLayout: React.FC = () => {
             <Outlet
               context={{
                 setStatus,
-                recruit,
               }}
             />
           )}

@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Dropdown from '../../components/common/DropDown';
 import regionState from './../../constants/regionState';
 import useRecruitState from '../../store/recruitState';
 import progressStore from '../../store/careerProgressState';
 
-interface OutletContext {
-  recruit: { recruitId: string; method: string; region: string };
-}
-
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
-  const { recruit } = useOutletContext<OutletContext>(); // 기존 값 가져오기
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>(
-    recruit?.method ? recruit.method : ''
+    recruitState.method || ''
   );
   const [selectedRegion, setSelectedRegion] = useState<string>(
-    recruit?.region ? recruit.region : ''
+    recruitState.region || ''
   );
 
   const isDisabled =
     !selectedMethod || (!selectedRegion && selectedMethod !== '비대면');
-
-  useEffect(() => {
-    if (recruit) {
-      setSelectedMethod(recruit.method);
-      setSelectedRegion(recruit.region);
-    }
-  }, [recruit]);
 
   useEffect(() => {
     setRecruitState({ method: selectedMethod, region: selectedRegion });
@@ -80,8 +68,8 @@ const RegisterRecruitMethodPage = () => {
           disabled={false}
           children={'이전'}
           onClick={() =>
-            recruit
-              ? navigate(`/modify/recruit/${recruit.recruitId}/field`)
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/field`)
               : navigate('/register/recruit/field')
           }
         ></Button>
@@ -90,8 +78,8 @@ const RegisterRecruitMethodPage = () => {
           disabled={isDisabled}
           children={'다음'}
           onClick={() =>
-            recruit
-              ? navigate(`/modify/recruit/${recruit.recruitId}/content`)
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/content`)
               : navigate('/register/recruit/content')
           }
         ></Button>

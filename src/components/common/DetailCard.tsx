@@ -11,7 +11,9 @@ interface DetailCardProps {
   region?: string;
   navigateTo: () => void;
   isMyProfile?: boolean;
+  // 구인글 관리 권한이 있는 페이지인 경우 삭제하기 버튼을 추가한다.
   isEditable?: boolean;
+  onDelete?: () => void;
 }
 
 const DetailCard = ({
@@ -25,6 +27,7 @@ const DetailCard = ({
   navigateTo,
   isMyProfile,
   isEditable,
+  onDelete,
 }: DetailCardProps) => {
   return (
     <InputContainer>
@@ -60,6 +63,7 @@ const DetailCard = ({
               onClick={(e) => {
                 e.stopPropagation(); // 부모 클릭 이벤트 방지
                 // 삭제 기능 추가
+                onDelete?.();
               }}
             >
               삭제하기

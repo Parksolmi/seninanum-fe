@@ -4,31 +4,19 @@ import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import InputPrice from '../../components/common/InputPrice';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useRecruitState from '../../store/recruitState';
 import { instance } from '../../api/instance';
 import progressStore from '../../store/careerProgressState';
 
-interface OutletContext {
-  setStatus: (status: number) => void;
-  recruit?: {
-    recruitId: string;
-    title: string;
-    content: string;
-    price: number;
-    priceType: string;
-  };
-}
-
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
-  const { recruit } = useOutletContext<OutletContext>(); // context 데이터 가져오기
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [inputCount, setInputCount] = useState(0);
   const [selectedPriceType, setSelectedPriceType] = useState(
-    recruit?.priceType || ''
+    recruitState?.priceType || ''
   );
 
   const hadnleOnChagne = (e) => {
@@ -49,11 +37,11 @@ const RegisterRecruitContentPage = () => {
         field: recruitState.field,
       };
 
-      if (recruit) {
+      if (recruitState.recruitId) {
         // 수정 모드: PUT 요청
-        await instance.put(`/recruit/${recruit.recruitId}`, payload);
+        await instance.put(`/recruit/${recruitState.recruitId}`, payload);
         alert('구인글이 수정되었습니다.');
-        navigate(`/view/myrecruit/${recruit?.recruitId}`);
+        navigate(`/view/myrecruit/${recruitState?.recruitId}`);
       } else {
         // 등록 모드: POST 요청
         await instance.post('/recruit', payload);
@@ -66,24 +54,6 @@ const RegisterRecruitContentPage = () => {
       console.error('구인글 등록/수정에 실패했습니다.', error);
     }
   };
-
-  // recruitState와 폼 동기화
-  useEffect(() => {
-    if (recruit) {
-      setRecruitState({
-        title: recruit.title,
-        content: recruit.content,
-        price: recruit.price,
-        priceType: recruit.priceType,
-      });
-    } else {
-      setRecruitState({
-        title: ``,
-        content: '',
-        price: -1,
-      });
-    }
-  }, [recruit, setRecruitState]);
 
   useEffect(() => {
     setRecruitState({ priceType: selectedPriceType });
@@ -132,15 +102,15 @@ const RegisterRecruitContentPage = () => {
           disabled={false}
           children={'이전'}
           onClick={() =>
-            recruit
-              ? navigate('/modify/recruit/method')
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/method`)
               : navigate('/register/recruit/method')
           }
         ></Button>
         <Button
           userType={'nari'}
           disabled={false}
-          children={recruit ? '수정하기' : '등록하기'}
+          children={recruitState.recruitId ? '수정하기' : '등록하기'}
           onClick={handleSubmit}
         ></Button>
       </WrapButton>
