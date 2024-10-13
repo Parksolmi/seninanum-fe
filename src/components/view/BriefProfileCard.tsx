@@ -24,12 +24,14 @@ const BriefProfileCard = ({
 }: BriefProfileCardProps) => {
   return (
     <WrapProfile>
-      <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
-      <ProfileInfo>
-        <span>
-          {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
-        </span>
-      </ProfileInfo>
+      <ProfileGroup>
+        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <ProfileInfo>
+          <span>
+            {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
+          </span>
+        </ProfileInfo>
+      </ProfileGroup>
       <Tags>
         {gender === '여성' ? (
           <Tag $type={type}>여성</Tag>
@@ -47,10 +49,16 @@ const WrapProfile = styled.div`
   flex-direction: row;
   gap: 1rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border: 2px solid #ebeceb;
   border-radius: 0.8rem;
   padding: 0.5rem 0.3rem;
+`;
+const ProfileGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
 `;
 const ProfileImg = styled.img`
   border-radius: 50%;
@@ -60,6 +68,7 @@ const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  max-width: 7.2rem;
 
   p {
     font-size: 1.125rem;

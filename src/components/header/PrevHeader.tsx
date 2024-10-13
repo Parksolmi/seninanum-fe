@@ -5,9 +5,10 @@ import styled from 'styled-components';
 interface PrevHeaderProps {
   title?: string;
   navigateTo: string;
+  onModify?: () => void;
 }
 
-const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
+const PrevHeader = ({ title, navigateTo, onModify }: PrevHeaderProps) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
@@ -25,7 +26,10 @@ const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
           <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
         </BackButton>
       )}
-      <TitleText>{title}</TitleText>
+      <TitleWrapper>
+        <TitleText>{title}</TitleText>
+      </TitleWrapper>
+      {onModify && <ModifyText onClick={onModify}>수정</ModifyText>}
     </WrapHeader>
   );
 };
@@ -33,6 +37,7 @@ const PrevHeader = ({ title, navigateTo }: PrevHeaderProps) => {
 const WrapHeader = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-top: 1.8rem;
   border-bottom: solid 1px var(--Base-Gray2, #ebeceb);
   padding: 0 1.1rem 0.5rem 1.1rem;
@@ -44,16 +49,26 @@ const BackButton = styled.div`
   }
 `;
 
-const TitleText = styled.div`
-  display: flex;
+const TitleWrapper = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center; /* 제목을 중앙에 정렬 */
+`;
+
+const TitleText = styled.span`
+  display: flex;
+  text-align: center;
   justify-content: center;
   font-family: NanumSquare;
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.075rem;
-  font-style: normal;
-  line-height: normal;
+`;
+
+const ModifyText = styled.span`
+  color: #f48400;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
 `;
 
 export default PrevHeader;

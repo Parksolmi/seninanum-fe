@@ -12,22 +12,22 @@ import progressStore from '../../store/careerProgressState';
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
-
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [inputCount, setInputCount] = useState(0);
-  const [selectedPriceType, setSelectedPriceType] = useState('');
+  const [selectedPriceType, setSelectedPriceType] = useState(
+    recruitState?.priceType || ''
+  );
 
   const hadnleOnChagne = (e) => {
     const { name, value } = e.target;
-
-    setInputCount(e.target.value.replace(/<br\s*V?>/gm, '\n').length);
     setRecruitState({ [name]: value });
+    setInputCount(e.target.value.replace(/<br\s*V?>/gm, '\n').length);
   };
 
-  const registerRecruit = () => {
+  const handleSubmit = async () => {
     try {
-      instance.post('/recruit', {
+      const payload = {
         title: recruitState.title,
         content: recruitState.content,
         method: recruitState.method.replace('서비스', '').trim(),
@@ -35,16 +35,24 @@ const RegisterRecruitContentPage = () => {
         price: recruitState.price,
         region: recruitState.region,
         field: recruitState.field,
-      });
-      window.alert('등록되었습니다.');
-      navigate('/home');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      };
 
-  const navigateToMethod = () => {
-    navigate('/register/recruit/method');
+      if (recruitState.recruitId) {
+        // 수정 모드: PUT 요청
+        await instance.put(`/recruit/${recruitState.recruitId}`, payload);
+        alert('구인글이 수정되었습니다.');
+        navigate(`/view/myrecruit/${recruitState?.recruitId}`);
+      } else {
+        // 등록 모드: POST 요청
+        await instance.post('/recruit', payload);
+        alert('구인글이 등록되었습니다.');
+        navigate(`/home`);
+      }
+
+      setStatus(1);
+    } catch (error) {
+      console.error('구인글 등록/수정에 실패했습니다.', error);
+    }
   };
 
   useEffect(() => {
@@ -63,6 +71,7 @@ const RegisterRecruitContentPage = () => {
           <Input
             name="title"
             inputPlaceholder={'제목을 입력하세요.'}
+            value={recruitState.title || ''}
             onChange={hadnleOnChagne}
             maxLength={39}
           />
@@ -73,12 +82,14 @@ const RegisterRecruitContentPage = () => {
           <TextArea
             name="content"
             inputPlaceholder={'내용을 입력하세요.'}
+            value={recruitState.content || ''}
             onChange={hadnleOnChagne}
           />
         </div>
         <InputPrice
           name="price"
           onChange={hadnleOnChagne}
+          value={recruitState.price || -1}
           userType={'nari'}
           selected={selectedPriceType}
           onClickMethod={setSelectedPriceType}
@@ -90,13 +101,17 @@ const RegisterRecruitContentPage = () => {
           userType={null}
           disabled={false}
           children={'이전'}
-          onClick={navigateToMethod}
+          onClick={() =>
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/method`)
+              : navigate('/register/recruit/method')
+          }
         ></Button>
         <Button
           userType={'nari'}
           disabled={false}
-          children={'다음'}
-          onClick={registerRecruit}
+          children={recruitState.recruitId ? '수정하기' : '등록하기'}
+          onClick={handleSubmit}
         ></Button>
       </WrapButton>
     </>

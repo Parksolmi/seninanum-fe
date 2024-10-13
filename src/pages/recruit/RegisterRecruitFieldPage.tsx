@@ -11,12 +11,13 @@ import { useToast } from '../../hooks/useToast';
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
+  const { recruitState, setRecruitState } = useRecruitState();
 
-  const { setRecruitState } = useRecruitState();
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    recruitState.recruitId ? recruitState.field.split(',') : []
+  );
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-  const isDisabled = selectedTags.length < 1;
+  const isDisabled = !recruitState.recruitId && selectedTags.length < 1;
 
   const { showToast: showSelectionError } = useToast(
     () => <span>분야는 3개까지 선택이 가능합니다.</span>,
@@ -54,7 +55,9 @@ const RegisterRecruitFieldPage = () => {
       <Category
         list={categoryState.list}
         type={'nari'}
-        selectedTags={selectedTags}
+        selectedTags={
+          recruitState.recruitId ? recruitState.field.split(',') : selectedTags
+        }
         onClickTag={hadnleClickTag}
       ></Category>
       <WrapButton>
@@ -62,7 +65,11 @@ const RegisterRecruitFieldPage = () => {
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={() => navigate('/register/recruit/method')}
+          onClick={() =>
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/method`)
+              : navigate('/register/recruit/method')
+          }
         ></Button>
       </WrapButton>
     </WrapContent>

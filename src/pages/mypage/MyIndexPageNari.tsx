@@ -32,7 +32,7 @@ const MyIndexPageNari: React.FC<UserProps> = ({ userState }) => {
       </WrapProfile>
       <WrapMenu>
         <PayMenu userType="nari" />
-        <GroupMenu />
+        <GroupMenu userType="nari" />
       </WrapMenu>
     </>
   );

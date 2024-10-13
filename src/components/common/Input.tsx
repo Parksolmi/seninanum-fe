@@ -4,12 +4,19 @@ import React from 'react';
 //name 적용 필요 : RegisterProfileCareerAddPage
 interface InputProps {
   name?: string;
+  value?: string;
   inputPlaceholder: string;
   onChange: (e: any) => void;
   maxLength: number;
 }
 
-const Input = ({ name, inputPlaceholder, onChange, maxLength }: InputProps) => {
+const Input = ({
+  name,
+  inputPlaceholder,
+  onChange,
+  maxLength,
+  value,
+}: InputProps) => {
   return (
     <InputBox
       name={name}
@@ -17,6 +24,7 @@ const Input = ({ name, inputPlaceholder, onChange, maxLength }: InputProps) => {
       placeholder={inputPlaceholder}
       onChange={onChange}
       maxLength={maxLength}
+      value={value}
     ></InputBox>
   );
 };
