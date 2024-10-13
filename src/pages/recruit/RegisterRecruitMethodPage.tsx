@@ -1,28 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import Dropdown from '../../components/common/DropDown';
 import regionState from './../../constants/regionState';
 import useRecruitState from '../../store/recruitState';
 import progressStore from '../../store/careerProgressState';
 
+interface OutletContext {
+  recruit: { recruitId: string; method: string; region: string };
+}
+
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
+  const { recruit } = useOutletContext<OutletContext>(); // 기존 값 가져오기
+  const { recruitState, setRecruitState } = useRecruitState();
 
-  const { setRecruitState } = useRecruitState();
-
-  const [selectedMethod, setSelectedMethod] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('');
+  const [selectedMethod, setSelectedMethod] = useState<string>(
+    recruit?.method ? recruit.method : ''
+  );
+  const [selectedRegion, setSelectedRegion] = useState<string>(
+    recruit?.region ? recruit.region : ''
+  );
 
   const isDisabled =
-    !selectedMethod || (!selectedRegion && selectedMethod !== '비대면 서비스');
+    !selectedMethod || (!selectedRegion && selectedMethod !== '비대면');
+
+  useEffect(() => {
+    if (recruit) {
+      setSelectedMethod(recruit.method);
+      setSelectedRegion(recruit.region);
+    }
+  }, [recruit]);
 
   useEffect(() => {
     setRecruitState({ method: selectedMethod, region: selectedRegion });
   }, [setRecruitState, selectedMethod, selectedRegion]);
 
+  console.log(recruitState);
   useEffect(() => {
     setStatus(2);
   }, [setStatus]);
@@ -31,17 +47,21 @@ const RegisterRecruitMethodPage = () => {
     <WrapContent>
       <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
-        {['대면 서비스', '비대면 서비스', '모두 선택'].map((method) => (
+        {[
+          { value: '대면', label: '대면 서비스' },
+          { value: '비대면', label: '비대면 서비스' },
+          { value: '모두', label: '모두 선택' },
+        ].map((method) => (
           <MethodButton
-            key={method}
-            $isSelected={selectedMethod === method}
-            onClick={() => setSelectedMethod(method)}
+            key={method.value}
+            $isSelected={selectedMethod === method.value}
+            onClick={() => setSelectedMethod(method.value)}
           >
-            {method}
+            {method.label}
           </MethodButton>
         ))}
       </MethodButtonContainer>
-      {selectedMethod !== '' && selectedMethod !== '비대면 서비스' && (
+      {selectedMethod !== '' && selectedMethod !== '비대면' && (
         <>
           <TitleText>희망 지역을 선택해주세요.</TitleText>
           <Dropdown
@@ -59,13 +79,21 @@ const RegisterRecruitMethodPage = () => {
           userType={null}
           disabled={false}
           children={'이전'}
-          onClick={() => navigate('/register/recruit/field')}
+          onClick={() =>
+            recruit
+              ? navigate(`/modify/recruit/${recruit.recruitId}/field`)
+              : navigate('/register/recruit/field')
+          }
         ></Button>
         <Button
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={() => navigate('/register/recruit/content')}
+          onClick={() =>
+            recruit
+              ? navigate(`/modify/recruit/${recruit.recruitId}/content`)
+              : navigate('/register/recruit/content')
+          }
         ></Button>
       </WrapButton>
     </WrapContent>

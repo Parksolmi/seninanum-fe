@@ -15,7 +15,7 @@ interface Recruit {
   birthyear: string;
   method: string;
   region: string;
-  price: string;
+  price: number;
   priceType: string;
   gender: string;
   field: string;
@@ -52,7 +52,12 @@ const ViewMyRecruitDetail = () => {
       ) : (
         <>
           <WrapContent>
-            <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
+            <PrevHeader
+              title={'구인글 조회'}
+              navigateTo={'/manage/myrecruit'}
+              onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
+            />
+
             <div>
               <TitleText>{recruit.title}</TitleText>
               <ContentText>
@@ -94,7 +99,7 @@ const ViewMyRecruitDetail = () => {
                     <th>활동방식</th>
                     <td>{recruit.method?.replace('서비스', '')}</td>
                   </tr>
-                  {recruit.region !== '' && (
+                  {recruit.method !== '비대면' && (
                     <tr>
                       <th>활동지역</th>
                       <td>서울시 {recruit.region}</td>
@@ -132,7 +137,6 @@ const WrapContent = styled.div`
   gap: 2rem;
   padding: 0 1.1rem;
   margin-bottom: 1.5rem;
-
   .last-content {
     margin-bottom: 7rem;
   }

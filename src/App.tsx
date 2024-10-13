@@ -63,6 +63,12 @@ const App: React.FC = () => {
           path="/view/recruit/:recruitId"
           element={<ViewRecruitDetail />}
         />
+        {/* 구인글 수정 */}
+        <Route path="/modify/recruit/:recruitId" element={<ProgressLayout />}>
+          <Route path="field" element={<RegisterRecruitFieldPage />} />
+          <Route path="method" element={<RegisterRecruitMethodPage />} />
+          <Route path="content" element={<RegisterRecruitContentPage />} />
+        </Route>
         {/* 경력 프로필 등록 */}
         <Route path="/register/profile" element={<ProgressLayout />}>
           <Route

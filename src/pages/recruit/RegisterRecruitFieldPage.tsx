@@ -3,18 +3,24 @@ import styled from 'styled-components';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useRecruitState from '../../store/recruitState';
 import progressStore from '../../store/careerProgressState';
 import { useToast } from '../../hooks/useToast';
 
+interface OutletContext {
+  recruit: { recruitId: string; field: string } | null;
+}
+
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
-
+  const { recruit } = useOutletContext<OutletContext>(); // context로부터 데이터 가져오기
   const { setRecruitState } = useRecruitState();
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    [] // 기존 값 로드
+  );
 
   const isDisabled = selectedTags.length < 1;
 
@@ -36,6 +42,12 @@ const RegisterRecruitFieldPage = () => {
       }
     });
   };
+  // recruit의 태그 데이터를 초기화 시점에 설정
+  useEffect(() => {
+    if (recruit) {
+      setSelectedTags(recruit.field.split(','));
+    }
+  }, [recruit]);
 
   useEffect(() => {
     setRecruitState({ field: selectedTags.join(',') });
@@ -62,7 +74,11 @@ const RegisterRecruitFieldPage = () => {
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={() => navigate('/register/recruit/method')}
+          onClick={() =>
+            recruit
+              ? navigate(`/modify/recruit/${recruit.recruitId}/method`)
+              : navigate('/register/recruit/method')
+          }
         ></Button>
       </WrapButton>
     </WrapContent>
