@@ -54,6 +54,7 @@ const ManageMyRecruit = () => {
   //   };
   //   fetchRecruitList();
   // }, []);
+
   const fetchRecruitList = useCallback(async (status: string) => {
     setLoading(true);
     try {
