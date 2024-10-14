@@ -54,7 +54,7 @@ const ViewMyRecruitDetail = () => {
           <WrapContent>
             <PrevHeader
               title={'구인글 조회'}
-              navigateTo={'/manage/myrecruit'}
+              navigateTo={'-1'}
               onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
             />
 
