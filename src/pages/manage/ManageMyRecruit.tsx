@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PrevHeader from '../../components/header/PrevHeader';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
@@ -20,7 +20,7 @@ interface Recruit {
 const ManageMyRecruit = () => {
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(1); //1.모집중, 2.마감
   const [recruitList, setRecruitList] = useState<Recruit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,19 +40,39 @@ const ManageMyRecruit = () => {
       onCancel={closeRecruitDeleteModal}
     />
   ));
-  useEffect(() => {
-    const fetchRecruitList = async () => {
-      try {
-        const res = await instance.get('/recruit/mylist');
-        setRecruitList(res.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRecruitList();
+  // 상태 별 API 호출 함수(useCallback으로 메모이제이션)
+  // useEffect(() => {
+  //   const fetchRecruitList = async () => {
+  //     try {
+  //       const res = await instance.get('/recruit/mylist');
+  //       setRecruitList(res.data);
+  //     } catch (err) {
+  //       setError(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchRecruitList();
+  // }, []);
+  const fetchRecruitList = useCallback(async (status: string) => {
+    setLoading(true);
+    try {
+      const res = await instance.get('/recruit/mylist', {
+        params: { status }, // 쿼리 파라미터로 상태 전달
+      });
+      setRecruitList(res.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  // 탭이 변경될 때마다 해당 상태의 데이터를 가져옴
+  useEffect(() => {
+    const status = activeTab === 1 ? '모집중' : '마감';
+    fetchRecruitList(status);
+  }, [activeTab, fetchRecruitList]); // activeTab 변경 시 API 호출
 
   // 구인글 삭제
   const handleDelete = async (recruitId) => {
@@ -94,6 +114,12 @@ const ManageMyRecruit = () => {
             </WrapLoader>
           ) : error ? (
             <p>Error fetching recruit list.</p>
+          ) : recruitList.length === 0 ? (
+            <p>
+              {activeTab === 1
+                ? '모집 중인 구인글이 없습니다.'
+                : '마감된 구인글이 없습니다.'}
+            </p>
           ) : (
             recruitList.map((recruit) => (
               <DetailCard
