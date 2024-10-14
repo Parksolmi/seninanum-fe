@@ -43,6 +43,20 @@ const ViewMyRecruitDetail = () => {
     }
   }, [recruitId]);
 
+  // 구인글 마감하기
+  const handleCloseRecruit = async () => {
+    if (!recruitId) return;
+
+    try {
+      await instance.post('/recruit/close', { recruitId });
+      alert('구인글이 마감되었습니다.');
+      navigate('/manage/myrecruit'); // 마감 후 구인글 관리 페이지로 이동
+    } catch (error) {
+      console.error('Error closing recruit:', error);
+      alert('구인글 마감 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <>
       {recruit === null ? (
@@ -118,8 +132,7 @@ const ViewMyRecruitDetail = () => {
               <Button
                 disabled={false}
                 userType={'nari'}
-                // 임시
-                onClick={() => navigate('/chatroom/dong')}
+                onClick={handleCloseRecruit}
               >
                 마감하기
               </Button>
