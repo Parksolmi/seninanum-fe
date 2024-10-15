@@ -10,19 +10,23 @@ import progressStore from '../../store/careerProgressState';
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
   const { setStatus } = progressStore();
+  const { recruitState, setRecruitState } = useRecruitState();
 
-  const { setRecruitState } = useRecruitState();
-
-  const [selectedMethod, setSelectedMethod] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('');
+  const [selectedMethod, setSelectedMethod] = useState<string>(
+    recruitState.method || ''
+  );
+  const [selectedRegion, setSelectedRegion] = useState<string>(
+    recruitState.region || ''
+  );
 
   const isDisabled =
-    !selectedMethod || (!selectedRegion && selectedMethod !== '비대면 서비스');
+    !selectedMethod || (!selectedRegion && selectedMethod !== '비대면');
 
   useEffect(() => {
     setRecruitState({ method: selectedMethod, region: selectedRegion });
   }, [setRecruitState, selectedMethod, selectedRegion]);
 
+  console.log(recruitState);
   useEffect(() => {
     setStatus(2);
   }, [setStatus]);
@@ -31,17 +35,21 @@ const RegisterRecruitMethodPage = () => {
     <WrapContent>
       <TitleText>{`어떤 방식으로 진행되나요?`}</TitleText>
       <MethodButtonContainer>
-        {['대면 서비스', '비대면 서비스', '모두 선택'].map((method) => (
+        {[
+          { value: '대면', label: '대면 서비스' },
+          { value: '비대면', label: '비대면 서비스' },
+          { value: '모두', label: '모두 선택' },
+        ].map((method) => (
           <MethodButton
-            key={method}
-            $isSelected={selectedMethod === method}
-            onClick={() => setSelectedMethod(method)}
+            key={method.value}
+            $isSelected={selectedMethod === method.value}
+            onClick={() => setSelectedMethod(method.value)}
           >
-            {method}
+            {method.label}
           </MethodButton>
         ))}
       </MethodButtonContainer>
-      {selectedMethod !== '' && selectedMethod !== '비대면 서비스' && (
+      {selectedMethod !== '' && selectedMethod !== '비대면' && (
         <>
           <TitleText>희망 지역을 선택해주세요.</TitleText>
           <Dropdown
@@ -59,13 +67,21 @@ const RegisterRecruitMethodPage = () => {
           userType={null}
           disabled={false}
           children={'이전'}
-          onClick={() => navigate('/register/recruit/field')}
+          onClick={() =>
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/field`)
+              : navigate('/register/recruit/field')
+          }
         ></Button>
         <Button
           userType={'nari'}
           disabled={isDisabled}
           children={'다음'}
-          onClick={() => navigate('/register/recruit/content')}
+          onClick={() =>
+            recruitState.recruitId
+              ? navigate(`/modify/recruit/${recruitState.recruitId}/content`)
+              : navigate('/register/recruit/content')
+          }
         ></Button>
       </WrapButton>
     </WrapContent>

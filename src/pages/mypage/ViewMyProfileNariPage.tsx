@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -9,10 +9,34 @@ import ReviewRatingBar from '../../components/review/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import { calcAge } from '../../utils/calcAge';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
+import { instance } from '../../api/instance';
+import { SyncLoader } from 'react-spinners';
+
+interface Recruit {
+  recruitId: number;
+  title: string;
+  content: string;
+  method: string;
+  region: string;
+  field: string;
+}
 
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
-  const { data: user } = useFetchMyProfile();
+  const { data: user, isLoading } = useFetchMyProfile();
+
+  const [recruitList, setRecruitList] = useState<Recruit[]>([]);
+  useEffect(() => {
+    const fetchRecruitList = async () => {
+      try {
+        const res = await instance.get('/recruit/mylist');
+        setRecruitList(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRecruitList();
+  }, []);
 
   return (
     <>
@@ -68,30 +92,28 @@ const ViewMyProfileNariPage = () => {
 
       <WrapContentSingle>
         <TitleText>
-          작성 구인글 <span>2</span>
+          작성 구인글 <span>{recruitList.length}</span>
         </TitleText>
-        <DetailCard
-          key={1}
-          type="dong"
-          title={'기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다.'}
-          content={
-            '환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받는 시간을...'
-          }
-          method={'대면'}
-          region={'강남구'}
-          navigateTo={() => navigate(``)}
-        />
-        <DetailCard
-          key={2}
-          type="dong"
-          title={'기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다.'}
-          content={
-            '환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받는 시간을...'
-          }
-          method={'대면'}
-          region={'강남구'}
-          navigateTo={() => navigate(``)}
-        />
+        {isLoading ? (
+          <WrapLoader>
+            <SyncLoader color="var(--Primary-nari)" />
+          </WrapLoader>
+        ) : (
+          recruitList.map((recruit) => (
+            <DetailCard
+              key={recruit.recruitId}
+              type="dong"
+              title={recruit.title}
+              content={recruit.content}
+              method={recruit.method}
+              region={recruit.region ? recruit.region : ''}
+              navigateTo={() =>
+                navigate(`/view/myrecruit/${recruit.recruitId}`)
+              }
+              isMyProfile={true}
+            />
+          ))
+        )}
       </WrapContentSingle>
     </>
   );
@@ -145,6 +167,16 @@ const TitleText = styled.div`
   span {
     color: var(--Primary-Deep-nari);
   }
+`;
+
+const WrapLoader = styled.div`
+  padding: 0 1.1rem;
+  display: flex;
+  gap: 2.5rem;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ViewMyProfileNariPage;

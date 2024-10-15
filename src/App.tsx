@@ -34,6 +34,9 @@ import ViewProfileNari from './pages/profile/ViewProfileNari';
 import FieldFilterPage from './pages/filter/FieldFilterPage';
 import MethodFilterPage from './pages/filter/MethodFilterPage';
 import PriceFilterPage from './pages/filter/PriceFilterPage';
+import ManageMyRecruit from './pages/manage/ManageMyRecruit';
+import ManageMyApplication from './pages/manage/ManageMyApplication';
+import ViewMyRecruitDetail from './pages/recruit/ViewMyRecruitDetail';
 
 const App: React.FC = () => {
   return (
@@ -60,6 +63,12 @@ const App: React.FC = () => {
           path="/view/recruit/:recruitId"
           element={<ViewRecruitDetail />}
         />
+        {/* 구인글 수정 */}
+        <Route path="/modify/recruit/:recruitId" element={<ProgressLayout />}>
+          <Route path="field" element={<RegisterRecruitFieldPage />} />
+          <Route path="method" element={<RegisterRecruitMethodPage />} />
+          <Route path="content" element={<RegisterRecruitContentPage />} />
+        </Route>
         {/* 경력 프로필 등록 */}
         <Route path="/register/profile" element={<ProgressLayout />}>
           <Route
@@ -112,7 +121,14 @@ const App: React.FC = () => {
           element={<ViewMyProfileNariPage />}
         />
         <Route path="/update/myinfo" element={<UpdateMyInfoPage />} />
-
+        {/* 구인글 관리 */}
+        <Route path="/manage/myrecruit" element={<ManageMyRecruit />} />
+        <Route
+          path="/view/myrecruit/:recruitId"
+          element={<ViewMyRecruitDetail />}
+        />
+        {/* 지원내역 관리 */}
+        <Route path="/manage/myapplication" element={<ManageMyApplication />} />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />

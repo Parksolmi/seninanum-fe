@@ -9,7 +9,11 @@ interface DetailCardProps {
   age?: string;
   method: string;
   region?: string;
-  navigateTo?: () => void;
+  navigateTo: () => void;
+  isMyProfile?: boolean;
+  // 구인글 관리 권한이 있는 페이지인 경우 삭제하기 버튼을 추가한다.
+  isEditable?: boolean;
+  onDelete?: () => void;
 }
 
 const DetailCard = ({
@@ -21,32 +25,70 @@ const DetailCard = ({
   method,
   region,
   navigateTo,
+  isMyProfile,
+  isEditable,
+  onDelete,
 }: DetailCardProps) => {
   return (
-    <InputContainer onClick={navigateTo}>
-      {nickname && (
-        <WrapProfile>
-          <ProfileInfo>
-            <span>
-              {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
-            </span>
-          </ProfileInfo>
-        </WrapProfile>
-      )}
-
-      <WrapTitle>{title}</WrapTitle>
-      <WrapContent>{content}</WrapContent>
-      <WrapTag>
-        {method === '모두 선택' ? (
-          <>
-            <Tag $type={type}>대면</Tag>
-            <Tag $type={type}>비대면</Tag>
-          </>
-        ) : (
-          <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
+    <InputContainer>
+      {/* 클릭 가능한 메인 내용 영역 */}
+      <ClickableArea onClick={navigateTo}>
+        {!isMyProfile && (
+          <WrapProfile>
+            <ProfileInfo>
+              <span>
+                {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
+              </span>
+            </ProfileInfo>
+          </WrapProfile>
         )}
-        {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
-      </WrapTag>
+
+        <WrapTitle>{title}</WrapTitle>
+        <WrapContent>{content}</WrapContent>
+        <WrapTag>
+          <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
+          {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
+        </WrapTag>
+      </ClickableArea>
+
+      {/* 버튼 영역 */}
+      {isMyProfile && isEditable ? (
+        type === 'dong' ? (
+          <ManageRecruitButton>
+            <>
+              <span>지원자</span>
+              <p>3</p>
+            </>
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // 부모 클릭 이벤트 방지
+                // 삭제 기능 추가
+                onDelete?.();
+              }}
+            >
+              삭제하기
+            </button>
+          </ManageRecruitButton>
+        ) : (
+          <ManageApplicationButton>
+            {' '}
+            <>
+              <span>24.10.11</span>
+              <p>지원함</p>
+            </>
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // 부모 클릭 이벤트 방지
+                // 취소 기능 추가
+              }}
+            >
+              취소하기
+            </button>
+          </ManageApplicationButton>
+        )
+      ) : (
+        ''
+      )}
     </InputContainer>
   );
 };
@@ -59,6 +101,12 @@ const InputContainer = styled.div`
   border-radius: 1.25rem;
   background: #fff;
   box-shadow: 0px 2px 6.3px 1px rgba(150, 150, 150, 0.4);
+`;
+
+const ClickableArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 const WrapProfile = styled.div`
@@ -131,6 +179,76 @@ const Tag = styled.div<tagType>`
   padding: 0.25rem 0.875rem;
   justify-content: center;
   align-items: center;
+`;
+
+const ManageRecruitButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  span {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  p {
+    margin-left: 0.3rem;
+    color: #f48400;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  button {
+    margin-left: auto;
+    color: #5b5b5b;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    letter-spacing: 0.025rem;
+    text-decoration-line: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+`;
+
+const ManageApplicationButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  span {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  p {
+    margin-left: 0.3rem;
+    color: #ff314a;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  button {
+    margin-left: auto;
+    color: #5b5b5b;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    letter-spacing: 0.025rem;
+    text-decoration-line: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
 `;
 
 export default DetailCard;
