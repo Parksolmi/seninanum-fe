@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import Button from '../../components/common/Button';
@@ -8,6 +8,8 @@ import BriefProfileCard from '../../components/view/BriefProfileCard';
 import { SyncLoader } from 'react-spinners';
 import { formatDate } from '../../utils/formatDate';
 import { calcAge } from '../../utils/calcAge';
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/common/Modal';
 
 interface Recruit {
   title: string;
@@ -21,14 +23,26 @@ interface Recruit {
   gender: string;
   field: string;
   createdAt: string;
+  hasApplied: number;
 }
 
 const ViewRecruitDetail = () => {
-  const navigate = useNavigate();
   const { recruitId } = useParams<{ recruitId: string }>();
 
   const [recruit, setRecruit] = useState<Recruit | null>(null);
-
+  // 모달 창
+  const { openModal: openApplicationModal, closeModal: closeApplicationModal } =
+    useModal((id) => (
+      <Modal
+        userType={'dong'}
+        title={'지원하기'}
+        content={`나리에게 지원 소식을 전해드려요.\n(동백님의 프로필을 열람할 수 있어요.)`}
+        cancelText={'취소'}
+        confirmText={'지원하기'}
+        onConfirm={() => handleApply(id)}
+        onCancel={closeApplicationModal}
+      />
+    ));
   useEffect(() => {
     if (recruitId) {
       const getRecruitDetail = async () => {
@@ -43,6 +57,20 @@ const ViewRecruitDetail = () => {
       getRecruitDetail();
     }
   }, [recruitId]);
+
+  // 지원하기 API 호출 함수
+  const handleApply = async (recruitId) => {
+    try {
+      await instance.post('/application', { recruitId }); // recruitId 전달
+      alert('지원이 완료되었습니다.');
+      setRecruit(
+        (prev) => (prev ? { ...prev, hasApplied: 1 } : prev) // 지원 완료 상태 업데이트
+      );
+    } catch (error) {
+      console.error('지원 중 오류 발생:', error);
+      alert('지원 중 문제가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
 
   return (
     <>
@@ -110,16 +138,24 @@ const ViewRecruitDetail = () => {
                 </tbody>
               </ConditionText>
             </div>
-            <WrapButton>
-              <Button
-                disabled={false}
-                userType={'dong'}
-                // 임시
-                onClick={() => navigate('/chatroom/dong')}
-              >
-                지원하기
-              </Button>
-            </WrapButton>
+            {recruit.hasApplied === 0 ? (
+              <WrapButton>
+                <Button
+                  disabled={false}
+                  userType={'dong'}
+                  // 임시
+                  onClick={() => openApplicationModal(recruitId)}
+                >
+                  지원하기
+                </Button>
+              </WrapButton>
+            ) : (
+              <WrapButton>
+                <Button disabled={true} userType={'dong'}>
+                  이미 지원한 공고입니다.
+                </Button>
+              </WrapButton>
+            )}
           </WrapContent>
         </>
       )}

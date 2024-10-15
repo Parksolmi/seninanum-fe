@@ -23,6 +23,7 @@ interface Recruit {
   method: string;
   region: string;
   field: string;
+  profile: string;
 }
 
 const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
@@ -87,6 +88,7 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
             <SummaryCard
               key={recruit.recruitId}
               type={'nari'}
+              profile={recruit.profile}
               nickname={recruit.nickname}
               fields={recruit.field.split(',')}
               age={recruit.birthyear}
