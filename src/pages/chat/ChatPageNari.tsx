@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MessageInput from '../../components/chat/MessageInput';
 
 const ChatPageNari = () => {
   const navigate = useNavigate();
-
-  //임시
-  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -59,15 +55,6 @@ const TitleText = styled.div`
   font-weight: 700;
   letter-spacing: -0.075rem;
   white-space: nowrap;
-`;
-
-const WrapBanner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  gap: 1.5rem;
-  box-shadow: 0px 2px 3px rgba(150, 150, 150, 0.4);
-  padding: 0 1.1rem 1rem 1.1rem;
 `;
 
 const WrapChat = styled.div`

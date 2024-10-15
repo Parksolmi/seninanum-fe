@@ -61,7 +61,7 @@ const Messages = memo(
               <Message
                 key={message.chatMessageId}
                 message={message}
-                isSentByMe={message.senderId !== myId}
+                isSentByMe={message.senderId === myId}
                 opponent={opponent}
                 // openProfileModal={openProfileModal}
               />

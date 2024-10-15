@@ -166,15 +166,14 @@ const ChatPageDong = () => {
         newClient.deactivate();
       };
     }
-  }, [isMembersFetched]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMembersFetched, roomId, profile.memberProfile.profileId]);
 
   // 메세지 전송 시
   useEffect(() => {
-    console.log('groupedMessages>>>>>>>', groupedMessages);
-    console.log('messages>>>>>>>', messages);
     // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
-  }, [messages]);
+  }, [messages, roomId]);
 
   return (
     <Wrapper>

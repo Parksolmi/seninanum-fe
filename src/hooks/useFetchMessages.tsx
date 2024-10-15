@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { instance } from '../api/instance';
 
 // 로컬 스토리지에 저장된 메세지 불러오기
