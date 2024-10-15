@@ -25,7 +25,7 @@ const Messages = memo(
   }: // openProfileModal,
   // isMenuOpen,
   MessagesProps) => {
-    const messageRef = useRef<HTMLDivElement | null>(null);
+    const messageRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
       if (messageRef.current) {
@@ -34,7 +34,7 @@ const Messages = memo(
     };
 
     useEffect(() => {
-      console.log(groupedMessages);
+      console.log(messageRef.current);
       scrollToBottom();
     }, [groupedMessages]);
 
@@ -70,7 +70,7 @@ const MessagesWrapper = styled.div`
   overflow: auto;
   flex: 1;
   min-height: 0;
-  margin-bottom: 6rem;
+  z-index: 0;
 `;
 
 const WrapDate = styled.div`

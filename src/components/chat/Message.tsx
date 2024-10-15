@@ -81,11 +81,9 @@ const Announcement = styled.div`
 `;
 
 const WrapProfile = styled.div`
-  /* position: relative; */
-  /* flex-shrink: 0; */
+  flex-shrink: 0;
   width: 3rem;
   height: 3rem;
-  /* padding-right: 3rem; */
 
   img {
     width: 3rem;
@@ -93,11 +91,6 @@ const WrapProfile = styled.div`
     object-fit: cover;
     border-radius: 50%;
     background-color: #cecece; //임시
-
-    /* position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); */
   }
 `;
 

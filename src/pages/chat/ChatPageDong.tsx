@@ -83,7 +83,6 @@ const ChatPageDong = () => {
   // STOMP
   const subscritionCallback = (message) => {
     const parsedMessage = JSON.parse(message.body);
-    console.log(message.body);
     // 디코딩
     const binaryMessage = new Uint8Array(
       Object.values(parsedMessage.chatMessage)
@@ -108,8 +107,8 @@ const ChatPageDong = () => {
     if (isMemberIdsFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        brokerURL: 'wss://api.seninanum.shop/meet',
-        // brokerURL: 'ws://localhost:3001/meet',
+        // brokerURL: 'wss://api.seninanum.shop/meet',
+        brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profileIds.memberId,
@@ -154,43 +153,58 @@ const ChatPageDong = () => {
   }, [messages]);
 
   return (
-    <>
-      <WrapHeader>
-        <BackButton onClick={() => navigate('/chat')}>
-          <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
-        </BackButton>
-        <TitleText>요청글 보러가기</TitleText>
-      </WrapHeader>
-      <Split />
-      {isLoading ? (
-        <WrapLoader>
-          <SyncLoader color="var(--Primary-dong)" />
-        </WrapLoader>
-      ) : (
-        <>
-          <WrapChat>
-            <Messages
-              groupedMessages={groupedMessages}
-              myId={profileIds.memberId}
-              // openProfileModal={openOpponentProfileModal}
-              // isMenuOpen={isMenuOpen}
-            />
-          </WrapChat>
-          <MessageInput
-            value={draftMessage}
-            onChangeHandler={handleChangeMessage}
-            submitHandler={sendMessage}
-          />
-        </>
-      )}
-    </>
+    <Wrapper>
+      <Container>
+        <WrapHeader>
+          <BackButton onClick={() => navigate('/chat')}>
+            <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
+          </BackButton>
+          <TitleText>요청글 보러가기</TitleText>
+        </WrapHeader>
+        <Split />
+        {isLoading ? (
+          <WrapLoader>
+            <SyncLoader color="var(--Primary-dong)" />
+          </WrapLoader>
+        ) : (
+          <>
+            <WrapChat>
+              <Messages
+                groupedMessages={groupedMessages}
+                myId={profileIds.memberId}
+                // openProfileModal={openOpponentProfileModal}
+                // isMenuOpen={isMenuOpen}
+              />
+            </WrapChat>
+            <MessageInputWrapper>
+              <MessageInput
+                value={draftMessage}
+                onChangeHandler={handleChangeMessage}
+                submitHandler={sendMessage}
+              />
+            </MessageInputWrapper>
+          </>
+        )}
+      </Container>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  position: relative;
+  touch-action: none;
+  overflow: hidden;
+`;
 
 const WrapHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 1.8rem 1.1rem 1.1rem 1.1rem;
+
+  position: relative;
+  background: #ffffff;
+  display: flex;
+  z-index: 11;
 `;
 
 const Split = styled.div`
@@ -223,6 +237,9 @@ const TitleText = styled.div`
 `;
 
 const WrapChat = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 6rem;
   .date {
     text-align: center;
     font-family: NanumSquare;
@@ -242,4 +259,19 @@ const WrapLoader = styled.div`
   align-items: center;
 `;
 
+const Container = styled.div`
+  height: 100dvh;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: height 0.3s;
+`;
+
+const MessageInputWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+`;
 export default ChatPageDong;

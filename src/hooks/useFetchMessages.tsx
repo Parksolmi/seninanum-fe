@@ -19,22 +19,19 @@ export const useFetchMessagesFromLocal = (roomId) => {
 };
 
 // 서버에 저장된 모든 메세지 불러오기
-// export const useFetchMessagesFromServer = (roomId) => {
-//   const navigate = useNavigate();
-//   const fetchAllMessagesFromServer = async (setMessages) => {
-//     try {
-//       const msg = await instance.get(`/chatroom/${roomId}/allmessage`);
-//       if (msg.data.length === 0) return;
-//       setMessages(msg.data);
-//     } catch (error) {
-//       window.confirm('학생 인증 후 이용해주세요.')
-//         ? navigate('/verify/univ')
-//         : navigate('/chat');
-//     }
-//   };
+export const useFetchMessagesFromServer = (roomId) => {
+  const fetchAllMessagesFromServer = async (setMessages) => {
+    try {
+      const msg = await instance.get(`/chatroom/${roomId}/allmessage`);
+      if (msg.data.length === 0) return;
+      setMessages(msg.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-//   return fetchAllMessagesFromServer;
-// };
+  return fetchAllMessagesFromServer;
+};
 
 // export const useFetchUnreadMessagesFromServer = (roomId) => {
 //   // 읽지 않은 메세지 서버에서 가져오기
