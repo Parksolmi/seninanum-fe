@@ -171,6 +171,7 @@ const ChatPageDong = () => {
 
   // 메세지 전송 시
   useEffect(() => {
+    console.log(messages);
     // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
