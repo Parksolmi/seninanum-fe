@@ -1,17 +1,31 @@
 import styled from 'styled-components';
 
 interface MessageInputProps {
-  setVisible: () => void;
+  value;
+  onChangeHandler;
+  submitHandler;
 }
-const MessageInput = ({ setVisible }: MessageInputProps) => {
+const MessageInput = ({
+  value,
+  onChangeHandler,
+  submitHandler,
+}: MessageInputProps) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitHandler();
+  };
   return (
     <MeassageInputContainer>
       <WrapButton>
         <img src={'/assets/chat/plus-icon.png'} alt="신고하기" />
       </WrapButton>
-      <WrapInputForm>
-        <Input placeholder="메시지를 입려해주세요" />
-        <WrapButton type="submit" onClick={setVisible}>
+      <WrapInputForm onSubmit={handleSubmit}>
+        <Input
+          placeholder="메시지를 입려해주세요"
+          value={value}
+          onChange={onChangeHandler}
+        />
+        <WrapButton type="submit">
           <img src={'/assets/chat/send-icon.png'} alt="보내기" />
         </WrapButton>
       </WrapInputForm>
@@ -39,14 +53,18 @@ const Input = styled.input`
   background: transparent;
   width: 100%;
   padding: 0.2rem 0.4rem;
-
   font-size: 1.25rem;
+  font-weight: 400;
+  font-family: NanumSquare;
+  font-style: normal;
+  line-height: normal;
+
   &::placeholder {
-    font-size: 1.25rem;
+    color: var(--Base-Gray-3, #8e8e8e);
   }
 `;
 
-const WrapInputForm = styled.div`
+const WrapInputForm = styled.form`
   display: flex;
   flex: 1;
   align-items: center;

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import { instance } from '../../api/instance';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 
 interface Inputs {
   nickname: string;
@@ -20,7 +20,7 @@ interface Inputs {
 const UpdateMyInfoPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
-  const { data: user } = useFetchProfile();
+  const { data: user } = useFetchMyProfile();
   const {
     register,
     handleSubmit,

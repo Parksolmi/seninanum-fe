@@ -9,11 +9,26 @@ interface User {
   profile: string;
 }
 
-const getProfile = async () => {
+// 내 프로필 정보
+const getUserProfile = async () => {
   const res = await instance.get<User>(`/user/profile`);
   return res.data;
 };
+export const useFetchMyProfile = () => {
+  return useQuery<User>('fetchMyProfileKey', getUserProfile);
+};
 
-export const useFetchProfile = () => {
-  return useQuery<User>('fetchProfileKey', getProfile);
+// 남의 프로필 정보
+const getOpponentProfile = async (profileId) => {
+  const res = await instance.get<User>(`/profile/${profileId}`);
+  return res.data;
+};
+export const useFetchProfile = (profileId) => {
+  return useQuery<User>(
+    profileId, // 쿼리 키에 profileId를 포함하여 캐시 관리
+    () => getOpponentProfile(profileId),
+    {
+      enabled: !!profileId, // profileId가 있을 때만 쿼리를 실행
+    }
+  );
 };

@@ -10,6 +10,7 @@ interface BriefProfileCardProps {
   // content: string;
   gender: string;
   age: string;
+  onClick: () => void;
 }
 
 const BriefProfileCard = ({
@@ -21,9 +22,10 @@ const BriefProfileCard = ({
   // content,
   gender,
   age,
+  onClick,
 }: BriefProfileCardProps) => {
   return (
-    <WrapProfile>
+    <WrapProfile onClick={onClick}>
       <ProfileGroup>
         <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
         <ProfileInfo>

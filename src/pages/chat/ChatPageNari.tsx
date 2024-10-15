@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import BaneerButton from '../../components/chat/BannerButton';
-import MessageBox from '../../components/chat/MessageBox';
-import MessageInput from '../../components/chat/MessageInput';
 
 const ChatPageNari = () => {
   const navigate = useNavigate();
-
-  //임시
-  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -21,16 +15,16 @@ const ChatPageNari = () => {
         <img src={'/assets/chat/exit-icon.svg'} alt="나가기" />
       </WrapHeader>
       <Split />
-      <WrapBanner>
+      {/* <WrapBanner>
         <BaneerButton src={'/assets/chat/won-icon.png'} text="송금요청" />
         <BaneerButton src={'/assets/chat/calendar-icon.png'} text="약속잡기" />
-      </WrapBanner>
+      </WrapBanner> */}
       <WrapChat>
         <div className="date">6월 19일 수요일</div>
-        <MessageBox type="nari" visible={visible} />
+        {/* <MessageBox type="nari" visible={visible} /> */}
       </WrapChat>
 
-      <MessageInput setVisible={() => setVisible(true)} />
+      {/* <MessageInput setVisible={() => setVisible(true)} /> */}
     </>
   );
 };
@@ -61,15 +55,6 @@ const TitleText = styled.div`
   font-weight: 700;
   letter-spacing: -0.075rem;
   white-space: nowrap;
-`;
-
-const WrapBanner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  gap: 1.5rem;
-  box-shadow: 0px 2px 3px rgba(150, 150, 150, 0.4);
-  padding: 0 1.1rem 1rem 1.1rem;
 `;
 
 const WrapChat = styled.div`

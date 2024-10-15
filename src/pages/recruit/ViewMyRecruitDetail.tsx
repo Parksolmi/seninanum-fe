@@ -99,6 +99,7 @@ const ViewMyRecruitDetail = () => {
                 gender={'남성'}
                 age={'20대'}
                 nickname={'동배기'}
+                onClick={() => navigate(`/view/dongprofile`)}
               />
             </div>
             <div className="last-content">

@@ -10,13 +10,14 @@ import { formatDate } from '../../utils/formatDate';
 import { calcAge } from '../../utils/calcAge';
 
 interface Recruit {
+  profileId: number;
   title: string;
   content: string;
   nickname: string;
   birthyear: string;
   method: string;
   region: string;
-  price: string;
+  price: number;
   priceType: string;
   gender: string;
   field: string;
@@ -52,8 +53,8 @@ const ViewRecruitDetail = () => {
         </WrapLoader>
       ) : (
         <>
+          <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
           <WrapContent>
-            <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
             <div>
               <TitleText>{recruit.title}</TitleText>
               <ContentText>
@@ -81,6 +82,9 @@ const ViewRecruitDetail = () => {
                 gender={recruit.gender}
                 age={calcAge(recruit.birthyear)}
                 nickname={recruit.nickname}
+                onClick={() =>
+                  navigate(`/view/nariprofile/${recruit.profileId}`)
+                }
               />
             </div>
             <div className="last-content">
@@ -132,7 +136,7 @@ const WrapContent = styled.div`
   flex-direction: column;
   gap: 2rem;
   padding: 0 1.1rem;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0;
 
   .last-content {
     margin-bottom: 7rem;

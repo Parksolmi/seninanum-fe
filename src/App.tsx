@@ -99,11 +99,17 @@ const App: React.FC = () => {
           <Route path="price" element={<PriceFilterPage />} />
         </Route>
         {/* 프로필 조회 */}
-        <Route path="/view/profile/:profileId" element={<ViewProfileDong />} />
-        <Route path="view/profile/profileId" element={<ViewProfileNari />} />
+        <Route
+          path="/view/dongprofile" //수정 필요
+          element={<ViewProfileDong />}
+        />
+        <Route
+          path="/view/nariprofile/:profileId"
+          element={<ViewProfileNari />}
+        />
         {/* 채팅 */}
-        <Route path="/chatroom/dong" element={<ChatPageDong />} />
-        <Route path="/chatroom/nari" element={<ChatPageNari />} />
+        <Route path="/chatroom/dong/:chatRoomId" element={<ChatPageDong />} />
+        <Route path="/chatroom/nari/:chatRoomId" element={<ChatPageNari />} />
 
         {/* 마이페이지 */}
         <Route
