@@ -9,6 +9,7 @@ import { parseTime } from '../../utils/formatTime';
 interface ChatRoom {
   chatRoomId: number;
   profile: string;
+  userType: string;
   roomName: string;
   roomStatus: string;
   lastMessage: string;
@@ -58,7 +59,10 @@ const ChatIndexPage: React.FC = () => {
                   <WrapChatSection>
                     <div className="top">
                       <Profile>
-                        <div className="department">{chat.roomName} 동백</div>
+                        <div className="department">
+                          {chat.roomName}{' '}
+                          {chat.userType === 'dong' ? '동백' : '나리'}
+                        </div>
                       </Profile>
                       <Time>{timeDisplay}</Time>
                     </div>

@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
 
@@ -10,13 +11,22 @@ interface MessageType {
   senderType: 'USER' | 'SYSTEM';
   senderName?: string;
 }
+interface Profile {
+  profileId: string;
+  userType: string;
+  nickname: string;
+  profile: string;
+}
 
 interface MessageProps {
   message: MessageType;
   isSentByMe: boolean;
+  opponent: Profile;
 }
 
-const Message = memo(({ message, isSentByMe }: MessageProps) => {
+const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
+  const navigate = useNavigate();
+
   switch (message.senderType) {
     case 'SYSTEM':
       return (
@@ -42,12 +52,15 @@ const Message = memo(({ message, isSentByMe }: MessageProps) => {
       ) : (
         <MessageByOther>
           <WrapProfile
-          // onClick={openProfileModal}
+            onClick={() => navigate(`/view/nariprofile/${opponent.profileId}`)}
           >
-            <img src="/assets/character/dong-pay.png" alt="profile" />
+            <img src={opponent.profile} alt="profile" />
           </WrapProfile>
           <div className="message-section">
-            <div className="nickname">닉네임 나리</div>
+            <div className="nickname">
+              {opponent.nickname}{' '}
+              {opponent.userType === 'dong' ? '동백' : '나리'}
+            </div>
             <div className="message-container">
               <div className="wrapper">
                 <div className="wrapper-top">

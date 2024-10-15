@@ -14,10 +14,18 @@ import {
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 
-interface ProfileIds {
-  memberId: string;
-  opponentId: string;
+interface Profile {
+  profileId: string;
+  userType: string;
+  nickname: string;
+  profile: string;
 }
+
+interface ProfileIds {
+  memberProfile: Profile;
+  opponentProfile: Profile;
+}
+
 interface Message {
   senderId: string;
   body: string;
@@ -33,10 +41,20 @@ const ChatPageDong = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
-  const [isMemberIdsFetched, setIsMemberIdsFetched] = useState(false);
-  const [profileIds, setProfileIds] = useState<ProfileIds>({
-    memberId: '',
-    opponentId: '',
+  const [isMembersFetched, setIsMembersFetched] = useState(false);
+  const [profile, setProfile] = useState<ProfileIds>({
+    memberProfile: {
+      profileId: '',
+      userType: '',
+      nickname: '',
+      profile: '',
+    },
+    opponentProfile: {
+      profileId: '',
+      userType: '',
+      nickname: '',
+      profile: '',
+    },
   });
 
   //수정사항! react-query로 바꾸기
@@ -52,7 +70,8 @@ const ChatPageDong = () => {
     setDraftMessage,
     client,
     roomId,
-    profileIds
+    profile.memberProfile.profileId,
+    profile.opponentProfile.profileId
   );
   const sendMessage = async () => {
     if (!draftMessage.trim()) return;
@@ -70,14 +89,14 @@ const ChatPageDong = () => {
     setDraftMessage(e.target.value);
   };
 
-  // 멤버 ID값 가져오기
   useEffect(() => {
+    // 멤버 ID값 가져오기
     const fetchProfileIds = async () => {
       try {
         const response = await instance.get(`/chat/member/${roomId}`);
-        const { memberId, opponentId } = response.data;
-        setProfileIds({ memberId, opponentId });
-        setIsMemberIdsFetched(true);
+        const { memberProfile, opponentProfile } = response.data;
+        setProfile({ memberProfile, opponentProfile });
+        setIsMembersFetched(true);
       } catch (error) {
         console.log(error);
       }
@@ -109,13 +128,13 @@ const ChatPageDong = () => {
     });
   };
   useEffect(() => {
-    if (isMemberIdsFetched) {
+    if (isMembersFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
         brokerURL: 'wss://api.seninanum.shop/meet',
         connectHeaders: {
           chatRoomId: roomId,
-          memberId: profileIds.memberId,
+          memberId: profile.memberProfile.profileId,
         },
         debug: function (str) {
           console.log(str);
@@ -147,7 +166,7 @@ const ChatPageDong = () => {
         newClient.deactivate();
       };
     }
-  }, [isMemberIdsFetched]);
+  }, [isMembersFetched]);
 
   // 메세지 전송 시
   useEffect(() => {
@@ -176,8 +195,8 @@ const ChatPageDong = () => {
             <WrapChat>
               <Messages
                 groupedMessages={groupedMessages}
-                myId={profileIds.memberId}
-                // openProfileModal={openOpponentProfileModal}
+                myId={profile.memberProfile.profileId}
+                opponent={profile.opponentProfile}
                 // isMenuOpen={isMenuOpen}
               />
             </WrapChat>

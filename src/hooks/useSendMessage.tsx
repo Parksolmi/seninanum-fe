@@ -7,7 +7,8 @@ export const useSendMessage = (
   // file,
   client,
   roomId,
-  profileIds
+  memberId,
+  opponentId
 ) => {
   // // 이미지 전송
   // const sendImageMessage = async () => {
@@ -41,8 +42,8 @@ export const useSendMessage = (
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify({
           chatMessage: binaryData,
-          senderId: profileIds.memberId,
-          receiverId: profileIds.opponentId,
+          senderId: memberId,
+          receiverId: opponentId,
           senderType: 'USER',
         }),
         headers: { 'content-type': 'application/octet-stream' },

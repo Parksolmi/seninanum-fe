@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -12,18 +12,25 @@ interface MessageType {
   senderType: 'USER' | 'SYSTEM';
   senderName?: string; // senderName은 optional로 설정
 }
+interface Profile {
+  profileId: string;
+  userType: string;
+  nickname: string;
+  profile: string;
+}
 
 interface MessagesProps {
   groupedMessages: { [date: string]: MessageType[] };
   myId: string;
+  opponent: Profile;
 }
 
 const Messages = memo(
   ({
     groupedMessages,
     myId,
-  }: // openProfileModal,
-  // isMenuOpen,
+    opponent,
+  }: // isMenuOpen,
   MessagesProps) => {
     const messageRef = useRef<HTMLDivElement | null>(null);
 
@@ -54,7 +61,8 @@ const Messages = memo(
               <Message
                 key={message.chatMessageId}
                 message={message}
-                isSentByMe={message.senderId === myId}
+                isSentByMe={message.senderId !== myId}
+                opponent={opponent}
                 // openProfileModal={openProfileModal}
               />
             ))}
