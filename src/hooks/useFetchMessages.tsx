@@ -22,7 +22,7 @@ export const useFetchMessagesFromLocal = (roomId) => {
 export const useFetchMessagesFromServer = (roomId) => {
   const fetchAllMessagesFromServer = async (setMessages) => {
     try {
-      const msg = await instance.get(`/chatroom/${roomId}/allmessage`);
+      const msg = await instance.get(`/chat/allmessages/${roomId}`);
       if (msg.data.length === 0) return;
       setMessages(msg.data);
     } catch (error) {

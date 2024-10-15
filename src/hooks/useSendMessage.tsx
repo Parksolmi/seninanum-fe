@@ -43,7 +43,7 @@ export const useSendMessage = (
           chatMessage: binaryData,
           senderId: profileIds.memberId,
           receiverId: profileIds.opponentId,
-          publishType: 'USER',
+          senderType: 'USER',
         }),
         headers: { 'content-type': 'application/octet-stream' },
       });

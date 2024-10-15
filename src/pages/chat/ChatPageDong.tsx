@@ -8,7 +8,10 @@ import { Client } from '@stomp/stompjs';
 import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
-import { useFetchMessagesFromLocal } from '../../hooks/useFetchMessages';
+import {
+  useFetchMessagesFromLocal,
+  useFetchMessagesFromServer,
+} from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 
 interface ProfileIds {
@@ -40,6 +43,8 @@ const ChatPageDong = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  const fetchServerMessages = useFetchMessagesFromServer(roomId);
+  // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
   // 메시지 전송
   const { sendTextMessage } = useSendMessage(
@@ -66,19 +71,19 @@ const ChatPageDong = () => {
   };
 
   // 멤버 ID값 가져오기
-  const fetchProfileIds = async () => {
-    try {
-      const response = await instance.get(`/chat/member/${roomId}`);
-      const { memberId, opponentId } = response.data;
-      setProfileIds({ memberId, opponentId });
-      setIsMemberIdsFetched(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
+    const fetchProfileIds = async () => {
+      try {
+        const response = await instance.get(`/chat/member/${roomId}`);
+        const { memberId, opponentId } = response.data;
+        setProfileIds({ memberId, opponentId });
+        setIsMemberIdsFetched(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchProfileIds();
-  }, []);
+  }, [roomId]);
 
   // STOMP
   const subscritionCallback = (message) => {
@@ -107,8 +112,7 @@ const ChatPageDong = () => {
     if (isMemberIdsFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        // brokerURL: 'wss://api.seninanum.shop/meet',
-        brokerURL: 'ws://localhost:3001/meet',
+        brokerURL: 'wss://api.seninanum.shop/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profileIds.memberId,
@@ -134,8 +138,8 @@ const ChatPageDong = () => {
 
       //이전 메세지 목록 불러오기
       fetchLocalMessages(setMessages);
-      // const staleMessages = fetchLocalMessages(setMessages);
-      // if (staleMessages.length === 0) fetchServerMessages(setMessages);
+      const staleMessages = fetchLocalMessages(setMessages);
+      if (staleMessages.length === 0) fetchServerMessages(setMessages);
       // else fetchServerUnreadMessages(messages, setMessages);
 
       // 컴포넌트 언마운트 시 연결 해제
@@ -147,7 +151,8 @@ const ChatPageDong = () => {
 
   // 메세지 전송 시
   useEffect(() => {
-    console.log(messages);
+    console.log('groupedMessages>>>>>>>', groupedMessages);
+    console.log('messages>>>>>>>', messages);
     // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages]);

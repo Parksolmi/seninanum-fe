@@ -9,7 +9,7 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  publishType: 'USER' | 'SYSTEM';
+  senderType: 'USER' | 'SYSTEM';
   senderName?: string; // senderName은 optional로 설정
 }
 
