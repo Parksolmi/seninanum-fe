@@ -14,6 +14,8 @@ interface DetailCardProps {
   // 구인글 관리 권한이 있는 페이지인 경우 삭제하기 버튼을 추가한다.
   isEditable?: boolean;
   onDelete?: () => void;
+  onCancel?: () => void;
+  createdAt?: string;
 }
 
 const DetailCard = ({
@@ -28,6 +30,8 @@ const DetailCard = ({
   isMyProfile,
   isEditable,
   onDelete,
+  onCancel,
+  createdAt,
 }: DetailCardProps) => {
   return (
     <InputContainer>
@@ -73,13 +77,14 @@ const DetailCard = ({
           <ManageApplicationButton>
             {' '}
             <>
-              <span>24.10.11</span>
+              <span>{createdAt}</span>
               <p>지원함</p>
             </>
             <button
               onClick={(e) => {
                 e.stopPropagation(); // 부모 클릭 이벤트 방지
                 // 취소 기능 추가
+                onCancel?.();
               }}
             >
               취소하기
