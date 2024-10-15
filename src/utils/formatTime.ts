@@ -1,5 +1,5 @@
 export const parseTime = (time: string) => {
-  const date = new Date(time);
+  const date = new Date(time.replace('Z', ''));
   let hours = date.getHours();
   const minutes = date.getMinutes();
 
