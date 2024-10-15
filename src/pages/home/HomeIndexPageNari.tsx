@@ -161,7 +161,8 @@ const HomeIndexPageNari: React.FC = () => {
                 age={profileItem.birthyear}
                 gender={profileItem.gender === '여성' ? '여자' : '남자'}
                 onClick={() =>
-                  navigate(`/view/profile/career/${profileItem.profileId}`)
+                  //수정
+                  navigate(`/view/dongprofile/${profileItem.profileId}`)
                 }
               />
             ))

@@ -80,7 +80,7 @@ const ViewProfileDong = () => {
         </WrapLoader>
       ) : (
         <>
-          <PrevHeader title={'프로필 조회'} navigateTo={'/home'} />
+          <PrevHeader title={'프로필 조회'} navigateTo={'-1'} />
           <WrapContent>
             <BriefProfileMultiCard
               type="dong"

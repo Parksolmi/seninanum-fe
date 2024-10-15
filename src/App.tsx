@@ -100,7 +100,7 @@ const App: React.FC = () => {
         </Route>
         {/* 프로필 조회 */}
         <Route
-          path="/view/dongprofile" //수정 필요
+          path="/view/dongprofile/:profileId" //수정 필요
           element={<ViewProfileDong />}
         />
         <Route
