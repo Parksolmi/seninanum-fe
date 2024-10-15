@@ -5,6 +5,7 @@ import { instance } from '../../api/instance';
 import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
 import { parseTime } from '../../utils/formatTime';
+import ApplicationCard from '../../components/chat/ApplicationCard';
 
 interface ChatRoom {
   chatRoomId: number;
@@ -17,10 +18,31 @@ interface ChatRoom {
   unreadCount: number;
 }
 
+interface Application {
+  recruitId: number;
+  title: string;
+  nickname: string;
+  profile: string;
+}
+
 const ChatIndexPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
+  const [applicationList, setApplicationList] = useState<Application[]>([]);
   const [chatList, setChatList] = useState<ChatRoom[]>([]);
+
+  // 지원한 구인글 목록 불러오기
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const res = await instance.get('application/recruit/list');
+        setApplicationList(res.data);
+      } catch (error) {
+        console.error('지원한 구인글 조회 중 오류 발생:', error);
+      }
+    };
+    fetchApplications();
+  }, []);
 
   // 채팅 목록 불러오기
   useEffect(() => {
@@ -38,6 +60,39 @@ const ChatIndexPage: React.FC = () => {
   return (
     <>
       <TitleHeader title="채팅" isShowAlert={false} />
+      <WrapContent>
+        {applicationList.length > 0 && (
+          <ApplicationListContainer>
+            <ApplicationTextArea>
+              <div className="leftText">
+                <p>내가 지원한 공고</p>
+                <span>{applicationList.length}</span>
+              </div>
+              <div
+                className="moreButton"
+                onClick={() => navigate(`/manage/myapplication?tab=1`)}
+              >
+                더보기
+                <img src="/assets/common/more-icon.svg" alt="더보기아이콘" />
+              </div>
+            </ApplicationTextArea>
+            <SwipeArea>
+              {applicationList.map((application) => (
+                <ApplicationCard
+                  key={application.recruitId}
+                  profile={application.profile}
+                  nickname={application.nickname}
+                  title={application.title}
+                  onClick={() =>
+                    navigate(`/view/recruit/${application.recruitId}`)
+                  }
+                />
+              ))}
+            </SwipeArea>
+          </ApplicationListContainer>
+        )}
+      </WrapContent>
+      {applicationList.length > 0 && <SplitLine />}
       <WrapContent>
         <ChatListContainer>
           {chatList &&
@@ -86,6 +141,78 @@ const ChatIndexPage: React.FC = () => {
 
 const WrapContent = styled.div`
   padding: 0.3rem 1.1rem;
+`;
+
+const ApplicationListContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`;
+
+const ApplicationTextArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  .leftText {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  p {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  span {
+    color: #5b5b5b;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+
+  .moreButton {
+    color: #5b5b5b;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  img {
+    width: 1rem;
+    height: 1rem;
+  }
+`;
+
+const SwipeArea = styled.div`
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto; /* 가로 스크롤 허용 */
+  white-space: nowrap;
+  padding-bottom: 0.5rem;
+  margin-right: -1.1rem;
+  padding-right: 1.1rem; /* 마지막 카드가 잘리지 않도록 여백 추가 */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+`;
+
+const SplitLine = styled.div`
+  width: 100%;
+  height: 0.625rem;
+  background: #ebeceb;
+  margin: 1.5rem 0;
 `;
 
 const ChatListContainer = styled.div`
