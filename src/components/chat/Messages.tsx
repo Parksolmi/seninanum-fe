@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useLayoutEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ const Messages = memo(
   }: // openProfileModal,
   // isMenuOpen,
   MessagesProps) => {
-    const messageRef = useRef<HTMLDivElement>(null);
+    const messageRef = useRef<HTMLDivElement | null>(null);
 
     const scrollToBottom = () => {
       if (messageRef.current) {
@@ -34,7 +34,6 @@ const Messages = memo(
     };
 
     useEffect(() => {
-      console.log(messageRef.current);
       scrollToBottom();
     }, [groupedMessages]);
 
@@ -67,10 +66,10 @@ const Messages = memo(
 );
 
 const MessagesWrapper = styled.div`
-  overflow: auto;
-  flex: 1;
+  flex-grow: 1;
+  overflow-y: auto;
   min-height: 0;
-  z-index: 0;
+  max-height: 100vh;
 `;
 
 const WrapDate = styled.div`

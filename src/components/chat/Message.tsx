@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
 
@@ -17,9 +17,6 @@ interface MessageProps {
 }
 
 const Message = memo(({ message, isSentByMe }: MessageProps) => {
-  useEffect(() => {
-    console.log('message확인 >>>>> ', message);
-  }, [message]);
   switch (message.publishType) {
     case 'SYSTEM':
       return (
