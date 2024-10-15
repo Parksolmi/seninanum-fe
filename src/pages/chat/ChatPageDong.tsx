@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MessageInput from '../../components/chat/MessageInput';
-// import Messages from '../../components/chat/Messages';
+import Messages from '../../components/chat/Messages';
 import useGroupedMessages from '../../hooks/useGroupedMessages';
 import { Client } from '@stomp/stompjs';
 import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
+import { useFetchMessagesFromLocal } from '../../hooks/useFetchMessages';
+import { SyncLoader } from 'react-spinners';
 
 interface ProfileIds {
   memberId: string;
@@ -33,6 +35,11 @@ const ChatPageDong = () => {
     memberId: '',
     opponentId: '',
   });
+
+  //수정사항! react-query로 바꾸기
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
 
   // 메시지 전송
   const { sendTextMessage } = useSendMessage(
@@ -101,8 +108,8 @@ const ChatPageDong = () => {
     if (isMemberIdsFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        // brokerURL: 'wss://api.seninanum.shop/meet',
-        brokerURL: 'ws://localhost:3001/meet',
+        brokerURL: 'wss://api.seninanum.shop/meet',
+        // brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profileIds.memberId,
@@ -111,6 +118,7 @@ const ChatPageDong = () => {
           console.log(str);
         },
         onConnect: (frame) => {
+          setIsLoading(false);
           console.log('Connected: ' + frame);
           newClient.subscribe(`/topic/chat/${roomId}`, subscritionCallback);
         },
@@ -126,6 +134,7 @@ const ChatPageDong = () => {
       setClient(newClient);
 
       //이전 메세지 목록 불러오기
+      fetchLocalMessages(setMessages);
       // const staleMessages = fetchLocalMessages(setMessages);
       // if (staleMessages.length === 0) fetchServerMessages(setMessages);
       // else fetchServerUnreadMessages(messages, setMessages);
@@ -153,25 +162,27 @@ const ChatPageDong = () => {
         <TitleText>요청글 보러가기</TitleText>
       </WrapHeader>
       <Split />
-      <WrapChat>
-        {/* <Messages
-          groupedMessages={groupedMessages}
-          myId={myMemberId}
-          responseCall={responseCall}
-          viewImage={viewImage}
-          openProfileModal={openOpponentProfileModal}
-          opponentMemberCharacter={
-            opponentProfile && opponentProfile.memberCharacter
-          }
-          isMenuOpen={isMenuOpen}
-        /> */}
-      </WrapChat>
-
-      <MessageInput
-        value={draftMessage}
-        onChangeHandler={handleChangeMessage}
-        submitHandler={sendMessage}
-      />
+      {isLoading ? (
+        <WrapLoader>
+          <SyncLoader color="var(--Primary-dong)" />
+        </WrapLoader>
+      ) : (
+        <>
+          <WrapChat>
+            <Messages
+              groupedMessages={groupedMessages}
+              myId={profileIds.memberId}
+              // openProfileModal={openOpponentProfileModal}
+              // isMenuOpen={isMenuOpen}
+            />
+          </WrapChat>
+          <MessageInput
+            value={draftMessage}
+            onChangeHandler={handleChangeMessage}
+            submitHandler={sendMessage}
+          />
+        </>
+      )}
     </>
   );
 };
@@ -184,7 +195,7 @@ const WrapHeader = styled.div`
 
 const Split = styled.div`
   border-top: solid 1px #ebeceb;
-  padding: 0.7rem 0;
+  /* padding: 0.7rem 0; */
 `;
 
 const BackButton = styled.div`
@@ -219,6 +230,16 @@ const WrapChat = styled.div`
     font-weight: 400;
     padding: 1.5rem 0 0 0;
   }
+`;
+
+const WrapLoader = styled.div`
+  padding: 0 1.1rem;
+  display: flex;
+  gap: 2.5rem;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ChatPageDong;

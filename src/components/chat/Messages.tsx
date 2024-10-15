@@ -1,86 +1,92 @@
-// import React, { memo, useEffect, useRef } from 'react';
-// import Message from './Message';
-// import styled from 'styled-components';
+import React, { memo, useEffect, useRef } from 'react';
+import Message from './Message';
+import styled from 'styled-components';
 
-// const Messages = memo(
-//   ({
-//     groupedMessages,
-//     myId,
-//     responseCall,
-//     viewImage,
-//     openProfileModal,
-//     opponentMemberCharacter,
-//     isMenuOpen,
-//   }) => {
-//     const messageRef = useRef();
+// 메시지의 타입 정의
+interface MessageType {
+  chatMessageId: number;
+  senderId: string;
+  chatMessage: string;
+  unreadCount: number;
+  createdAt: string;
+  publishType: 'USER' | 'SYSTEM';
+  senderName?: string; // senderName은 optional로 설정
+}
 
-//     const scrollToBottom = () => {
-//       if (messageRef.current) {
-//         messageRef.current.scrollTop = messageRef.current.scrollHeight;
-//       }
-//     };
+interface MessagesProps {
+  groupedMessages: { [date: string]: MessageType[] };
+  myId: string;
+}
 
-//     useEffect(() => {
-//       scrollToBottom();
-//     }, [groupedMessages]);
+const Messages = memo(
+  ({
+    groupedMessages,
+    myId,
+  }: // openProfileModal,
+  // isMenuOpen,
+  MessagesProps) => {
+    const messageRef = useRef<HTMLDivElement | null>(null);
 
-//     return (
-//       <MessagesWrapper ref={messageRef} $isOpen={isMenuOpen}>
-//         <Announcement>
-//           <div className="content">
-//             📢 잠깐만요! 채팅 상대는 소중한 학우입니다. 사이버 예절을 지켜
-//             주세요.
-//           </div>
-//         </Announcement>
-//         {Object.entries(groupedMessages).map(([date, messages]) => (
-//           <React.Fragment key={date}>
-//             <Announcement>
-//               <div className="content">
-//                 {new Date(date).toLocaleDateString('ko-KR', {
-//                   year: 'numeric',
-//                   month: 'long',
-//                   day: 'numeric',
-//                 })}
-//               </div>
-//             </Announcement>
-//             {messages.map((message) => (
-//               <Message
-//                 key={message.messageId}
-//                 message={message}
-//                 isSentByMe={message.senderId !== Number(myId)}
-//                 responseCall={responseCall}
-//                 viewImage={viewImage}
-//                 openProfileModal={openProfileModal}
-//                 opponentMemberCharacter={opponentMemberCharacter}
-//               />
-//             ))}
-//           </React.Fragment>
-//         ))}
-//       </MessagesWrapper>
-//     );
-//   }
-// );
+    const scrollToBottom = () => {
+      if (messageRef.current) {
+        messageRef.current.scrollTop = messageRef.current.scrollHeight;
+      }
+    };
 
-// const MessagesWrapper = styled.div`
-//   overflow: auto;
-//   flex: 1;
-//   min-height: 0;
-//   margin-bottom: 6rem;
-//   z-index: ${({ $isOpen }) => ($isOpen ? '0' : '10')};
-// `;
+    useEffect(() => {
+      console.log(groupedMessages);
+      scrollToBottom();
+    }, [groupedMessages]);
 
-// const Announcement = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin: 16px;
+    return (
+      <MessagesWrapper ref={messageRef}>
+        {Object.entries(groupedMessages).map(([date, messages]) => (
+          <React.Fragment key={date}>
+            <WrapDate>
+              <div className="content">
+                {new Date(date).toLocaleDateString('ko-KR', {
+                  month: 'long',
+                  day: 'numeric',
+                  weekday: 'long',
+                })}
+              </div>
+            </WrapDate>
+            {messages.map((message) => (
+              <Message
+                key={message.chatMessageId}
+                message={message}
+                isSentByMe={message.senderId === myId}
+                // openProfileModal={openProfileModal}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </MessagesWrapper>
+    );
+  }
+);
 
-//   > .content {
-//     font-size: 0.7rem;
-//     background-color: #eee;
-//     padding: 0.5rem;
-//     text-align: center;
-//     border-radius: 9999px;
-//   }
-// `;
+const MessagesWrapper = styled.div`
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 6rem;
+`;
 
-// export default Messages;
+const WrapDate = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem;
+
+  > .content {
+    color: #000;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+`;
+
+export default Messages;

@@ -11,7 +11,6 @@ interface ChatRoom {
   profile: string;
   roomName: string;
   roomStatus: string;
-  // opponentId: number;
   lastMessage: string;
   createdAt: string; //lastMessageAt으로 수정
   unreadCount: number;
@@ -27,7 +26,6 @@ const ChatIndexPage: React.FC = () => {
     const fetchChatList = async () => {
       try {
         const res = await instance.get('/chatroom/list');
-        console.log(res.data);
         setChatList(res.data);
       } catch (error) {
         console.log(error);

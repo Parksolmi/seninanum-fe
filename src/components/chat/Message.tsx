@@ -1,438 +1,231 @@
-// import React, { memo } from 'react';
-// import styled from 'styled-components';
-// import { parseTime } from '../../utils/formatTime';
-// import Button from '../common/Button';
+import React, { memo, useEffect } from 'react';
+import styled from 'styled-components';
+import { parseTime } from '../../utils/formatTime';
 
-// /**
-//  * Message 객체 속성
-//  * @param {string} senderName - 메시지를 보낸 사람의 닉네임
-//  * @param {string} chatMessage - 메시지 내용
-//  * @param {string} sendDt - 메시지를 보낸 시간
-//  * @param {boolean} unreadCount - 메시지를 읽었는지 여부
-//  * @param {string} senderType - 메시지를 보낸 사람의 타입 (SYSTEM, USER)
-//  */
+interface MessageType {
+  senderId: string;
+  chatMessage: string;
+  unreadCount: number;
+  createdAt: string;
+  publishType: 'USER' | 'SYSTEM';
+  senderName?: string; // senderName은 optional로 설정
+}
 
-// const Message = memo(
-//   ({
-//     message,
-//     isSentByMe,
-//     responseCall,
-//     // viewImage,
-//     // openProfileModal,
-//     // opponentMemberCharacter,
-//   }) => {
-//     switch (message.senderType) {
-//       case 'SYSTEM':
-//         return (
-//           <Announcement>
-//             <div className="content">{message.chatMessage}</div>
-//           </Announcement>
-//         );
+interface MessageProps {
+  message: MessageType;
+  isSentByMe: boolean;
+}
 
-//       case 'CALL_REQUEST':
-//         return isSentByMe ? (
-//           <MessageByMe>
-//             <div className="message-container">
-//               <div className="wrapper">
-//                 <div className="read">
-//                   {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                 </div>
-//                 <div className="time">{parseTime(message.sendDt)}</div>
-//               </div>
-//               <div className="tail"></div>
-//               <div className="message">
-//                 <strong>📞 우리 통화해요!</strong>
-//                 <div>요청을 수락하면 서로의 번호로 통화할 수 있어요.</div>
-//               </div>
-//             </div>
-//           </MessageByMe>
-//         ) : (
-//           <MessageByOther>
-//             <CharacterBackground
-//               $backgroundColor={CHARACTERS[opponentMemberCharacter]?.color}
-//               onClick={openProfileModal}
-//             >
-//               <Character
-//                 $xPos={CHARACTERS[opponentMemberCharacter]?.position[0]}
-//                 $yPos={CHARACTERS[opponentMemberCharacter]?.position[1]}
-//               />
-//             </CharacterBackground>
-//             <div className="message-section">
-//               <div className="nickname">{message.senderName}</div>
-//               <div className="message-container">
-//                 <div className="tail"></div>
-//                 <div className="message">
-//                   <strong>📞 우리 통화해요!</strong>
-//                   <div style={{ marginBottom: '8px' }}>
-//                     요청을 수락하면 서로의 번호로 통화할 수 있어요.
-//                   </div>
-//                   <Button
-//                     size="medium"
-//                     backgroundColor="#36CF00"
-//                     onClick={responseCall}
-//                   >
-//                     수락하기
-//                   </Button>
-//                 </div>
-//                 <div className="wrapper">
-//                   <div className="read">
-//                     {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                   </div>
-//                   <div className="time">{parseTime(message.sendDt)}</div>
-//                 </div>
-//               </div>
-//             </div>
-//           </MessageByOther>
-//         );
+const Message = memo(({ message, isSentByMe }: MessageProps) => {
+  useEffect(() => {
+    console.log('message확인 >>>>> ', message);
+  }, [message]);
+  switch (message.publishType) {
+    case 'SYSTEM':
+      return (
+        <Announcement>
+          <div className="content">{message.chatMessage}</div>
+        </Announcement>
+      );
+    case 'USER':
+      return isSentByMe ? (
+        <MessageByMe>
+          <div className="message-container">
+            <div className="read">
+              {message.unreadCount !== 0 ? message.unreadCount : ''}
+            </div>
+            <div className="wrapper">
+              <div className="message">{message.chatMessage}</div>
+              <div className="time">{parseTime(message.createdAt)}</div>
+            </div>
+          </div>
+        </MessageByMe>
+      ) : (
+        <MessageByOther>
+          <WrapProfile
+          // onClick={openProfileModal}
+          >
+            <img src="/assets/character/dong-pay.png" alt="profile" />
+          </WrapProfile>
+          <div className="message-section">
+            <div className="nickname">닉네임 나리</div>
+            <div className="message-container">
+              <div className="wrapper">
+                <div className="message">{message.chatMessage}</div>
+                <div className="time">{parseTime(message.createdAt)}</div>
+              </div>
+              <div className="read">
+                {message.unreadCount !== 0 ? message.unreadCount : ''}
+              </div>
+            </div>
+          </div>
+        </MessageByOther>
+      );
+    default:
+      return null;
+  }
+});
 
-//       case 'CALL_RESPONSE':
-//         return isSentByMe ? (
-//           <MessageByMe>
-//             <div className="message-container">
-//               <div className="wrapper">
-//                 <div className="read">
-//                   {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                 </div>
-//                 <div className="time">{parseTime(message.sendDt)}</div>
-//               </div>
-//               <div className="tail"></div>
-//               <div className="message">
-//                 <strong>🎉 통화 요청을 수락했어요!</strong>
-//                 <div>
-//                   상단{' '}
-//                   <img
-//                     src="/assets/callicon-active.svg"
-//                     alt="전화버튼"
-//                     style={{ verticalAlign: 'middle' }}
-//                   />{' '}
-//                   버튼을 눌러 통화해보세요.
-//                 </div>
-//               </div>
-//             </div>
-//           </MessageByMe>
-//         ) : (
-//           <MessageByOther>
-//             <CharacterBackground
-//               $backgroundColor={CHARACTERS[opponentMemberCharacter]?.color}
-//               onClick={openProfileModal}
-//             >
-//               <Character
-//                 $xPos={CHARACTERS[opponentMemberCharacter]?.position[0]}
-//                 $yPos={CHARACTERS[opponentMemberCharacter]?.position[1]}
-//               />
-//             </CharacterBackground>
-//             <div className="message-section">
-//               <div className="nickname">{message.senderName}</div>
-//               <div className="message-container">
-//                 <div className="tail"></div>
-//                 <div className="message">
-//                   <strong>🎉 통화 요청을 수락했어요!</strong>
-//                   <div>
-//                     상단{' '}
-//                     <img
-//                       src="/assets/callicon-active.svg"
-//                       alt="전화버튼"
-//                       style={{ verticalAlign: 'middle' }}
-//                     />{' '}
-//                     버튼을 눌러 통화해보세요.
-//                   </div>
-//                 </div>
-//                 <div className="wrapper">
-//                   <div className="read">
-//                     {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                   </div>
-//                   <div className="time">{parseTime(message.sendDt)}</div>
-//                 </div>
-//               </div>
-//             </div>
-//           </MessageByOther>
-//         );
+const Announcement = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 16px;
 
-//       case 'USER':
-//         return isSentByMe ? (
-//           <MessageByMe>
-//             <div className="message-container">
-//               <div className="wrapper">
-//                 <div className="read">
-//                   {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                 </div>
-//                 <div className="time">{parseTime(message.sendDt)}</div>
-//               </div>
-//               <>
-//                 <div className="tail"></div>
-//                 <div className="message">{message.chatMessage}</div>
-//               </>
-//             </div>
-//           </MessageByMe>
-//         ) : (
-//           <MessageByOther>
-//             <CharacterBackground
-//               $backgroundColor={CHARACTERS[opponentMemberCharacter]?.color}
-//               onClick={openProfileModal}
-//             >
-//               <Character
-//                 $xPos={CHARACTERS[opponentMemberCharacter]?.position[0]}
-//                 $yPos={CHARACTERS[opponentMemberCharacter]?.position[1]}
-//               />
-//             </CharacterBackground>
-//             <div className="message-section">
-//               <div className="nickname">{message.senderName}</div>
-//               <div className="message-container">
-//                 <>
-//                   <div className="tail"></div>
-//                   <div className="message">{message.chatMessage}</div>
-//                 </>
-//                 <div className="wrapper">
-//                   <div className="read">
-//                     {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                   </div>
-//                   <div className="time">{parseTime(message.sendDt)}</div>
-//                 </div>
-//               </div>
-//             </div>
-//           </MessageByOther>
-//         );
-//       case 'IMAGE':
-//         return isSentByMe ? (
-//           <MessageByMe>
-//             <div className="message-container">
-//               <div className="wrapper">
-//                 <div className="read">
-//                   {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                 </div>
-//                 <div className="time">{parseTime(message.sendDt)}</div>
-//               </div>
-//               <img
-//                 src={message.chatMessage}
-//                 alt="message"
-//                 onClick={() => viewImage(message.chatMessage)}
-//               />
-//             </div>
-//           </MessageByMe>
-//         ) : (
-//           <MessageByOther>
-//             <CharacterBackground
-//               $backgroundColor={CHARACTERS[opponentMemberCharacter]?.color}
-//               onClick={openProfileModal}
-//             >
-//               <Character
-//                 $xPos={CHARACTERS[opponentMemberCharacter]?.position[0]}
-//                 $yPos={CHARACTERS[opponentMemberCharacter]?.position[1]}
-//               />
-//             </CharacterBackground>
-//             <div className="message-section">
-//               <div className="nickname">{message.senderName}</div>
-//               <div className="message-container">
-//                 <img
-//                   src={message.chatMessage}
-//                   alt="message"
-//                   onClick={() => viewImage(message.chatMessage)}
-//                 />
-//                 <div className="wrapper">
-//                   <div className="read">
-//                     {message.unreadCount !== 0 ? message.unreadCount : ''}
-//                   </div>
-//                   <div className="time">{parseTime(message.sendDt)}</div>
-//                 </div>
-//               </div>
-//             </div>
-//           </MessageByOther>
-//         );
-//       default:
-//         return null;
-//     }
-//   }
-// );
+  > .content {
+    font-size: 0.7rem;
+    background-color: #eee;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 9999px;
+  }
+`;
 
-// const Announcement = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin: 16px;
+const WrapProfile = styled.div`
+  /* position: relative; */
+  /* flex-shrink: 0; */
+  width: 3rem;
+  height: 3rem;
+  /* padding-right: 3rem; */
 
-//   > .content {
-//     font-size: 0.7rem;
-//     background-color: #eee;
-//     padding: 0.5rem;
-//     text-align: center;
-//     border-radius: 9999px;
-//   }
-// `;
+  img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #cecece; //임시
 
-// const CharacterBackground = styled.div`
-//   position: relative;
-//   flex-shrink: 0;
-//   width: 36px;
-//   height: 36px;
-//   border-radius: 9999px;
-//   background-color: ${(props) => props.$backgroundColor};
+    /* position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); */
+  }
+`;
 
-//   img {
-//     position: absolute;
-//     width: 70%;
-//     height: 70%;
-//     left: 50%;
-//     top: 50%;
-//     transform: translate(-50%, -50%);
-//   }
-// `;
+const MessageByOther = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: start;
+  margin: 16px;
 
-// const Character = styled.div`
-//   width: 24px;
-//   height: 24px;
-//   background-image: url('/assets/sp_character.png');
-//   background-position: ${(props) =>
-//     `-${props.$xPos * 24}px -${props.$yPos * 24}px`};
-//   background-size: calc(100% * 4);
+  .message-section {
+    > .nickname {
+      color: #000;
+      font-family: NanumSquare;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
 
-//   position: absolute;
-//   left: 50%;
-//   top: 50%;
-//   transform: translate(-50%, -50%);
-// `;
+    > .message-container {
+      display: flex;
+      align-items: end;
+      gap: 0.5rem;
+      position: relative;
+      flex-grow: 1;
 
-// const MessageByOther = styled.div`
-//   display: flex;
-//   align-items: start;
-//   gap: 12px;
-//   margin: 16px;
+      > .wrapper {
+        font-size: 0.6rem;
+        /* > .read {
+          color: #ff625d;
+        } */
+        > .message {
+          width: fit-content;
+          max-width: 100%;
+          background-color: #f5f5f5;
+          padding: 10px;
+          overflow-wrap: break-word;
+          word-break: break-word;
 
-//   .profile-section {
-//     width: 44px;
-//     height: 44px;
-//     background-color: red;
-//     border-radius: 100%;
-//   }
+          border-radius: 0rem 1.1875rem 1.1875rem 1.1875rem;
+          background: var(--Base-Gray2, #ebeceb);
 
-//   .message-section {
-//     > .nickname {
-//       margin-bottom: 4px;
-//       font-size: 0.8rem;
-//       opacity: 50%;
-//     }
+          color: var(--Base-Black, #000);
+          font-family: NanumSquare;
+          font-size: 1.25rem;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
 
-//     > .message-container {
-//       display: flex;
-//       align-items: end;
-//       gap: 0.5rem;
-//       position: relative;
-//       flex-grow: 1;
+          a {
+            color: black;
+          }
+        }
+        > .time {
+          color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+          text-align: center;
+          font-family: NanumSquare;
+          font-size: 1.125rem;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          padding-top: 0.2rem;
+        }
+      }
+    }
+  }
+`;
 
-//       > .tail {
-//         position: absolute;
-//         top: 0;
-//         left: -10px;
-//         width: 25px;
-//         height: 30px;
-//         clip-path: polygon(100% 0, 0 0, 100% 100%);
-//         background-color: #f5f5f5;
-//         z-index: -1;
-//       }
+const MessageByMe = styled.div`
+  margin: 16px;
+  display: flex;
+  justify-content: flex-end;
 
-//       > .message {
-//         width: fit-content;
-//         max-width: 70%;
-//         background-color: #f5f5f5;
-//         padding: 10px;
-//         border-radius: 1rem;
-//         color: black;
-//         line-height: 1.5;
-//         overflow-wrap: break-word;
-//         word-break: break-word;
+  > .message-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    gap: 0.5rem;
+    max-width: 80%;
 
-//         a {
-//           color: black;
-//         }
+    > .wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: end;
+      text-align: right;
+      font-size: 0.6rem;
+      /* > .read {
+        color: #ff625d;
+      } */
+      > .message {
+        width: fit-content;
+        max-width: 100%; // 변경: content의 최대 너비를 wrapper에 맞게 조절
+        padding: 10px;
+        line-height: 1.5;
+        overflow-wrap: break-word;
+        word-break: break-word;
 
-//         strong {
-//           font-weight: 600;
-//         }
-//       }
+        border-radius: 0.875rem 0rem 0.875rem 0.875rem;
+        background: var(--Primary-dong, #ff314a);
+        color: var(--Base-White, var(--White, #fff));
+        font-family: NanumSquare;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
 
-//       > img {
-//         width: 9rem;
-//         height: 13rem;
-//         object-fit: cover;
-//         border-radius: 0.75rem;
-//       }
+        .link {
+          text-decoration: underline;
+        }
 
-//       > .wrapper {
-//         font-size: 0.6rem;
-//         > .read {
-//           color: #ff625d;
-//         }
-//         > .time {
-//           opacity: 50%;
-//         }
-//       }
-//     }
-//   }
-// `;
+        a {
+          color: white;
+        }
+      }
 
-// const MessageByMe = styled.div`
-//   margin: 16px;
-//   display: flex;
-//   justify-content: flex-end;
+      > .time {
+        color: var(--Base-Gray3, var(--Base-Gray, #8e8e8e));
+        text-align: center;
+        font-family: NanumSquare;
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        padding-top: 0.2rem;
+      }
+    }
+  }
+`;
 
-//   > .message-container {
-//     display: flex;
-//     position: relative;
-//     align-items: end;
-//     justify-content: flex-end;
-//     gap: 0.5rem;
-//     max-width: 80%;
-
-//     > .wrapper {
-//       text-align: right;
-//       font-size: 0.6rem;
-//       > .read {
-//         color: #ff625d;
-//       }
-//       > .time {
-//         opacity: 50%;
-//       }
-//     }
-
-//     > .tail {
-//       position: absolute;
-//       top: 0;
-//       right: -10px;
-//       width: 25px;
-//       height: 30px;
-//       clip-path: polygon(100% 0, 0 0, 0% 100%);
-//       background-color: #ff625d;
-//       z-index: -1;
-//     }
-
-//     > .message {
-//       width: fit-content;
-//       max-width: 100%; // 변경: content의 최대 너비를 wrapper에 맞게 조절
-//       background-color: #ff625d;
-//       padding: 10px;
-//       border-radius: 1rem;
-//       color: white;
-//       line-height: 1.5;
-//       overflow-wrap: break-word;
-//       word-break: break-word;
-
-//       .link {
-//         text-decoration: underline;
-//       }
-
-//       a {
-//         color: white;
-//       }
-
-//       strong {
-//         font-weight: 600;
-//       }
-//     }
-//     > img {
-//       width: 9rem;
-//       height: 13rem;
-//       object-fit: cover;
-//       border-radius: 0.75rem;
-//     }
-//   }
-// `;
-
-// export default Message;
+export default Message;
