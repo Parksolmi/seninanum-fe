@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import Button from '../../components/common/Button';
@@ -29,6 +29,7 @@ interface Recruit {
 
 const ViewRecruitDetail = () => {
   const { recruitId } = useParams<{ recruitId: string }>();
+  const navigate = useNavigate();
 
   const [recruit, setRecruit] = useState<Recruit | null>(null);
   // 모달 창

@@ -79,7 +79,7 @@ const ManageMyApplication = () => {
   };
   return (
     <>
-      <PrevHeader title={'지원 이력 조회'} navigateTo={'/mypage'} />
+      <PrevHeader title={'지원 이력 조회'} navigateTo={'-1'} />
       <WrapContent>
         <Tab>
           <p
