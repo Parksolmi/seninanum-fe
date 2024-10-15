@@ -6,6 +6,7 @@ import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
 import { parseTime } from '../../utils/formatTime';
 import ApplicationCard from '../../components/chat/ApplicationCard';
+import { calcAge } from '../../utils/calcAge';
 
 interface ChatRoom {
   chatRoomId: number;
@@ -25,15 +26,25 @@ interface Application {
   profile: string;
 }
 
+interface Volunteers {
+  profileId: string;
+  profile: string;
+  nickname: string;
+  gender: string;
+  birthyear: string;
+}
+
 const ChatIndexPage: React.FC = () => {
   const navigate = useNavigate();
   const { userType } = userTypeStore();
   const [applicationList, setApplicationList] = useState<Application[]>([]);
+  const [volunteers, setVolunteers] = useState<Volunteers[]>([]);
   const [chatList, setChatList] = useState<ChatRoom[]>([]);
 
-  // 지원한 구인글 목록 불러오기
+  // (동백)지원한 구인글 목록 불러오기
   useEffect(() => {
     const fetchApplications = async () => {
+      if (userType !== 'dong') return;
       try {
         const res = await instance.get('application/recruit/list');
         setApplicationList(res.data);
@@ -42,7 +53,34 @@ const ChatIndexPage: React.FC = () => {
       }
     };
     fetchApplications();
-  }, []);
+  }, [userType]);
+
+  // (나리) 지원자 목록 불러오기
+  useEffect(() => {
+    const fetchVolunteers = async () => {
+      if (userType !== 'nari') return;
+
+      try {
+        const res = await instance.get('application/list');
+        const uniqueVolunteers = filterUniqueByProfileId(res.data);
+        setVolunteers(uniqueVolunteers);
+      } catch (error) {
+        console.error('지원자 목록 조회 중 오류 발생:', error);
+      }
+    };
+
+    fetchVolunteers();
+  }, [userType]);
+
+  // profileId로 중복 항목 제거하는 함수
+  const filterUniqueByProfileId = (volunteers: Volunteers[]) => {
+    const seen = new Set(); // 중복 체크용 Set
+    return volunteers.filter((volunteer) => {
+      const isDuplicate = seen.has(volunteer.profileId);
+      seen.add(volunteer.profileId);
+      return !isDuplicate;
+    });
+  };
 
   // 채팅 목록 불러오기
   useEffect(() => {
@@ -79,6 +117,7 @@ const ChatIndexPage: React.FC = () => {
             <SwipeArea>
               {applicationList.map((application) => (
                 <ApplicationCard
+                  userType="dong"
                   key={application.recruitId}
                   profile={application.profile}
                   nickname={application.nickname}
@@ -91,8 +130,37 @@ const ChatIndexPage: React.FC = () => {
             </SwipeArea>
           </ApplicationListContainer>
         )}
+        {volunteers.length > 0 && (
+          <ApplicationListContainer>
+            <ApplicationTextArea>
+              <div className="leftText">
+                <p>나에게 지원한 동백</p>
+                <span>{volunteers.length}</span>
+              </div>
+              <div className="moreButton" onClick={() => navigate(`/chat`)}>
+                더보기
+                <img src="/assets/common/more-icon.svg" alt="더보기아이콘" />
+              </div>
+            </ApplicationTextArea>
+            <SwipeArea>
+              {volunteers.map((volunteer) => (
+                <ApplicationCard
+                  userType="nari"
+                  key={volunteer.profileId}
+                  profile={volunteer.profile}
+                  nickname={volunteer.nickname}
+                  gender={volunteer.gender}
+                  birthyear={calcAge(volunteer.birthyear)}
+                  onClick={() =>
+                    navigate(`/view/dongprofile/${volunteer.profileId}`)
+                  }
+                />
+              ))}
+            </SwipeArea>
+          </ApplicationListContainer>
+        )}
       </WrapContent>
-      {applicationList.length > 0 && <SplitLine />}
+      {(applicationList.length > 0 || volunteers.length > 0) && <SplitLine />}
       <WrapContent>
         <ChatListContainer>
           {chatList &&

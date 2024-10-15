@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface ApplicationProps {
+  userType: string;
   profile: string;
   nickname: string;
   title?: string;
@@ -10,19 +11,36 @@ interface ApplicationProps {
   onClick?: () => void;
 }
 const ApplicationCard: React.FC<ApplicationProps> = ({
+  userType,
   profile,
   nickname,
+  gender,
+  birthyear,
   title,
   onClick,
 }) => {
+  // gender 값에 따라 성별 텍스트 설정
+  const genderText = gender === 'F' || gender === '여성' ? '여성' : '남성';
+
   return (
     <>
       <CardContainer onClick={onClick}>
         <img src={profile} alt="프로필이미지" />
-        <div className="recruitInfo">
-          <p>{nickname} 나리</p>
-          <span>{title}</span>
-        </div>
+        {userType === 'dong' ? (
+          <div className="recruitInfo">
+            <p>{nickname} 나리</p>
+            <span>{title}</span>
+          </div>
+        ) : (
+          <div className="recruitInfo">
+            <p>{nickname} 동백</p>
+            {/* 태그 */}
+            <Tags>
+              <Tag $type={'dong'}>{genderText}</Tag>
+              <Tag $type={'dong'}>{birthyear}</Tag>
+            </Tags>
+          </div>
+        )}
       </CardContainer>
     </>
   );
@@ -72,6 +90,31 @@ const CardContainer = styled.div`
       font-size: 1.125rem;
     }
   }
+`;
+
+const Tags = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+`;
+
+interface tagType {
+  $type: string;
+}
+const Tag = styled.div<tagType>`
+  border-radius: 0.5rem;
+  background: ${({ $type }) =>
+    $type === 'nari' ? 'var(--Secondary-dong-2)' : 'var(--Secondary-nari-2)'};
+  color: var(--Base-Deep-Gray, #5b5b5b);
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0.25rem 0.875rem;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ApplicationCard;
