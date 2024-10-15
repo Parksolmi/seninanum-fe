@@ -250,7 +250,6 @@ const TitleText = styled.div`
   font-weight: 500;
   letter-spacing: -0.075rem;
   white-space: nowrap;
-  text-decoration-line: underline;
 
   overflow: hidden;
   color: var(--Base-Black, #000);
@@ -262,7 +261,6 @@ const TitleText = styled.div`
 const WrapChat = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 6rem;
   .date {
     text-align: center;
     font-family: NanumSquare;
