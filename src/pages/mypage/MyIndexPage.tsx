@@ -4,11 +4,11 @@ import MyIndexPageDong from './MyIndexPageDong';
 import MyIndexPageNari from './MyIndexPageNari';
 import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
+import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 
 const MyIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
-  const { data: user } = useFetchProfile();
+  const { data: user } = useFetchMyProfile();
 
   return (
     <>

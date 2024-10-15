@@ -1,21 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ReviewRatingBar = () => {
+interface reviewRationgProps {
+  userType: 'dong' | 'nari';
+  title: string;
+  superGreat: string;
+  good: string;
+  notGood: string;
+}
+
+const ReviewRatingBar: React.FC<reviewRationgProps> = ({
+  userType,
+  title,
+  superGreat,
+  good,
+  notGood,
+}) => {
   return (
     <ReviewContainer>
-      <div>활동매너</div>
-      <ReviewRatingContainer>
+      <div>{title}</div>
+      <ReviewRatingContainer $userType={userType}>
         <ReviewRatingBox>
-          <div>{1}</div>
+          <div>{superGreat}</div>
           <p>최고예요</p>
         </ReviewRatingBox>
         <ReviewRatingBox>
-          <div>{2}</div>
+          <div>{good}</div>
           <p>좋아요</p>
         </ReviewRatingBox>
         <ReviewRatingBox>
-          <div>{0}</div>
+          <div>{notGood}</div>
           <p>별로예요</p>
         </ReviewRatingBox>
       </ReviewRatingContainer>
@@ -41,12 +55,6 @@ const ReviewContainer = styled.div`
   }
 `;
 
-const ReviewRatingContainer = styled.div`
-  gap: 1.5rem;
-  display: flex;
-  margin-left: auto;
-`;
-
 const ReviewRatingBox = styled.div`
   display: 1;
   flex-direction: column;
@@ -58,11 +66,26 @@ const ReviewRatingBox = styled.div`
     text-align: center;
     font-size: 0.6875rem;
     font-weight: 700;
+    margin-top: 0.3rem;
   }
   div {
-    color: #f48400;
     text-align: center;
     font-size: 1.25rem;
+  }
+`;
+
+interface userTypeProps {
+  $userType: 'dong' | 'nari';
+}
+const ReviewRatingContainer = styled.div<userTypeProps>`
+  gap: 1.5rem;
+  display: flex;
+  margin-left: auto;
+
+  /* ReviewRatingBox의 내부 스타일을 한 번에 설정 */
+  ${ReviewRatingBox} div {
+    color: ${({ $userType }) =>
+      $userType === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
   }
 `;
 
