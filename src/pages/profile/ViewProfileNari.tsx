@@ -99,6 +99,7 @@ const ViewProfileNari = () => {
               age="50대"
               method="모두 선택"
               region="서대문구"
+              navigateTo={() => navigate('/')}
             />
             <DetailCard
               type="nari"
@@ -107,6 +108,7 @@ const ViewProfileNari = () => {
               age="50대"
               method="모두 선택"
               region="서대문구"
+              navigateTo={() => navigate('/')}
             />
           </WrapContentSingle>
         </>
