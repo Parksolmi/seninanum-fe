@@ -36,7 +36,7 @@ const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
       );
     case 'USER':
       return isSentByMe ? (
-        <MessageByMe>
+        <MessageByMe $userType={opponent.userType}>
           <div className="message-container">
             <div className="wrapper">
               <div className="wrapper-top">
@@ -108,7 +108,11 @@ const WrapProfile = styled.div`
   }
 `;
 
-const MessageByMe = styled.div`
+interface MessageProp {
+  $userType: string;
+}
+
+const MessageByMe = styled.div<MessageProp>`
   margin: 16px;
   display: flex;
   justify-content: flex-end;
@@ -152,7 +156,10 @@ const MessageByMe = styled.div`
           word-break: break-word;
 
           border-radius: 0.875rem 0rem 0.875rem 0.875rem;
-          background: var(--Primary-dong, #ff314a);
+          background: ${({ $userType }) =>
+            $userType === 'dong'
+              ? 'var(--Primary-nari)'
+              : 'var(--Primary-dong)'};
           color: var(--Base-White, var(--White, #fff));
           font-family: NanumSquare;
           font-size: 1.25rem;

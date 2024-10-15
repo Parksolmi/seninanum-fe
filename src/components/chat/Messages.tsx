@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useLayoutEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -40,7 +40,7 @@ const Messages = memo(
       }
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       scrollToBottom();
     }, [groupedMessages]);
 
@@ -77,7 +77,8 @@ const MessagesWrapper = styled.div`
   flex-grow: 1;
   overflow-y: auto;
   min-height: 0;
-  max-height: 100vh;
+  padding-bottom: 5.5rem;
+  max-height: calc(100vh - 5.5rem);
 `;
 
 const WrapDate = styled.div`
