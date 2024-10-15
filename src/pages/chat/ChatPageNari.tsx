@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import BaneerButton from '../../components/chat/BannerButton';
-import MessageBox from '../../components/chat/MessageBox';
 import MessageInput from '../../components/chat/MessageInput';
 
 const ChatPageNari = () => {
@@ -21,16 +19,16 @@ const ChatPageNari = () => {
         <img src={'/assets/chat/exit-icon.svg'} alt="나가기" />
       </WrapHeader>
       <Split />
-      <WrapBanner>
+      {/* <WrapBanner>
         <BaneerButton src={'/assets/chat/won-icon.png'} text="송금요청" />
         <BaneerButton src={'/assets/chat/calendar-icon.png'} text="약속잡기" />
-      </WrapBanner>
+      </WrapBanner> */}
       <WrapChat>
         <div className="date">6월 19일 수요일</div>
-        <MessageBox type="nari" visible={visible} />
+        {/* <MessageBox type="nari" visible={visible} /> */}
       </WrapChat>
 
-      <MessageInput setVisible={() => setVisible(true)} />
+      {/* <MessageInput setVisible={() => setVisible(true)} /> */}
     </>
   );
 };

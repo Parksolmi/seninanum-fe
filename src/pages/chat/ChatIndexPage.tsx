@@ -27,18 +27,8 @@ const ChatIndexPage: React.FC = () => {
     const fetchChatList = async () => {
       try {
         const res = await instance.get('/chatroom/list');
-
-        //임시--------------
-        // 응답 데이터 처리 및 lastMessage에 기본값 설정
-        const modifiedChatList = res.data.map((chat: any) => ({
-          ...chat,
-          lastMessage: chat.lastMessage || '임시 메세지 입니다.',
-          unreadCount: chat.unreadCount || 2,
-        }));
-        setChatList(modifiedChatList);
-        //------------------
-
-        // setChatList(res.data);
+        console.log(res.data);
+        setChatList(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -70,7 +60,7 @@ const ChatIndexPage: React.FC = () => {
                   <WrapChatSection>
                     <div className="top">
                       <Profile>
-                        <div className="department">{chat.roomName}</div>
+                        <div className="department">{chat.roomName} 동백</div>
                       </Profile>
                       <Time>{timeDisplay}</Time>
                     </div>
@@ -127,8 +117,8 @@ const ChatRoomContainer = styled.div`
 
 const ProfileImg = styled.div`
   img {
-    width: 3.375rem;
-    height: 3.375rem;
+    width: 3.5rem;
+    height: 3.5rem;
     object-fit: cover;
     border-radius: 50%;
     background: #c0c0c0;
