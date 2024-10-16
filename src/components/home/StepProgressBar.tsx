@@ -49,18 +49,19 @@ const FilledBar = styled.div<{ $percent: number }>`
 
 const Step = styled.div<{ $activeStatus: number }>`
   position: absolute;
+  z-index: 100;
   top: -0.3rem;
   left: ${({ $activeStatus }) =>
-    `${$activeStatus === 0 ? -5 : 10 * $activeStatus}%`};
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  display: block;
+    `${12.5 * $activeStatus}%`}; /* 12.5%씩 증가하도록 수정 */
+  width: 52px;
+  height: 44px;
+  display: flex;
   align-items: center;
-  justify-content: center;
 
   img {
     width: 4.5rem;
+    margin-left: ${({ $activeStatus }) =>
+      $activeStatus === 0 ? '-15px' : '-60px'};
   }
 `;
 export default StepProgressBar;
