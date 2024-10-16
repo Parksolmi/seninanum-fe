@@ -103,7 +103,7 @@ const ChatIndexPage: React.FC = () => {
           <ApplicationListContainer>
             <ApplicationTextArea>
               <div className="leftText">
-                <p>내가 지원한 공고</p>
+                <span>내가 지원한 공고</span>
                 <span>{applicationList.length}</span>
               </div>
               <div
@@ -134,7 +134,7 @@ const ChatIndexPage: React.FC = () => {
           <ApplicationListContainer>
             <ApplicationTextArea>
               <div className="content-title">
-                <p>나에게 지원한 동백</p>
+                <span>나에게 지원한 동백</span>
                 <span>{volunteers.length}</span>
               </div>
               <div
