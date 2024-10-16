@@ -27,7 +27,7 @@ const ChooseTypePage: React.FC = () => {
 
   return (
     <WrapContent>
-      <PrevHeader title="회원가입" />
+      <PrevHeader title="회원가입" isLine={false} />
       <Title>어떤 유형으로 가입하시겠어요?</Title>
       <UserTypeButton
         types="dong"
@@ -68,7 +68,7 @@ const WrapButton = styled.div`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 4rem;
+  bottom: 2.12rem;
 `;
 
 export default ChooseTypePage;

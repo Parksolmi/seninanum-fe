@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 interface PrevHeaderProps {
   title?: string;
-  navigateTo: string;
+  navigateTo?: string;
   onModify?: () => void;
   onClick?: () => void;
+  isLine?: boolean;
 }
 
 const PrevHeader = ({
@@ -14,19 +15,20 @@ const PrevHeader = ({
   navigateTo,
   onModify,
   onClick,
+  isLine,
 }: PrevHeaderProps) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
     if (navigateTo === '-1') {
       navigate(-1); // 브라우저 이전 페이지로 이동
-    } else {
+    } else if (navigateTo) {
       navigate(navigateTo); // 그 외 다른 경로로 이동
     }
   };
 
   return (
-    <WrapHeader>
+    <WrapHeader $isLine={isLine}>
       {navigateTo && (
         <BackButton onClick={handleNavigation}>
           <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
@@ -40,16 +42,24 @@ const PrevHeader = ({
   );
 };
 
-const WrapHeader = styled.div`
+interface WrapHeaderProp {
+  $isLine?: boolean;
+}
+const WrapHeader = styled.div<WrapHeaderProp>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 1.8rem;
-  border-bottom: solid 1px var(--Base-Gray2, #ebeceb);
+  ${(props) =>
+    props.$isLine ? 'border-bottom: solid 1px var(--Base-Gray2, #ebeceb);' : ''}
   padding: 0 1.1rem 0.5rem 1.1rem;
 `;
 
 const BackButton = styled.div`
+  position: absolute;
+  left: 0;
+  z-index: 9;
   img {
     width: 0.8rem;
   }

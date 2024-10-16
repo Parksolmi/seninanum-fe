@@ -157,7 +157,7 @@ const InputSubmit = styled.input<{ $userType: string }>`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 1.875rem;
+  bottom: 2.12rem;
 
   height: 3.7rem;
   text-align: center;

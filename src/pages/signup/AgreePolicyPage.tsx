@@ -115,7 +115,7 @@ const WrapButton = styled.div`
   position: fixed;
   left: 1.1rem;
   right: 1.1rem;
-  bottom: 4rem;
+  bottom: 2.12rem;
 `;
 const WrapCheckBox = styled.div`
   display: flex;

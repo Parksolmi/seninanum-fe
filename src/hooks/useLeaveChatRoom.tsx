@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import Modal from '../components/common/Modal';
 
 export const useLeaveChatRoom = (client, roomId, memberId, opponentId) => {
   const navigate = useNavigate();
