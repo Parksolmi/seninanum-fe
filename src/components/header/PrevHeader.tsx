@@ -6,9 +6,15 @@ interface PrevHeaderProps {
   title?: string;
   navigateTo: string;
   onModify?: () => void;
+  onClick?: () => void;
 }
 
-const PrevHeader = ({ title, navigateTo, onModify }: PrevHeaderProps) => {
+const PrevHeader = ({
+  title,
+  navigateTo,
+  onModify,
+  onClick,
+}: PrevHeaderProps) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
@@ -27,7 +33,7 @@ const PrevHeader = ({ title, navigateTo, onModify }: PrevHeaderProps) => {
         </BackButton>
       )}
       <TitleWrapper>
-        <TitleText>{title}</TitleText>
+        <TitleText onClick={onClick}>{title}</TitleText>
       </TitleWrapper>
       {onModify && <ModifyText onClick={onModify}>수정</ModifyText>}
     </WrapHeader>

@@ -22,7 +22,7 @@ const ProgressLayout: React.FC = () => {
 
   useEffect(() => {
     if (location.pathname.includes(`/modify/recruit`)) {
-      setExitPath(`/view/myrecruit/${recruitId}`); // 특정 경로에 따라 나가기 경로 변경
+      setExitPath(`/manage/myrecruit`); // 특정 경로에 따라 나가기 경로 변경
     } else {
       setExitPath('/home'); // 기본 경로로 설정
     }

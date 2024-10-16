@@ -41,7 +41,7 @@ const RegisterRecruitContentPage = () => {
         // 수정 모드: PUT 요청
         await instance.put(`/recruit/${recruitState.recruitId}`, payload);
         alert('구인글이 수정되었습니다.');
-        navigate(`/view/myrecruit/${recruitState?.recruitId}`);
+        navigate(`/manage/myrecruit`);
       } else {
         // 등록 모드: POST 요청
         await instance.post('/recruit', payload);
