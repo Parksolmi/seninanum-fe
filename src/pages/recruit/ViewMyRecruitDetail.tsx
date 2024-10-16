@@ -20,6 +20,7 @@ interface Recruit {
   priceType: string;
   gender: string;
   field: string;
+  status: string;
   createdAt: string;
 }
 
@@ -159,7 +160,7 @@ const ViewMyRecruitDetail = () => {
             </div>
             <WrapButton>
               <Button
-                disabled={false}
+                disabled={recruit.status === '모집중' ? false : true}
                 userType={'nari'}
                 onClick={handleCloseRecruit}
               >
