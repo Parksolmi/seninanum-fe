@@ -9,7 +9,7 @@ import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  useFetchMessagesFromLocal,
+  // useFetchMessagesFromLocal,
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
@@ -27,18 +27,23 @@ interface ProfileIds {
 }
 
 interface Message {
-  senderId: string;
-  body: string;
+  chatMessage: string;
+  chatMessageId: number;
+  chatRoomId: number;
+  senderId: number;
+  createdAt: string;
+  senderType: 'USER' | 'SYSTEM';
   unreadCount: number;
-  // 추가적인 필드들
 }
 
 const ChatPageDong = () => {
   const navigate = useNavigate();
   const { chatRoomId: roomId = '' } = useParams<{ chatRoomId: string }>();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastReadMessageId, setLastMessageId] = useState<number | null>();
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
@@ -60,7 +65,7 @@ const ChatPageDong = () => {
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
@@ -87,6 +92,18 @@ const ChatPageDong = () => {
   // input 값
   const handleChangeMessage = (e) => {
     setDraftMessage(e.target.value);
+  };
+
+  const handleBackButton = async () => {
+    try {
+      await instance.post('/stomp/disconnect', {
+        roomId: roomId,
+        lastReadMessageId: lastReadMessageId,
+      });
+      navigate('/chat');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -132,6 +149,7 @@ const ChatPageDong = () => {
       // STOMP 클라이언트 생성
       const newClient = new Client({
         brokerURL: 'wss://api.seninanum.shop/meet',
+        // brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,
@@ -156,10 +174,12 @@ const ChatPageDong = () => {
       setClient(newClient);
 
       //이전 메세지 목록 불러오기
-      fetchLocalMessages(setMessages);
-      const staleMessages = fetchLocalMessages(setMessages);
-      if (staleMessages.length === 0) fetchServerMessages(setMessages);
+      // fetchLocalMessages(setMessages);
+      // const staleMessages = fetchLocalMessages(setMessages);
+      // if (staleMessages.length === 0) fetchServerMessages(setMessages);
       // else fetchServerUnreadMessages(messages, setMessages);
+
+      fetchServerMessages(setMessages); //10월 17일 테스트 용으로 적어놓은거
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
@@ -172,6 +192,7 @@ const ChatPageDong = () => {
   // 메세지 전송 시
   useEffect(() => {
     console.log(messages);
+    setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
     // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
@@ -180,7 +201,7 @@ const ChatPageDong = () => {
     <Wrapper>
       <Container>
         <WrapHeader>
-          <BackButton onClick={() => navigate('/chat')}>
+          <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>요청글 보러가기</TitleText>
@@ -197,16 +218,16 @@ const ChatPageDong = () => {
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
-                // isMenuOpen={isMenuOpen}
+                isMenuOpen={isMenuOpen}
               />
             </WrapChat>
-            <MessageInputWrapper>
-              <MessageInput
-                value={draftMessage}
-                onChangeHandler={handleChangeMessage}
-                submitHandler={sendMessage}
-              />
-            </MessageInputWrapper>
+            <MessageInput
+              value={draftMessage}
+              onChangeHandler={handleChangeMessage}
+              submitHandler={sendMessage}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
           </>
         )}
       </Container>
@@ -257,18 +278,12 @@ const TitleText = styled.div`
   text-overflow: ellipsis;
   font-style: normal;
   line-height: normal;
+  text-decoration-line: underline;
 `;
 
 const WrapChat = styled.div`
   flex: 1;
   overflow-y: auto;
-  .date {
-    text-align: center;
-    font-family: NanumSquare;
-    font-size: 1.125rem;
-    font-weight: 400;
-    padding: 1.5rem 0 0 0;
-  }
 `;
 
 const WrapLoader = styled.div`
@@ -290,10 +305,4 @@ const Container = styled.div`
   transition: height 0.3s;
 `;
 
-const MessageInputWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 10;
-`;
 export default ChatPageDong;

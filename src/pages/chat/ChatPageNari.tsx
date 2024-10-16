@@ -37,6 +37,7 @@ const ChatPageNari = () => {
   const navigate = useNavigate();
   const { chatRoomId: roomId = '' } = useParams<{ chatRoomId: string }>();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [draftMessage, setDraftMessage] = useState('');
@@ -196,7 +197,7 @@ const ChatPageNari = () => {
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
-                // isMenuOpen={isMenuOpen}
+                isMenuOpen={isMenuOpen}
               />
             </WrapChat>
             <MessageInputWrapper>
@@ -204,6 +205,8 @@ const ChatPageNari = () => {
                 value={draftMessage}
                 onChangeHandler={handleChangeMessage}
                 submitHandler={sendMessage}
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
               />
             </MessageInputWrapper>
           </>
