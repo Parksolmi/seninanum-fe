@@ -173,10 +173,12 @@ const ChatPageDong = () => {
       setClient(newClient);
 
       //이전 메세지 목록 불러오기
-      fetchLocalMessages(setMessages);
-      const staleMessages = fetchLocalMessages(setMessages);
-      if (staleMessages.length === 0) fetchServerMessages(setMessages);
+      // fetchLocalMessages(setMessages);
+      // const staleMessages = fetchLocalMessages(setMessages);
+      // if (staleMessages.length === 0) fetchServerMessages(setMessages);
       // else fetchServerUnreadMessages(messages, setMessages);
+
+      fetchServerMessages(setMessages); //10월 17일 테스트 용으로 적어놓은거
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
