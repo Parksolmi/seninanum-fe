@@ -99,13 +99,13 @@ const ManageMyRecruit = () => {
             onClick={() => setActiveTab(1)}
             className={activeTab === 1 ? 'active' : ''}
           >
-            모집 중
+            모집공고
           </p>
           <p
             onClick={() => setActiveTab(2)}
             className={activeTab === 2 ? 'active' : ''}
           >
-            마감
+            마감공고
           </p>
         </Tab>
         <WrapContentSingle>
@@ -151,7 +151,7 @@ const WrapContent = styled.div`
 
 const Tab = styled.div`
   display: flex;
-  margin-top: 0.7rem;
+  margin-top: 0.5rem;
   flex-direction: row;
   justify-content: center;
   gap: 5.2rem;
@@ -176,7 +176,7 @@ const Tab = styled.div`
       height: 0.25rem;
       background-color: #ffaa0e;
       position: absolute;
-      bottom: -1rem;
+      bottom: -0.6rem;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -187,8 +187,8 @@ const WrapContentSingle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-top: 2.8rem;
-  margin-bottom: 2.5rem;
+  margin-top: 1.8rem;
+  margin-bottom: 1.25rem;
 `;
 
 const WrapLoader = styled.div`

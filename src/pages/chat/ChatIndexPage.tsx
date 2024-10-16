@@ -250,6 +250,7 @@ const ApplicationTextArea = styled.div`
     font-size: 1.375rem;
     font-weight: 700;
     margin: 0;
+    display: inline;
   }
 
   span {
@@ -257,6 +258,7 @@ const ApplicationTextArea = styled.div`
     font-family: NanumSquare;
     font-size: 1.375rem;
     font-weight: 700;
+    margin-left: 0.3rem;
   }
 
   .moreButton {

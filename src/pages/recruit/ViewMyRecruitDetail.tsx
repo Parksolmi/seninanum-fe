@@ -86,11 +86,15 @@ const ViewMyRecruitDetail = () => {
       ) : (
         <>
           <WrapContent>
-            <PrevHeader
-              title={'구인글 조회'}
-              navigateTo={'-1'}
-              onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
-            />
+            {recruit.status === '모집중' ? (
+              <PrevHeader
+                title={'구인글 조회'}
+                navigateTo={'-1'}
+                onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
+              />
+            ) : (
+              <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
+            )}
 
             <div>
               <TitleText>{recruit.title}</TitleText>
@@ -164,7 +168,7 @@ const ViewMyRecruitDetail = () => {
                 userType={'nari'}
                 onClick={handleCloseRecruit}
               >
-                마감하기
+                {recruit.status === '모집중' ? '마감하기' : '마감된 글입니다'}
               </Button>
             </WrapButton>
           </WrapContent>
