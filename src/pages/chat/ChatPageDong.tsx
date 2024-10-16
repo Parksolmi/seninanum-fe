@@ -9,7 +9,7 @@ import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  useFetchMessagesFromLocal,
+  // useFetchMessagesFromLocal,
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
@@ -40,6 +40,7 @@ const ChatPageDong = () => {
   const navigate = useNavigate();
   const { chatRoomId: roomId = '' } = useParams<{ chatRoomId: string }>();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [lastReadMessageId, setLastMessageId] = useState<number | null>();
@@ -64,7 +65,7 @@ const ChatPageDong = () => {
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
@@ -217,16 +218,16 @@ const ChatPageDong = () => {
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
-                // isMenuOpen={isMenuOpen}
+                isMenuOpen={isMenuOpen}
               />
             </WrapChat>
-            <MessageInputWrapper>
-              <MessageInput
-                value={draftMessage}
-                onChangeHandler={handleChangeMessage}
-                submitHandler={sendMessage}
-              />
-            </MessageInputWrapper>
+            <MessageInput
+              value={draftMessage}
+              onChangeHandler={handleChangeMessage}
+              submitHandler={sendMessage}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
           </>
         )}
       </Container>
@@ -283,13 +284,6 @@ const TitleText = styled.div`
 const WrapChat = styled.div`
   flex: 1;
   overflow-y: auto;
-  .date {
-    text-align: center;
-    font-family: NanumSquare;
-    font-size: 1.125rem;
-    font-weight: 400;
-    padding: 1.5rem 0 0 0;
-  }
 `;
 
 const WrapLoader = styled.div`
@@ -311,10 +305,4 @@ const Container = styled.div`
   transition: height 0.3s;
 `;
 
-const MessageInputWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 10;
-`;
 export default ChatPageDong;

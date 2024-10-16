@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
 
@@ -6,14 +5,16 @@ interface MessageInputProps {
   value;
   onChangeHandler;
   submitHandler;
+  isMenuOpen;
+  setIsMenuOpen;
 }
 const MessageInput = ({
   value,
   onChangeHandler,
   submitHandler,
+  isMenuOpen,
+  setIsMenuOpen,
 }: MessageInputProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler();
@@ -69,7 +70,7 @@ const WrapMessageInput = styled.div<WrapMessageInputProp>`
   width: 100%;
   position: fixed;
   bottom: ${({ $isMenuOpen }) => ($isMenuOpen ? '0' : '-6.93rem')};
-  transition: bottom 0.3s ease-in-out; /* 애니메이션 효과 추가 */
+  transition: bottom 0.3s ease-in-out;
 `;
 
 const MeassageInputContainer = styled.div<WrapMessageInputProp>`
@@ -80,7 +81,7 @@ const MeassageInputContainer = styled.div<WrapMessageInputProp>`
   box-shadow: 0px -2px 3px rgba(150, 150, 150, 0.2);
   padding: ${({ $isMenuOpen }) =>
     $isMenuOpen ? '1.1rem 1.1rem 1.5rem 1.1rem' : '1.1rem 1.1rem 3rem 1.1rem'};
-  transition: padding 0.3s ease-in-out; /* 애니메이션 효과 추가 */
+  transition: padding 0.3s ease-in-out;
 `;
 
 const Input = styled.input`
@@ -126,6 +127,7 @@ const ChatMenuContainer = styled.div`
   justify-content: space-evenly;
   padding-bottom: 1rem;
 
+  background-color: white;
   gap: 0.3rem;
 
   div {
