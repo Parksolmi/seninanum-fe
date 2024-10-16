@@ -103,7 +103,7 @@ const ChatIndexPage: React.FC = () => {
           <ApplicationListContainer>
             <ApplicationTextArea>
               <div className="leftText">
-                <span>내가 지원한 공고</span>
+                <p>내가 지원한 공고</p>
                 <span>{applicationList.length}</span>
               </div>
               <div
@@ -134,7 +134,7 @@ const ChatIndexPage: React.FC = () => {
           <ApplicationListContainer>
             <ApplicationTextArea>
               <div className="content-title">
-                <span>나에게 지원한 동백</span>
+                <p>나에게 지원한 동백</p>
                 <span>{volunteers.length}</span>
               </div>
               <div
@@ -250,6 +250,7 @@ const ApplicationTextArea = styled.div`
     font-size: 1.375rem;
     font-weight: 700;
     margin: 0;
+    display: inline;
   }
 
   span {
@@ -257,6 +258,7 @@ const ApplicationTextArea = styled.div`
     font-family: NanumSquare;
     font-size: 1.375rem;
     font-weight: 700;
+    margin-left: 0.3rem;
   }
 
   .moreButton {
