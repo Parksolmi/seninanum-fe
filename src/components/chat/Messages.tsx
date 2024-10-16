@@ -9,7 +9,7 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'SYSTEM';
+  senderType: 'USER' | 'SYSTEM' | 'LEAVE';
   senderName?: string; // senderName은 optional로 설정
 }
 interface Profile {

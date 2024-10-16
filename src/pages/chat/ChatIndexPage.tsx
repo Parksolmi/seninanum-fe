@@ -13,7 +13,6 @@ interface ChatRoom {
   profile: string;
   userType: string;
   roomName: string;
-  roomStatus: string;
   lastMessage: string;
   createdAt: string; //lastMessageAt으로 수정
   unreadMessageCount: number;

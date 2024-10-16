@@ -14,6 +14,8 @@ import {
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/common/Modal';
 
 interface Profile {
   profileId: string;
@@ -45,6 +47,7 @@ const ChatPageDong = () => {
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [lastReadMessageId, setLastMessageId] = useState<number | null>();
+  const [roomStatus, setRoomStatus] = useState<string | null>();
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
@@ -69,6 +72,21 @@ const ChatPageDong = () => {
   // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
+
+  //모달 창
+  const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
+    (id) => (
+      <Modal
+        userType={'dong'}
+        title={'정말 나가시겠습니까?'}
+        content={``}
+        cancelText={'취소'}
+        confirmText={'나가기'}
+        onConfirm={handleLeaveRoom}
+        onCancel={closeLeaveModal}
+      />
+    )
+  );
 
   // 메시지 전송
   const { sendTextMessage } = useSendMessage(
@@ -115,14 +133,15 @@ const ChatPageDong = () => {
     }
   };
 
+  // 멤버 ID값, roomStatus 가져오기
   useEffect(() => {
-    // 멤버 ID값 가져오기
     const fetchProfileIds = async () => {
       try {
-        const response = await instance.get(`/chat/member/${roomId}`);
-        const { memberProfile, opponentProfile } = response.data;
+        const response = await instance.get(`/chat/info/${roomId}`);
+        const { memberProfile, opponentProfile, roomStatus } = response.data;
         setProfile({ memberProfile, opponentProfile });
         setIsMembersFetched(true);
+        setRoomStatus(roomStatus);
       } catch (error) {
         console.log(error);
       }
@@ -214,7 +233,7 @@ const ChatPageDong = () => {
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>요청글 보러가기</TitleText>
-          <LeaveRoomButton onClick={handleLeaveRoom}>
+          <LeaveRoomButton onClick={openLeaveModal}>
             <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
           </LeaveRoomButton>
         </WrapHeader>
@@ -233,13 +252,15 @@ const ChatPageDong = () => {
                 isMenuOpen={isMenuOpen}
               />
             </WrapChat>
-            <MessageInput
-              value={draftMessage}
-              onChangeHandler={handleChangeMessage}
-              submitHandler={sendMessage}
-              isMenuOpen={isMenuOpen}
-              setIsMenuOpen={setIsMenuOpen}
-            />
+            {roomStatus === 'ACTIVE' && (
+              <MessageInput
+                value={draftMessage}
+                onChangeHandler={handleChangeMessage}
+                submitHandler={sendMessage}
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+              />
+            )}
           </>
         )}
       </Container>

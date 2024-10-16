@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
 
 interface MessageType {
+  chatMessageId: number;
   senderId: string;
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'SYSTEM';
+  senderType: 'USER' | 'SYSTEM' | 'LEAVE';
   senderName?: string;
 }
 interface Profile {
@@ -28,10 +29,18 @@ const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
   const navigate = useNavigate();
 
   switch (message.senderType) {
-    case 'SYSTEM':
+    // case 'SYSTEM':
+    //   return (
+    //     <Announcement>
+    //       <div className="content">{message.chatMessage}</div>
+    //     </Announcement>
+    //   );
+    case 'LEAVE':
       return (
         <Announcement>
-          <div className="content">{message.chatMessage}</div>
+          <div className="content">{`${opponent.nickname} ${
+            opponent.userType === 'dong' ? '동백' : '나리'
+          }님이 ${message.chatMessage}`}</div>
         </Announcement>
       );
     case 'USER':
@@ -86,11 +95,21 @@ const Announcement = styled.div`
   margin: 16px;
 
   > .content {
-    font-size: 0.7rem;
-    background-color: #eee;
-    padding: 0.5rem;
+    border-radius: 1.25rem;
+    background: var(--Base-Gray, #8e8e8e);
+    color: white;
+
+    padding: 0.7rem 1rem;
     text-align: center;
-    border-radius: 9999px;
+
+    color: var(--White, #fff);
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.03375rem;
   }
 `;
 

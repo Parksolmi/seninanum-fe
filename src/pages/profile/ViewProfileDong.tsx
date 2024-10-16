@@ -68,8 +68,17 @@ const ViewProfileDong = () => {
     fetchProfileProgress();
   }, [profileId]);
 
-  // path에서 opponentid값 가져오기
-  // const createChatRoom = useCreateChatRoom();
+  const createChatRoom = async () => {
+    try {
+      const res = await instance.post('/chatroom/create', {
+        oppProfileId: profileId,
+      });
+      // console.log(res.data);
+      navigate(`/chatroom/dong/${res.data.chatRoomId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -97,7 +106,7 @@ const ViewProfileDong = () => {
               <Button
                 disabled={false}
                 userType={'nari'}
-                onClick={() => navigate(`/chatroom/dong`)}
+                onClick={createChatRoom}
               >
                 채팅하기
               </Button>
