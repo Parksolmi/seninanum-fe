@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
@@ -18,12 +18,24 @@ const RegisterRecruitContentPage = () => {
   const [selectedPriceType, setSelectedPriceType] = useState(
     recruitState?.priceType || ''
   );
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const hadnleOnChagne = (e) => {
     const { name, value } = e.target;
     setRecruitState({ [name]: value });
     setInputCount(e.target.value.replace(/<br\s*V?>/gm, '\n').length);
+    validateForm({ ...recruitState, [name]: value });
   };
+
+  const validateForm = useCallback(
+    (state) => {
+      const { title, content, price } = state;
+      const isFormValid =
+        title?.trim() && content?.trim() && price > 0 && selectedPriceType;
+      setIsDisabled(!isFormValid);
+    },
+    [selectedPriceType]
+  );
 
   const handleSubmit = async () => {
     try {
@@ -109,7 +121,7 @@ const RegisterRecruitContentPage = () => {
         ></Button>
         <Button
           userType={'nari'}
-          disabled={false}
+          disabled={recruitState.recruitId ? false : isDisabled}
           children={recruitState.recruitId ? '수정하기' : '등록하기'}
           onClick={handleSubmit}
         ></Button>
