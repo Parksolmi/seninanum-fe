@@ -137,7 +137,10 @@ const ChatIndexPage: React.FC = () => {
                 <p>나에게 지원한 동백</p>
                 <span>{volunteers.length}</span>
               </div>
-              <div className="moreButton" onClick={() => navigate(`/chat`)}>
+              <div
+                className="moreButton"
+                onClick={() => navigate(`/view/myapplicants`)}
+              >
                 더보기
                 <img src="/assets/common/more-icon.svg" alt="더보기아이콘" />
               </div>

@@ -7,6 +7,7 @@ import PrevHeader from '../../components/header/PrevHeader';
 import { SyncLoader } from 'react-spinners';
 import { useNavigate, useParams } from 'react-router-dom';
 import { instance } from '../../api/instance';
+import { calcAge } from '../../utils/calcAge';
 
 interface Recruit {
   title: string;
@@ -19,14 +20,23 @@ interface Recruit {
   priceType: string;
   gender: string;
   field: string;
+  status: string;
   createdAt: string;
 }
 
+interface Applicant {
+  profileId: string;
+  nickname: string;
+  gender: string;
+  birthyear: string;
+  profile: string;
+}
 const ViewMyRecruitDetail = () => {
   const navigate = useNavigate();
   const { recruitId } = useParams<{ recruitId: string }>();
 
   const [recruit, setRecruit] = useState<Recruit | null>(null);
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
 
   useEffect(() => {
     if (recruitId) {
@@ -39,7 +49,17 @@ const ViewMyRecruitDetail = () => {
         }
       };
 
+      const getApplicants = async () => {
+        try {
+          const res = await instance.get(`application/volunteer/${recruitId}`);
+          setApplicants(res.data);
+        } catch (error) {
+          console.error('지원자 목록 조회 중 오류 발생:', error);
+        }
+      };
+
       getRecruitDetail();
+      getApplicants();
     }
   }, [recruitId]);
 
@@ -92,15 +112,24 @@ const ViewMyRecruitDetail = () => {
           <SplitLine />
 
           <WrapContent>
-            <div>
+            <div className="applicant">
               <TitleText>지원자</TitleText>
-              <BriefProfileCard
-                type="dong"
-                gender={'남성'}
-                age={'20대'}
-                nickname={'동배기'}
-                onClick={() => navigate(`/view/dongprofile`)}
-              />
+              {applicants.length > 0 ? (
+                applicants.map((applicant) => (
+                  <BriefProfileCard
+                    key={applicant.profileId}
+                    type="dong"
+                    gender={applicant.gender}
+                    age={calcAge(applicant.birthyear)}
+                    nickname={applicant.nickname}
+                    onClick={() =>
+                      navigate(`/view/dongprofile/${applicant.profileId}`)
+                    }
+                  />
+                ))
+              ) : (
+                <p>지원자가 없습니다.</p>
+              )}
             </div>
             <div className="last-content">
               <TitleText>모집조건</TitleText>
@@ -131,7 +160,7 @@ const ViewMyRecruitDetail = () => {
             </div>
             <WrapButton>
               <Button
-                disabled={false}
+                disabled={recruit.status === '모집중' ? false : true}
                 userType={'nari'}
                 onClick={handleCloseRecruit}
               >
@@ -153,6 +182,11 @@ const WrapContent = styled.div`
   margin-bottom: 1.5rem;
   .last-content {
     margin-bottom: 7rem;
+  }
+  .applicant {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 `;
 

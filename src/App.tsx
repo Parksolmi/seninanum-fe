@@ -37,6 +37,7 @@ import PriceFilterPage from './pages/filter/PriceFilterPage';
 import ManageMyRecruit from './pages/manage/ManageMyRecruit';
 import ManageMyApplication from './pages/manage/ManageMyApplication';
 import ViewMyRecruitDetail from './pages/recruit/ViewMyRecruitDetail';
+import ViewMyApplicantsList from './pages/recruit/ViewMyApplicantsList';
 
 const App: React.FC = () => {
   return (
@@ -127,6 +128,7 @@ const App: React.FC = () => {
           path="/view/myrecruit/:recruitId"
           element={<ViewMyRecruitDetail />}
         />
+        <Route path="/view/myapplicants" element={<ViewMyApplicantsList />} />
         {/* 지원내역 관리 */}
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
         <Route element={<NavLayout />}>
