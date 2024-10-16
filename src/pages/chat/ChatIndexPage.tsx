@@ -16,7 +16,7 @@ interface ChatRoom {
   roomStatus: string;
   lastMessage: string;
   createdAt: string; //lastMessageAt으로 수정
-  unreadCount: number;
+  unreadMessageCount: number;
 }
 
 interface Application {
@@ -197,8 +197,8 @@ const ChatIndexPage: React.FC = () => {
                     </div>
                     <div className="bottom">
                       <Message>{chat.lastMessage}</Message>
-                      {chat.unreadCount > 0 ? (
-                        <UnreadCount>{chat.unreadCount}</UnreadCount>
+                      {chat.unreadMessageCount > 0 ? (
+                        <UnreadCount>{chat.unreadMessageCount}</UnreadCount>
                       ) : (
                         <br />
                       )}

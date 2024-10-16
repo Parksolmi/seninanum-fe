@@ -27,10 +27,13 @@ interface ProfileIds {
 }
 
 interface Message {
-  senderId: string;
-  body: string;
+  chatMessage: string;
+  chatMessageId: number;
+  chatRoomId: number;
+  senderId: number;
+  createdAt: string;
+  senderType: 'USER' | 'SYSTEM';
   unreadCount: number;
-  // 추가적인 필드들
 }
 
 const ChatPageDong = () => {
@@ -39,6 +42,7 @@ const ChatPageDong = () => {
 
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastReadMessageId, setLastMessageId] = useState<number | null>();
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
@@ -89,6 +93,18 @@ const ChatPageDong = () => {
     setDraftMessage(e.target.value);
   };
 
+  const handleBackButton = async () => {
+    try {
+      await instance.post('/stomp/disconnect', {
+        roomId: roomId,
+        lastReadMessageId: lastReadMessageId,
+      });
+      navigate('/chat');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     // 멤버 ID값 가져오기
     const fetchProfileIds = async () => {
@@ -132,6 +148,7 @@ const ChatPageDong = () => {
       // STOMP 클라이언트 생성
       const newClient = new Client({
         brokerURL: 'wss://api.seninanum.shop/meet',
+        // brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,
@@ -172,6 +189,7 @@ const ChatPageDong = () => {
   // 메세지 전송 시
   useEffect(() => {
     console.log(messages);
+    setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
     // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
@@ -180,7 +198,7 @@ const ChatPageDong = () => {
     <Wrapper>
       <Container>
         <WrapHeader>
-          <BackButton onClick={() => navigate('/chat')}>
+          <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>요청글 보러가기</TitleText>
@@ -257,6 +275,7 @@ const TitleText = styled.div`
   text-overflow: ellipsis;
   font-style: normal;
   line-height: normal;
+  text-decoration-line: underline;
 `;
 
 const WrapChat = styled.div`
