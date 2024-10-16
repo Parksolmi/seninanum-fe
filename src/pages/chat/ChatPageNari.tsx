@@ -13,6 +13,9 @@ import {
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
+import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/common/Modal';
 
 interface Profile {
   profileId: string;
@@ -27,10 +30,13 @@ interface ProfileIds {
 }
 
 interface Message {
-  senderId: string;
-  body: string;
+  chatMessage: string;
+  chatMessageId: number;
+  chatRoomId: number;
+  senderId: number;
+  createdAt: string;
+  senderType: 'USER' | 'SYSTEM';
   unreadCount: number;
-  // 추가적인 필드들
 }
 
 const ChatPageNari = () => {
@@ -40,6 +46,8 @@ const ChatPageNari = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [client, setClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastReadMessageId, setLastMessageId] = useState<number | null>();
+  const [roomStatus, setRoomStatus] = useState<string | null>();
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
@@ -65,6 +73,21 @@ const ChatPageNari = () => {
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
+  //모달 창
+  const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
+    (id) => (
+      <Modal
+        userType={'nari'}
+        title={'정말 나가시겠습니까?'}
+        content={``}
+        cancelText={'취소'}
+        confirmText={'나가기'}
+        onConfirm={handleLeaveRoom}
+        onCancel={closeLeaveModal}
+      />
+    )
+  );
+
   // 메시지 전송
   const { sendTextMessage } = useSendMessage(
     draftMessage,
@@ -85,19 +108,40 @@ const ChatPageNari = () => {
     }
   };
 
+  // 채팅방 나가기
+  const handleLeaveRoom = useLeaveChatRoom(
+    client,
+    roomId,
+    profile.memberProfile.profileId,
+    profile.opponentProfile.profileId
+  );
+
   // input 값
   const handleChangeMessage = (e) => {
     setDraftMessage(e.target.value);
+  };
+
+  const handleBackButton = async () => {
+    try {
+      await instance.post('/stomp/disconnect', {
+        roomId: roomId,
+        lastReadMessageId: lastReadMessageId,
+      });
+      navigate('/chat');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     // 멤버 ID값 가져오기
     const fetchProfileIds = async () => {
       try {
-        const response = await instance.get(`/chat/member/${roomId}`);
-        const { memberProfile, opponentProfile } = response.data;
+        const response = await instance.get(`/chat/info/${roomId}`);
+        const { memberProfile, opponentProfile, roomStatus } = response.data;
         setProfile({ memberProfile, opponentProfile });
         setIsMembersFetched(true);
+        setRoomStatus(roomStatus);
       } catch (error) {
         console.log(error);
       }
@@ -173,6 +217,7 @@ const ChatPageNari = () => {
   // 메세지 전송 시
   useEffect(() => {
     // const lastMessage = messages.at(-1);
+    setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
 
@@ -180,10 +225,13 @@ const ChatPageNari = () => {
     <Wrapper>
       <Container>
         <WrapHeader>
-          <BackButton onClick={() => navigate('/chat')}>
+          <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+          <LeaveRoomButton onClick={openLeaveModal}>
+            <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
+          </LeaveRoomButton>
         </WrapHeader>
         <Split />
         {isLoading ? (
@@ -200,7 +248,7 @@ const ChatPageNari = () => {
                 isMenuOpen={isMenuOpen}
               />
             </WrapChat>
-            <MessageInputWrapper>
+            {roomStatus === 'ACTIVE' && (
               <MessageInput
                 value={draftMessage}
                 onChangeHandler={handleChangeMessage}
@@ -208,7 +256,7 @@ const ChatPageNari = () => {
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
               />
-            </MessageInputWrapper>
+            )}
           </>
         )}
       </Container>
@@ -244,6 +292,12 @@ const BackButton = styled.div`
   }
 `;
 
+const LeaveRoomButton = styled.div`
+  img {
+    width: 1.6rem;
+  }
+`;
+
 const TitleText = styled.div`
   display: flex;
   flex: 1;
@@ -264,13 +318,6 @@ const TitleText = styled.div`
 const WrapChat = styled.div`
   flex: 1;
   overflow-y: auto;
-  .date {
-    text-align: center;
-    font-family: NanumSquare;
-    font-size: 1.125rem;
-    font-weight: 400;
-    padding: 1.5rem 0 0 0;
-  }
 `;
 
 const WrapLoader = styled.div`
@@ -292,10 +339,4 @@ const Container = styled.div`
   transition: height 0.3s;
 `;
 
-const MessageInputWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 10;
-`;
 export default ChatPageNari;
