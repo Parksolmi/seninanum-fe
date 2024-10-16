@@ -41,7 +41,6 @@ const ViewProfileDong = () => {
   const [careerProfileState, setCareerProfileState] =
     useState<CareerProfile | null>(null);
   const [careers, setCareers] = useState<CareerItem[]>([]);
-
   useEffect(() => {
     const fetchProfileProgress = async () => {
       try {
@@ -85,7 +84,12 @@ const ViewProfileDong = () => {
             <BriefProfileMultiCard
               type="dong"
               nickname={careerProfileState.nickname}
-              gender={careerProfileState.gender}
+              gender={
+                careerProfileState.gender === 'F' ||
+                careerProfileState.gender === '여성'
+                  ? '여성'
+                  : '남성'
+              }
               age={calcAge(careerProfileState.birthYear)}
               profile={careerProfileState.profile}
             />

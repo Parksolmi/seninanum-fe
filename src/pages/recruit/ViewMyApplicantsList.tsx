@@ -32,15 +32,26 @@ const ViewMyApplicantsList = () => {
     const fetchRecruits = async () => {
       try {
         const res = await instance.get('application/list');
-        setRecruits(
+        const uniqueRecruits = removeDuplicateTitles(
           res.data.map((r: { recruitId: number; title: string }) => r)
         );
+        setRecruits(uniqueRecruits);
       } catch (error) {
         console.error('구인글 목록 조회 실패:', error);
       }
     };
     fetchRecruits();
   }, []);
+
+  // 중복된 제목을 제거하는 함수
+  const removeDuplicateTitles = (recruits: Recruit[]) => {
+    const seenTitles = new Set();
+    return recruits.filter((recruit) => {
+      const duplicate = seenTitles.has(recruit.title);
+      seenTitles.add(recruit.title);
+      return !duplicate;
+    });
+  };
 
   // 선택한 구인글의 지원자 목록 조회
   const fetchApplicants = async (recruitId: number) => {
@@ -62,26 +73,28 @@ const ViewMyApplicantsList = () => {
 
   return (
     <WrapContent>
-      <PrevHeader
-        title={
-          selectedRecruit ? selectedRecruit.title : '구인글 별 지원자 조회'
-        }
-        navigateTo={'-1'}
-        onClick={toggleDropdown}
-      />
+      <PrevHeader title="지원자 조회" navigateTo={'-1'} />
 
-      {isDropdownOpen && (
-        <Dropdown>
-          {recruits.map((recruit, index) => (
-            <React.Fragment key={`${recruit.recruitId}-${index}`}>
-              <DropdownItem onClick={() => handleSelectRecruit(recruit)}>
-                {recruit.title}
-              </DropdownItem>
-              {index < recruits.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </Dropdown>
-      )}
+      {/* 독립적인 드롭다운 */}
+      <DropdownContainer>
+        <SelectedRecruitBox onClick={toggleDropdown}>
+          {selectedRecruit ? selectedRecruit.title : '구인글 선택'}
+          <DropdownArrow $isOpen={isDropdownOpen} />
+        </SelectedRecruitBox>
+
+        {isDropdownOpen && (
+          <Dropdown>
+            {recruits.map((recruit, index) => (
+              <React.Fragment key={index}>
+                <DropdownItem onClick={() => handleSelectRecruit(recruit)}>
+                  {recruit.title}
+                </DropdownItem>
+                {index < recruits.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </Dropdown>
+        )}
+      </DropdownContainer>
 
       <WrapDongCards>
         {applicants.length > 0 ? (
@@ -115,19 +128,37 @@ const ViewMyApplicantsList = () => {
 const WrapContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   padding: 0 1.1rem;
   margin-bottom: 1.5rem;
 `;
 
-const Divider = styled.div`
+const DropdownContainer = styled.div`
+  position: relative;
+  margin-top: 1rem;
+`;
+
+const SelectedRecruitBox = styled.div`
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  background-color: #f1f1f1;
+  border: 1px solid #dcdcdc;
+  border-radius: 0.5rem;
   display: flex;
-  width: 93%;
-  height: 0;
-  margin: auto;
-  border-top: 1.5px solid var(--Base-Gray2, #ebeceb);
+  justify-content: space-between;
   align-items: center;
-  padding-top: 0.2rem;
+  cursor: pointer;
+`;
+
+const DropdownArrow = styled.div<{ $isOpen: boolean }>`
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: ${({ $isOpen }) => ($isOpen ? 'none' : '6px solid #333')};
+  border-bottom: ${({ $isOpen }) => ($isOpen ? '6px solid #333' : 'none')};
 `;
 
 const Dropdown = styled.div`
@@ -155,6 +186,16 @@ const DropdownItem = styled.div`
   &:hover {
     background-color: #f1f1f1;
   }
+`;
+
+const Divider = styled.div`
+  display: flex;
+  width: 93%;
+  height: 0;
+  margin: auto;
+  border-top: 1.5px solid #ebeceb;
+  align-items: center;
+  padding-top: 0.2rem;
 `;
 
 const WrapDongCards = styled.div`

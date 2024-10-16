@@ -13,10 +13,17 @@ const PriceFilterPage = () => {
   const { careerFilterState, setCareerFilterState } = useCareerFilterState();
 
   const [selectedPriceType, setSelectedPriceType] = useState('');
+  const [price, setPrice] = useState('');
+
+  // 필수 항목이 없을 때 버튼 비활성화
+  const isDisabled = !selectedPriceType || !price;
 
   const hadnleOnChagne = (e) => {
     const { name, value } = e.target;
     setCareerFilterState({ [name]: value });
+    if (name === 'price') {
+      setPrice(value);
+    }
   };
 
   const filterCareer = async () => {
@@ -72,7 +79,7 @@ const PriceFilterPage = () => {
         ></Button>
         <Button
           userType={'nari'}
-          disabled={false}
+          disabled={isDisabled}
           children={'다음'}
           onClick={filterCareer}
         ></Button>
