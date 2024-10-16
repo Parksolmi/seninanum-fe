@@ -13,6 +13,7 @@ import {
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
+import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
 
 interface Profile {
   profileId: string;
@@ -89,6 +90,14 @@ const ChatPageDong = () => {
     }
   };
 
+  // 채팅방 나가기
+  const handleLeaveRoom = useLeaveChatRoom(
+    client,
+    roomId,
+    profile.memberProfile.profileId,
+    profile.opponentProfile.profileId
+  );
+
   // input 값
   const handleChangeMessage = (e) => {
     setDraftMessage(e.target.value);
@@ -148,8 +157,8 @@ const ChatPageDong = () => {
     if (isMembersFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        brokerURL: 'wss://api.seninanum.shop/meet',
-        // brokerURL: 'ws://localhost:3001/meet',
+        // brokerURL: 'wss://api.seninanum.shop/meet',
+        brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,
@@ -205,6 +214,9 @@ const ChatPageDong = () => {
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>요청글 보러가기</TitleText>
+          <LeaveRoomButton onClick={handleLeaveRoom}>
+            <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
+          </LeaveRoomButton>
         </WrapHeader>
         <Split />
         {isLoading ? (
@@ -260,6 +272,12 @@ const Split = styled.div`
 const BackButton = styled.div`
   img {
     width: 0.8rem;
+  }
+`;
+
+const LeaveRoomButton = styled.div`
+  img {
+    width: 1.6rem;
   }
 `;
 

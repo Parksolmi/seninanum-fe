@@ -184,6 +184,9 @@ const ChatPageNari = () => {
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
           <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+          <LeaveRoomButton>
+            <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
+          </LeaveRoomButton>
         </WrapHeader>
         <Split />
         {isLoading ? (
@@ -241,6 +244,12 @@ const Split = styled.div`
 const BackButton = styled.div`
   img {
     width: 0.8rem;
+  }
+`;
+
+const LeaveRoomButton = styled.div`
+  img {
+    width: 1.6rem;
   }
 `;
 
