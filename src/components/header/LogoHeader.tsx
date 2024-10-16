@@ -13,7 +13,9 @@ const LogoHeader = () => {
         src="/assets/signIn/seni-text-logo.png"
         alt="logo"
       />
-      <img className="alert" src="/assets/common/alert.png" alt="alert" />
+      <AlertButton>
+        <img className="alert" src="/assets/common/alert.png" alt="alert" />
+      </AlertButton>
     </WrapLogoHeader>
   );
 };
@@ -29,9 +31,16 @@ const WrapLogoHeader = styled.div`
   .logo {
     width: 8rem;
   }
-
+  /* 
   .alert {
-    width: 1.5rem;
+    width: 1.3rem;
+    height: auto;
+  } */
+`;
+
+const AlertButton = styled.div`
+  img {
+    width: 1.3rem;
   }
 `;
 
