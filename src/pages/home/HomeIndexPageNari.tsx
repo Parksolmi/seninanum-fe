@@ -11,6 +11,7 @@ import SummaryCard from '../../components/common/SummaryCard';
 import useRecruitState from '../../store/recruitState';
 
 interface CareerCard {
+  careerProfileId: number;
   profileId: number;
   introduce: string;
   age: string;
@@ -165,7 +166,6 @@ const HomeIndexPageNari: React.FC = () => {
                     : '남성'
                 }
                 onClick={() =>
-                  //수정
                   navigate(`/view/dongprofile/${profileItem.profileId}`)
                 }
               />
