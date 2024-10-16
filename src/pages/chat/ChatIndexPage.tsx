@@ -133,7 +133,7 @@ const ChatIndexPage: React.FC = () => {
         {volunteers.length > 0 && (
           <ApplicationListContainer>
             <ApplicationTextArea>
-              <div className="leftText">
+              <div className="content-title">
                 <p>나에게 지원한 동백</p>
                 <span>{volunteers.length}</span>
               </div>
@@ -162,6 +162,9 @@ const ChatIndexPage: React.FC = () => {
       </WrapContent>
       {(applicationList.length > 0 || volunteers.length > 0) && <SplitLine />}
       <WrapContent>
+        <div className="content-title">
+          <p>채팅 목록</p>
+        </div>
         <ChatListContainer>
           {chatList &&
             chatList.map((chat) => {
@@ -209,6 +212,14 @@ const ChatIndexPage: React.FC = () => {
 
 const WrapContent = styled.div`
   padding: 0.3rem 1.1rem;
+
+  > .content-title {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0;
+  }
 `;
 
 const ApplicationListContainer = styled.div`
@@ -280,7 +291,7 @@ const SplitLine = styled.div`
   width: 100%;
   height: 0.625rem;
   background: #ebeceb;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
 `;
 
 const ChatListContainer = styled.div`
