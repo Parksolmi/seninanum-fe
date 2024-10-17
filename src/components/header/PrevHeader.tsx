@@ -57,8 +57,8 @@ const WrapHeader = styled.div<WrapHeaderProp>`
 `;
 
 const BackButton = styled.div`
-  position: absolute;
-  left: 0;
+  /* position: absolute;
+  left: 0; */
   z-index: 9;
   img {
     width: 0.8rem;

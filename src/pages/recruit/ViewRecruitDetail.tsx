@@ -82,8 +82,8 @@ const ViewRecruitDetail = () => {
         </WrapLoader>
       ) : (
         <>
-          <WrapContent className="first-content">
-            <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
+          <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
+          <WrapContent>
             <div>
               <TitleText>{recruit.title}</TitleText>
               <ContentText>
@@ -175,9 +175,6 @@ const WrapContent = styled.div`
   padding: 0 1.1rem;
   margin: 1.5rem 0;
 
-  &.first-content {
-    margin-top: 0;
-  }
   .last-content {
     margin-bottom: 7rem;
   }
