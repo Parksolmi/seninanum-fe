@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const SignupIndexPage = () => {
@@ -15,22 +15,26 @@ const SignupIndexPage = () => {
     window.location.href = kakaoURL;
   };
 
-  //상태바 색상 변경
-  useEffect(() => {
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', '#FF314A');
-    }
-  }, []);
-
   return (
     <WrapContent>
       <WrapLogo>
-        <img src="/assets/signIn/seni-text-logo.png" alt="logo" />
+        <img
+          className="image-logo"
+          src="/assets/signIn/image-logo.png"
+          alt="logo"
+        />
+        <div>
+          <p>신나는 재능나눔 서비스</p>
+          <img
+            className="text-logo"
+            src="/assets/signIn/text-logo.png"
+            alt="logo"
+          />
+        </div>
       </WrapLogo>
       <KakaoButton onClick={handleLogin}>
-        <img src="/assets/signIn/kakao-logo.png" alt="kakao-logo" />
-        카카오톡으로 계속하기
+        <img src="/assets/signIn/kakao-icon.png" alt="kakao-logo" />
+        카카오톡으로 시작하기
       </KakaoButton>
     </WrapContent>
   );
@@ -42,12 +46,30 @@ const WrapContent = styled.div`
 
 const WrapLogo = styled.div`
   display: flex;
-  width: 100%;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin-top: 30%;
+  width: 100%;
+  gap: 1.8rem;
+  justify-content: center;
+  margin-top: 13rem;
 
-  img {
-    width: 13rem;
+  .image-logo {
+    width: 5.8rem;
+  }
+  .text-logo {
+    width: 11.6rem;
+  }
+  p {
+    color: #000;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.0225rem;
+    text-align: center;
   }
 `;
 
@@ -60,17 +82,24 @@ const KakaoButton = styled.button`
   width: 100%;
   /* border: 4px solid #fff293; */
   border: none;
-  background-color: #ffec00;
+  background-color: #fbe84c;
   border-radius: 0.625rem;
 
   height: 3.75rem;
   font-family: 'NanumSquareR';
-  font-size: 1.4375rem;
 
-  margin-top: 36rem;
+  color: var(--Base-Black, #000);
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 6.25rem;
 
   img {
-    width: 45px;
+    width: 1.5rem;
   }
 `;
 
