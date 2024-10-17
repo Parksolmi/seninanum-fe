@@ -24,11 +24,11 @@ const TabBar = () => {
     try {
       const res = await instance.get('/user/userType');
       setUserType(res.data.userType);
-      setProfileStep(res.data.career.progressStep);
+      setProfileStep(res.data.career);
     } catch (error) {
       console.log(error);
     }
-  }, [setUserType, setProfileStep]);
+  }, []);
 
   const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,

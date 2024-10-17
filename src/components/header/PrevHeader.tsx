@@ -50,7 +50,7 @@ const WrapHeader = styled.div<WrapHeaderProp>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.8rem;
+  margin-top: 2.5rem;
   ${(props) =>
     props.$isLine ? 'border-bottom: solid 1px var(--Base-Gray2, #ebeceb);' : ''}
   padding: 0 1.1rem 0.5rem 1.1rem;

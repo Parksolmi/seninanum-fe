@@ -90,7 +90,7 @@ const RegisterProfileCareerAddPage = () => {
           onChange={handleOnChange}
           maxLength={50}
           name="title"
-        ></Input>
+        />
         <CategoryText>근무기간</CategoryText>
         <YearText>입사연월</YearText>
         <InputArea>
@@ -99,14 +99,14 @@ const RegisterProfileCareerAddPage = () => {
             placeholder="YYYY"
             onChange={handleOnChange}
             name="startYear"
-          ></InputYearMonthText>
+          />
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
             onChange={handleOnChange}
             name="startMonth"
-          ></InputYearMonthText>
+          />
           <InputAreaText>월</InputAreaText>
         </InputArea>
         <YearText>퇴사연월</YearText>
@@ -116,22 +116,22 @@ const RegisterProfileCareerAddPage = () => {
             placeholder="YYYY"
             onChange={handleOnChange}
             name="endYear"
-          ></InputYearMonthText>
+          />
           <InputAreaText>년</InputAreaText>
           <InputYearMonthText
             type="number"
             placeholder="MM"
             onChange={handleOnChange}
             name="endMonth"
-          ></InputYearMonthText>
+          />
           <InputAreaText>월</InputAreaText>
         </InputArea>
         <CategoryText>세부 업무 내용</CategoryText>
-        <TextArea
-          inputPlaceholder="세부 업무를 입력하세요."
-          onChange={handleOnChange}
+        <TextAreaStyle
           name="content"
-        ></TextArea>
+          placeholder={'세부 업무를 입력하세요'}
+          onChange={handleOnChange}
+        />
         <GapButton />
         <WrapButtonContainer>
           <WrapButton>
@@ -179,6 +179,7 @@ const InputYearMonthText = styled.input`
   font-weight: 700;
   opacity: 0.5;
   border-width: 0 0 1px;
+  border-bottom: 2px solid #ccc; /* 기본 상태에서 얇은 회색 밑줄 */
   width: 25%;
 
   &::placeholder {
@@ -187,6 +188,11 @@ const InputYearMonthText = styled.input`
     font-size: 1.125rem;
     font-weight: 700;
     opacity: 0.5;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid var(--Primary-dong);
   }
 `;
 
@@ -221,6 +227,31 @@ const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+`;
+
+const TextAreaStyle = styled.textarea`
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  border: 1px solid #5b5b5b;
+  border-radius: 10px;
+  padding-left: 0.8rem;
+  padding-top: 1.5rem;
+  color: #000;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-weight: 400;
+  &::placeholder {
+    color: #5b5b5b;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1.5px solid var(--Primary-dong);
+  }
 `;
 
 export default RegisterProfileCareerAddPage;

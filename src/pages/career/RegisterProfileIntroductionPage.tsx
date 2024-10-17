@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { instance } from '../../api/instance';
 import { usePromiseToast } from '../../hooks/useToast';
 import useCareerProfileState from '../../store/careerProfileState';
+import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -13,59 +13,35 @@ interface OutletContext {
 
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
-  const { profileId } = useParams<{ profileId: string }>();
+  const { careerProfileId } = useParams<{ careerProfileId: string }>();
 
   const { setStatus } = useOutletContext<OutletContext>();
-  const { setCareerProfileState, careerProfileState, calculateProgress } =
-    useCareerProfileState();
+  const { setCareerProfileState, careerProfileState } = useCareerProfileState();
+
+  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  const updateIntroduction = async () => {
-    try {
-      const res = instance.patch('/career', {
-        profileId: profileId,
-        introduce: careerProfileState.introduce,
-        progressStep: careerProfileState.progressStep,
-        age: careerProfileState.age,
-        field: careerProfileState.field,
-        service: careerProfileState.service,
-        method: careerProfileState.method,
-        region: careerProfileState.region,
-        priceType: careerProfileState.priceType,
-        price: careerProfileState.price,
-      });
-
-      showAutoSaveToast(
-        res,
-        () => {
-          calculateProgress();
-          return '자동저장되었습니다.';
-        },
-        (error) => {
-          console.log(error);
-          return '자동저장에 실패하였습니다.';
-        }
-      );
-      navigate(`/register/profile/condition/${profileId}`);
-    } catch (error) {
-      console.error('자동저장에 실패하였습니다.', error);
-    }
-  };
-
-  // const navigateCondition = () => {
-  //   updateIntroduction();
-  //   navigate(`/register/profile/condition/${profileId}`);
-  // };
-
-  // useEffect(() => {
-  //   setCareerProfileState({ introduce: selectedIntroduce });
-  // }, [setCareerProfileState, selectedIntroduce]);
-
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setCareerProfileState({ [name]: value });
+  };
+
+  const handleAutoSave = (where) => {
+    showAutoSaveToast(
+      updateProfile(),
+      () => '자동 저장되었습니다.',
+      (error) => {
+        console.log(error);
+        return '자동 저장에 실패하였습니다.';
+      }
+    );
+    if (where === 'next') {
+      navigate(`/register/profile/condition/${careerProfileId}`);
+    } else if (where === 'prev') {
+      navigate(`/register/profile/career/${careerProfileId}`);
+    }
   };
 
   useEffect(() => {
@@ -93,13 +69,13 @@ const RegisterProfileIntroductionPage = () => {
             userType={null}
             disabled={false}
             children={'이전'}
-            onClick={() => navigate(`/register/profile/career/${profileId}`)}
+            onClick={() => handleAutoSave('prev')}
           ></Button>
           <Button
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={updateIntroduction}
+            onClick={() => handleAutoSave('next')}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>

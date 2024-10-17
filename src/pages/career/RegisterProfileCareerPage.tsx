@@ -14,6 +14,7 @@ import { usePromiseToast } from '../../hooks/useToast';
 import HelpBox from '../../components/career/HelpBox';
 import useCareerProfileState from '../../store/careerProfileState';
 import useModal from '../../hooks/useModal';
+import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -26,6 +27,8 @@ const RegisterProfileCareerPage = () => {
 
   const { setStatus } = useOutletContext<OutletContext>();
   const { careerProfileState, calculateProgress } = useCareerProfileState();
+
+  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
 
   //모달 창
   const {
@@ -87,31 +90,16 @@ const RegisterProfileCareerPage = () => {
     }
   };
 
-  //  프로필 중간 저장
-  const updateProfile = async () => {
-    try {
-      const res = instance.patch('/career', {
-        careerProfileId: careerProfileId,
-        progressStep: careerProfileState.progressStep,
-        certificateName: careerProfileState.certificateName,
-        certificate: careerProfileState.certificate,
-      });
-
-      showAutoSaveToast(
-        res,
-        () => {
-          return '자동저장되었습니다.';
-        },
-        (error) => {
-          console.log(error);
-          return '자동저장에 실패하였습니다.';
-        }
-      );
-      calculateProgress();
-      navigate(`/register/profile/introduction/${careerProfileId}`);
-    } catch (e) {
-      console.log(e);
-    }
+  const hanldeNextButton = () => {
+    showAutoSaveToast(
+      updateProfile(),
+      () => '자동 저장되었습니다.',
+      (error) => {
+        console.log(error);
+        return '자동 저장에 실패하였습니다.';
+      }
+    );
+    navigate(`/register/profile/introduction/${careerProfileId}`);
   };
 
   useEffect(() => {
@@ -145,7 +133,7 @@ const RegisterProfileCareerPage = () => {
             })
           }
           addText={'경력 추가'}
-        ></CareerAddButton>
+        />
       </WrapSection>
       <LineStyle />
       <WrapSection className="last-content">
@@ -172,7 +160,7 @@ const RegisterProfileCareerPage = () => {
           userType={'dong'}
           disabled={false}
           children={'다음'}
-          onClick={updateProfile}
+          onClick={hanldeNextButton}
         />
       </WrapButtonContainer>
     </>

@@ -25,7 +25,7 @@ const Input = ({
       onChange={onChange}
       maxLength={maxLength}
       value={value}
-    ></InputBox>
+    />
   );
 };
 
@@ -44,6 +44,11 @@ const InputBox = styled.input`
     font-family: NanumSquare;
     font-size: 1.25rem;
     font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1.5px solid var(--Primary-dong);
   }
 `;
 
