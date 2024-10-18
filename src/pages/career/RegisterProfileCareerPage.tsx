@@ -26,7 +26,7 @@ const RegisterProfileCareerPage = () => {
   const { careers, setCareers } = useCareerItemState();
 
   const { setStatus } = useOutletContext<OutletContext>();
-  const { careerProfileState, calculateProgress } = useCareerProfileState();
+  const { careerProfileState } = useCareerProfileState();
 
   const { updateProfile } = useUpdateCareerProfile(careerProfileId);
 

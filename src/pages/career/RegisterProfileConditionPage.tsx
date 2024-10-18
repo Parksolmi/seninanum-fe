@@ -23,8 +23,7 @@ const RegisterProfileConditionPage = () => {
   const { setStatus } = useOutletContext<OutletContext>();
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
 
-  const { setCareerProfileState, careerProfileState, calculateProgress } =
-    useCareerProfileState();
+  const { setCareerProfileState, careerProfileState } = useCareerProfileState();
 
   const { updateProfile } = useUpdateCareerProfile(careerProfileId);
 

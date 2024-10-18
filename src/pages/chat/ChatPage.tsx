@@ -9,7 +9,7 @@ import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  useFetchMessagesFromLocal,
+  // useFetchMessagesFromLocal,
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
@@ -69,7 +69,7 @@ const ChatPage = () => {
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
