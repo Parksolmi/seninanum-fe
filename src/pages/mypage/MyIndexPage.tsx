@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import MyIndexPageDong from './MyIndexPageDong';
-import MyIndexPageNari from './MyIndexPageNari';
 import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
+import BasicProfile from '../../components/mypage/BasicProfile';
+import PayMenu from '../../components/mypage/PayMenu';
+import GroupMenu from '../../components/mypage/GroupMenu';
 
 const MyIndexPage: React.FC = () => {
   const { userType } = userTypeStore();
@@ -14,11 +15,17 @@ const MyIndexPage: React.FC = () => {
     <>
       <TitleHeader title="내 정보" isShowAlert={true} />
       <WrapContent>
-        {userType === 'dong' ? (
-          <MyIndexPageDong userState={user} />
-        ) : (
-          <MyIndexPageNari userState={user} />
-        )}
+        <WrapProfile>
+          <BasicProfile
+            userType={userType}
+            navigateTo={`/view/myprofile/${userType}`}
+            userState={user}
+          />
+        </WrapProfile>
+        <WrapMenu>
+          <PayMenu userType={userType} />
+          <GroupMenu userType={userType} />
+        </WrapMenu>
       </WrapContent>
     </>
   );
@@ -26,4 +33,16 @@ const MyIndexPage: React.FC = () => {
 const WrapContent = styled.div`
   padding: 1.3rem 1.1rem;
 `;
+
+const WrapProfile = styled.div`
+  margin-top: 1.2rem;
+  margin-bottom: 4rem;
+`;
+const WrapMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  margin-bottom: 2rem;
+`;
+
 export default MyIndexPage;
