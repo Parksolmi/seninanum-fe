@@ -1,7 +1,8 @@
-export const formatDate = (originalDate: string) => {
+export const formatDate = (originalDate: string, includeTime?: boolean) => {
   const date = new Date(originalDate);
 
-  // 월, 일 추출
+  // 연도, 월, 일 추출
+  const year = String(date.getUTCFullYear());
   const month = String(date.getUTCMonth() + 1).padStart(2, '0');
   const day = String(date.getUTCDate()).padStart(2, '0');
 
@@ -9,7 +10,14 @@ export const formatDate = (originalDate: string) => {
   const hours = String(date.getUTCHours()).padStart(2, '0');
   const minutes = String(date.getUTCMinutes()).padStart(2, '0');
 
-  const formattedDate = `${month}.${day} ${hours}:${minutes}`;
+  // 요일 추출 (0: 일요일, 6: 토요일)
+  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const dayOfWeek = daysOfWeek[date.getUTCDay()];
 
-  return formattedDate; // "06.16 23:00"
+  // 최종 형식: 연도.월.일 (요일) 시간:분
+  let formattedDate = `${year}.${month}.${day} (${dayOfWeek}) ${hours}:${minutes}`;
+  if (includeTime) {
+    formattedDate = `${year}.${month}.${day}`;
+  }
+  return formattedDate; // 예: "2024.10.17 (목) 15:33"
 };
