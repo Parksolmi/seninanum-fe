@@ -27,7 +27,7 @@ const ViewMyApplicantsList = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  // 구인글 목록 조회
+  //구인글 목록 조회
   useEffect(() => {
     const fetchRecruits = async () => {
       try {
@@ -78,8 +78,17 @@ const ViewMyApplicantsList = () => {
       {/* 독립적인 드롭다운 */}
       <DropdownContainer>
         <SelectedRecruitBox onClick={toggleDropdown}>
-          {selectedRecruit ? selectedRecruit.title : '구인글 선택'}
-          <DropdownArrow $isOpen={isDropdownOpen} />
+          <TextContainer>
+            {selectedRecruit ? selectedRecruit.title : '전체 구인글'}{' '}
+          </TextContainer>
+          <img
+            src={
+              isDropdownOpen
+                ? '/assets/home/dropup-icon.svg'
+                : '/assets/home/dropdown-icon.svg'
+            }
+            alt="dropicon"
+          />
         </SelectedRecruitBox>
 
         {isDropdownOpen && (
@@ -139,50 +148,50 @@ const DropdownContainer = styled.div`
 `;
 
 const SelectedRecruitBox = styled.div`
-  padding: 0.8rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #333;
-  background-color: #f1f1f1;
-  border: 1px solid #dcdcdc;
-  border-radius: 0.5rem;
+  padding: 0.8rem 1.1rem;
+  color: #5b5b5b;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid #5b5b5b;
+  width: 100%;
+  height: 3.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
 `;
 
-const DropdownArrow = styled.div<{ $isOpen: boolean }>`
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: ${({ $isOpen }) => ($isOpen ? 'none' : '6px solid #333')};
-  border-bottom: ${({ $isOpen }) => ($isOpen ? '6px solid #333' : 'none')};
+const TextContainer = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  margin-right: 0.5rem;
 `;
 
 const Dropdown = styled.div`
   position: absolute;
-  top: 3.7rem;
+  top: 4rem;
   left: 0;
   width: 100%;
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: 1.25rem;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 10;
 `;
 
 const DropdownItem = styled.div`
-  padding: 0.8rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 700;
+  padding: 1.1rem;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
+  width: 100%;
+  height: 3.4rem;
   &:hover {
     background-color: #f1f1f1;
   }
