@@ -20,8 +20,7 @@ import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntro
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
-import ChatPageDong from './pages/chat/ChatPageDong';
-import ChatPageNari from './pages/chat/ChatPageNari';
+import ChatPage from './pages/chat/ChatPage';
 import ViewProfileDong from './pages/profile/ViewProfileDong';
 import ProgressLayout from './layouts/ProgressLayout';
 import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
@@ -38,6 +37,7 @@ import ManageMyRecruit from './pages/manage/ManageMyRecruit';
 import ManageMyApplication from './pages/manage/ManageMyApplication';
 import ViewMyRecruitDetail from './pages/recruit/ViewMyRecruitDetail';
 import ViewMyApplicantsList from './pages/recruit/ViewMyApplicantsList';
+import MatchIndexPage from './pages/match/MatchIndexPage';
 
 const App: React.FC = () => {
   return (
@@ -109,8 +109,7 @@ const App: React.FC = () => {
           element={<ViewProfileNari />}
         />
         {/* 채팅 */}
-        <Route path="/chatroom/dong/:chatRoomId" element={<ChatPageDong />} />
-        <Route path="/chatroom/nari/:chatRoomId" element={<ChatPageNari />} />
+        <Route path="/chatroom/:chatRoomId" element={<ChatPage />} />
 
         {/* 마이페이지 */}
         <Route
@@ -133,6 +132,7 @@ const App: React.FC = () => {
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
+          <Route path="/match" element={<MatchIndexPage />} />
           <Route path="/chat" element={<ChatIndexPage />} />
           <Route path="/community" element={<CommunityIndexPage />} />
           <Route path="/mypage" element={<MyIndexPage />} />

@@ -39,7 +39,7 @@ interface Message {
   unreadCount: number;
 }
 
-const ChatPageNari = () => {
+const ChatPage = () => {
   const navigate = useNavigate();
   const { chatRoomId: roomId = '' } = useParams<{ chatRoomId: string }>();
 
@@ -77,7 +77,7 @@ const ChatPageNari = () => {
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
     (id) => (
       <Modal
-        userType={'nari'}
+        userType={profile.memberProfile.userType}
         title={'정말 나가시겠습니까?'}
         content={``}
         cancelText={'취소'}
@@ -133,8 +133,8 @@ const ChatPageNari = () => {
     }
   };
 
+  // 멤버 ID값, roomStatus 가져오기
   useEffect(() => {
-    // 멤버 ID값 가져오기
     const fetchProfileIds = async () => {
       try {
         const response = await instance.get(`/chat/info/${roomId}`);
@@ -177,6 +177,7 @@ const ChatPageNari = () => {
       // STOMP 클라이언트 생성
       const newClient = new Client({
         brokerURL: 'wss://api.seninanum.shop/meet',
+        // brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,
@@ -201,10 +202,12 @@ const ChatPageNari = () => {
       setClient(newClient);
 
       //이전 메세지 목록 불러오기
-      fetchLocalMessages(setMessages);
-      const staleMessages = fetchLocalMessages(setMessages);
-      if (staleMessages.length === 0) fetchServerMessages(setMessages);
+      // fetchLocalMessages(setMessages);
+      // const staleMessages = fetchLocalMessages(setMessages);
+      // if (staleMessages.length === 0) fetchServerMessages(setMessages);
       // else fetchServerUnreadMessages(messages, setMessages);
+
+      fetchServerMessages(setMessages); //10월 17일 테스트 용으로 적어놓은거
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
@@ -216,8 +219,9 @@ const ChatPageNari = () => {
 
   // 메세지 전송 시
   useEffect(() => {
-    // const lastMessage = messages.at(-1);
+    console.log(messages);
     setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
+    // const lastMessage = messages.at(-1);
     if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
 
@@ -228,7 +232,11 @@ const ChatPageNari = () => {
           <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
-          <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+          {profile.memberProfile.userType === 'dong' ? (
+            <TitleText className="dong">요청글 보러가기</TitleText>
+          ) : (
+            <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+          )}
           <LeaveRoomButton onClick={openLeaveModal}>
             <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
           </LeaveRoomButton>
@@ -236,7 +244,9 @@ const ChatPageNari = () => {
         <Split />
         {isLoading ? (
           <WrapLoader>
-            <SyncLoader color="var(--Primary-nari)" />
+            <SyncLoader
+              color={`var(--Primary-${profile.memberProfile.userType})`}
+            />
           </WrapLoader>
         ) : (
           <>
@@ -313,6 +323,9 @@ const TitleText = styled.div`
   text-overflow: ellipsis;
   font-style: normal;
   line-height: normal;
+  &.dong {
+    text-decoration-line: underline;
+  }
 `;
 
 const WrapChat = styled.div`
@@ -339,4 +352,4 @@ const Container = styled.div`
   transition: height 0.3s;
 `;
 
-export default ChatPageNari;
+export default ChatPage;

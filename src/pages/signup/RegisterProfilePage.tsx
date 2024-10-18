@@ -51,61 +51,64 @@ const RegisterProfilePage: React.FC = () => {
   };
 
   return (
-    <WrapContent>
+    <>
       <PrevHeader title="회원가입" navigateTo="/signup/policy" />
-      <Title>
-        {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를 알려주세요!
-      </Title>
-      <WrapFrom onSubmit={handleSubmit(onSubmit)}>
-        <WrapImageInput>
-          <label>프로필 사진</label>
-          <p>
-            얼굴이 잘 나온 사진은
-            <br />
-            상대에게 좋은 인상을 줄 수 있어요!
-          </p>
-          <img className="profile" src={userState.profile} alt="profile" />
-        </WrapImageInput>
+      <WrapContent>
+        <Title>
+          {userState.userType === 'dong' ? '동백' : '나리'}님의 정보를
+          알려주세요!
+        </Title>
+        <WrapFrom onSubmit={handleSubmit(onSubmit)}>
+          <WrapImageInput>
+            <label>프로필 사진</label>
+            <p>
+              얼굴이 잘 나온 사진은
+              <br />
+              상대에게 좋은 인상을 줄 수 있어요!
+            </p>
+            <img className="profile" src={userState.profile} alt="profile" />
+          </WrapImageInput>
 
-        <InputText
-          userType={userState.userType}
-          label="이름/닉네임"
-          placeholder="이름 혹은 닉네임을 입력해주세요."
-          defaultValue={userState.nickname || ''}
-          register={register('nickname', {
-            required: '이름 혹은 닉네임을 입력해주세요.',
-            maxLength: {
-              value: 5,
-              message: '5자 이하로 입력해주세요!',
-            },
-          })}
-          error={errors.nickname?.message}
-        />
+          <InputText
+            userType={userState.userType}
+            label="이름/닉네임"
+            placeholder="이름 혹은 닉네임을 입력해주세요."
+            defaultValue={userState.nickname || ''}
+            register={register('nickname', {
+              required: '이름 혹은 닉네임을 입력해주세요.',
+              maxLength: {
+                value: 5,
+                message: '5자 이하로 입력해주세요!',
+              },
+            })}
+            error={errors.nickname?.message}
+          />
 
-        <Toggle
-          userType={userState.userType}
-          label="성별"
-          options={['남성', '여성']}
-          register={register('gender')}
-        />
-        <InputText
-          userType={userState.userType}
-          label="출생년도"
-          placeholder="예) 1990"
-          register={register('birthYear', {
-            validate: (value) =>
-              /^[0-9]{4}$/.test(value) || '숫자 4자리로 입력해주세요!',
-          })}
-          error={errors.birthYear?.message}
-        />
-        <InputSubmit
-          $userType={userState.userType}
-          type="submit"
-          value="완료하기"
-          disabled={!isValid}
-        />
-      </WrapFrom>
-    </WrapContent>
+          <Toggle
+            userType={userState.userType}
+            label="성별"
+            options={['남성', '여성']}
+            register={register('gender')}
+          />
+          <InputText
+            userType={userState.userType}
+            label="출생년도"
+            placeholder="예) 1990"
+            register={register('birthYear', {
+              validate: (value) =>
+                /^[0-9]{4}$/.test(value) || '숫자 4자리로 입력해주세요!',
+            })}
+            error={errors.birthYear?.message}
+          />
+          <InputSubmit
+            $userType={userState.userType}
+            type="submit"
+            value="완료하기"
+            disabled={!isValid}
+          />
+        </WrapFrom>
+      </WrapContent>
+    </>
   );
 };
 

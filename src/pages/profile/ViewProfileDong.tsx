@@ -74,7 +74,7 @@ const ViewProfileDong = () => {
         oppProfileId: profileId,
       });
       // console.log(res.data);
-      navigate(`/chatroom/dong/${res.data.chatRoomId}`);
+      navigate(`/chatroom/${res.data.chatRoomId}`);
     } catch (error) {
       console.log(error);
     }

@@ -50,15 +50,13 @@ const WrapHeader = styled.div<WrapHeaderProp>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 2.5rem;
+  margin-top: 1.8rem;
   ${(props) =>
     props.$isLine ? 'border-bottom: solid 1px var(--Base-Gray2, #ebeceb);' : ''}
   padding: 0 1.1rem 0.5rem 1.1rem;
 `;
 
 const BackButton = styled.div`
-  position: absolute;
-  left: 0;
   z-index: 9;
   img {
     width: 0.8rem;
@@ -66,9 +64,13 @@ const BackButton = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
   flex: 1;
   display: flex;
-  justify-content: center; /* 제목을 중앙에 정렬 */
+  justify-content: center;
 `;
 
 const TitleText = styled.span`
