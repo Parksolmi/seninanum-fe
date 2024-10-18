@@ -144,7 +144,7 @@ const ViewRecruitDetail = () => {
               </ConditionText>
             </div>
             {recruit.hasApplied === 0 ? (
-              <WrapButton>
+              <WrapButtonContainer>
                 <Button
                   disabled={false}
                   userType={'dong'}
@@ -153,13 +153,13 @@ const ViewRecruitDetail = () => {
                 >
                   지원하기
                 </Button>
-              </WrapButton>
+              </WrapButtonContainer>
             ) : (
-              <WrapButton>
+              <WrapButtonContainer>
                 <Button disabled={true} userType={'dong'}>
                   이미 지원한 공고입니다.
                 </Button>
-              </WrapButton>
+              </WrapButtonContainer>
             )}
           </WrapContent>
         </>
@@ -228,12 +228,17 @@ const SplitLine = styled.div`
   margin: 1.2rem 0;
 `;
 
-const WrapButton = styled.div`
+const WrapButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  background-color: #fff;
   position: fixed;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: 1.5rem;
-  background-color: white;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
 
 const WrapLoader = styled.div`
