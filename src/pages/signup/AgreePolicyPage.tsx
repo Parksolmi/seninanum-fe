@@ -53,50 +53,52 @@ const AgreePolicyPage: React.FC = () => {
   };
 
   return (
-    <WrapContent>
+    <>
       <PrevHeader title="회원가입" navigateTo={'/signup/usertype'} />
-      <Title>이용약관에 동의해주세요.</Title>
-      <WrapCheckBox>
-        <CheckBox
-          id="selectAll"
-          label="약관에 모두 동의"
-          checked={checkboxes.selectAll}
-          onChange={handleSelectChange}
-          userType={userState.userType}
-        />
-        <SplitLine />
-        <CheckBox
-          id="agreeAgePolicy"
-          label="(필수) 만 14세 이상입니다"
-          checked={checkboxes.agreeAgePolicy}
-          onChange={handleSelectChange}
-          userType={userState.userType}
-        />
-        <CheckBox
-          id="agreeServicePolicy"
-          label="(필수) 이용약관"
-          checked={checkboxes.agreeServicePolicy}
-          onChange={handleSelectChange}
-          userType={userState.userType}
-        />
-        <CheckBox
-          id="agreeMarketingPolicy"
-          label="(선택) 마케팅 수신동의"
-          checked={checkboxes.agreeMarketingPolicy}
-          onChange={handleSelectChange}
-          userType={userState.userType}
-        />
-      </WrapCheckBox>
-      <WrapButton>
-        <Button
-          disabled={isDisabled}
-          userType={userState.userType}
-          onClick={onClickBtn}
-        >
-          다음
-        </Button>
-      </WrapButton>
-    </WrapContent>
+      <WrapContent>
+        <Title>이용약관에 동의해주세요.</Title>
+        <WrapCheckBox>
+          <CheckBox
+            id="selectAll"
+            label="약관에 모두 동의"
+            checked={checkboxes.selectAll}
+            onChange={handleSelectChange}
+            userType={userState.userType}
+          />
+          <SplitLine />
+          <CheckBox
+            id="agreeAgePolicy"
+            label="(필수) 만 14세 이상입니다"
+            checked={checkboxes.agreeAgePolicy}
+            onChange={handleSelectChange}
+            userType={userState.userType}
+          />
+          <CheckBox
+            id="agreeServicePolicy"
+            label="(필수) 이용약관"
+            checked={checkboxes.agreeServicePolicy}
+            onChange={handleSelectChange}
+            userType={userState.userType}
+          />
+          <CheckBox
+            id="agreeMarketingPolicy"
+            label="(선택) 마케팅 수신동의"
+            checked={checkboxes.agreeMarketingPolicy}
+            onChange={handleSelectChange}
+            userType={userState.userType}
+          />
+        </WrapCheckBox>
+        <WrapButton>
+          <Button
+            disabled={isDisabled}
+            userType={userState.userType}
+            onClick={onClickBtn}
+          >
+            다음
+          </Button>
+        </WrapButton>
+      </WrapContent>
+    </>
   );
 };
 

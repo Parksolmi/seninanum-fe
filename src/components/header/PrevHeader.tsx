@@ -57,8 +57,6 @@ const WrapHeader = styled.div<WrapHeaderProp>`
 `;
 
 const BackButton = styled.div`
-  /* position: absolute;
-  left: 0; */
   z-index: 9;
   img {
     width: 0.8rem;
@@ -66,9 +64,13 @@ const BackButton = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
   flex: 1;
   display: flex;
-  justify-content: center; /* 제목을 중앙에 정렬 */
+  justify-content: center;
 `;
 
 const TitleText = styled.span`

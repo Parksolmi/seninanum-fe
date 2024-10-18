@@ -8,11 +8,11 @@ import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
-import { instance } from '../../api/instance';
 import Modal from '../../components/common/Modal';
-import { useToast } from '../../hooks/useToast';
+import { usePromiseToast, useToast } from '../../hooks/useToast';
 import useCareerProfileState from '../../store/careerProfileState';
 import useModal from '../../hooks/useModal';
+import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -21,10 +21,15 @@ interface OutletContext {
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
   const { setStatus } = useOutletContext<OutletContext>();
-  const { profileId } = useParams<{ profileId: string }>();
+  const { careerProfileId } = useParams<{ careerProfileId: string }>();
 
   const { setCareerProfileState, careerProfileState, calculateProgress } =
     useCareerProfileState();
+
+  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+
+  //토스트 메세지
+  const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>(
     careerProfileState.age ? careerProfileState.age.split(',') : []
@@ -44,7 +49,7 @@ const RegisterProfileConditionPage = () => {
       content={`대면서비스를 원하시면 \n희망 지역을 선택해주세요.`}
       cancelText={'취소'}
       confirmText={'이대로 제출하기'}
-      onConfirm={registerCareer}
+      onConfirm={updateProfile}
       onCancel={closeSelectRegionModal}
     />
   ));
@@ -55,29 +60,6 @@ const RegisterProfileConditionPage = () => {
     'select-exceed-error',
     'bottom-center'
   );
-
-  const registerCareer = async () => {
-    try {
-      calculateProgress();
-      await instance.patch('/career', {
-        profileId: profileId,
-        progressStep: careerProfileState.progressStep,
-        age: careerProfileState.age,
-        field: careerProfileState.field,
-        service: careerProfileState.service,
-        method: careerProfileState.method,
-        region: careerProfileState.region,
-        priceType: careerProfileState.priceType,
-        price: careerProfileState.price,
-        introduce: careerProfileState.introduce,
-      });
-
-      alert('등록되었습니다.');
-      navigate('/home');
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const hadnleClickAgeTag = (tag) => {
     setSelectedAgeTags((prevTags) => {
@@ -105,7 +87,7 @@ const RegisterProfileConditionPage = () => {
   };
 
   // "다음" 버튼 활성화 여부 결정
-  const isNextButtonDisabled = () => {
+  const handleNextButton = () => {
     if (
       (careerProfileState.method === '대면' ||
         careerProfileState.method === '모두 선택') &&
@@ -114,10 +96,22 @@ const RegisterProfileConditionPage = () => {
       // 지역 선택이 없으면 모달 띄우기
       openSelectRegionModal();
     } else {
-      registerCareer();
+      updateProfile();
       navigate('/home');
       setStatus(1);
     }
+  };
+
+  const handlePrevButton = () => {
+    showAutoSaveToast(
+      updateProfile(),
+      () => '자동 저장되었습니다.',
+      (error) => {
+        console.log(error);
+        return '자동 저장에 실패하였습니다.';
+      }
+    );
+    navigate(`/register/profile/introduction/${careerProfileId}`);
   };
 
   const hadnleOnChagne = (e) => {
@@ -220,15 +214,13 @@ const RegisterProfileConditionPage = () => {
           userType={null}
           disabled={false}
           children={'이전'}
-          onClick={() =>
-            navigate(`/register/profile/introduction/${profileId}`)
-          }
+          onClick={handlePrevButton}
         />
         <Button
           userType={'dong'}
           disabled={false}
           children={'등록하기'}
-          onClick={isNextButtonDisabled}
+          onClick={handleNextButton}
         />
       </WrapButtonContainer>
     </WrapContent>

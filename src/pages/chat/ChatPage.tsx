@@ -9,7 +9,7 @@ import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  // useFetchMessagesFromLocal,
+  useFetchMessagesFromLocal,
   useFetchMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
@@ -39,7 +39,7 @@ interface Message {
   unreadCount: number;
 }
 
-const ChatPageDong = () => {
+const ChatPage = () => {
   const navigate = useNavigate();
   const { chatRoomId: roomId = '' } = useParams<{ chatRoomId: string }>();
 
@@ -69,7 +69,7 @@ const ChatPageDong = () => {
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
@@ -77,7 +77,7 @@ const ChatPageDong = () => {
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
     (id) => (
       <Modal
-        userType={'dong'}
+        userType={profile.memberProfile.userType}
         title={'정말 나가시겠습니까?'}
         content={``}
         cancelText={'취소'}
@@ -232,7 +232,11 @@ const ChatPageDong = () => {
           <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
-          <TitleText>요청글 보러가기</TitleText>
+          {profile.memberProfile.userType === 'dong' ? (
+            <TitleText className="dong">요청글 보러가기</TitleText>
+          ) : (
+            <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+          )}
           <LeaveRoomButton onClick={openLeaveModal}>
             <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
           </LeaveRoomButton>
@@ -240,7 +244,9 @@ const ChatPageDong = () => {
         <Split />
         {isLoading ? (
           <WrapLoader>
-            <SyncLoader color="var(--Primary-dong)" />
+            <SyncLoader
+              color={`var(--Primary-${profile.memberProfile.userType})`}
+            />
           </WrapLoader>
         ) : (
           <>
@@ -317,7 +323,9 @@ const TitleText = styled.div`
   text-overflow: ellipsis;
   font-style: normal;
   line-height: normal;
-  text-decoration-line: underline;
+  &.dong {
+    text-decoration-line: underline;
+  }
 `;
 
 const WrapChat = styled.div`
@@ -344,4 +352,4 @@ const Container = styled.div`
   transition: height 0.3s;
 `;
 
-export default ChatPageDong;
+export default ChatPage;

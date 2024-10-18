@@ -177,9 +177,7 @@ const ChatIndexPage: React.FC = () => {
               return (
                 <ChatRoomContainer
                   key={chat.chatRoomId}
-                  onClick={() =>
-                    navigate(`/chatroom/${userType}/${chat.chatRoomId}`)
-                  }
+                  onClick={() => navigate(`/chatroom/${chat.chatRoomId}`)}
                 >
                   <ProfileImg>
                     <img src={chat.profile} alt="profile" />

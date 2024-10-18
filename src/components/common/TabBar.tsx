@@ -24,11 +24,11 @@ const TabBar = () => {
     try {
       const res = await instance.get('/user/userType');
       setUserType(res.data.userType);
-      setProfileStep(res.data.career.progressStep);
+      setProfileStep(res.data.career);
     } catch (error) {
       console.log(error);
     }
-  }, [setUserType, setProfileStep]);
+  }, []);
 
   const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
@@ -49,20 +49,27 @@ const TabBar = () => {
     },
     {
       id: 1,
+      name: '매칭',
+      path: '/match',
+      icon: '/assets/tabIcon/match.svg',
+      iconActive: `/assets/tabIcon/match-active-${userType}.svg`,
+    },
+    {
+      id: 2,
       name: '채팅',
       path: '/chat',
       icon: '/assets/tabIcon/chat.svg',
       iconActive: `/assets/tabIcon/chat-active-${userType}.svg`,
     },
     {
-      id: 2,
+      id: 3,
       name: '게시판',
       path: '/community',
       icon: '/assets/tabIcon/community.svg',
       iconActive: `/assets/tabIcon/community-active-${userType}.svg`,
     },
     {
-      id: 3,
+      id: 4,
       name: '내정보',
       path: '/mypage',
       icon: '/assets/tabIcon/mypage.svg',
@@ -114,8 +121,6 @@ const StyledNav = styled.nav`
   bottom: 0;
   display: flex;
   justify-content: center;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
   z-index: 9999;
   width: 100%;
   background-color: #fff;
@@ -142,7 +147,7 @@ const NavItem = styled(Link)`
   text-decoration: none;
 
   img {
-    width: 30px;
+    height: 30px;
     -webkit-tap-highlight-color: transparent;
   }
 `;

@@ -21,7 +21,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       placeholder={inputPlaceholder}
       onChange={onChange}
       value={value}
-    ></TextAreaStyle>
+    />
   );
 };
 

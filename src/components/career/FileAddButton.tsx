@@ -55,7 +55,7 @@ const AddIcon = styled.img`
 `;
 
 const AddText = styled.div`
-  color: var(--Base-Gray2, #5b5b5b);
+  color: #5b5b5b;
   text-align: center;
   font-family: NanumSquare;
   font-size: 1.125rem;

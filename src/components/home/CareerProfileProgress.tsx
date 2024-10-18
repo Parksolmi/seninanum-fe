@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StepProgressBar from './StepProgressBar';
@@ -12,6 +12,10 @@ const CareerProfileProgress: React.FC<progressStepProps> = ({
   progressStep,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('progressStep확인', progressStep);
+  }, [progressStep]);
   const fetchProfileId = async () => {
     try {
       const res = await instance.post('/career');
