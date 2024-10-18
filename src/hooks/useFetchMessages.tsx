@@ -32,29 +32,29 @@ export const useFetchMessagesFromServer = (roomId) => {
   return fetchAllMessagesFromServer;
 };
 
-// export const useFetchUnreadMessagesFromServer = (roomId) => {
-//   // 읽지 않은 메세지 서버에서 가져오기
-//   const fetchUnreadMessagesFromServer = async (messages, setMessages) => {
-//     try {
-//       const unreadMessages = await instance
-//         .get(`/chatroom/${roomId}`)
-//         .then((res) => res.data);
-//       if (unreadMessages.length === 0) return;
+export const useFetchUnreadMessagesFromServer = (roomId) => {
+  // 읽지 않은 메세지 서버에서 가져오기
+  const fetchUnreadMessagesFromServer = async (messages, setMessages) => {
+    try {
+      const unreadMessages = await instance
+        .get(`/chat/unread/${roomId}`)
+        .then((res) => res.data);
+      if (unreadMessages.length === 0) return;
 
-//       // unreadMessages를 local에 저장된 stalesMessage에 추가
-//       unreadMessages.forEach((unreadMessage) => {
-//         if (
-//           !messages.find(
-//             (message) => message.messageId === unreadMessage.messageId
-//           )
-//         ) {
-//           setMessages((messages) => [...messages, unreadMessage]);
-//         }
-//       });
-//     } catch (error) {
-//       console.log('error', error);
-//     }
-//   };
+      // unreadMessages를 local에 저장된 stalesMessage에 추가
+      unreadMessages.forEach((unreadMessage) => {
+        if (
+          !messages.find(
+            (message) => message.messageId === unreadMessage.messageId
+          )
+        ) {
+          setMessages((messages) => [...messages, unreadMessage]);
+        }
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
-//   return fetchUnreadMessagesFromServer;
-// };
+  return fetchUnreadMessagesFromServer;
+};

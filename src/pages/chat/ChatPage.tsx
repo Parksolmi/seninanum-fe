@@ -9,8 +9,9 @@ import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  // useFetchMessagesFromLocal,
+  useFetchMessagesFromLocal,
   useFetchMessagesFromServer,
+  useFetchUnreadMessagesFromServer,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
@@ -69,9 +70,9 @@ const ChatPage = () => {
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  // const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
+  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
-  // const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
+  const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
 
   //모달 창
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
@@ -202,12 +203,10 @@ const ChatPage = () => {
       setClient(newClient);
 
       //이전 메세지 목록 불러오기
-      // fetchLocalMessages(setMessages);
-      // const staleMessages = fetchLocalMessages(setMessages);
-      // if (staleMessages.length === 0) fetchServerMessages(setMessages);
-      // else fetchServerUnreadMessages(messages, setMessages);
-
-      fetchServerMessages(setMessages); //10월 17일 테스트 용으로 적어놓은거
+      fetchLocalMessages(setMessages);
+      const staleMessages = fetchLocalMessages(setMessages);
+      if (staleMessages.length === 0) fetchServerMessages(setMessages);
+      else fetchServerUnreadMessages(messages, setMessages);
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
