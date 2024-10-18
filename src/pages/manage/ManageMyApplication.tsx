@@ -117,7 +117,7 @@ const ManageMyApplication = () => {
                 content={application.content}
                 method={application.method}
                 region={application.region ? application.region : ''}
-                createdAt={formatDate(application.createdAt).split(' ')[0]}
+                createdAt={formatDate(application.createdAt, true)}
                 navigateTo={() =>
                   navigate(`/view/recruit/${application.recruitId}`)
                 }
