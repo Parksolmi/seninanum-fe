@@ -29,7 +29,7 @@ const MessageInput = ({
         <MenuToggle toggle={onClickPlusButton} isOpen={isMenuOpen} />
         <WrapInputForm onSubmit={handleSubmit}>
           <Input
-            placeholder="메시지를 입려해주세요"
+            placeholder="메시지를 입력해주세요"
             value={value}
             onChange={onChangeHandler}
           />
