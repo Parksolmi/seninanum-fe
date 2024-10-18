@@ -28,7 +28,7 @@ const TabBar = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [setUserType, setProfileStep]);
 
   const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,

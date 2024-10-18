@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import TextArea from '../../components/common/TextArea';
 import { instance } from '../../api/instance';
 import toast from 'react-hot-toast';
 import PrevHeader from '../../components/header/PrevHeader';
