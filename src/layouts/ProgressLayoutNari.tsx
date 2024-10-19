@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
-import progressStore from '../store/careerProgressState';
 import { instance } from '../api/instance';
 import useRecruitState from '../store/recruitState';
 
 const ProgressLayoutNari: React.FC = () => {
-  const { status, setStatus } = progressStore();
+  const [status, setStatus] = useState(1);
   const { recruitId } = useParams<{ recruitId: string }>();
   const { setRecruitState } = useRecruitState();
 

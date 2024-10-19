@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
 import { useFetchCareerProfile } from '../hooks/useCareerProfile';
+import { CareerProfile } from '../interface/careerProfileInterface';
 
 const ProgressLayoutDong: React.FC = () => {
   const [status, setStatus] = useState(1);
-  const { data: careerProfile } = useFetchCareerProfile();
+  const [careerProfile, setCareerProfile] = useState<CareerProfile | undefined>(
+    undefined
+  );
+  const { data } = useFetchCareerProfile();
+
+  useEffect(() => {
+    if (data) {
+      setCareerProfile(data);
+    }
+  }, [data]);
 
   return (
     <>
@@ -24,6 +34,7 @@ const ProgressLayoutDong: React.FC = () => {
             context={{
               setStatus,
               careerProfile,
+              setCareerProfile,
             }}
           />
         </ContentArea>

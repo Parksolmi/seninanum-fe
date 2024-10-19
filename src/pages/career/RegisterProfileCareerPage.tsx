@@ -112,10 +112,10 @@ const RegisterProfileCareerPage = () => {
           <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
           <p>
             총 경력{' '}
-            {careerProfile ? calcTotalCareer(careerProfile.careerItemList) : 0}
+            {careerProfile ? calcTotalCareer(careerProfile.careerItems) : 0}
           </p>
         </TotalCareer>
-        {careerProfile?.careerItemList.map((career) => (
+        {careerProfile?.careerItems.map((career) => (
           <CareerDetail
             key={career.careerId}
             title={career.title}
@@ -142,8 +142,8 @@ const RegisterProfileCareerPage = () => {
         <HelpBox />
         {careerProfile?.certificateName && (
           <CareerFileBox
-            activeStatus={careerProfile.certificateStatus}
-            uploadedFileName={careerProfile.certificateName}
+            activeStatus={careerProfile.careerCertificate.status}
+            uploadedFileName={careerProfile.careerCertificate.name}
             onDelete={openCertificateDeleteModal}
           />
         )}

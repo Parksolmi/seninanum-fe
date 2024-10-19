@@ -3,45 +3,72 @@ import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { instance } from '../../api/instance';
 import { usePromiseToast } from '../../hooks/useToast';
-import useCareerProfileState from '../../store/careerProfileState';
-import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
+// import useCareerProfileState from '../../store/careerProfileState';
+import { CareerProfile } from '../../interface/careerProfileInterface';
 
 interface OutletContext {
   setStatus: (status: number) => void;
+  careerProfile: CareerProfile;
+  setCareerProfile: (CareerProfile) => void;
 }
 
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
-  const { careerProfileId } = useParams<{ careerProfileId: string }>();
+  const { profileId } = useParams<{ profileId: string }>();
 
-  const { setStatus } = useOutletContext<OutletContext>();
-  const { setCareerProfileState, careerProfileState } = useCareerProfileState();
-
-  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+  const { setStatus, careerProfile, setCareerProfile } =
+    useOutletContext<OutletContext>();
+  // const { setCareerProfileState, careerProfileState, calculateProgress } = useCareerProfileState();
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
+  const updateIntroduction = async () => {
+    try {
+      const res = instance.patch('/career', {
+        profileId: profileId,
+        introduce: careerProfile.introduce,
+        progressStep: careerProfile.progressStep,
+        age: careerProfile.age,
+        field: careerProfile.field,
+        service: careerProfile.service,
+        method: careerProfile.method,
+        region: careerProfile.region,
+        priceType: careerProfile.priceType,
+        price: careerProfile.price,
+      });
+
+      // showAutoSaveToast(
+      //   res,
+      //   () => {
+      //     calculateProgress();
+      //     return '자동저장되었습니다.';
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //     return '자동저장에 실패하였습니다.';
+      //   }
+      // );
+      navigate(`/register/profile/condition/${profileId}`);
+    } catch (error) {
+      console.error('자동저장에 실패하였습니다.', error);
+    }
+  };
+
+  // const navigateCondition = () => {
+  //   updateIntroduction();
+  //   navigate(`/register/profile/condition/${profileId}`);
+  // };
+
+  // useEffect(() => {
+  //   setCareerProfileState({ introduce: selectedIntroduce });
+  // }, [setCareerProfileState, selectedIntroduce]);
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setCareerProfileState({ [name]: value });
-  };
-
-  const handleAutoSave = (where) => {
-    showAutoSaveToast(
-      updateProfile(),
-      () => '자동 저장되었습니다.',
-      (error) => {
-        console.log(error);
-        return '자동 저장에 실패하였습니다.';
-      }
-    );
-    if (where === 'next') {
-      navigate(`/register/profile/condition/${careerProfileId}`);
-    } else if (where === 'prev') {
-      navigate(`/register/profile/career/${careerProfileId}`);
-    }
   };
 
   useEffect(() => {
@@ -69,13 +96,13 @@ const RegisterProfileIntroductionPage = () => {
             userType={null}
             disabled={false}
             children={'이전'}
-            onClick={() => handleAutoSave('prev')}
+            onClick={() => navigate(`/register/profile/career/${profileId}`)}
           ></Button>
           <Button
             userType={'dong'}
             disabled={false}
             children={'다음'}
-            onClick={() => handleAutoSave('next')}
+            onClick={updateIntroduction}
           ></Button>
         </WrapButton>
       </WrapButtonContainer>

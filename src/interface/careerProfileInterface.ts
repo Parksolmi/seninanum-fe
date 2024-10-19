@@ -8,6 +8,11 @@ interface CareerItem {
   content: string;
 }
 
+interface CareerCertificate {
+  name: string;
+  status: string;
+}
+
 export interface CareerProfile {
   careerProfileId: '';
   progressStep: 0;
@@ -21,5 +26,6 @@ export interface CareerProfile {
   region: '';
   priceType: '';
   price: -1;
-  careerItemList: CareerItem[];
+  careerItems: CareerItem[];
+  careerCertificate: CareerCertificate;
 }
