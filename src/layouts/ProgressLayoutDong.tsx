@@ -4,13 +4,17 @@ import styled from 'styled-components';
 import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
 import { useFetchCareerProfile } from '../hooks/useCareerProfile';
-import { CareerProfile } from '../interface/careerProfileInterface';
+import {
+  CareerProfile,
+  initialCareerProfile,
+} from '../interface/careerProfileInterface';
 
 const ProgressLayoutDong: React.FC = () => {
   const [status, setStatus] = useState(1);
-  const [careerProfile, setCareerProfile] = useState<CareerProfile | undefined>(
-    undefined
-  );
+  const [careerProfile, setCareerProfile] = useState<CareerProfile>({
+    ...initialCareerProfile,
+  });
+
   const { data } = useFetchCareerProfile();
 
   useEffect(() => {
