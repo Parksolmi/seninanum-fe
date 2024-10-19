@@ -7,7 +7,7 @@ export const useCreateChatRoom = () => {
   const handleCreateChatRoom = async (opponentMemberId, setIsButtonClicked) => {
     await instance
       .post('/chatroom/create', {
-        opponentId: opponentMemberId,
+        oppProfileId: opponentMemberId,
       })
       .then((res) => {
         setIsButtonClicked(true); //연타 방지

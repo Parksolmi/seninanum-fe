@@ -36,7 +36,7 @@ interface Message {
   chatRoomId: number;
   senderId: number;
   createdAt: string;
-  senderType: 'USER' | 'SYSTEM';
+  senderType: 'USER' | 'LEAVE' | 'COME';
   unreadCount: number;
 }
 
@@ -177,8 +177,8 @@ const ChatPage = () => {
     if (isMembersFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        brokerURL: 'wss://api.seninanum.shop/meet',
-        // brokerURL: 'ws://localhost:3001/meet',
+        // brokerURL: 'wss://api.seninanum.shop/meet',
+        brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,

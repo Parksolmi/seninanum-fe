@@ -12,6 +12,9 @@ interface ChatRoom {
   userType: string;
   roomName: string;
   lastMessage: string;
+  senderType: string;
+  senderId: string;
+  myProfileId: string;
   createdAt: string; //lastMessageAt으로 수정
   unreadMessageCount: number;
 }
@@ -69,9 +72,17 @@ const ChatIndexPage: React.FC = () => {
                         <Time>{timeDisplay}</Time>
                       </div>
                       <div className="bottom">
-                        <Message>{chat.lastMessage}</Message>
+                        {chat.senderId !== chat.myProfileId ? (
+                          <Message>{chat.lastMessage}</Message>
+                        ) : (
+                          chat.senderType === 'USER' && (
+                            <Message>{chat.lastMessage}</Message>
+                          )
+                        )}
                         {chat.unreadMessageCount > 0 ? (
-                          <UnreadCount>{chat.unreadMessageCount}</UnreadCount>
+                          <UnreadCount $userType={chat.userType}>
+                            {chat.unreadMessageCount}
+                          </UnreadCount>
                         ) : (
                           <br />
                         )}
@@ -191,8 +202,12 @@ const Time = styled.div`
   line-height: normal;
 `;
 
-const UnreadCount = styled.span`
-  background-color: #ff314a;
+interface UnreadCountProps {
+  $userType: string;
+}
+const UnreadCount = styled.span<UnreadCountProps>`
+  background-color: ${({ $$userType }) =>
+    $$userType === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
   color: #ffffff;
   font-family: NanumSquare;
   border-radius: 50%;
