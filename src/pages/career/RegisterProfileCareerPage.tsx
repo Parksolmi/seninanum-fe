@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import FileAddButton from '../../components/career/FileAddButton';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import useCareerItemState from '../../store/careerItemState';
 import CareerDetail from './../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { instance } from '../../api/instance';
@@ -12,22 +11,22 @@ import CareerFileBox from '../../components/career/CareerFileBox';
 import Modal from '../../components/common/Modal';
 import { usePromiseToast } from '../../hooks/useToast';
 import HelpBox from '../../components/career/HelpBox';
-import useCareerProfileState from '../../store/careerProfileState';
 import useModal from '../../hooks/useModal';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
+import { CareerProfile } from '../../interface/careerProfileInterface';
+import { useQueryClient } from 'react-query';
 
 interface OutletContext {
   setStatus: (status: number) => void;
+  careerProfile: CareerProfile;
 }
 
 const RegisterProfileCareerPage = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
-  const { careers, setCareers } = useCareerItemState();
-
-  const { setStatus } = useOutletContext<OutletContext>();
-  const { careerProfileState } = useCareerProfileState();
-
+  const { setStatus, careerProfile } = useOutletContext<OutletContext>();
   const { updateProfile } = useUpdateCareerProfile(careerProfileId);
 
   //모달 창
@@ -69,9 +68,8 @@ const RegisterProfileCareerPage = () => {
     try {
       await instance.delete(`/career/item/${profileCareerId}`);
       alert('항목이 삭제되었습니다.');
-      // 경력 삭제 후 목록 업데이트
-      const response = await instance.get(`/career`);
-      setCareers(response.data.careerItems);
+      // 삭제 후 쿼리를 무효화하여 최신 데이터를 다시 가져오도록 설정
+      queryClient.invalidateQueries('fetchCareerProfileKey');
     } catch (error) {
       console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
     }
@@ -81,9 +79,9 @@ const RegisterProfileCareerPage = () => {
   const handleRemoveCertificate = async () => {
     try {
       await instance.delete(`/career/certificate/${careerProfileId}`);
-      // 증명서 삭제 후 목록 업데이트
       alert('파일이 삭제되었습니다.');
-      window.location.reload(); // 페이지 새로고침
+      // 삭제 후 쿼리를 무효화하여 최신 데이터를 다시 가져오도록 설정
+      queryClient.invalidateQueries('fetchCareerProfileKey');
     } catch (e) {
       console.log(e);
       alert('파일 삭제 중 오류가 발생했습니다.');
@@ -112,9 +110,12 @@ const RegisterProfileCareerPage = () => {
         <h3>{`동백님의 경력을 알려주세요!`}</h3>
         <TotalCareer>
           <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-          <p>총 경력 {calcTotalCareer(careers)}</p>
+          <p>
+            총 경력{' '}
+            {careerProfile ? calcTotalCareer(careerProfile.careerItemList) : 0}
+          </p>
         </TotalCareer>
-        {careers.map((career) => (
+        {careerProfile?.careerItemList.map((career) => (
           <CareerDetail
             key={career.careerId}
             title={career.title}
@@ -139,10 +140,10 @@ const RegisterProfileCareerPage = () => {
       <WrapSection className="last-content">
         <h3>경력증명서</h3>
         <HelpBox />
-        {careerProfileState.certificateName && (
+        {careerProfile?.certificateName && (
           <CareerFileBox
-            activeStatus={careerProfileState.certificate}
-            uploadedFileName={careerProfileState.certificateName}
+            activeStatus={careerProfile.certificateStatus}
+            uploadedFileName={careerProfile.certificateName}
             onDelete={openCertificateDeleteModal}
           />
         )}
