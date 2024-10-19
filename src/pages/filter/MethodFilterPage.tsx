@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import Dropdown from '../../components/common/DropDown';
-import { useNavigate } from 'react-router-dom';
-import progressStore from '../../store/careerProgressState';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useCareerFilterState from '../../store/careerFilterState';
 import regionState from '../../constants/regionState';
 
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
+
 const MethodFilterPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { setStatus } = useOutletContext<OutletContext>();
   const { setCareerFilterState } = useCareerFilterState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>('');

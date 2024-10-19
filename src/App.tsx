@@ -22,7 +22,6 @@ import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
 import ChatPage from './pages/chat/ChatPage';
 import ViewProfileDong from './pages/profile/ViewProfileDong';
-import ProgressLayout from './layouts/ProgressLayout';
 import WalkThroughIndexPage from './pages/walkthrough/WalkThroughIndexPage';
 import RegisterProfileCertificatePage from './pages/career/RegisterProfileCertificatePage';
 import ViewMyProfileDongPage from './pages/mypage/ViewMyProfileDongPage';
@@ -38,6 +37,8 @@ import ManageMyApplication from './pages/manage/ManageMyApplication';
 import ViewMyRecruitDetail from './pages/recruit/ViewMyRecruitDetail';
 import ViewMyApplicantsList from './pages/recruit/ViewMyApplicantsList';
 import MatchIndexPage from './pages/match/MatchIndexPage';
+import ProgressLayoutDong from './layouts/ProgressLayoutDong';
+import ProgressLayoutNari from './layouts/ProgressLayoutNari';
 
 const App: React.FC = () => {
   return (
@@ -53,7 +54,7 @@ const App: React.FC = () => {
 
         <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}
-        <Route path="/register/recruit" element={<ProgressLayout />}>
+        <Route path="/register/recruit" element={<ProgressLayoutNari />}>
           <Route path="field" element={<RegisterRecruitFieldPage />} />
           <Route path="method" element={<RegisterRecruitMethodPage />} />
           <Route path="content" element={<RegisterRecruitContentPage />} />
@@ -65,13 +66,16 @@ const App: React.FC = () => {
           element={<ViewRecruitDetail />}
         />
         {/* 구인글 수정 */}
-        <Route path="/modify/recruit/:recruitId" element={<ProgressLayout />}>
+        <Route
+          path="/modify/recruit/:recruitId"
+          element={<ProgressLayoutNari />}
+        >
           <Route path="field" element={<RegisterRecruitFieldPage />} />
           <Route path="method" element={<RegisterRecruitMethodPage />} />
           <Route path="content" element={<RegisterRecruitContentPage />} />
         </Route>
         {/* 경력 프로필 등록 */}
-        <Route path="/register/profile" element={<ProgressLayout />}>
+        <Route path="/register/profile" element={<ProgressLayoutDong />}>
           <Route
             path="career/:careerProfileId"
             element={<RegisterProfileCareerPage />}
@@ -94,7 +98,7 @@ const App: React.FC = () => {
           element={<RegisterProfileCertificatePage />}
         />
         {/* 경력프로필 필터링 조회 */}
-        <Route path="/filter/career" element={<ProgressLayout />}>
+        <Route path="/filter/career" element={<ProgressLayoutDong />}>
           <Route path="field" element={<FieldFilterPage />} />
           <Route path="method" element={<MethodFilterPage />} />
           <Route path="price" element={<PriceFilterPage />} />

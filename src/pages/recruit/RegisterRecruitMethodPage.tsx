@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import Dropdown from '../../components/common/DropDown';
 import regionState from './../../constants/regionState';
 import useRecruitState from '../../store/recruitState';
-import progressStore from '../../store/careerProgressState';
+
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
 
 const RegisterRecruitMethodPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { setStatus } = useOutletContext<OutletContext>();
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [selectedMethod, setSelectedMethod] = useState<string>(

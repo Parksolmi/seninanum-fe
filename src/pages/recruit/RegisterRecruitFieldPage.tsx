@@ -3,14 +3,17 @@ import styled from 'styled-components';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useRecruitState from '../../store/recruitState';
-import progressStore from '../../store/careerProgressState';
 import { useToast } from '../../hooks/useToast';
+
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
 
 const RegisterRecruitFieldPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { setStatus } = useOutletContext<OutletContext>();
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [selectedTags, setSelectedTags] = useState<string[]>(

@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Category from '../../components/common/Category';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
-import progressStore from '../../store/careerProgressState';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useToast } from '../../hooks/useToast';
 import useCareerFilterState from './../../store/careerFilterState';
 import categoryState from '../../constants/categoryState';
 
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
+
 const FieldFilterPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
-  const { setCareerFilterState } = useCareerFilterState();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+  const { setStatus } = useOutletContext<OutletContext>();
+  const { setCareerFilterState } = useCareerFilterState();
   const isDisabled = selectedTags.length < 1;
 
   const { showToast: showSelectionError } = useToast(

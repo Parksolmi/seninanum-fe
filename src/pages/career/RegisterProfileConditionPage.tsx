@@ -10,31 +10,35 @@ import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
 import Modal from '../../components/common/Modal';
 import { usePromiseToast, useToast } from '../../hooks/useToast';
-import useCareerProfileState from '../../store/careerProfileState';
 import useModal from '../../hooks/useModal';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
+import { CareerProfile } from '../../interface/careerProfileInterface';
 
 interface OutletContext {
   setStatus: (status: number) => void;
+  careerProfile: CareerProfile;
+  setCareerProfile: (careerProfile: CareerProfile) => void;
 }
 
 const RegisterProfileConditionPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = useOutletContext<OutletContext>();
+  const { setStatus, careerProfile, setCareerProfile } =
+    useOutletContext<OutletContext>();
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
 
-  const { setCareerProfileState, careerProfileState } = useCareerProfileState();
-
-  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+  const { updateProfile } = useUpdateCareerProfile(
+    careerProfileId,
+    careerProfile
+  );
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>(
-    careerProfileState.age ? careerProfileState.age.split(',') : []
+    careerProfile.age ? careerProfile.age.split(',') : []
   );
   const [selectedTags, setSelectedTags] = useState<string[]>(
-    careerProfileState.field ? careerProfileState.field.split(',') : []
+    careerProfile.field ? careerProfile.field.split(',') : []
   );
 
   // 모달
@@ -88,9 +92,9 @@ const RegisterProfileConditionPage = () => {
   // "다음" 버튼 활성화 여부 결정
   const handleNextButton = () => {
     if (
-      (careerProfileState.method === '대면' ||
-        careerProfileState.method === '모두 선택') &&
-      careerProfileState.region === ''
+      (careerProfile.method === '대면' ||
+        careerProfile.method === '모두 선택') &&
+      careerProfile.region === ''
     ) {
       // 지역 선택이 없으면 모달 띄우기
       openSelectRegionModal();
@@ -113,17 +117,29 @@ const RegisterProfileConditionPage = () => {
     navigate(`/register/profile/introduction/${careerProfileId}`);
   };
 
-  const hadnleOnChagne = (e) => {
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setCareerProfileState({ [name]: value });
+    const key = name as keyof CareerProfile;
+
+    // 값 변환 처리
+    const updatedValue = key === 'price' ? Number(value) : value;
+
+    // 상태 업데이트
+    setCareerProfile({
+      ...careerProfile,
+      [key]: updatedValue,
+    });
   };
 
   useEffect(() => {
-    setCareerProfileState({
+    setCareerProfile({
+      ...careerProfile,
       age: selectedAgeTags.join(','),
       field: selectedTags.join(','),
     });
-  }, [setCareerProfileState, selectedAgeTags, selectedTags]);
+  }, [setCareerProfile, careerProfile, selectedAgeTags, selectedTags]);
 
   useEffect(() => {
     setStatus(3);
@@ -163,9 +179,9 @@ const RegisterProfileConditionPage = () => {
         <div className="title">제공할 서비스</div>
         <InputService
           name="service"
-          onChange={hadnleOnChagne}
+          onChange={handleOnChange}
           placeholder="ex. 컨설팅, 맞춤 과외 등"
-          value={careerProfileState.service || ''}
+          value={careerProfile.service || ''}
         />
       </WrapSection>
       <WrapSection>
@@ -174,24 +190,28 @@ const RegisterProfileConditionPage = () => {
           {['대면', '비대면', '모두 선택'].map((method) => (
             <MethodButton
               key={method}
-              $isSelected={careerProfileState.method === method}
-              onClick={() => setCareerProfileState({ method: method })}
+              $isSelected={careerProfile.method === method}
+              onClick={() =>
+                setCareerProfile({ ...careerProfile, method: method })
+              }
             >
               {method}
             </MethodButton>
           ))}
         </MethodButtonContainer>
       </WrapSection>
-      {(careerProfileState.method === '대면' ||
-        careerProfileState.method === '모두 선택') && (
+      {(careerProfile.method === '대면' ||
+        careerProfile.method === '모두 선택') && (
         <WrapSection>
           <div className="title">희망 활동 지역</div>
           <Dropdown
             userType="dong"
             placeholder="지역선택"
             list={regionState.list}
-            selected={careerProfileState.region}
-            onSelect={(region) => setCareerProfileState({ region: region })}
+            selected={careerProfile.region}
+            onSelect={(region) =>
+              setCareerProfile({ ...careerProfile, region: region })
+            }
           />
         </WrapSection>
       )}
@@ -200,11 +220,16 @@ const RegisterProfileConditionPage = () => {
         <div className="title">희망 금액</div>
         <InputPrice
           name="price"
-          onChange={hadnleOnChagne}
+          onChange={handleOnChange}
           userType={'dong'}
-          selected={careerProfileState.priceType}
-          onClickMethod={(type) => setCareerProfileState({ priceType: type })}
-          value={careerProfileState.price || -1}
+          selected={careerProfile.priceType}
+          onClickMethod={(type) =>
+            setCareerProfile({
+              ...careerProfile,
+              priceType: type,
+            })
+          }
+          value={careerProfile.price || -1}
         />
       </WrapSection>
 

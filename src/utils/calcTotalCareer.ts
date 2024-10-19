@@ -1,5 +1,6 @@
-import { CareerItemState } from '../store/careerItemState';
-export const calcTotalCareer = (careers: CareerItemState[]) => {
+import { CareerProfile } from '../interface/careerProfileInterface';
+
+export const calcTotalCareer = (careers: CareerProfile['careerItems']) => {
   let totalPeriod = 0;
 
   careers.forEach((career) => {
