@@ -9,7 +9,7 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'SYSTEM' | 'LEAVE';
+  senderType: 'USER' | 'LEAVE' | 'COME';
   senderName?: string;
 }
 interface Profile {
@@ -29,12 +29,7 @@ const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
   const navigate = useNavigate();
 
   switch (message.senderType) {
-    // case 'SYSTEM':
-    //   return (
-    //     <Announcement>
-    //       <div className="content">{message.chatMessage}</div>
-    //     </Announcement>
-    //   );
+    case 'COME':
     case 'LEAVE':
       return (
         <Announcement>
