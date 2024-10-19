@@ -6,6 +6,7 @@ export const useUpdateCareerProfile = (careerProfileId, careerProfile) => {
     try {
       instance.patch('/career', {
         profileId: careerProfileId,
+        introduce: careerProfile.introduce,
         age: careerProfile.age,
         field: careerProfile.field,
         service: careerProfile.service,
@@ -13,7 +14,8 @@ export const useUpdateCareerProfile = (careerProfileId, careerProfile) => {
         region: careerProfile.region,
         priceType: careerProfile.priceType,
         price: careerProfile.price,
-        introduce: careerProfile.introduce,
+        careerItems: careerProfile.careerItems,
+        careerCertificate: careerProfile.careerCertificate,
       });
     } catch (e) {
       console.log(e);
