@@ -27,7 +27,10 @@ const RegisterProfileCareerPage = () => {
 
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
   const { setStatus, careerProfile } = useOutletContext<OutletContext>();
-  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+  const { updateProfile } = useUpdateCareerProfile(
+    careerProfileId,
+    careerProfile
+  );
 
   //모달 창
   const {

@@ -1,22 +1,19 @@
 import { instance } from '../api/instance';
-import useCareerProfileState from '../store/careerProfileState';
 
 //  프로필 중간 저장
-export const useUpdateCareerProfile = (careerProfileId) => {
-  const { careerProfileState } = useCareerProfileState();
-
+export const useUpdateCareerProfile = (careerProfileId, careerProfile) => {
   const updateProfile = async () => {
     try {
       instance.patch('/career', {
         profileId: careerProfileId,
-        age: careerProfileState.age,
-        field: careerProfileState.field,
-        service: careerProfileState.service,
-        method: careerProfileState.method,
-        region: careerProfileState.region,
-        priceType: careerProfileState.priceType,
-        price: careerProfileState.price,
-        introduce: careerProfileState.introduce,
+        age: careerProfile.age,
+        field: careerProfile.field,
+        service: careerProfile.service,
+        method: careerProfile.method,
+        region: careerProfile.region,
+        priceType: careerProfile.priceType,
+        price: careerProfile.price,
+        introduce: careerProfile.introduce,
       });
     } catch (e) {
       console.log(e);

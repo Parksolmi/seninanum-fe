@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import { instance } from '../../api/instance';
-import useCareerProfileState from '../../store/careerProfileState';
 import PrevHeader from '../../components/header/PrevHeader';
 import { usePromiseToast } from '../../hooks/useToast';
 
@@ -13,8 +12,6 @@ const RegisterProfileCertificatePage = () => {
 
   const [file, setFile] = useState<File | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
-  const { setCareerProfileState } = useCareerProfileState();
 
   //토스트 메세지
   const { showPromiseToast: showSendFileToast } = usePromiseToast();
@@ -58,10 +55,10 @@ const RegisterProfileCertificatePage = () => {
       await showSendFileToast(
         res,
         () => {
-          setCareerProfileState({
-            certificateName: file.name,
-            certificate: '검토',
-          });
+          // setCareerProfileState({
+          //   certificateName: file.name,
+          //   certificate: '검토',
+          // });
           return '파일이 업로드되었습니다.';
         },
         (error) => {

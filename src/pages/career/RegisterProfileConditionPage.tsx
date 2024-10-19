@@ -26,7 +26,10 @@ const RegisterProfileConditionPage = () => {
     useOutletContext<OutletContext>();
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
 
-  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+  const { updateProfile } = useUpdateCareerProfile(
+    careerProfileId,
+    careerProfile
+  );
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
