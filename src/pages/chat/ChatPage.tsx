@@ -17,6 +17,7 @@ import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
+import { stompBrokerURL } from '../../constants/baseUrl';
 
 interface Profile {
   profileId: string;
@@ -177,7 +178,7 @@ const ChatPage = () => {
     if (isMembersFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        brokerURL: 'wss://api.seninanum.shop/meet',
+        brokerURL: stompBrokerURL,
         // brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,

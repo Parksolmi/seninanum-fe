@@ -206,8 +206,8 @@ interface UnreadCountProps {
   $userType: string;
 }
 const UnreadCount = styled.span<UnreadCountProps>`
-  background-color: ${({ $$userType }) =>
-    $$userType === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
+  background-color: ${({ $userType }) =>
+    $userType === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
   color: #ffffff;
   font-family: NanumSquare;
   border-radius: 50%;
