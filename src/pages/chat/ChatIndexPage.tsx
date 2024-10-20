@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import TitleHeader from '../../components/header/TitleHeader';
 import { parseTime } from '../../utils/formatTime';
 import NotFoundDong from '../../components/NotFound/NotFoundDong';
+import NotFoundNari from '../../components/NotFound/NotFoundNari';
 
 interface ChatRoom {
   chatRoomId: number;
@@ -19,9 +20,15 @@ interface ChatRoom {
   unreadMessageCount: number;
 }
 
+interface OutletContext {
+  userType: string;
+  career: number;
+}
+
 const ChatIndexPage: React.FC = () => {
   const navigate = useNavigate();
   const [chatList, setChatList] = useState<ChatRoom[]>([]);
+  const { userType } = useOutletContext<OutletContext>();
 
   // 채팅 목록 불러오기
   useEffect(() => {
@@ -40,10 +47,19 @@ const ChatIndexPage: React.FC = () => {
     <>
       <TitleHeader title="채팅" isShowAlert={false} />
       {chatList.length === 0 ? (
-        <NotFoundDong
-          title="채팅한 사람이 없어요."
-          content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
-        />
+        <>
+          {userType === 'dong' ? (
+            <NotFoundDong
+              title="채팅한 사람이 없어요."
+              content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
+            />
+          ) : (
+            <NotFoundNari
+              title="채팅한 사람이 없어요."
+              content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
+            />
+          )}
+        </>
       ) : (
         <WrapContent>
           <ChatListContainer>

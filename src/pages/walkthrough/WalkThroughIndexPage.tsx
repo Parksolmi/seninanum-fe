@@ -6,14 +6,13 @@ import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import AssetArray from './AssetArray';
 import { useNavigate } from 'react-router-dom';
-import userTypeStore from '../../store/userState';
+import { useFetchUserType } from '../../hooks/useFetchUserType';
 
 const WalkThroughIndexPage = () => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlide = 4;
-
-  const { userType } = userTypeStore();
+  const { data: user } = useFetchUserType();
 
   const handleBeforeChange = (oldIdx, newIdx) => {
     setCurrentSlide(newIdx);
@@ -41,7 +40,7 @@ const WalkThroughIndexPage = () => {
             <Button
               children={currentSlide === totalSlide - 1 ? '시작하기' : '다음'}
               disabled={false}
-              userType={userType}
+              userType={user?.userType || null}
               onClick={
                 currentSlide === totalSlide - 1 ? navigateToHome : onClick
               }
@@ -76,11 +75,11 @@ const WalkThroughIndexPage = () => {
       <TitleArea>
         <TitleText>가입완료</TitleText>
       </TitleArea>
-      <StyledSlider $userType={userType} {...sliderSettings}>
-        <AssetArray userType={userType} index={1}></AssetArray>
-        <AssetArray userType={userType} index={2}></AssetArray>
-        <AssetArray userType={userType} index={3}></AssetArray>
-        <AssetArray userType={userType} index={4}></AssetArray>
+      <StyledSlider $userType={user?.userType} {...sliderSettings}>
+        <AssetArray userType={user?.userType || ''} index={1}></AssetArray>
+        <AssetArray userType={user?.userType || ''} index={2}></AssetArray>
+        <AssetArray userType={user?.userType || ''} index={3}></AssetArray>
+        <AssetArray userType={user?.userType || ''} index={4}></AssetArray>
       </StyledSlider>
       <GapButton />
     </WrapContent>

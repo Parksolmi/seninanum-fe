@@ -134,12 +134,18 @@ const RegisterProfileConditionPage = () => {
   };
 
   useEffect(() => {
-    setCareerProfile({
-      ...careerProfile,
-      age: selectedAgeTags.join(','),
-      field: selectedTags.join(','),
-    });
-  }, [setCareerProfile, careerProfile, selectedAgeTags, selectedTags]);
+    // selectedAgeTags 또는 selectedTags가 변경되었을 때만 상태 업데이트
+    if (
+      careerProfile.age !== selectedAgeTags.join(',') ||
+      careerProfile.field !== selectedTags.join(',')
+    ) {
+      setCareerProfile({
+        ...careerProfile,
+        age: selectedAgeTags.join(','),
+        field: selectedTags.join(','),
+      });
+    }
+  }, [careerProfile, selectedAgeTags, selectedTags, setCareerProfile]);
 
   useEffect(() => {
     setStatus(3);

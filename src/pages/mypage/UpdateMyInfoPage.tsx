@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import userTypeStore from '../../store/userState';
 import PrevHeader from '../../components/header/PrevHeader';
 import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import { instance } from '../../api/instance';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
+import { useFetchUserType } from '../../hooks/useFetchUserType';
 
 interface Inputs {
   nickname: string;
@@ -19,8 +19,9 @@ interface Inputs {
 
 const UpdateMyInfoPage: React.FC = () => {
   const navigate = useNavigate();
-  const { userType } = userTypeStore();
-  const { data: user } = useFetchMyProfile();
+
+  const { data: user } = useFetchUserType();
+  const { data: profile } = useFetchMyProfile();
   const {
     register,
     handleSubmit,
@@ -28,10 +29,10 @@ const UpdateMyInfoPage: React.FC = () => {
   } = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
-      nickname: user?.nickname,
-      gender: user?.gender,
-      birthYear: user?.birthYear,
-      profile: user?.profile,
+      nickname: profile?.nickname,
+      gender: profile?.gender,
+      birthYear: profile?.birthYear,
+      profile: profile?.profile,
     },
   });
 
@@ -45,7 +46,7 @@ const UpdateMyInfoPage: React.FC = () => {
       });
 
       console.log('수정 성공:', res.data);
-      navigate(`/view/myprofile/${userType}`);
+      navigate(`/view/myprofile/${user?.userType}`);
     } catch (error) {
       console.error('수정 실패:', error);
     }
@@ -58,23 +59,24 @@ const UpdateMyInfoPage: React.FC = () => {
 
   return (
     <>
+      <PrevHeader title={'프로필 수정'} navigateTo={'-1'} />
       <WrapContent>
-        <PrevHeader title={'프로필 수정'} navigateTo={'-1'} />
-        <ShowInfoText>
-          {userType === 'dong'
-            ? '동백님의 정보를 알려주세요!'
-            : '나리님의 정보를 알려주세요!'}
-        </ShowInfoText>
-        <ShowSecondInfoText>
-          {userType === 'dong'
-            ? '나리님에게 보여지는 정보예요.'
-            : '동백님에게 보여지는 정보예요.'}
-        </ShowSecondInfoText>
-        {user && (
+        {user?.userType === 'dong' ? (
+          <WrapText>
+            <h1>동백님의 정보를 알려주세요!</h1>
+            <p>나리님에게 보여지는 정보예요.</p>
+          </WrapText>
+        ) : (
+          <WrapText>
+            <h1>나리님의 정보를 알려주세요!</h1>
+            <p>동백님에게 보여지는 정보예요.</p>
+          </WrapText>
+        )}
+        {profile && (
           <>
             <ProfileImgaeArea>
               <WrapProfile>
-                <img src={user.profile} alt="profile" />
+                <img src={profile.profile} alt="profile" />
               </WrapProfile>
               <CameraIcon
                 src={`/assets/home/edit-image.svg`}
@@ -84,10 +86,10 @@ const UpdateMyInfoPage: React.FC = () => {
 
             <WrapFrom onSubmit={handleSubmit(onSubmit)}>
               <InputText
-                userType={userType}
+                userType={user?.userType || null}
                 label="이름/닉네임"
                 placeholder="이름 혹은 닉네임을 입력해주세요."
-                defaultValue={user.nickname ? user.nickname : ''}
+                defaultValue={profile.nickname ? profile.nickname : ''}
                 register={register('nickname', {
                   required: '이름/닉네임은 필수입니다.',
                   validate: (value) =>
@@ -95,16 +97,16 @@ const UpdateMyInfoPage: React.FC = () => {
                 })}
               />
               <Toggle
-                userType={userType}
+                userType={user?.userType || null}
                 label="성별"
                 options={['남성', '여성']}
                 register={register('gender', {
                   required: '성별은 필수입니다.',
                 })}
-                defaultValue={user.gender}
+                defaultValue={profile.gender}
               />
               <InputText
-                userType={userType}
+                userType={user?.userType || null}
                 label="출생년도"
                 placeholder="예시) 1876"
                 register={register('birthYear', {
@@ -112,14 +114,14 @@ const UpdateMyInfoPage: React.FC = () => {
                   validate: (value) =>
                     /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
                 })}
-                defaultValue={user.birthYear}
+                defaultValue={profile.birthYear}
               />
               <WrapButtonContainer>
                 <WrapButton>
                   <Button
                     type="submit"
                     disabled={Object.keys(errors).length > 0}
-                    userType={userType}
+                    userType={user?.userType || null}
                   >
                     수정완료하기
                   </Button>
@@ -142,18 +144,20 @@ const WrapContent = styled.div`
   }
 `;
 
-const ShowInfoText = styled.div`
-  color: #000;
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.03rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.8rem;
-`;
+const WrapText = styled.div`
+  h1 {
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.03rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
 
-const ShowSecondInfoText = styled.div`
-  color: #5b5b5b;
-  font-size: 1.125rem;
+  p {
+    color: #5b5b5b;
+    font-size: 1.125rem;
+  }
 `;
 
 const ProfileImgaeArea = styled.div`

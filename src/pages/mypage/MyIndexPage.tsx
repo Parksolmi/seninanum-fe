@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import BasicProfile from '../../components/mypage/BasicProfile';
 import PayMenu from '../../components/mypage/PayMenu';
 import GroupMenu from '../../components/mypage/GroupMenu';
+import { useOutletContext } from 'react-router-dom';
+
+interface OutletContext {
+  userType: string;
+  career: number;
+}
 
 const MyIndexPage: React.FC = () => {
-  const { userType } = userTypeStore();
+  const { userType } = useOutletContext<OutletContext>();
   const { data: user } = useFetchMyProfile();
 
   return (

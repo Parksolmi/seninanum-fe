@@ -1,5 +1,5 @@
 import React from 'react';
-const MatchIndexPageNari: React.FC = () => {
-  return <h1>매칭-동백</h1>;
+const MatchIndexPageNari = ({ userType }) => {
+  return <h1>매칭-나리</h1>;
 };
 export default MatchIndexPageNari;
