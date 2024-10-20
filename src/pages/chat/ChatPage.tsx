@@ -125,7 +125,7 @@ const ChatPage = () => {
 
   const handleBackButton = async () => {
     try {
-      await instance.post('/stomp/disconnect', {
+      await instance.post('/chat/disconnect', {
         roomId: roomId,
         lastReadMessageId: lastReadMessageId,
       });
