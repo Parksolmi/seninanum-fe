@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import ApplicationCard from '../../components/chat/ApplicationCard';
-import userTypeStore from '../../store/userState';
 import { calcAge } from '../../utils/calcAge';
 
 interface Application {
@@ -20,10 +19,9 @@ interface Volunteers {
   birthyear: string;
 }
 
-const MatchIndexPageDong: React.FC = () => {
+const MatchIndexPageDong = ({ userType }) => {
   const navigate = useNavigate();
   const [applicationList, setApplicationList] = useState<Application[]>([]);
-  const { userType } = userTypeStore();
   const [volunteers, setVolunteers] = useState<Volunteers[]>([]);
 
   // profileId로 중복 항목 제거하는 함수

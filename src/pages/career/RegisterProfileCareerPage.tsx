@@ -145,7 +145,7 @@ const RegisterProfileCareerPage = () => {
       <WrapSection className="last-content">
         <h3>경력증명서</h3>
         <HelpBox />
-        {careerProfile?.certificateName && (
+        {careerProfile?.careerCertificate && (
           <CareerFileBox
             activeStatus={careerProfile?.careerCertificate?.status || ''}
             uploadedFileName={careerProfile?.careerCertificate?.name || ''}

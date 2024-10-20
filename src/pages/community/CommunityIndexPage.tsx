@@ -2,11 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import CommunityIndexPageDong from './CommunityIndexPageDong';
 import CommunityIndexPageNari from './CommunityIndexPageNari';
-import userTypeStore from '../../store/userState';
 import TitleHeader from '../../components/header/TitleHeader';
+import { useOutletContext } from 'react-router-dom';
+
+interface OutletContext {
+  userType: string;
+  career: number;
+}
 
 const CommunityIndexPage: React.FC = () => {
-  const { userType } = userTypeStore();
+  const { userType } = useOutletContext<OutletContext>();
 
   return (
     <>

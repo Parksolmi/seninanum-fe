@@ -14,8 +14,6 @@ export const useUpdateCareerProfile = (careerProfileId, careerProfile) => {
         region: careerProfile.region,
         priceType: careerProfile.priceType,
         price: careerProfile.price,
-        careerItems: careerProfile.careerItems,
-        careerCertificate: careerProfile.careerCertificate,
       });
     } catch (e) {
       console.log(e);

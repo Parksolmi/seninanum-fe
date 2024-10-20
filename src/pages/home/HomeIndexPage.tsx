@@ -1,15 +1,20 @@
 import React from 'react';
-import userTypeStore from '../../store/userState';
+import { useOutletContext } from 'react-router-dom';
 import HomeIndexPageDong from './HomeIndexPageDong';
 import HomeIndexPageNari from './HomeIndexPageNari';
 
+interface OutletContext {
+  userType: string;
+  career: number;
+}
+
 const HomeIndexPage: React.FC = () => {
-  const { userType, profileStep } = userTypeStore();
+  const { userType, career } = useOutletContext<OutletContext>();
 
   return (
     <>
       {userType === 'dong' ? (
-        <HomeIndexPageDong progressStep={profileStep} />
+        <HomeIndexPageDong progressStep={career} />
       ) : (
         <HomeIndexPageNari />
       )}

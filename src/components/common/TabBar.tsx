@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import tabMenu from '../../store/tabContext';
-import userTypeStore from '../../store/userState';
-import { instance } from '../../api/instance';
 
 interface MenuItem {
   id: number;
@@ -14,30 +12,17 @@ interface MenuItem {
   iconActive: string;
 }
 
-const TabBar = () => {
+const TabBar = ({ userType }) => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('/');
-  const { userType, setProfileStep, setUserType } = userTypeStore();
 
-  // 유저 타입 가져오기
-  const getUserType = useCallback(async () => {
-    try {
-      const res = await instance.get('/user/userType');
-      setUserType(res.data.userType);
-      setProfileStep(res.data.career);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [setUserType, setProfileStep]);
+  const handleClick = (tab: number) => {
+    setTabMenuState(tab);
+  };
 
   const { setTabMenuState } = tabMenu((state) => ({
     setTabMenuState: state.setTabMenuState,
   }));
-
-  const handleClick = (tab: number) => {
-    setTabMenuState(tab);
-    getUserType();
-  };
 
   const menus: MenuItem[] = [
     {
@@ -80,10 +65,6 @@ const TabBar = () => {
   useEffect(() => {
     setCurrentPage(location.pathname);
   }, [location]);
-
-  useEffect(() => {
-    getUserType();
-  }, [getUserType]);
 
   return (
     <StyledNav>
