@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PrevHeader from '../../components/header/PrevHeader';
 import styled from 'styled-components';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
 import Category from '../../components/common/Category';
@@ -8,7 +7,7 @@ import Button from '../../components/common/Button';
 import DatePickerModal from '../../components/chat/DatePickerModal';
 import TimePickerModal from '../../components/chat/TimePickerModal';
 
-const MakeAppointment = () => {
+const MakeAppointment = ({ onClose }) => {
   const { data: user } = useFetchUserType();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -52,8 +51,13 @@ const MakeAppointment = () => {
           onClose={() => setShowTimePicker(false)}
         />
       )}
-      <PrevHeader navigateTo={'-1'} />
       <WrapContent>
+        <img
+          src="/assets/common/back-icon.svg"
+          alt=""
+          className="back"
+          onClick={() => onClose()}
+        />
         <TitleText>
           {`OOO ${user?.userType === 'dong' ? '나리' : '동백'}님과 약속`}
         </TitleText>
@@ -125,6 +129,11 @@ const WrapContent = styled.div`
   flex-direction: column;
   padding: 0 1.1rem;
   margin: 1.5rem 0;
+
+  .back {
+    width: 0.8rem;
+    margin-bottom: 2.7rem;
+  }
 `;
 
 const TitleText = styled.div`
