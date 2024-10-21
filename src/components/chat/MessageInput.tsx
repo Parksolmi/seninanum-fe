@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
+import { useNavigate } from 'react-router-dom';
 
 interface MessageInputProps {
   value;
@@ -23,6 +24,7 @@ const MessageInput = ({
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
   };
+  const navigate = useNavigate();
   return (
     <WrapMessageInput $isMenuOpen={isMenuOpen}>
       <MeassageInputContainer $isMenuOpen={isMenuOpen}>
@@ -53,7 +55,11 @@ const MessageInput = ({
         </div>
         <div>
           <WrapIcon>
-            <img src="/assets/chat/calendar.png" alt="약속잡기" />
+            <img
+              src="/assets/chat/calendar.png"
+              alt="약속잡기"
+              onClick={() => navigate('/chatroom/appointment')}
+            />
           </WrapIcon>
           <p>약속잡기</p>
         </div>
