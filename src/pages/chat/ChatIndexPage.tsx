@@ -96,7 +96,7 @@ const ChatIndexPage: React.FC = () => {
                           )
                         )}
                         {chat.unreadMessageCount > 0 ? (
-                          <UnreadCount $userType={chat.userType}>
+                          <UnreadCount $userType={userType}>
                             {chat.unreadMessageCount}
                           </UnreadCount>
                         ) : (

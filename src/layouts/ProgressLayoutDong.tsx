@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../components/header/ExitHeader';
 import ProgressBar from '../components/common/ProgressBar';
@@ -9,7 +9,10 @@ import {
   initialCareerProfile,
 } from '../interface/careerProfileInterface';
 
-const ProgressLayoutDong: React.FC = () => {
+const ProgressLayoutDong: React.FC = React.memo(() => {
+  const location = useLocation();
+  const contentAreaRef = useRef<HTMLDivElement | null>(null);
+
   const [status, setStatus] = useState(1);
   const [careerProfile, setCareerProfile] = useState<CareerProfile>({
     ...initialCareerProfile,
@@ -23,6 +26,13 @@ const ProgressLayoutDong: React.FC = () => {
     }
   }, [data]);
 
+  // 페이지가 변경될 때마다 스크롤을 맨 위로 이동
+  useEffect(() => {
+    if (contentAreaRef.current) {
+      contentAreaRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
   return (
     <>
       <Container>
@@ -33,7 +43,7 @@ const ProgressLayoutDong: React.FC = () => {
           <ProgressBar status={status} type={'dong'} />
         </WrapHeader>
 
-        <ContentArea>
+        <ContentArea ref={contentAreaRef}>
           <Outlet
             context={{
               setStatus,
@@ -45,7 +55,7 @@ const ProgressLayoutDong: React.FC = () => {
       </Container>
     </>
   );
-};
+});
 
 const Container = styled.div`
   display: flex;

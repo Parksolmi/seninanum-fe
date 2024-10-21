@@ -7,7 +7,7 @@ const StepProgressBar = ({ activeStatus }) => {
   const steps = Array.from({ length: totalSteps + 1 }, (_, index) => (
     <Step key={index} $activeStatus={activeStatus}>
       {activeStatus === index && (
-        <img src="/assets/home/home-progress-indicator.svg" alt="indicator" />
+        <img src="/assets/home/home-progress-indicator.png" alt="indicator" />
       )}
     </Step>
   ));
@@ -60,6 +60,7 @@ const Step = styled.div<{ $activeStatus: number }>`
 
   img {
     width: 4.5rem;
+    margin-bottom: 0.5rem;
     margin-left: ${({ $activeStatus }) =>
       $activeStatus === 0 ? '-15px' : '-60px'};
   }

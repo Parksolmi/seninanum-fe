@@ -100,7 +100,7 @@ const RegisterProfileCareerPage = () => {
         return '자동 저장에 실패하였습니다.';
       }
     );
-    navigate(`/register/profile/introduction/${careerProfileId}`);
+    navigate(`/register/profile/field/${careerProfileId}`);
   };
 
   useEffect(() => {
@@ -185,11 +185,13 @@ const WrapSection = styled.div`
   }
 
   h3 {
+    color: #000;
     font-family: NanumSquare;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
     letter-spacing: 0.03rem;
-    margin: 1rem 0;
   }
 `;
 
