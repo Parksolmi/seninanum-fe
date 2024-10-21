@@ -16,6 +16,7 @@ interface DetailCardProps {
   onDelete?: () => void;
   onCancel?: () => void;
   createdAt?: string;
+  applicantCount?: number;
 }
 
 const DetailCard = ({
@@ -32,6 +33,7 @@ const DetailCard = ({
   onDelete,
   onCancel,
   createdAt,
+  applicantCount,
 }: DetailCardProps) => {
   return (
     <InputContainer>
@@ -61,7 +63,7 @@ const DetailCard = ({
           <ManageRecruitButton>
             <>
               <span>지원자</span>
-              <p>3</p>
+              <p>{applicantCount}</p>
             </>
             <button
               onClick={(e) => {
