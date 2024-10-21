@@ -73,48 +73,48 @@ const RegisterProfileCertificatePage = () => {
   };
 
   return (
-    <WrapContent>
-      <form onSubmit={handleSubmit}>
-        <PrevHeader navigateTo={'-1'} />
-        <MainText>경력증명서를 등록해주세요!</MainText>
-        <SideText>{`대표 경력증명서 하나만 제출해주세요\n부적합할 경우 반려될 수 있어요.`}</SideText>
-        <BoxContainer onClick={handleBoxClick}>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleChange}
-            style={{ display: 'none' }}
-            ref={fileInputRef}
-          />
-          {file ? (
-            // 파일이 선택 후
-            <>
-              <ImgArea src="/assets/home/file-icon.svg" alt="파일 아이콘" />
-              <FileNameText>{file.name}</FileNameText>
-            </>
-          ) : (
-            // 파일 선택 전
-            <>
-              <AddIcon
-                src="/assets/home/certificate-add.svg"
-                alt="추가아이콘"
-              />
-              <FileNameText>{'업로드 파일 선택'}</FileNameText>
-              <TextStyle>{`PDF 형식의 파일만 업로드 가능합니다.`}</TextStyle>
-            </>
-          )}
-        </BoxContainer>
+    <>
+      <PrevHeader navigateTo={'-1'} />
+      <WrapContent>
+        <form onSubmit={handleSubmit}>
+          <MainText>경력증명서를 등록해주세요!</MainText>
+          <SideText>{`대표 경력증명서 하나만 제출해주세요\n부적합할 경우 반려될 수 있어요.`}</SideText>
+          <BoxContainer onClick={handleBoxClick}>
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleChange}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+            />
+            {file ? (
+              // 파일이 선택 후
+              <>
+                <ImgArea src="/assets/home/file-icon.svg" alt="파일 아이콘" />
+                <FileNameText>{file.name}</FileNameText>
+              </>
+            ) : (
+              // 파일 선택 전
+              <>
+                <AddIcon
+                  src="/assets/home/certificate-add.svg"
+                  alt="추가아이콘"
+                />
+                <FileNameText>{'업로드 파일 선택'}</FileNameText>
+                <TextStyle>{`PDF 형식의 파일만 업로드 가능합니다.`}</TextStyle>
+              </>
+            )}
+          </BoxContainer>
 
-        <WrapButtonContainer>
           <Button
             userType={'dong'}
             disabled={buttonDisabled}
             children="제출하기"
             type="submit"
           />
-        </WrapButtonContainer>
-      </form>
-    </WrapContent>
+        </form>
+      </WrapContent>
+    </>
   );
 };
 const WrapContent = styled.div`
@@ -144,15 +144,6 @@ const SideText = styled.div`
   line-height: 1.4375rem;
   white-space: pre;
   letter-spacing: 0.045rem;
-`;
-
-const WrapButtonContainer = styled.div`
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
 
 const BoxContainer = styled.div`

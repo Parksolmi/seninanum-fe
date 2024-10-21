@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Category from '../../components/common/Category';
 import ageState from './../../constants/ageState';
 import InputPrice from '../../components/common/InputPrice';
-import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import regionState from '../../constants/regionState';
 import Dropdown from '../../components/common/DropDown';
@@ -12,6 +11,7 @@ import { usePromiseToast, useToast } from '../../hooks/useToast';
 import useModal from '../../hooks/useModal';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 import { CareerProfile } from '../../interface/careerProfileInterface';
+import PrevNextButton from '../../components/common/PrevNextButton';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -207,20 +207,16 @@ const RegisterProfileConditionPage = () => {
         />
       </WrapSection>
 
-      <WrapButtonContainer>
-        <Button
-          userType={null}
-          disabled={false}
-          children={'이전'}
-          onClick={handlePrevButton}
-        />
-        <Button
-          userType={'dong'}
-          disabled={false}
-          children={'등록하기'}
-          onClick={handleNextButton}
-        />
-      </WrapButtonContainer>
+      <PrevNextButton
+        leftText={'이전'}
+        rightText={'다음'}
+        leftDisabled={false}
+        rightDisabled={false}
+        leftUserType={null}
+        rightUserType={'dong'}
+        handlePrev={handlePrevButton}
+        handleNext={handleNextButton}
+      />
     </WrapContent>
   );
 };
@@ -321,19 +317,6 @@ const MethodButton = styled.div<MethodButtonProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
-
-const WrapButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
 `;
 
 export default RegisterProfileConditionPage;

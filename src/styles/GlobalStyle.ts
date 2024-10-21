@@ -4,7 +4,9 @@ import reset from 'styled-reset';
 const theme = {
   colors: {
     dong: '#FF314A',
+    subDong: '#FFEDF0',
     nari: '#FFAA0E',
+    subNari: '#FFEFC1',
     nari2: '#FFD111',
     nariText: '#464646',
     deepNari: '#F48400',
@@ -34,6 +36,8 @@ const GlobalStyle = createGlobalStyle`
     --Base-Gray2: ${theme.colors.baseGray};
     --Base-Gray-3: ${theme.colors.lightGray};
     --Nari-Nari-Text: ${theme.colors.nariText};
+    --Dong-5: ${theme.colors.subDong};
+    --Nari-5: ${theme.colors.subNari};
   }
 `;
 

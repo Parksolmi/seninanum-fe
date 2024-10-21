@@ -80,70 +80,68 @@ const RegisterProfileCareerAddPage = () => {
   };
 
   return (
-    <WrapContent>
+    <>
       <PrevHeader navigateTo={'-1'} />
-      <div>
-        <CategoryText>회사명</CategoryText>
-        <Input
-          inputPlaceholder="회사명을 입력하세요."
-          onChange={handleOnChange}
-          maxLength={50}
-          name="title"
-        />
-        <CategoryText>근무기간</CategoryText>
-        <YearText>입사연월</YearText>
-        <InputArea>
-          <InputYearMonthText
-            type="number"
-            placeholder="YYYY"
+      <WrapContent>
+        <div>
+          <CategoryText>회사명</CategoryText>
+          <Input
+            inputPlaceholder="회사명을 입력하세요."
             onChange={handleOnChange}
-            name="startYear"
+            maxLength={50}
+            name="title"
           />
-          <InputAreaText>년</InputAreaText>
-          <InputYearMonthText
-            type="number"
-            placeholder="MM"
+          <CategoryText>근무기간</CategoryText>
+          <YearText>입사연월</YearText>
+          <InputArea>
+            <InputYearMonthText
+              type="number"
+              placeholder="YYYY"
+              onChange={handleOnChange}
+              name="startYear"
+            />
+            <InputAreaText>년</InputAreaText>
+            <InputYearMonthText
+              type="number"
+              placeholder="MM"
+              onChange={handleOnChange}
+              name="startMonth"
+            />
+            <InputAreaText>월</InputAreaText>
+          </InputArea>
+          <YearText>퇴사연월</YearText>
+          <InputArea>
+            <InputYearMonthText
+              type="number"
+              placeholder="YYYY"
+              onChange={handleOnChange}
+              name="endYear"
+            />
+            <InputAreaText>년</InputAreaText>
+            <InputYearMonthText
+              type="number"
+              placeholder="MM"
+              onChange={handleOnChange}
+              name="endMonth"
+            />
+            <InputAreaText>월</InputAreaText>
+          </InputArea>
+          <CategoryText>세부 업무 내용</CategoryText>
+          <TextAreaStyle
+            name="content"
+            placeholder={'세부 업무를 입력하세요'}
             onChange={handleOnChange}
-            name="startMonth"
           />
-          <InputAreaText>월</InputAreaText>
-        </InputArea>
-        <YearText>퇴사연월</YearText>
-        <InputArea>
-          <InputYearMonthText
-            type="number"
-            placeholder="YYYY"
-            onChange={handleOnChange}
-            name="endYear"
-          />
-          <InputAreaText>년</InputAreaText>
-          <InputYearMonthText
-            type="number"
-            placeholder="MM"
-            onChange={handleOnChange}
-            name="endMonth"
-          />
-          <InputAreaText>월</InputAreaText>
-        </InputArea>
-        <CategoryText>세부 업무 내용</CategoryText>
-        <TextAreaStyle
-          name="content"
-          placeholder={'세부 업무를 입력하세요'}
-          onChange={handleOnChange}
-        />
-        <GapButton />
-        <WrapButtonContainer>
-          <WrapButton>
-            <Button
-              userType={'dong'}
-              disabled={false}
-              children="등록"
-              onClick={addNewCareer}
-            ></Button>
-          </WrapButton>
-        </WrapButtonContainer>
-      </div>
-    </WrapContent>
+          <GapButton />
+          <Button
+            userType={'dong'}
+            disabled={false}
+            children="등록"
+            onClick={addNewCareer}
+          ></Button>
+        </div>
+      </WrapContent>
+    </>
   );
 };
 const WrapContent = styled.div`
@@ -211,21 +209,6 @@ const InputArea = styled.div`
 
 const GapButton = styled.div`
   margin-bottom: 8rem;
-`;
-
-const WrapButtonContainer = styled.div`
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
-`;
-
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
 `;
 
 const TextAreaStyle = styled.textarea`

@@ -19,7 +19,7 @@ export const useToast = (
   const { pathname } = useLocation();
 
   useEffect(() => {
-    toast.remove();
+    toast.dismiss();
   }, [pathname]);
 
   const showToast = () => {
