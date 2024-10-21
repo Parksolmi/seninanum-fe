@@ -16,7 +16,6 @@ import RegisterRecruitMethodPage from './pages/recruit/RegisterRecruitMethodPage
 import RegisterRecruitContentPage from './pages/recruit/RegisterRecruitContentPage';
 import RegisterProfileCareerPage from './pages/career/RegisterProfileCareerPage';
 import RegisterProfileCareerAddPage from './pages/career/RegisterProfileCareerAddPage';
-import RegisterProfileIntroductionPage from './pages/career/RegisterProfileIntroductionPage';
 import RegisterProfileConditionPage from './pages/career/RegisterProfileConditionPage';
 import ViewRecruitList from './pages/recruit/ViewRecruitList';
 import ViewRecruitDetail from './pages/recruit/ViewRecruitDetail';
@@ -39,6 +38,7 @@ import ViewMyApplicantsList from './pages/recruit/ViewMyApplicantsList';
 import MatchIndexPage from './pages/match/MatchIndexPage';
 import ProgressLayoutDong from './layouts/ProgressLayoutDong';
 import ProgressLayoutNari from './layouts/ProgressLayoutNari';
+import RegisterProfileFieldPage from './pages/career/RegisterProfileFieldPage';
 
 const App: React.FC = () => {
   return (
@@ -81,8 +81,8 @@ const App: React.FC = () => {
             element={<RegisterProfileCareerPage />}
           />
           <Route
-            path="introduction/:careerProfileId"
-            element={<RegisterProfileIntroductionPage />}
+            path="field/:careerProfileId"
+            element={<RegisterProfileFieldPage />}
           />
           <Route
             path="condition/:careerProfileId"

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Category from '../../components/common/Category';
 import ageState from './../../constants/ageState';
-import categoryState from '../../constants/categoryState';
 import InputPrice from '../../components/common/InputPrice';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
@@ -33,12 +32,14 @@ const RegisterProfileConditionPage = () => {
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
+  const { showToast: showSelectionError } = useToast(
+    () => <span>분야는 3개까지 선택이 가능합니다.</span>,
+    'select-exceed-error',
+    'bottom-center'
+  );
 
   const [selectedAgeTags, setSelectedAgeTags] = useState<string[]>(
     careerProfile.age ? careerProfile.age.split(',') : []
-  );
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    careerProfile.field ? careerProfile.field.split(',') : []
   );
 
   // 모달
@@ -57,31 +58,13 @@ const RegisterProfileConditionPage = () => {
     />
   ));
 
-  // 토스트 메세지
-  const { showToast: showSelectionError } = useToast(
-    () => <span>분야는 3개까지 선택이 가능합니다.</span>,
-    'select-exceed-error',
-    'bottom-center'
-  );
-
   const hadnleClickAgeTag = (tag) => {
     setSelectedAgeTags((prevTags) => {
       if (prevTags.includes(tag)) {
         return prevTags.filter((t) => t !== tag);
       } else if (prevTags.length >= 3) {
-        showSelectionError();
-        return prevTags;
-      } else {
-        return [...prevTags, tag];
-      }
-    });
-  };
-  const hadnleClickTag = (tag) => {
-    setSelectedTags((prevTags) => {
-      if (prevTags.includes(tag)) {
-        return prevTags.filter((t) => t !== tag);
-      } else if (prevTags.length >= 3) {
-        showSelectionError();
+        // 렌더링 이후에 showSelectionError 호출
+        setTimeout(() => showSelectionError(), 0);
         return prevTags;
       } else {
         return [...prevTags, tag];
@@ -114,7 +97,7 @@ const RegisterProfileConditionPage = () => {
         return '자동 저장에 실패하였습니다.';
       }
     );
-    navigate(`/register/profile/introduction/${careerProfileId}`);
+    navigate(`/register/profile/field/${careerProfileId}`);
   };
 
   const handleOnChange = (
@@ -135,17 +118,13 @@ const RegisterProfileConditionPage = () => {
 
   useEffect(() => {
     // selectedAgeTags 또는 selectedTags가 변경되었을 때만 상태 업데이트
-    if (
-      careerProfile.age !== selectedAgeTags.join(',') ||
-      careerProfile.field !== selectedTags.join(',')
-    ) {
+    if (careerProfile.age !== selectedAgeTags.join(',')) {
       setCareerProfile({
         ...careerProfile,
         age: selectedAgeTags.join(','),
-        field: selectedTags.join(','),
       });
     }
-  }, [careerProfile, selectedAgeTags, selectedTags, setCareerProfile]);
+  }, [careerProfile, selectedAgeTags, setCareerProfile]);
 
   useEffect(() => {
     setStatus(3);
@@ -154,10 +133,20 @@ const RegisterProfileConditionPage = () => {
   return (
     <WrapContent>
       <h3>
-        마지막으로,
+        자기소개서와
         <br />
-        희망 조건을 작성해보세요!
+        희망 조건을 완성해보세요!
       </h3>
+
+      <WrapSection>
+        <div className="title">소개 한마디</div>
+        <InputService
+          name="service"
+          onChange={handleOnChange}
+          placeholder="짧은 인사로 좋은 인상을 남겨보세요."
+          value={careerProfile.service || ''}
+        />
+      </WrapSection>
       <WrapSection>
         <div className="title">희망 연령대</div>
         <Category
@@ -169,27 +158,6 @@ const RegisterProfileConditionPage = () => {
         />
       </WrapSection>
 
-      <WrapSection>
-        <div className="title">희망 활동 분야</div>
-        <div className="sub-title">전문 분야</div>
-        <LastSubText>최대 3개까지 선택 가능해요.</LastSubText>
-        <Category
-          label=""
-          list={categoryState.list}
-          type={'dong'}
-          selectedTags={selectedTags}
-          onClickTag={hadnleClickTag}
-        ></Category>
-      </WrapSection>
-      <WrapSection>
-        <div className="title">제공할 서비스</div>
-        <InputService
-          name="service"
-          onChange={handleOnChange}
-          placeholder="ex. 컨설팅, 맞춤 과외 등"
-          value={careerProfile.service || ''}
-        />
-      </WrapSection>
       <WrapSection>
         <div className="title">희망 활동 형태</div>
         <MethodButtonContainer>
@@ -265,11 +233,13 @@ const WrapContent = styled.div`
   padding: 1.1rem 1.1rem;
 
   h3 {
+    color: #000;
     font-family: NanumSquare;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
     letter-spacing: 0.03rem;
-    margin-top: 1rem;
   }
 `;
 
@@ -297,16 +267,8 @@ const WrapSection = styled.div`
 
   &.last-section {
     margin-bottom: 8rem;
+    border-bottom: none;
   }
-`;
-
-const LastSubText = styled.div`
-  color: #8e8e8e;
-  font-family: NanumSquare;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 `;
 
 const InputService = styled.input`

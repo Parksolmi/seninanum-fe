@@ -48,7 +48,7 @@ const TabBar = ({ userType }) => {
     },
     {
       id: 3,
-      name: '게시판',
+      name: '소통',
       path: '/community',
       icon: '/assets/tabIcon/community.svg',
       iconActive: `/assets/tabIcon/community-active-${userType}.svg`,
