@@ -161,14 +161,12 @@ const RegisterProfileCareerPage = () => {
           addText={'파일 추가'}
         />
       </WrapSection>
-      <WrapButtonContainer>
-        <Button
-          userType={'dong'}
-          disabled={false}
-          children={'다음'}
-          onClick={hanldeNextButton}
-        />
-      </WrapButtonContainer>
+      <Button
+        userType={'dong'}
+        disabled={false}
+        children={'다음'}
+        onClick={hanldeNextButton}
+      />
     </>
   );
 };
@@ -217,15 +215,6 @@ const LineStyle = styled.div`
   background: #ebeceb;
   left: 0;
   right: 0;
-`;
-
-const WrapButtonContainer = styled.div`
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 3rem 1.1rem;
 `;
 
 export default RegisterProfileCareerPage;

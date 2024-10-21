@@ -4,7 +4,8 @@ const GlobalToastContainer = () => {
   return (
     <Toaster
       containerStyle={{
-        bottom: 150,
+        // bottom: 150
+        bottom: 120,
       }}
       toastOptions={{
         style: {

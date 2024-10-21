@@ -24,10 +24,17 @@ interface MessagesProps {
   myId: string;
   opponent: Profile;
   isMenuOpen: boolean;
+  userType: string;
 }
 
 const Messages = memo(
-  ({ groupedMessages, myId, opponent, isMenuOpen }: MessagesProps) => {
+  ({
+    groupedMessages,
+    myId,
+    opponent,
+    isMenuOpen,
+    userType,
+  }: MessagesProps) => {
     const messageRef = useRef<HTMLDivElement | null>(null);
 
     useLayoutEffect(() => {
@@ -48,6 +55,10 @@ const Messages = memo(
 
     return (
       <MessagesWrapper ref={messageRef} $isMenuOpen={isMenuOpen}>
+        <Notice $userType={userType}>
+          📢 채팅 매너를 지켜주세요! <br />
+          서로를 존중하는 태도가 좋은 대화를 만듭니다.
+        </Notice>
         {Object.entries(groupedMessages).map(([date, messages]) => (
           <React.Fragment key={date}>
             <WrapDate>
@@ -87,6 +98,24 @@ const MessagesWrapper = styled.div<MessagesWrapperProp>`
   max-height: ${({ $isMenuOpen }) =>
     $isMenuOpen ? 'calc(100vh - 11rem)' : 'calc(100vh - 5.5rem)'};
   transition: padding 0.3s ease-in-out;
+`;
+
+interface NoticeProps {
+  $userType: string;
+}
+const Notice = styled.div<NoticeProps>`
+  border-radius: 0.5rem;
+  background: ${({ $userType }) =>
+    $userType === 'dong' ? 'var(--Dong-5, #ffedf0)' : 'var(--Nari-5, #ffefc1)'};
+  margin: 1.5rem 1rem 0 1rem;
+
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.03375rem;
 `;
 
 const WrapDate = styled.div`

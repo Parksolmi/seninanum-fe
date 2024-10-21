@@ -18,6 +18,8 @@ import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
 import { stompBrokerURL } from '../../constants/baseUrl';
+import { checkCurse } from '../../utils/checkCurse';
+import { useToast } from '../../hooks/useToast';
 
 interface Profile {
   profileId: string;
@@ -90,6 +92,12 @@ const ChatPage = () => {
     )
   );
 
+  //토스트 메세지
+  const { showToast: showBadWordToast } = useToast(
+    () => <span>앗! 부적절한 단어가 포함되어 있어요.</span>,
+    'bad-word'
+  );
+
   // 메시지 전송
   const { sendTextMessage } = useSendMessage(
     draftMessage,
@@ -101,6 +109,14 @@ const ChatPage = () => {
   );
   const sendMessage = async () => {
     if (!draftMessage.trim()) return;
+
+    // 욕설 필터링
+    const isIncludingBadWord = checkCurse(draftMessage);
+    if (isIncludingBadWord) {
+      showBadWordToast();
+      setDraftMessage('');
+      return;
+    }
 
     try {
       // STOMP로 메시지 전송
@@ -251,11 +267,16 @@ const ChatPage = () => {
         ) : (
           <>
             <WrapChat>
+              {/* <Notice $userType={profile.memberProfile.userType}>
+                📢 채팅 매너를 지켜주세요! <br />
+                서로를 존중하는 태도가 좋은 대화를 만듭니다.
+              </Notice> */}
               <Messages
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
                 isMenuOpen={isMenuOpen}
+                userType={profile.memberProfile.userType}
               />
             </WrapChat>
             {roomStatus === 'ACTIVE' && (
@@ -327,6 +348,24 @@ const TitleText = styled.div`
     text-decoration-line: underline;
   }
 `;
+
+// interface NoticeProps {
+//   $userType: string;
+// }
+// const Notice = styled.div<NoticeProps>`
+//   border-radius: 0.5rem;
+//   background: ${({ $userType }) =>
+//     $userType === 'dong' ? 'var(--Dong-5, #ffedf0)' : 'var(--Nari-5, #ffefc1)'};
+//   margin: 1.5rem 1rem 0 1rem;
+
+//   text-align: center;
+//   font-family: NanumSquare;
+//   font-size: 1.125rem;
+//   font-style: normal;
+//   font-weight: 400;
+//   line-height: normal;
+//   letter-spacing: 0.03375rem;
+// `;
 
 const WrapChat = styled.div`
   flex: 1;

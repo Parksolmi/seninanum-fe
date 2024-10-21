@@ -1,33 +1,47 @@
 import styled from 'styled-components';
 import React from 'react';
 
-// chilren: 버튼 텍스트
-// userType: dong / nari / 비활성화
-interface ButtonProps {
-  children: string;
-  disabled: boolean;
-  readonly userType: string | null;
-  onClick?: () => void;
+interface PrevNextButtonProps {
+  leftText: string;
+  rightText: string;
+  leftDisabled: boolean;
+  rightDisabled: boolean;
+  readonly leftUserType: string | null;
+  readonly rightUserType: string | null;
+  handlePrev: () => void;
+  handleNext: () => void;
   type?: 'button' | 'submit' | 'reset'; // 추가된 타입 속성
 }
 
-const Button = ({
-  children,
-  disabled,
-  userType,
-  onClick,
+const PrevNextButton = ({
+  leftText,
+  rightText,
+  leftDisabled,
+  rightDisabled,
+  leftUserType,
+  rightUserType,
+  handlePrev,
+  handleNext,
   type = 'button',
-}: ButtonProps) => {
+}: PrevNextButtonProps) => {
   return (
     <WrapButtonContainer>
       <WrapButton>
         <StyledButton
-          disabled={disabled}
-          $type={userType}
-          onClick={onClick}
+          disabled={leftDisabled}
+          $type={leftUserType}
+          onClick={handlePrev}
           type={type}
         >
-          {children}
+          {leftText}
+        </StyledButton>
+        <StyledButton
+          disabled={rightDisabled}
+          $type={rightUserType}
+          onClick={handleNext}
+          type={type}
+        >
+          {rightText}
         </StyledButton>
       </WrapButton>
     </WrapButtonContainer>
@@ -44,6 +58,10 @@ const WrapButtonContainer = styled.div`
 `;
 
 const WrapButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
   width: 100%;
   height: 3.7rem;
   align-items: center;
@@ -83,4 +101,4 @@ const StyledButton = styled.button<styleButton>`
   }
 `;
 
-export default Button;
+export default PrevNextButton;

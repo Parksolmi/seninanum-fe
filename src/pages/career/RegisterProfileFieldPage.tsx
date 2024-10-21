@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
-import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { usePromiseToast, useToast } from '../../hooks/useToast';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 import { CareerProfile } from '../../interface/careerProfileInterface';
 import Category from '../../components/common/Category';
 import categoryState from '../../constants/categoryState';
+import PrevNextButton from '../../components/common/PrevNextButton';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -127,56 +127,18 @@ const RegisterProfileFieldPage = () => {
         <div className="margin"></div>
       </WrapSection>
 
-      <GapButton />
-      <WrapButtonContainer>
-        <WrapButton>
-          <Button
-            userType={null}
-            disabled={false}
-            children={'이전'}
-            onClick={() => handleAutoSave('prev')}
-          ></Button>
-          <Button
-            userType={'dong'}
-            disabled={false}
-            children={'다음'}
-            onClick={() => handleAutoSave('next')}
-          ></Button>
-        </WrapButton>
-      </WrapButtonContainer>
+      <Gap />
+      <PrevNextButton
+        leftText={'이전'}
+        rightText={'다음'}
+        leftDisabled={false}
+        rightDisabled={false}
+        leftUserType={null}
+        rightUserType={'dong'}
+        handlePrev={() => handleAutoSave('prev')}
+        handleNext={() => handleAutoSave('next')}
+      />
     </WrapContent>
-
-    // <WrapContent>
-    //   <h3>{`동백님은 어떤 사람인가요?`}</h3>
-    //   <p>자기소개</p>
-
-    //   <TextArea
-    //     name="introduce"
-    //     inputPlaceholder="동백님을 소개해주세요."
-    //     onChange={handleOnChange}
-    //     value={careerProfile?.introduce || ''}
-    //   />
-
-    //   <div className="margin"></div>
-
-    //   <GapButton />
-    //   <WrapButtonContainer>
-    //     <WrapButton>
-    //       <Button
-    //         userType={null}
-    //         disabled={false}
-    //         children={'이전'}
-    //         onClick={() => handleAutoSave('prev')}
-    //       ></Button>
-    //       <Button
-    //         userType={'dong'}
-    //         disabled={false}
-    //         children={'다음'}
-    //         onClick={() => handleAutoSave('next')}
-    //       ></Button>
-    //     </WrapButton>
-    //   </WrapButtonContainer>
-    // </WrapContent>
   );
 };
 
@@ -222,31 +184,8 @@ const WrapSection = styled.div`
   }
 `;
 
-// const LastSubText = styled.div`
-//   color: #8e8e8e;
-//   font-family: NanumSquare;
-//   font-size: 1.25rem;
-//   font-style: normal;
-//   font-weight: 400;
-//   line-height: normal;
-// `;
-
-const GapButton = styled.div`
+const Gap = styled.div`
   margin-bottom: 8rem;
 `;
 
-const WrapButtonContainer = styled.div`
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
-`;
-
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-`;
 export default RegisterProfileFieldPage;
