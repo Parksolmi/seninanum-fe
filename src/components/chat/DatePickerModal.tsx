@@ -5,19 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import Button from '../common/Button';
 
-interface DatePickerModalProps {
-  userType: string;
-  selectedDate: Date | null;
-  onChange: (date: Date | null) => void;
-  onClose: () => void;
-}
-
-const DatePickerModal = ({
-  userType,
-  selectedDate,
-  onChange,
-  onClose,
-}: DatePickerModalProps) => {
+const DatePickerModal = ({ userType, selectedDate, onChange, onClose }) => {
   const [internalDate, setInternalDate] = useState<Date | null>(selectedDate);
   const getColorByUserType = (userType: string) => {
     switch (userType) {
