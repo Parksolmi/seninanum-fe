@@ -15,6 +15,7 @@ interface Recruit {
   method: string;
   region: string;
   field: string;
+  applicantCount: number;
 }
 
 const ManageMyRecruit = () => {
@@ -133,6 +134,7 @@ const ManageMyRecruit = () => {
                 navigateTo={() =>
                   navigate(`/view/myrecruit/${recruit.recruitId}`)
                 }
+                applicantCount={recruit.applicantCount}
                 isMyProfile={true}
                 isEditable={true}
                 onDelete={() => openRecruitDeleteModal(recruit.recruitId)}
