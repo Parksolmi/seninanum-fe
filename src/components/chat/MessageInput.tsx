@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
 import { useNavigate } from 'react-router-dom';
+import MakeAppointment from '../../pages/chat/MakeAppointment';
+import { useState } from 'react';
 
 interface MessageInputProps {
   value;
@@ -16,6 +18,7 @@ const MessageInput = ({
   isMenuOpen,
   setIsMenuOpen,
 }: MessageInputProps) => {
+  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false); // 약속잡기 상태
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler();
@@ -24,47 +27,62 @@ const MessageInput = ({
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
   };
-  const navigate = useNavigate();
+  const openAppointment = () => {
+    setIsAppointmentOpen(true);
+  };
+
+  const closeAppointment = () => {
+    setIsAppointmentOpen(false);
+  };
   return (
-    <WrapMessageInput $isMenuOpen={isMenuOpen}>
-      <MeassageInputContainer $isMenuOpen={isMenuOpen}>
-        <MenuToggle toggle={onClickPlusButton} isOpen={isMenuOpen} />
-        <WrapInputForm onSubmit={handleSubmit}>
-          <Input
-            placeholder="메시지를 입력해주세요"
-            value={value}
-            onChange={onChangeHandler}
-          />
-          <WrapButton type="submit">
-            <img src={'/assets/chat/send-icon.png'} alt="보내기" />
-          </WrapButton>
-        </WrapInputForm>
-      </MeassageInputContainer>
-      <ChatMenuContainer>
-        <div>
-          <WrapIcon>
-            <img src="/assets/chat/image-icon.png" alt="이미지 전송하기" />
-          </WrapIcon>
-          <p>사진</p>
-        </div>
-        <div>
-          <WrapIcon>
-            <img src="/assets/chat/won-icon.png" alt="송금하기" />
-          </WrapIcon>
-          <p>송금</p>
-        </div>
-        <div>
-          <WrapIcon>
-            <img
-              src="/assets/chat/calendar.png"
-              alt="약속잡기"
-              onClick={() => navigate('/chatroom/appointment')}
+    <>
+      <WrapMessageInput $isMenuOpen={isMenuOpen}>
+        <MeassageInputContainer $isMenuOpen={isMenuOpen}>
+          <MenuToggle toggle={onClickPlusButton} isOpen={isMenuOpen} />
+          <WrapInputForm onSubmit={handleSubmit}>
+            <Input
+              placeholder="메시지를 입력해주세요"
+              value={value}
+              onChange={onChangeHandler}
             />
-          </WrapIcon>
-          <p>약속잡기</p>
-        </div>
-      </ChatMenuContainer>
-    </WrapMessageInput>
+            <WrapButton type="submit">
+              <img src={'/assets/chat/send-icon.png'} alt="보내기" />
+            </WrapButton>
+          </WrapInputForm>
+        </MeassageInputContainer>
+        <ChatMenuContainer>
+          <div>
+            <WrapIcon>
+              <img src="/assets/chat/image-icon.png" alt="이미지 전송하기" />
+            </WrapIcon>
+            <p>사진</p>
+          </div>
+          <div>
+            <WrapIcon>
+              <img src="/assets/chat/won-icon.png" alt="송금하기" />
+            </WrapIcon>
+            <p>송금</p>
+          </div>
+          <div>
+            <WrapIcon>
+              <img
+                src="/assets/chat/calendar.png"
+                alt="약속잡기"
+                onClick={openAppointment}
+              />
+            </WrapIcon>
+            <p>약속잡기</p>
+          </div>
+        </ChatMenuContainer>
+      </WrapMessageInput>
+      {/* MakeAppointment 모달 */}
+      {isAppointmentOpen && (
+        <AppointmentModalWrapper>
+          <MakeAppointment onClose={closeAppointment} />{' '}
+          {/* 닫기 핸들러 전달 */}
+        </AppointmentModalWrapper>
+      )}
+    </>
   );
 };
 
@@ -171,6 +189,16 @@ const WrapIcon = styled.div`
   flex-shrink: 0;
   border-radius: 0.8125rem;
   background: var(--Base-Gray5, #f7f8f7);
+`;
+
+const AppointmentModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000; /* 모달이 화면 위로 덮이도록 설정 */
+  background-color: white; /* 모달 뒤 배경 어둡게 */
 `;
 
 export default MessageInput;

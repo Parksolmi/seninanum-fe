@@ -39,7 +39,6 @@ import ViewMyApplicantsList from './pages/recruit/ViewMyApplicantsList';
 import MatchIndexPage from './pages/match/MatchIndexPage';
 import ProgressLayoutDong from './layouts/ProgressLayoutDong';
 import ProgressLayoutNari from './layouts/ProgressLayoutNari';
-import MakeAppointment from './pages/chat/MakeAppointment';
 
 const App: React.FC = () => {
   return (
@@ -115,7 +114,6 @@ const App: React.FC = () => {
         />
         {/* 채팅 */}
         <Route path="/chatroom/:chatRoomId" element={<ChatPage />} />
-        <Route path="/chatroom/appointment" element={<MakeAppointment />} />
 
         {/* 마이페이지 */}
         <Route
