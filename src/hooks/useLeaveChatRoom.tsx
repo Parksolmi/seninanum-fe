@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
 export const useLeaveChatRoom = (client, roomId, memberId, opponentId) => {
-  const navigate = useNavigate();
-
   const handleLeaveRoom = () => {
     try {
       client.publish({
@@ -22,7 +18,7 @@ export const useLeaveChatRoom = (client, roomId, memberId, opponentId) => {
         delete staleMessages[roomId];
         localStorage.setItem('staleMessages', JSON.stringify(staleMessages));
       }
-      navigate('/chat');
+      window.location.href = '/chat';
     } catch (error) {
       console.log(error);
     }

@@ -4,14 +4,17 @@ import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import InputPrice from '../../components/common/InputPrice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useRecruitState from '../../store/recruitState';
 import { instance } from '../../api/instance';
-import progressStore from '../../store/careerProgressState';
+
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
 
 const RegisterRecruitContentPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { setStatus } = useOutletContext<OutletContext>();
   const { recruitState, setRecruitState } = useRecruitState();
 
   const [inputCount, setInputCount] = useState(0);

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
-import progressStore from '../../store/careerProgressState';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useCareerFilterState from '../../store/careerFilterState';
 import InputPrice from '../../components/common/InputPrice';
 import { instance } from '../../api/instance';
 
+interface OutletContext {
+  setStatus: (status: number) => void;
+}
+
 const PriceFilterPage = () => {
   const navigate = useNavigate();
-  const { setStatus } = progressStore();
+  const { setStatus } = useOutletContext<OutletContext>();
   const { careerFilterState, setCareerFilterState } = useCareerFilterState();
 
   const [selectedPriceType, setSelectedPriceType] = useState('');

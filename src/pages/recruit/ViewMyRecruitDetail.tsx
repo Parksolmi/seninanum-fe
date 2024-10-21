@@ -85,17 +85,16 @@ const ViewMyRecruitDetail = () => {
         </WrapLoader>
       ) : (
         <>
-          <WrapContent>
-            {recruit.status === '모집중' ? (
-              <PrevHeader
-                title={'구인글 조회'}
-                navigateTo={'-1'}
-                onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
-              />
-            ) : (
-              <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
-            )}
-
+          {recruit.status === '모집중' ? (
+            <PrevHeader
+              title={'구인글 조회'}
+              navigateTo={'-1'}
+              onModify={() => navigate(`/modify/recruit/${recruitId}/field`)}
+            />
+          ) : (
+            <PrevHeader title={'구인글 조회'} navigateTo={'-1'} />
+          )}
+          <WrapContent className="first-content">
             <div>
               <TitleText>{recruit.title}</TitleText>
               <ContentText>
@@ -184,6 +183,9 @@ const WrapContent = styled.div`
   gap: 2rem;
   padding: 0 1.1rem;
   margin-bottom: 1.5rem;
+  &.first-content {
+    margin-top: 1.6rem;
+  }
   .last-content {
     margin-bottom: 7rem;
   }

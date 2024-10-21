@@ -2,14 +2,17 @@ import { Outlet } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 import TabBar from '../components/common/TabBar';
+import { useFetchUserType } from '../hooks/useFetchUserType';
 
 const NavLayout = () => {
+  const { data: user } = useFetchUserType();
+
   return (
     <>
       <Padding>
-        <Outlet />
+        <Outlet context={{ userType: user?.userType, career: user?.career }} />
       </Padding>
-      <TabBar />
+      <TabBar userType={user?.userType} />
     </>
   );
 };

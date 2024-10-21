@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import userTypeStore from '../../store/userState';
 
 const CompleteSignupPage = () => {
   const location = useLocation();
@@ -10,18 +9,16 @@ const CompleteSignupPage = () => {
 
   const { nickname, userType } = location.state || {};
 
-  const { setUserType } = userTypeStore();
-
   // 렌더링 후 2초 뒤에 페이지 이동
   useEffect(() => {
     const timer = setTimeout(() => {
-      setUserType(userType);
+      // setUserType(userType);
       navigate('/walkthrough');
     }, 2000);
 
     // 컴포넌트 언마운트 시 타이머 클리어
     return () => clearTimeout(timer);
-  }, [navigate, setUserType, userType]);
+  }, [navigate, userType]);
 
   return (
     <WrapContent>

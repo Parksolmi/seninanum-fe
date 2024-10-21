@@ -4,28 +4,41 @@ import TextArea from '../../components/common/TextArea';
 import Button from '../../components/common/Button';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { usePromiseToast } from '../../hooks/useToast';
-import useCareerProfileState from '../../store/careerProfileState';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
+import { CareerProfile } from '../../interface/careerProfileInterface';
 
 interface OutletContext {
   setStatus: (status: number) => void;
+  careerProfile: CareerProfile;
+  setCareerProfile: (careerProfile: CareerProfile) => void;
 }
 
 const RegisterProfileIntroductionPage = () => {
   const navigate = useNavigate();
   const { careerProfileId } = useParams<{ careerProfileId: string }>();
+  const { setStatus, careerProfile, setCareerProfile } =
+    useOutletContext<OutletContext>();
 
-  const { setStatus } = useOutletContext<OutletContext>();
-  const { setCareerProfileState, careerProfileState } = useCareerProfileState();
-
-  const { updateProfile } = useUpdateCareerProfile(careerProfileId);
+  const { updateProfile } = useUpdateCareerProfile(
+    careerProfileId,
+    careerProfile
+  );
 
   //토스트 메세지
   const { showPromiseToast: showAutoSaveToast } = usePromiseToast();
 
-  const handleOnChange = (e) => {
+  // 입력값 변경 핸들러
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setCareerProfileState({ [name]: value });
+    const key = name as keyof CareerProfile;
+
+    // 상태 업데이트
+    setCareerProfile({
+      ...careerProfile,
+      [key]: value,
+    });
   };
 
   const handleAutoSave = (where) => {
@@ -57,12 +70,12 @@ const RegisterProfileIntroductionPage = () => {
         name="introduce"
         inputPlaceholder="동백님을 소개해주세요."
         onChange={handleOnChange}
-        value={careerProfileState.introduce || ''}
-      ></TextArea>
+        value={careerProfile?.introduce || ''}
+      />
 
       <div className="margin"></div>
 
-      <GapButton></GapButton>
+      <GapButton />
       <WrapButtonContainer>
         <WrapButton>
           <Button

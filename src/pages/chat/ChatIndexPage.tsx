@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import TitleHeader from '../../components/header/TitleHeader';
 import { parseTime } from '../../utils/formatTime';
 import NotFoundDong from '../../components/NotFound/NotFoundDong';
+import NotFoundNari from '../../components/NotFound/NotFoundNari';
 
 interface ChatRoom {
   chatRoomId: number;
@@ -12,13 +13,22 @@ interface ChatRoom {
   userType: string;
   roomName: string;
   lastMessage: string;
+  senderType: string;
+  senderId: string;
+  myProfileId: string;
   createdAt: string; //lastMessageAt으로 수정
   unreadMessageCount: number;
+}
+
+interface OutletContext {
+  userType: string;
+  career: number;
 }
 
 const ChatIndexPage: React.FC = () => {
   const navigate = useNavigate();
   const [chatList, setChatList] = useState<ChatRoom[]>([]);
+  const { userType } = useOutletContext<OutletContext>();
 
   // 채팅 목록 불러오기
   useEffect(() => {
@@ -37,10 +47,19 @@ const ChatIndexPage: React.FC = () => {
     <>
       <TitleHeader title="채팅" isShowAlert={false} />
       {chatList.length === 0 ? (
-        <NotFoundDong
-          title="채팅한 사람이 없어요."
-          content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
-        />
+        <>
+          {userType === 'dong' ? (
+            <NotFoundDong
+              title="채팅한 사람이 없어요."
+              content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
+            />
+          ) : (
+            <NotFoundNari
+              title="채팅한 사람이 없어요."
+              content={<>나리 프로필에서 채팅하기를 시도해보세요.</>}
+            />
+          )}
+        </>
       ) : (
         <WrapContent>
           <ChatListContainer>
@@ -69,9 +88,17 @@ const ChatIndexPage: React.FC = () => {
                         <Time>{timeDisplay}</Time>
                       </div>
                       <div className="bottom">
-                        <Message>{chat.lastMessage}</Message>
+                        {chat.senderId !== chat.myProfileId ? (
+                          <Message>{chat.lastMessage}</Message>
+                        ) : (
+                          chat.senderType === 'USER' && (
+                            <Message>{chat.lastMessage}</Message>
+                          )
+                        )}
                         {chat.unreadMessageCount > 0 ? (
-                          <UnreadCount>{chat.unreadMessageCount}</UnreadCount>
+                          <UnreadCount $userType={chat.userType}>
+                            {chat.unreadMessageCount}
+                          </UnreadCount>
                         ) : (
                           <br />
                         )}
@@ -191,8 +218,12 @@ const Time = styled.div`
   line-height: normal;
 `;
 
-const UnreadCount = styled.span`
-  background-color: #ff314a;
+interface UnreadCountProps {
+  $userType: string;
+}
+const UnreadCount = styled.span<UnreadCountProps>`
+  background-color: ${({ $userType }) =>
+    $userType === 'dong' ? 'var(--Primary-dong)' : 'var(--Primary-nari)'};
   color: #ffffff;
   font-family: NanumSquare;
   border-radius: 50%;

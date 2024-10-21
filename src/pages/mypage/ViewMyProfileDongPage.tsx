@@ -1,38 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
-import { instance } from '../../api/instance';
 import { useNavigate } from 'react-router-dom';
-import useCareerItemState from '../../store/careerItemState';
-import useCareerProfileState from '../../store/careerProfileState';
 import Button from '../../components/common/Button';
 import CareerDetail from '../../components/common/CareerDetail';
 import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { calcAge } from '../../utils/calcAge';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
+import { useFetchCareerProfile } from '../../hooks/useCareerProfile';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
-  // const [careerProfileState, setCareerProfileState] = useState();
-  const { careerProfileState, setCareerProfileState } = useCareerProfileState();
-  const { careers, setCareers } = useCareerItemState();
   const { data: user } = useFetchMyProfile();
-
-  // 경력 프로필 조회 api 호출
-  useEffect(() => {
-    const fetchProfileProgress = async () => {
-      try {
-        const res = await instance.get(`/career`);
-        setCareerProfileState(res.data.careerProfile);
-        setCareers(res.data.careerItems);
-      } catch (error) {
-        console.error('경력 프로필 조회에 실패하였습니다.', error);
-      }
-    };
-
-    fetchProfileProgress();
-  }, [setCareerProfileState, setCareers]);
+  const { data: careerProfile } = useFetchCareerProfile();
 
   return (
     <>
@@ -62,103 +43,106 @@ const ViewMyProfileDongPage = () => {
 
       <SplitLine />
 
-      <WrapContentSingle>
-        <TitleText>소개 한마디</TitleText>
-        <DetailText>
-          {careerProfileState.introduce && `"${careerProfileState.introduce}"`}
-        </DetailText>
-      </WrapContentSingle>
+      {/* 경력프로필 */}
+      {careerProfile && (
+        <>
+          <WrapContentSingle>
+            <TitleText>소개 한마디</TitleText>
+            <DetailText>
+              {careerProfile.introduce && `"${careerProfile.introduce}"`}
+            </DetailText>
+          </WrapContentSingle>
 
-      <WrapContentSingle>
-        <TitleText>분야</TitleText>
-        <DetailText>{careerProfileState.field}</DetailText>
-      </WrapContentSingle>
+          <WrapContentSingle>
+            <TitleText>분야</TitleText>
+            <DetailText>{careerProfile?.field}</DetailText>
+          </WrapContentSingle>
 
-      <WrapContentSingle>
-        <TitleText>희망조건</TitleText>
-        <ConditionText>
-          <tbody>
-            {careerProfileState.method && (
-              <tr>
-                <th>활동방식</th>
-                <td>{careerProfileState.method}</td>
-              </tr>
-            )}
-
-            {careerProfileState.region && (
-              <tr>
-                <th>활동지역</th>
-                <td>서울시 {careerProfileState.region}</td>
-              </tr>
-            )}
-            {careerProfileState.age && (
-              <tr>
-                <th>선호연령</th>
-                <td>{careerProfileState.age}</td>
-              </tr>
-            )}
-            {careerProfileState.priceType && careerProfileState.price >= 0 && (
-              <tr>
-                <th>급여</th>
-                <td>
-                  {careerProfileState.priceType} {careerProfileState.price}원
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </ConditionText>
-      </WrapContentSingle>
-
-      <WrapContentSingle>
-        <CareerItemArea>
-          <TitleText>경력</TitleText>
-          {careerProfileState.certificate === '승인' && (
-            <img
-              src="/assets/common/certification-mark-dong.svg"
-              alt="확인마크"
-            />
+          {careerProfile && (
+            <WrapContentSingle>
+              <TitleText>희망조건</TitleText>
+              <ConditionText>
+                <tbody>
+                  <tr>
+                    <th>활동방식</th>
+                    <td>{careerProfile.method}</td>
+                  </tr>
+                  <tr>
+                    <th>활동지역</th>
+                    <td>서울시 {careerProfile.region}</td>
+                  </tr>
+                  <tr>
+                    <th>선호연령</th>
+                    <td>{careerProfile.age}</td>
+                  </tr>
+                  {careerProfile.price >= 0 && (
+                    <tr>
+                      <th>급여</th>
+                      <td>
+                        {careerProfile.priceType} {careerProfile.price}원
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </ConditionText>
+            </WrapContentSingle>
           )}
-        </CareerItemArea>
-        <TotalCareer>
-          <img src="/assets/home/career-profile-dong.svg" alt="프로필이미지" />
-          <p>총 경력 {calcTotalCareer(careers)}</p>
-        </TotalCareer>
-        {careers.map((career) => (
-          <CareerDetail
-            key={career.title}
-            title={career.title}
-            startYear={career.startYear}
-            startMonth={career.startMonth}
-            endYear={career.endYear}
-            endMonth={career.endMonth}
-            content={career.content}
-          />
-        ))}
-      </WrapContentSingle>
 
-      <WrapContentSingle>
-        <TitleText>제공할 서비스</TitleText>
-        <DetailText>{careerProfileState.service}</DetailText>
-      </WrapContentSingle>
+          <WrapContentSingle>
+            <CareerItemArea>
+              <TitleText>경력</TitleText>
+              {careerProfile.careerCertificate.name === '승인' && (
+                <img
+                  src="/assets/common/certification-mark-dong.svg"
+                  alt="확인마크"
+                />
+              )}
+            </CareerItemArea>
+            <TotalCareer>
+              <img
+                src="/assets/home/career-profile-dong.svg"
+                alt="프로필이미지"
+              />
+              <p>총 경력 {calcTotalCareer(careerProfile.careerItems)}</p>
+            </TotalCareer>
+            {careerProfile?.careerItems.map((career) => (
+              <CareerDetail
+                key={career.title}
+                title={career.title}
+                startYear={career.startYear}
+                startMonth={career.startMonth}
+                endYear={career.endYear}
+                endMonth={career.endMonth}
+                content={career.content}
+              />
+            ))}
+          </WrapContentSingle>
 
-      <WrapContent>
-        <WrapButton>
-          <Button
-            disabled={false}
-            userType={'dong'}
-            // 임시
-            onClick={() =>
-              navigate(
-                `/register/profile/career/${careerProfileState.careerProfileId}`
-              )
-            }
-          >
-            경력 프로필 수정하기
-          </Button>
-        </WrapButton>
-      </WrapContent>
+          <WrapContentSingle>
+            <TitleText>제공할 서비스</TitleText>
+            <DetailText>{careerProfile.service}</DetailText>
+          </WrapContentSingle>
 
-      <WrapContentSingle />
+          <WrapContent>
+            <WrapButton>
+              <Button
+                disabled={false}
+                userType={'dong'}
+                // 임시
+                onClick={() =>
+                  navigate(
+                    `/register/profile/career/${careerProfile.careerProfileId}`
+                  )
+                }
+              >
+                경력 프로필 수정하기
+              </Button>
+            </WrapButton>
+          </WrapContent>
+
+          <WrapContentSingle />
+        </>
+      )}
     </>
   );
 };
