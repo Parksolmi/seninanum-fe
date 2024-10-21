@@ -41,16 +41,21 @@ const AssetArray: React.FC<AssetArrayProps> = ({ userType, index }) => {
 const ImgaeWrap = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 15rem;
+  margin: 0;
   margin-top: 20%;
-  width: 100%;
 `;
 const ImgaeStyle = styled.img`
   justify-content: center;
-  object-fit: none;
+  transform: scale(0.25);
+  transform-origin: center;
 `;
 const ImgaeStyleEtc = styled.img`
   justify-content: center;
   margin-right: 3rem;
+  transform: scale(0.25);
+  transform-origin: center;
 `;
 const TitleTextStyle = styled.div`
   color: #000;
