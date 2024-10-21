@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PrevHeader from '../../components/header/PrevHeader';
 import styled from 'styled-components';
-import userTypeStore from '../../store/userState';
+import { useFetchUserType } from '../../hooks/useFetchUserType';
 import Category from '../../components/common/Category';
 import alertState from '../../constants/alertState';
 import Button from '../../components/common/Button';
@@ -9,7 +9,7 @@ import DatePickerModal from '../../components/chat/DatePickerModal';
 import TimePickerModal from '../../components/chat/TimePickerModal';
 
 const MakeAppointment = () => {
-  const { userType } = userTypeStore();
+  const { data: user } = useFetchUserType();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -38,7 +38,7 @@ const MakeAppointment = () => {
     <>
       {showDatePicker && (
         <DatePickerModal
-          userType={userType}
+          userType={user?.userType}
           selectedDate={selectedDate}
           onChange={handleDateChange}
           onClose={() => setShowDatePicker(false)}
@@ -46,7 +46,7 @@ const MakeAppointment = () => {
       )}
       {showTimePicker && (
         <TimePickerModal
-          userType={userType}
+          userType={user?.userType}
           selectedTime={selectedTime}
           onChange={handleTimeChange}
           onClose={() => setShowTimePicker(false)}
@@ -55,7 +55,7 @@ const MakeAppointment = () => {
       <PrevHeader navigateTo={'-1'} />
       <WrapContent>
         <TitleText>
-          {`OOO ${userType === 'dong' ? '나리' : '동백'}님과 약속`}
+          {`OOO ${user?.userType === 'dong' ? '나리' : '동백'}님과 약속`}
         </TitleText>
         <InputContainer>
           <SingleInputBox>
@@ -98,7 +98,7 @@ const MakeAppointment = () => {
             <Category
               label=""
               list={alertState.list}
-              type={userType === 'dong' ? 'dong' : 'nari'}
+              type={user?.userType === 'dong' ? 'dong' : 'nari'}
               selectedTags={selectedTag ? [selectedTag] : []}
               onClickTag={hadnleClickTag}
             ></Category>
@@ -106,8 +106,10 @@ const MakeAppointment = () => {
         </InputContainer>
         <WrapButtonContainer>
           <Button
-            disabled={!selectedDate || !selectedTime || !selectedTag}
-            userType={userType === 'dong' ? 'dong' : 'nari'}
+            disabled={
+              !selectedDate || !selectedTime || !selectedTag || !selectedPlace
+            }
+            userType={user?.userType === 'dong' ? 'dong' : 'nari'}
             // onClick={}
           >
             {'등록하기'}
