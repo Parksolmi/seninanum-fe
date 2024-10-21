@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CareerProfileProgress from './../../components/home/CareerProfileProgress';
-import ShortcutButton from '../../components/home/ShortcutButton';
 import { useNavigate } from 'react-router-dom';
 import LogoHeader from '../../components/header/LogoHeader';
 import SummaryCard from '../../components/common/SummaryCard';
 import { instance } from '../../api/instance';
-
-const USER_TYPE = 'dong';
-// const CARD_TYPE = 'nari';
 
 interface progressStepProps {
   progressStep: number;
@@ -67,7 +63,7 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
 
       <ContentContainer>
         <CareerProfileProgress progressStep={progressStep} />
-        <TitleText>간편 바로가기</TitleText>
+        {/* <TitleText>간편 바로가기</TitleText>
         <ButtonHorizontal>
           <ShortcutButton
             shortcutButtonText={`구인글\n조회하기`}
@@ -79,9 +75,9 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
             shortcutButtonText={`리뷰\n작성하기`}
             type={USER_TYPE}
           />
-        </ButtonHorizontal>
+        </ButtonHorizontal> */}
 
-        <TitleText>추천 구인글</TitleText>
+        <TitleText>실시간 구인글을 확인해보세요!</TitleText>
         <NariCardVertical>
           {/* 추후 infinite scroll 적용 */}
           {recruitList.map((recruit) => (
@@ -154,11 +150,11 @@ const TitleText = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ButtonHorizontal = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-`;
+// const ButtonHorizontal = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   gap: 1rem;
+// `;
 
 const NariCardVertical = styled.div`
   display: flex;
