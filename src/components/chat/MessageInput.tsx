@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
-import { useNavigate } from 'react-router-dom';
 import MakeAppointment from '../../pages/chat/MakeAppointment';
 import { useState } from 'react';
 
