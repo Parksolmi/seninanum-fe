@@ -16,11 +16,11 @@ const AssetArray: React.FC<AssetArrayProps> = ({ userType, index }) => {
       <ImgaeWrap>
         {index === 2 && userType === 'dong' ? (
           <ImgaeStyleEtc
-            src={`/assets/walkthrough/workthrough-step${index}-${userType}.svg`}
+            src={`/assets/walkthrough/${userType}${index}.png`}
           ></ImgaeStyleEtc>
         ) : (
           <ImgaeStyle
-            src={`/assets/walkthrough/workthrough-step${index}-${userType}.svg`}
+            src={`/assets/walkthrough/${userType}${index}.png`}
           ></ImgaeStyle>
         )}
       </ImgaeWrap>
@@ -42,9 +42,11 @@ const ImgaeWrap = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20%;
+  width: 100%;
 `;
 const ImgaeStyle = styled.img`
   justify-content: center;
+  object-fit: none;
 `;
 const ImgaeStyleEtc = styled.img`
   justify-content: center;
