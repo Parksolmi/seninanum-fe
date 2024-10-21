@@ -246,13 +246,12 @@ const WrapButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-
   background-color: #fff;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
+  padding: 1.1rem 1.1rem 2.12rem 1.1rem;
 `;
 
 const WrapLoader = styled.div`
