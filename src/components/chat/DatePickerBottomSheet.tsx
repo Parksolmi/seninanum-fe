@@ -5,7 +5,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import Button from '../common/Button';
 
-const DatePickerModal = ({ userType, selectedDate, onChange, onClose }) => {
+const DatePickerBottomSheet = ({
+  userType,
+  selectedDate,
+  onChange,
+  onClose,
+}) => {
   const [internalDate, setInternalDate] = useState<Date | null>(selectedDate);
   const getColorByUserType = (userType: string) => {
     switch (userType) {
@@ -230,4 +235,4 @@ const CustomHeader = styled.div`
   }
 `;
 
-export default DatePickerModal;
+export default DatePickerBottomSheet;
