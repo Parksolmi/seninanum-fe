@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ShortcutButton from '../../components/home/ShortcutButton';
-import FilterButton from '../../components/home/FilterButton';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 // import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
 import LogoHeader from '../../components/header/LogoHeader';
@@ -21,16 +19,24 @@ interface CareerCard {
   birthyear: string;
   profile: string;
 }
-const USER_TYPE = 'nari';
+interface RecruitStatusProps {
+  recruitId: number;
+  title: string;
+  applicantCount: number;
+}
+
 const CARD_TYPE = 'dong';
 
 const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<CareerCard[]>([]);
+  const [latestRecruit, setLatestRecruit] = useState<RecruitStatusProps | null>(
+    null
+  );
   const { setRecruitState } = useRecruitState();
-  const navigateToFilter = () => {
-    navigate('/filter/career/field');
+  const navigateToManageRecruit = () => {
+    navigate('/manage/myrecruit');
   };
   // recruitState 초기화 후 페이지 이동 함수
   const handleRecruitNavigation = () => {
@@ -48,6 +54,25 @@ const HomeIndexPageNari: React.FC = () => {
 
     // 페이지 이동
     navigate('/register/recruit/field');
+  };
+
+  // 최신 구인글을 불러오는 함수
+  const fetchLatestRecruit = async () => {
+    try {
+      const res = await instance.get('/recruit/mylist', {
+        params: { status: '모집중' }, // 모집 중인 최신 구인글
+      });
+      if (res.data.length > 0) {
+        const latest = res.data[0]; // 가장 최신 구인글 하나
+        setLatestRecruit({
+          recruitId: latest.recruitId,
+          title: latest.title,
+          applicantCount: latest.applicantCount,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch latest recruit:', error);
+    }
   };
 
   // 필터링 페이지에서 전달된 데이터를 받음
@@ -78,13 +103,14 @@ const HomeIndexPageNari: React.FC = () => {
       };
       getBriefProfile();
     }
+    fetchLatestRecruit();
   }, [location.state]);
 
   return (
     <>
       <LogoHeader />
       <BannerContainer>
-        <p className="caption">언제나 신나는 배움</p>
+        <p className="caption">지식나눔을 통한 신나는 배움</p>
         <div className="main">
           동백들이
           <br /> 나리님을
@@ -102,53 +128,22 @@ const HomeIndexPageNari: React.FC = () => {
         </div>
       </BannerContainer>
       <WrapContent>
-        <MyRecruitProgress
-          myRecruit={0}
-          RecruitThisMonth={21}
-          navigateToRecruit={() => handleRecruitNavigation()}
-        />
-        {/* <MyRecruitProgress
-          myRecruit={1}
-          applicantCount={4}
-          recruitTitle="기후기술 창업대회 공모전 도와주실 전문가 분을 찾습니다! 굉장히 어렵네요..."
-        /> */}
-        <TitleText>간편 바로가기</TitleText>
-        <WrapShortcutButtons>
-          <ShortcutButton
-            navigateTo={() => handleRecruitNavigation()}
-            shortcutButtonText={`구인글\n작성하기`}
-            type={USER_TYPE}
-          ></ShortcutButton>
-          <ShortcutButton
-            navigateTo={() => navigate('/')}
-            shortcutButtonText={`리뷰\n작성하기`}
-            type={USER_TYPE}
-          ></ShortcutButton>
-        </WrapShortcutButtons>
-        <TitleText>
-          {/* 교육 분야의 <br /> */}
-          동백님들을 추천해드릴게요!
-        </TitleText>
-        {/* <WrapVerticalProfiles>
-          {profile &&
-            profile.map((profile) => (
-              <ProfileVerticalCard
-                types={CARD_TYPE}
-                key={profile.profileId}
-                nickname={profile.nickname}
-                age={calcAge(profile.birthyear)}
-                gender={profile.gender === 'F' ? '여자' : '남자'}
-                tagText="리뷰 좋음"
-                introduce={profile.introduce}
-                naviagateTo={() =>
-                  navigate(`/view/profile/career/${profile.profileId}`)
-                }
-              />
-            ))}
-        </WrapVerticalProfiles> */}
+        {latestRecruit ? (
+          <MyRecruitProgress
+            myRecruit={true}
+            applicantCount={latestRecruit.applicantCount}
+            recruitTitle={latestRecruit.title}
+            navigateToManange={() => navigateToManageRecruit()}
+          />
+        ) : (
+          <MyRecruitProgress
+            myRecruit={false}
+            navigateToRecruit={() => handleRecruitNavigation()}
+          />
+        )}
 
-        <TitleText>원하는 동백님을 직접 찾아봐요!</TitleText>
-        <FilterButton onClick={navigateToFilter} />
+        <TitleText>신규 전문가를 만나보세요!</TitleText>
+        {/* <FilterButton onClick={navigateToFilter} /> */}
         <WrapDongCards>
           {profile.length > 0 ? (
             profile.map((profileItem) => (
@@ -194,12 +189,11 @@ const BannerContainer = styled.div`
   }
 
   .main {
-    color: var(--Nari-Nari-Text, #464646);
+    color: #000;
     font-family: NanumSquare;
     font-size: 1.5625rem;
-    font-style: normal;
     font-weight: 800;
-    line-height: 2.2rem; /* 160% */
+    line-height: 2.5rem; /* 160% */
     letter-spacing: -0.01563rem;
     margin-top: 1.2rem;
 
@@ -232,10 +226,10 @@ const TitleText = styled.div`
   margin-bottom: 1rem;
 `;
 
-const WrapShortcutButtons = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
+// const WrapShortcutButtons = styled.div`
+//   display: flex;
+//   gap: 1rem;
+// `;
 
 // const WrapVerticalProfiles = styled.div`
 //   display: flex;

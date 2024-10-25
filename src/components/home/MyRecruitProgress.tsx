@@ -3,24 +3,24 @@ import styled from 'styled-components';
 
 // 작성한 구인글 수, 지원자 수, 이번 달 등록된 구인글 수, 구인글 제목
 interface RecruitData {
-  myRecruit: number;
+  myRecruit: boolean;
   applicantCount?: number;
-  RecruitThisMonth?: number;
   recruitTitle?: string;
-  navigateToRecruit: () => void;
+  navigateToRecruit?: () => void;
+  navigateToManange?: () => void;
 }
 
 const MyRecruitProgress: React.FC<RecruitData> = ({
   myRecruit,
   applicantCount,
-  RecruitThisMonth,
   recruitTitle,
   navigateToRecruit,
+  navigateToManange,
 }) => {
   return (
     <BoxContainer>
       {/* 작성한 구인글이 없는 경우-> 구인글 작성하기 */}
-      {myRecruit === 0 ? (
+      {!myRecruit ? (
         <>
           <ManagementBox>
             <ProfileBox onClick={navigateToRecruit}>
@@ -35,26 +35,18 @@ const MyRecruitProgress: React.FC<RecruitData> = ({
               </MoreIconBox>
             </ProfileBox>
             <RecruitTitleText>
-              구인글을 작성하면
-              <br /> 나에게 맞는 동백님을 추천받을 수 있어요!
+              구인글을 작성하면 나에게 맞는 동백님을 <br />
+              추천받을 수 있어요!
             </RecruitTitleText>
           </ManagementBox>
           <TextBox>
-            <ApplyText>이번 달 등록된 구인글 수</ApplyText>
-            <NumberTextBox>
-              <ApplyNumber>{RecruitThisMonth}개</ApplyNumber>
-              {/* <MoreButtonBox>
-                <MoreIcon
-                  src={process.env.PUBLIC_URL + '/assets/common/more-icon.svg'}
-                ></MoreIcon>
-              </MoreButtonBox> */}
-            </NumberTextBox>
+            <ApplyText>아직 작성하신 구인글이 없어요</ApplyText>
           </TextBox>
         </>
       ) : (
         <>
           <ManagementBox>
-            <ProfileBox>
+            <ProfileBox onClick={navigateToManange}>
               <MyRecruitManagementText>내 구인글 관리</MyRecruitManagementText>
               <MoreIconBox>
                 <img
@@ -68,7 +60,7 @@ const MyRecruitProgress: React.FC<RecruitData> = ({
             <RecruitTitleText>{recruitTitle}</RecruitTitleText>
           </ManagementBox>
           <TextBox>
-            <ApplyText>내 구인글에 지원한 동백님</ApplyText>
+            <ApplyText>지원자 수</ApplyText>
             <NumberTextBox>
               <ApplyNumber>{applicantCount}명</ApplyNumber>
             </NumberTextBox>
