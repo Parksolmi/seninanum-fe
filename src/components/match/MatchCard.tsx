@@ -1,42 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface DetailCardProps {
+interface MatchCardProps {
   type: string;
   title: string;
   content: string;
-  nickname?: string;
-  age?: string;
+  fields: string[];
   method: string;
   region?: string;
   navigateTo: () => void;
-  isMyProfile?: boolean;
+  isApplicate: boolean;
 }
 
-const DetailCard = ({
+const MatchCard = ({
   type,
   title,
   content,
-  nickname,
-  age,
+  fields,
   method,
   region,
   navigateTo,
-  isMyProfile,
-}: DetailCardProps) => {
+  isApplicate,
+}: MatchCardProps) => {
   return (
     <InputContainer>
-      {/* 클릭 가능한 메인 내용 영역 */}
+      {/*<MatchCard
+        type="nari"
+        title={'제목입니다. 제목입니다. 제목입니다.'}
+        content={'공모전 피드백 부탁드립니다.'}
+        method={'대면'}
+        region={'동대문구'}
+        navigateTo={() => navigate('/home')}
+        fields={fields.split(',')}
+        isApplicate={true} />*/}
+
       <ClickableArea onClick={navigateTo}>
-        {!isMyProfile && (
-          <WrapProfile>
-            <ProfileInfo>
-              <span>
-                {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
-              </span>
-            </ProfileInfo>
-          </WrapProfile>
-        )}
+        <WrapTop>
+          <span>
+            {fields.map((field, index) => (index >= 1 ? ` | ${field}` : field))}
+          </span>
+          {isApplicate ? <p>{'지원함'}</p> : ''}
+        </WrapTop>
 
         <WrapTitle>{title}</WrapTitle>
         <WrapContent>{content}</WrapContent>
@@ -65,27 +69,20 @@ const ClickableArea = styled.div`
   gap: 1rem;
 `;
 
-const WrapProfile = styled.div`
+const WrapTop = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
   align-items: center;
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  p {
-    font-size: 1.125rem;
-  }
-  strong {
-    font-size: 1.375rem;
-    font-weight: 700;
-  }
   span {
-    font-size: 1.25rem;
+    color: #5b5b5b;
+    font-family: NanumSquare;
+  }
+  p {
+    color: #ff314a;
+    font-family: NanumSquare;
+    font-weight: 700;
+    margin-left: auto;
   }
 `;
 
@@ -94,6 +91,7 @@ const WrapTitle = styled.div`
   font-weight: 600;
   line-height: 1.1;
   font-family: NanumSquare;
+
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -136,4 +134,4 @@ const Tag = styled.div<tagType>`
   align-items: center;
 `;
 
-export default DetailCard;
+export default MatchCard;

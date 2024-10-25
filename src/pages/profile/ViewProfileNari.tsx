@@ -76,6 +76,7 @@ const ViewProfileNari = () => {
                   disabled={false}
                   userType={'dong'}
                   onClick={createChatRoom}
+                  isFixed={false}
                 >
                   채팅하기
                 </Button>
@@ -124,7 +125,6 @@ const ViewProfileNari = () => {
                   type="nari"
                   title={recruit.title}
                   content={recruit.content}
-                  age="50대"
                   method={recruit.method}
                   region={recruit.region}
                   navigateTo={() =>

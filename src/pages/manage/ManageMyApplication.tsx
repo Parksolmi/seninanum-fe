@@ -4,10 +4,9 @@ import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
 import { instance } from '../../api/instance';
 import styled from 'styled-components';
-import DetailCard from '../../components/common/DetailCard';
 import SyncLoader from 'react-spinners/SyncLoader';
 import PrevHeader from '../../components/header/PrevHeader';
-import { formatDate } from '../../utils/formatDate';
+import ApplicationCard from '../../components/mypage/ApplicationCard';
 
 interface Application {
   applicationId: string;
@@ -110,19 +109,15 @@ const ManageMyApplication = () => {
             </p>
           ) : (
             applicationList.map((application) => (
-              <DetailCard
+              <ApplicationCard
                 key={application.applicationId}
                 type="nari"
                 title={application.title}
-                content={application.content}
                 method={application.method}
                 region={application.region ? application.region : ''}
-                createdAt={formatDate(application.createdAt, true)}
                 navigateTo={() =>
                   navigate(`/view/recruit/${application.recruitId}`)
                 }
-                isMyProfile={true}
-                isEditable={true}
                 onCancel={() => openCancelModal(application.applicationId)}
               />
             ))
