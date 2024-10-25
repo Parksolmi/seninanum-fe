@@ -37,6 +37,7 @@ const ViewMyRecruitDetail = () => {
 
   const [recruit, setRecruit] = useState<Recruit | null>(null);
   const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
     if (recruitId) {
@@ -44,6 +45,7 @@ const ViewMyRecruitDetail = () => {
         try {
           const res = await instance.get(`/recruit/mylist/${recruitId}`);
           setRecruit(res.data);
+          setIsClosed(res.data.status === '마감');
         } catch (error) {
           console.log(error);
         }
@@ -66,16 +68,21 @@ const ViewMyRecruitDetail = () => {
   // 구인글 마감하기
   const handleCloseRecruit = async () => {
     if (!recruitId) return;
-
     try {
       await instance.post('/recruit/close', { recruitId });
       alert('구인글이 마감되었습니다.');
-      navigate('/manage/myrecruit'); // 마감 후 구인글 관리 페이지로 이동
+      setIsClosed(true);
     } catch (error) {
       console.error('Error closing recruit:', error);
       alert('구인글 마감 중 오류가 발생했습니다.');
     }
   };
+
+  useEffect(() => {
+    if (recruit && recruit.status === '마감') {
+      setIsClosed(true);
+    }
+  }, [recruit]); // recruit 상태 변경 시 버튼 업데이트
 
   return (
     <>
@@ -163,11 +170,11 @@ const ViewMyRecruitDetail = () => {
             </div>
             <WrapButtonContainer>
               <Button
-                disabled={recruit.status === '모집중' ? false : true}
+                disabled={!isClosed ? false : true}
                 userType={'nari'}
                 onClick={handleCloseRecruit}
               >
-                {recruit.status === '모집중' ? '마감하기' : '마감된 글입니다'}
+                {!isClosed ? '마감하기' : '마감된 글입니다'}
               </Button>
             </WrapButtonContainer>
           </WrapContent>
