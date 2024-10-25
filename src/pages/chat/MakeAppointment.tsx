@@ -4,8 +4,8 @@ import { useFetchUserType } from '../../hooks/useFetchUserType';
 import Category from '../../components/common/Category';
 import alertState from '../../constants/alertState';
 import Button from '../../components/common/Button';
-import DatePickerModal from '../../components/chat/DatePickerModal';
-import TimePickerModal from '../../components/chat/TimePickerModal';
+import DatePickerBottomSheet from '../../components/chat/DatePickerBottomSheet';
+import TimePickerBottomSheet from '../../components/chat/TimePickerBottomSheet';
 
 const MakeAppointment = ({ onClose }) => {
   const { data: user } = useFetchUserType();
@@ -36,7 +36,7 @@ const MakeAppointment = ({ onClose }) => {
   return (
     <>
       {showDatePicker && (
-        <DatePickerModal
+        <DatePickerBottomSheet
           userType={user?.userType}
           selectedDate={selectedDate}
           onChange={handleDateChange}
@@ -44,7 +44,7 @@ const MakeAppointment = ({ onClose }) => {
         />
       )}
       {showTimePicker && (
-        <TimePickerModal
+        <TimePickerBottomSheet
           userType={user?.userType}
           selectedTime={selectedTime}
           onChange={handleTimeChange}
@@ -114,7 +114,14 @@ const MakeAppointment = ({ onClose }) => {
               !selectedDate || !selectedTime || !selectedTag || !selectedPlace
             }
             userType={user?.userType === 'dong' ? 'dong' : 'nari'}
-            // onClick={}
+            onClick={() =>
+              console.log(
+                selectedDate,
+                selectedTime,
+                selectedPlace,
+                selectedTag
+              )
+            }
           >
             {'등록하기'}
           </Button>

@@ -1,6 +1,7 @@
 import React, { memo, useLayoutEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
+//import AlertSchedule from './AlertSchedule';
 
 // 메시지의 타입 정의
 interface MessageType {
@@ -80,6 +81,12 @@ const Messages = memo(
             ))}
           </React.Fragment>
         ))}
+        {/*약속 잡기 UI예시 <AlertSchedule
+          date={new Date('2024-10-28T09:00:00Z').toISOString()}
+          time={'오후 06:01'}
+          place={'태릉입구역 3번출구 앞'}
+          alertTime={'30분 전'}
+        />*/}
       </MessagesWrapper>
     );
   }
