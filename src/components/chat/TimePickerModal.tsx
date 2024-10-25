@@ -129,6 +129,7 @@ const TimePickerModal = ({ userType, selectedTime, onChange, onClose }) => {
             disabled={false}
             userType={userType}
             onClick={handleConfirmClick} // 선택된 시간 전달
+            isFixed={false}
           />
         </ButtonContainer>
       </ModalContainer>

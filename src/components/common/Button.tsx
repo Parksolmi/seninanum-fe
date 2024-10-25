@@ -9,6 +9,7 @@ interface ButtonProps {
   readonly userType: string | null;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset'; // 추가된 타입 속성
+  isFixed?: boolean | null;
 }
 
 const Button = ({
@@ -17,20 +18,36 @@ const Button = ({
   userType,
   onClick,
   type = 'button',
+  isFixed,
 }: ButtonProps) => {
   return (
-    <WrapButtonContainer>
-      <WrapButton>
-        <StyledButton
-          disabled={disabled}
-          $type={userType}
-          onClick={onClick}
-          type={type}
-        >
-          {children}
-        </StyledButton>
-      </WrapButton>
-    </WrapButtonContainer>
+    <>
+      {isFixed === false ? (
+        <WrapButton>
+          <StyledButton
+            disabled={disabled}
+            $type={userType}
+            onClick={onClick}
+            type={type}
+          >
+            {children}
+          </StyledButton>
+        </WrapButton>
+      ) : (
+        <WrapButtonContainer>
+          <WrapButton>
+            <StyledButton
+              disabled={disabled}
+              $type={userType}
+              onClick={onClick}
+              type={type}
+            >
+              {children}
+            </StyledButton>
+          </WrapButton>
+        </WrapButtonContainer>
+      )}
+    </>
   );
 };
 

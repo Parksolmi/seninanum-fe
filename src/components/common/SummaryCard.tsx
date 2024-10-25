@@ -35,7 +35,11 @@ const SummaryCard = ({
         <ProfileInfo>
           <p>
             <strong>{nickname}</strong> {type === 'dong' ? '동백' : '나리'}
-            <Badge src={`/assets/common/badge-${type}.png`} />
+            <Badge
+              src={`/assets/common/certification-mark-${
+                type === 'dong' ? 'nari' : 'dong'
+              }.svg`}
+            />
           </p>
           <span>
             {calcAge(age)} | {type === 'nari' ? method : gender}
@@ -84,14 +88,20 @@ const ProfileInfo = styled.div`
   gap: 0.4rem;
 
   p {
+    font-family: NanumSquare;
     font-size: 1.125rem;
+    letter-spacing: 0.03375rem;
   }
   strong {
+    font-family: NanumSquare;
     font-size: 1.375rem;
     font-weight: 700;
   }
   span {
+    color: #5b5b5b;
+    font-family: NanumSquare;
     font-size: 1.25rem;
+    letter-spacing: 0.0375rem;
   }
 `;
 

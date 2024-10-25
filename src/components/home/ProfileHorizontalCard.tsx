@@ -14,9 +14,6 @@ const ProfileHorizontalCard: React.FC = () => {
           <ProfileNameBox>
             <ProfileNickname>닉네임</ProfileNickname>
             <ProfileType>동백</ProfileType>
-            <ProfileBadge
-              src={process.env.PUBLIC_URL + '/assets/common/badge-dong.png'}
-            ></ProfileBadge>
           </ProfileNameBox>
           <IntroduceText>"맡은 일은 성실하게 합니다."</IntroduceText>
         </IntroduceBox>
@@ -101,12 +98,6 @@ const ProfileType = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-`;
-
-const ProfileBadge = styled.img`
-  width: 1.375rem;
-  height: 0.875rem;
-  flex-shrink: 0;
 `;
 
 const IntroduceText = styled.div`

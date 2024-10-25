@@ -107,6 +107,7 @@ const ViewProfileDong = () => {
                 disabled={false}
                 userType={'nari'}
                 onClick={createChatRoom}
+                isFixed={false}
               >
                 채팅하기
               </Button>

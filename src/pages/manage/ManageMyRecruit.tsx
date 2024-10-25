@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PrevHeader from '../../components/header/PrevHeader';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
-import DetailCard from '../../components/common/DetailCard';
 import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
+import ManageCard from '../../components/mypage/ManageCard';
 
 interface Recruit {
   recruitId: number;
@@ -124,7 +124,7 @@ const ManageMyRecruit = () => {
             </p>
           ) : (
             recruitList.map((recruit) => (
-              <DetailCard
+              <ManageCard
                 key={recruit.recruitId}
                 type="dong"
                 title={recruit.title}
@@ -135,8 +135,6 @@ const ManageMyRecruit = () => {
                   navigate(`/view/myrecruit/${recruit.recruitId}`)
                 }
                 applicantCount={recruit.applicantCount}
-                isMyProfile={true}
-                isEditable={true}
                 onDelete={() => openRecruitDeleteModal(recruit.recruitId)}
               />
             ))

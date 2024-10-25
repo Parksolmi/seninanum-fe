@@ -58,6 +58,7 @@ const ViewMyProfileNariPage = () => {
             userType={'nari'}
             // 임시
             onClick={() => navigate(`/update/myinfo`)}
+            isFixed={false}
           >
             기본 프로필 수정하기
           </Button>

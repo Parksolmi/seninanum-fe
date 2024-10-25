@@ -1,43 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface DetailCardProps {
+interface ManageCardProps {
   type: string;
   title: string;
   content: string;
-  nickname?: string;
-  age?: string;
   method: string;
   region?: string;
   navigateTo: () => void;
-  isMyProfile?: boolean;
+  onDelete?: () => void;
+  applicantCount?: number;
 }
 
-const DetailCard = ({
+// 나리 구인글 관리 카드
+const ManageCard = ({
   type,
   title,
   content,
-  nickname,
-  age,
   method,
   region,
   navigateTo,
-  isMyProfile,
-}: DetailCardProps) => {
+  onDelete,
+  applicantCount,
+}: ManageCardProps) => {
   return (
     <InputContainer>
       {/* 클릭 가능한 메인 내용 영역 */}
       <ClickableArea onClick={navigateTo}>
-        {!isMyProfile && (
-          <WrapProfile>
-            <ProfileInfo>
-              <span>
-                {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
-              </span>
-            </ProfileInfo>
-          </WrapProfile>
-        )}
-
         <WrapTitle>{title}</WrapTitle>
         <WrapContent>{content}</WrapContent>
         <WrapTag>
@@ -45,6 +34,23 @@ const DetailCard = ({
           {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
         </WrapTag>
       </ClickableArea>
+
+      {/* 버튼 영역 */}
+      <ManageRecruitButton>
+        <>
+          <span>지원자</span>
+          <p>{applicantCount}</p>
+        </>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // 부모 클릭 이벤트 방지
+            // 삭제 기능 추가
+            onDelete?.();
+          }}
+        >
+          삭제하기
+        </button>
+      </ManageRecruitButton>
     </InputContainer>
   );
 };
@@ -63,30 +69,6 @@ const ClickableArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`;
-
-const WrapProfile = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  p {
-    font-size: 1.125rem;
-  }
-  strong {
-    font-size: 1.375rem;
-    font-weight: 700;
-  }
-  span {
-    font-size: 1.25rem;
-  }
 `;
 
 const WrapTitle = styled.div`
@@ -136,4 +118,39 @@ const Tag = styled.div<tagType>`
   align-items: center;
 `;
 
-export default DetailCard;
+const ManageRecruitButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  span {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  p {
+    margin-left: 0.3rem;
+    color: #f48400;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  button {
+    margin-left: auto;
+    color: #5b5b5b;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    letter-spacing: 0.025rem;
+    text-decoration-line: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+`;
+
+export default ManageCard;

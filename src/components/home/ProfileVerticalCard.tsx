@@ -31,9 +31,6 @@ const ProfileVerticalCard = ({
         <ProfileType>
           {types !== null ? (types === 'dong' ? '동백' : '나리') : null}
         </ProfileType>
-        <ProfileBadge
-          src={process.env.PUBLIC_URL + '/assets/common/badge-dong.png'}
-        ></ProfileBadge>
       </ProfileNameBox>
       <TagContainer>
         <AgeTag>
@@ -86,10 +83,6 @@ const ProfileType = styled.div`
   text-align: center;
   font-size: 1.125rem;
   font-weight: 600;
-`;
-
-const ProfileBadge = styled.img`
-  width: 1.375rem;
 `;
 
 const TagContainer = styled.div`

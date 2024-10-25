@@ -75,6 +75,7 @@ const DatePickerModal = ({ userType, selectedDate, onChange, onClose }) => {
             disabled={!internalDate}
             userType={userType}
             onClick={handleConfirmClick} // 선택된 날짜 전달
+            isFixed={false}
           />
         </ButtonContainer>
       </CustomBox>
