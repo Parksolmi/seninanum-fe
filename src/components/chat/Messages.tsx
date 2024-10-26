@@ -108,6 +108,7 @@ const Notice = styled.div<NoticeProps>`
   background: ${({ $userType }) =>
     $userType === 'dong' ? 'var(--Dong-5, #ffedf0)' : 'var(--Nari-5, #ffefc1)'};
   margin: 1.5rem 1rem 0 1rem;
+  padding: 0.5rem 0;
 
   text-align: center;
   font-family: NanumSquare;
