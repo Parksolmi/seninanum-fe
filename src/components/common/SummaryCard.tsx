@@ -36,9 +36,11 @@ const SummaryCard = ({
           <p>
             <strong>{nickname}</strong> {type === 'dong' ? '동백' : '나리'}
             <Badge
-              src={`/assets/common/certification-mark-${
-                type === 'dong' ? 'nari' : 'dong'
-              }.svg`}
+              src={
+                type === 'dong'
+                  ? `/assets/common/certification-mark-nari.svg`
+                  : ''
+              }
             />
           </p>
           <span>
