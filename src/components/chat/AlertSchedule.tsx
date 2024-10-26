@@ -44,7 +44,7 @@ const ScheduleContainer = styled.div`
   border-radius: 1.25rem;
   height: 10.4375rem;
   background: #e4f4fd;
-  margin: 0rem 1rem;
+  margin: 16px;
   padding: 1.1rem;
 
   p {
