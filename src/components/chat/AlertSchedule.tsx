@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface AppointmentProps {
+interface ScheduleProps {
   date: string;
   time: string;
   place: string;
@@ -15,7 +15,7 @@ const formatDate = (dateString: string) => {
 
   return `${month}월 ${day}일 (${dayOfWeek})`;
 };
-const AlertSchedule = ({ date, time, place, alertTime }: AppointmentProps) => {
+const AlertSchedule = ({ date, time, place, alertTime }: ScheduleProps) => {
   return (
     <>
       <ScheduleContainer>

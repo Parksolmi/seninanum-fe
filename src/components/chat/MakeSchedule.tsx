@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
-import Category from '../../components/common/Category';
+import Category from '../common/Category';
 import alertState from '../../constants/alertState';
-import Button from '../../components/common/Button';
-import DatePickerBottomSheet from '../../components/chat/DatePickerBottomSheet';
-import TimePickerBottomSheet from '../../components/chat/TimePickerBottomSheet';
+import Button from '../common/Button';
+import DatePickerBottomSheet from './DatePickerBottomSheet';
+import TimePickerBottomSheet from './TimePickerBottomSheet';
 
-const MakeAppointment = ({ opponentNickname, onClose, onSubmit }) => {
+const MakeSchedule = ({ opponentNickname, onClose, onSubmit }) => {
   const { data: user } = useFetchUserType();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -54,7 +54,7 @@ const MakeAppointment = ({ opponentNickname, onClose, onSubmit }) => {
       )}
       {showTimePicker && (
         <TimePickerBottomSheet
-          userType={user?.userType}
+          userType={user?.userType || ''}
           selectedTime={selectedTime}
           onChange={handleTimeChange}
           onClose={() => setShowTimePicker(false)}
@@ -234,4 +234,4 @@ const WrapButtonContainer = styled.div`
   padding: 1.1rem 1.1rem 2.12rem 1.1rem;
 `;
 
-export default MakeAppointment;
+export default MakeSchedule;
