@@ -20,7 +20,7 @@ import Modal from '../../components/common/Modal';
 import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
-import MakeAppointment from './MakeAppointment';
+import MakeSchedule from '../../components/chat/MakeSchedule';
 
 interface Profile {
   profileId: string;
@@ -78,7 +78,7 @@ const ChatPage = () => {
   const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
-  const [showMakeAppointment, setShowMakeAppointment] = useState(false); // 약속 바텀시트 상태
+  const [showMakeSchedule, setShowMakeSchedule] = useState(false); // 약속 바텀시트 상태
 
   //모달 창
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
@@ -139,14 +139,14 @@ const ChatPage = () => {
   );
 
   // 약속 바텀시트 토글
-  const toggleMakeAppointment = () => {
-    setShowMakeAppointment((prev) => !prev);
+  const toggleMakeSchedule = () => {
+    setShowMakeSchedule((prev) => !prev);
   };
 
   // 약속 정보 전송
-  const handleAppointmentSubmit = (schedule) => {
+  const handleScheduleSubmit = (schedule) => {
     sendScheduleMessage(schedule);
-    toggleMakeAppointment();
+    toggleMakeSchedule();
   };
 
   // input 값
@@ -259,11 +259,11 @@ const ChatPage = () => {
   return (
     <Wrapper>
       <Container>
-        {showMakeAppointment && (
-          <MakeAppointment
+        {showMakeSchedule && (
+          <MakeSchedule
             opponentNickname={profile.opponentProfile.nickname}
-            onClose={toggleMakeAppointment}
-            onSubmit={handleAppointmentSubmit}
+            onClose={toggleMakeSchedule}
+            onSubmit={handleScheduleSubmit}
           />
         )}
         <WrapHeader>
@@ -308,7 +308,7 @@ const ChatPage = () => {
                 submitHandler={sendMessage}
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
-                openAppointment={toggleMakeAppointment}
+                openSchedule={toggleMakeSchedule}
               />
             )}
           </>
