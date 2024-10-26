@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
+import AlertSchedule from './AlertSchedule';
 
 interface MessageType {
   chatMessageId: number;
@@ -9,7 +10,7 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'LEAVE' | 'COME';
+  senderType: 'USER' | 'LEAVE' | 'COME' | 'SCHEDULE';
   senderName?: string;
 }
 interface Profile {
@@ -78,6 +79,16 @@ const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
             </div>
           </div>
         </MessageByOther>
+      );
+    case 'SCHEDULE':
+      const { date, time, place, alertTime } = JSON.parse(message.chatMessage);
+      return (
+        <AlertSchedule
+          date={date}
+          time={time}
+          place={place}
+          alertTime={alertTime}
+        ></AlertSchedule>
       );
     default:
       return null;

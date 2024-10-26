@@ -9,6 +9,7 @@ interface MessageInputProps {
   submitHandler;
   isMenuOpen;
   setIsMenuOpen;
+  openAppointment: () => void;
 }
 const MessageInput = ({
   value,
@@ -16,6 +17,7 @@ const MessageInput = ({
   submitHandler,
   isMenuOpen,
   setIsMenuOpen,
+  openAppointment,
 }: MessageInputProps) => {
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false); // 약속잡기 상태
   const handleSubmit = (e) => {
@@ -25,9 +27,6 @@ const MessageInput = ({
 
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
-  };
-  const openAppointment = () => {
-    setIsAppointmentOpen(true);
   };
 
   const closeAppointment = () => {

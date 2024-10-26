@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface AppointmentProps {
-  date?: string;
-  time?: string;
-  place?: string;
-  alertTime?: string;
+  date: string;
+  time: string;
+  place: string;
+  alertTime: string;
 }
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

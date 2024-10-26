@@ -20,6 +20,7 @@ import Modal from '../../components/common/Modal';
 import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
+import MakeAppointment from './MakeAppointment';
 
 interface Profile {
   profileId: string;
@@ -55,6 +56,7 @@ const ChatPage = () => {
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
+
   const [profile, setProfile] = useState<ProfileIds>({
     memberProfile: {
       profileId: '',
@@ -76,6 +78,7 @@ const ChatPage = () => {
   const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
   const fetchServerMessages = useFetchMessagesFromServer(roomId);
   const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
+  const [showMakeAppointment, setShowMakeAppointment] = useState(false); // 약속 바텀시트 상태
 
   //모달 창
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
@@ -99,7 +102,7 @@ const ChatPage = () => {
   );
 
   // 메시지 전송
-  const { sendTextMessage } = useSendMessage(
+  const { sendTextMessage, sendScheduleMessage } = useSendMessage(
     draftMessage,
     setDraftMessage,
     client,
@@ -107,6 +110,7 @@ const ChatPage = () => {
     profile.memberProfile.profileId,
     profile.opponentProfile.profileId
   );
+
   const sendMessage = async () => {
     if (!draftMessage.trim()) return;
 
@@ -133,6 +137,17 @@ const ChatPage = () => {
     profile.memberProfile.profileId,
     profile.opponentProfile.profileId
   );
+
+  // 약속 바텀시트 토글
+  const toggleMakeAppointment = () => {
+    setShowMakeAppointment((prev) => !prev);
+  };
+
+  // 약속 정보 전송
+  const handleAppointmentSubmit = (schedule) => {
+    sendScheduleMessage(schedule);
+    toggleMakeAppointment();
+  };
 
   // input 값
   const handleChangeMessage = (e) => {
@@ -244,6 +259,13 @@ const ChatPage = () => {
   return (
     <Wrapper>
       <Container>
+        {showMakeAppointment && (
+          <MakeAppointment
+            opponentNickname={profile.opponentProfile.nickname}
+            onClose={toggleMakeAppointment}
+            onSubmit={handleAppointmentSubmit}
+          />
+        )}
         <WrapHeader>
           <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
@@ -286,6 +308,7 @@ const ChatPage = () => {
                 submitHandler={sendMessage}
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
+                openAppointment={toggleMakeAppointment}
               />
             )}
           </>

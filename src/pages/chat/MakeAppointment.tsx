@@ -7,7 +7,7 @@ import Button from '../../components/common/Button';
 import DatePickerBottomSheet from '../../components/chat/DatePickerBottomSheet';
 import TimePickerBottomSheet from '../../components/chat/TimePickerBottomSheet';
 
-const MakeAppointment = ({ onClose }) => {
+const MakeAppointment = ({ opponentNickname, onClose, onSubmit }) => {
   const { data: user } = useFetchUserType();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -32,9 +32,18 @@ const MakeAppointment = ({ onClose }) => {
   const handlePlaceChange = (e) => {
     setSelectedPlace(e.target.value);
   };
+  const handleSubmit = () => {
+    const schedule = {
+      date: selectedDate?.toISOString() || '',
+      time: selectedTime || '',
+      place: selectedPlace || '',
+      alertTime: selectedTag || '',
+    };
+    onSubmit(schedule);
+  };
 
   return (
-    <>
+    <Overlay>
       {showDatePicker && (
         <DatePickerBottomSheet
           userType={user?.userType}
@@ -59,7 +68,9 @@ const MakeAppointment = ({ onClose }) => {
           onClick={() => onClose()}
         />
         <TitleText>
-          {`OOO ${user?.userType === 'dong' ? '나리' : '동백'}님과 약속`}
+          {`${opponentNickname} ${
+            user?.userType === 'dong' ? '나리' : '동백'
+          }님과 약속`}
         </TitleText>
         <InputContainer>
           <SingleInputBox>
@@ -114,22 +125,25 @@ const MakeAppointment = ({ onClose }) => {
               !selectedDate || !selectedTime || !selectedTag || !selectedPlace
             }
             userType={user?.userType === 'dong' ? 'dong' : 'nari'}
-            onClick={() =>
-              console.log(
-                selectedDate,
-                selectedTime,
-                selectedPlace,
-                selectedTag
-              )
-            }
+            onClick={handleSubmit}
           >
             {'등록하기'}
           </Button>
         </WrapButtonContainer>
       </WrapContent>
-    </>
+    </Overlay>
   );
 };
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 10000; // 최상단에 표시되도록 설정
+  display: flex;
+`;
 
 const WrapContent = styled.div`
   display: flex;
