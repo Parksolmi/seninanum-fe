@@ -95,6 +95,9 @@ const ChatIndexPage: React.FC = () => {
                             <Message>{chat.lastMessage}</Message>
                           )
                         )}
+                        {chat.senderType === 'SCHEDULE' && (
+                          <Message>{'약속이 공유되었어요.'}</Message>
+                        )}
                         {chat.unreadMessageCount > 0 ? (
                           <UnreadCount $userType={userType}>
                             {chat.unreadMessageCount}
