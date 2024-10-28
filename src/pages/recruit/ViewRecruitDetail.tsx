@@ -45,6 +45,19 @@ const ViewRecruitDetail = () => {
         onCancel={closeApplicationModal}
       />
     ));
+  const { openModal: openErrorModal, closeModal: closeErrorModal } = useModal(
+    () => (
+      <Modal
+        userType={'dong'}
+        title={'구인글 지원 실패'}
+        content={`지원이 불가능합니다.\n경력프로필 필수항목을 채워주세요.`}
+        cancelText={''}
+        confirmText={'확인'}
+        onConfirm={closeErrorModal}
+      />
+    )
+  );
+
   useEffect(() => {
     if (recruitId) {
       const getRecruitDetail = async () => {
@@ -69,8 +82,13 @@ const ViewRecruitDetail = () => {
         (prev) => (prev ? { ...prev, hasApplied: 1 } : prev) // 지원 완료 상태 업데이트
       );
     } catch (error) {
-      console.error('지원 중 오류 발생:', error);
-      alert('지원 중 문제가 발생했습니다. 다시 시도해주세요.');
+      if (error.response && error.response.status === 400) {
+        // 400 응답일 경우, 경력 프로필 필수 항목 입력 필요 모달 표시
+        openErrorModal();
+      } else {
+        console.error('지원 중 오류 발생:', error);
+        alert('지원 중 문제가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 

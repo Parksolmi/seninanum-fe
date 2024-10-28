@@ -9,6 +9,7 @@ interface MessageInputProps {
   isMenuOpen;
   setIsMenuOpen;
   openSchedule: () => void;
+  onClickImageBtn: (event) => void;
 }
 const MessageInput = ({
   value,
@@ -17,6 +18,7 @@ const MessageInput = ({
   isMenuOpen,
   setIsMenuOpen,
   openSchedule,
+  onClickImageBtn,
 }: MessageInputProps) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ const MessageInput = ({
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
   };
+
   return (
     <>
       <WrapMessageInput $isMenuOpen={isMenuOpen}>
@@ -45,7 +48,15 @@ const MessageInput = ({
         <ChatMenuContainer>
           <div>
             <WrapIcon>
-              <img src="/assets/chat/image-icon.png" alt="이미지 전송하기" />
+              <label htmlFor="fileInput">
+                <img src="/assets/chat/image-icon.png" alt="이미지 전송하기" />
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: 'none' }}
+                onChange={onClickImageBtn}
+              />
             </WrapIcon>
             <p>사진</p>
           </div>
