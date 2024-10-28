@@ -41,6 +41,20 @@ const ManageMyRecruit = () => {
       onCancel={closeRecruitDeleteModal}
     />
   ));
+
+  const { openModal: openErrorModal, closeModal: closeErrorModal } = useModal(
+    () => (
+      <Modal
+        userType={'nari'}
+        title={'구인글 삭제 실패'}
+        content={`지원자가 있는 경우\n구인글을 삭제할 수 없습니다.`}
+        cancelText={''}
+        confirmText={'확인'}
+        onConfirm={closeErrorModal}
+      />
+    )
+  );
+
   // 상태 별 API 호출 함수(useCallback으로 메모이제이션)
   // useEffect(() => {
   //   const fetchRecruitList = async () => {
@@ -85,7 +99,12 @@ const ManageMyRecruit = () => {
         prev.filter((recruit) => recruit.recruitId !== recruitId)
       );
     } catch (err) {
-      setError(err);
+      if (err.response && err.response.status === 400) {
+        // 400 응답일 경우, 지원자 존재로 인한 삭제 불가 메시지 모달 표시
+        openErrorModal();
+      } else {
+        setError(err);
+      }
     } finally {
       setLoading(false);
     }
