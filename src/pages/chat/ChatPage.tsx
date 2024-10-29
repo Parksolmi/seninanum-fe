@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MessageInput from '../../components/chat/MessageInput';
@@ -167,6 +167,12 @@ const ChatPage = () => {
     }
   };
 
+  const handleIntersect = useCallback(() => {
+    if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  }, [currentPage]);
+
   // 멤버 ID값, roomStatus 가져오기
   useEffect(() => {
     const fetchProfileIds = async () => {
@@ -252,9 +258,13 @@ const ChatPage = () => {
     setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
   }, [messages, roomId]);
 
+  // currentPage가 변경될 때마다 메시지를 가져옴
   useEffect(() => {
-    //메세지 목록 불러오기
-    fetchPageMessages(setMessages, currentPage);
+    if (currentPage >= 0) {
+      console.log('페이지 감소 후 fetch 호출', currentPage);
+      fetchPageMessages(setMessages, currentPage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (
@@ -290,16 +300,13 @@ const ChatPage = () => {
         ) : (
           <>
             <WrapChat>
-              {/* <Notice $userType={profile.memberProfile.userType}>
-                📢 채팅 매너를 지켜주세요! <br />
-                서로를 존중하는 태도가 좋은 대화를 만듭니다.
-              </Notice> */}
               <Messages
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
                 isMenuOpen={isMenuOpen}
                 userType={profile.memberProfile.userType}
+                onIntersect={handleIntersect}
               />
             </WrapChat>
             {roomStatus === 'ACTIVE' && (
