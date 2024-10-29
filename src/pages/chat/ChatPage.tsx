@@ -54,6 +54,7 @@ const ChatPage = () => {
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
+  const [file, setFile] = useState(null);
 
   // 약속 바텀시트 상태
   const [showMakeSchedule, setShowMakeSchedule] = useState(false);
@@ -103,14 +104,17 @@ const ChatPage = () => {
   );
 
   // 메시지 전송
-  const { sendTextMessage, sendScheduleMessage } = useSendMessage(
-    draftMessage,
-    setDraftMessage,
-    client,
-    roomId,
-    profile.memberProfile.profileId,
-    profile.opponentProfile.profileId
-  );
+  const { sendImageMessage, sendTextMessage, sendScheduleMessage } =
+    useSendMessage(
+      draftMessage,
+      setDraftMessage,
+      setFile,
+      file,
+      client,
+      roomId,
+      profile.memberProfile.profileId,
+      profile.opponentProfile.profileId
+    );
 
   const sendMessage = async () => {
     if (!draftMessage.trim()) return;
@@ -128,6 +132,15 @@ const ChatPage = () => {
       await sendTextMessage();
     } catch (error) {
       console.error('메시지 전송 오류:', error);
+    }
+  };
+
+  // 이미지 파일 선택 핸들러
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      sendImageMessage(); // 이미지 전송 함수 호출
     }
   };
 
@@ -317,6 +330,7 @@ const ChatPage = () => {
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
                 openSchedule={toggleMakeSchedule}
+                onClickImageBtn={handleFileChange}
               />
             )}
           </>

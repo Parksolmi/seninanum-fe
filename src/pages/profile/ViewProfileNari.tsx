@@ -123,6 +123,7 @@ const ViewProfileNari = () => {
               recruits.map((recruit, index) => (
                 <DetailCard
                   key={index}
+                  isMyProfile={true}
                   type="nari"
                   title={recruit.title}
                   content={recruit.content}

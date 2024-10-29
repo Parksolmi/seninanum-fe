@@ -9,7 +9,7 @@ interface ModalProps {
   cancelText: string;
   confirmText: string;
   onConfirm: (id?: number) => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 const Modal = ({
@@ -23,7 +23,7 @@ const Modal = ({
 }: ModalProps) => {
   const handleConfirm = () => {
     onConfirm();
-    onCancel();
+    onCancel?.();
   };
 
   return (
@@ -33,13 +33,15 @@ const Modal = ({
           <h3 className="title">{title}</h3>
           <p className="content">{content}</p>
           <WrapButton>
-            <Button
-              userType={null}
-              disabled={false}
-              children={cancelText}
-              onClick={onCancel}
-              isBottom={false}
-            />
+            {onCancel && (
+              <Button
+                userType={null}
+                disabled={false}
+                children={cancelText}
+                onClick={onCancel}
+                isBottom={false}
+              />
+            )}
             <Button
               userType={userType}
               disabled={false}
