@@ -38,12 +38,14 @@ const Modal = ({
               disabled={false}
               children={cancelText}
               onClick={onCancel}
+              isBottom={false}
             />
             <Button
               userType={userType}
               disabled={false}
               children={confirmText}
               onClick={handleConfirm}
+              isBottom={false}
             />
           </WrapButton>
         </ModalWrapper>

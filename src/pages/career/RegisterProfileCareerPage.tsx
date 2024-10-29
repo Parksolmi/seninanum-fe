@@ -14,7 +14,7 @@ import HelpBox from '../../components/career/HelpBox';
 import useModal from '../../hooks/useModal';
 import { useUpdateCareerProfile } from '../../hooks/useUpdateCareerProfile';
 import { CareerProfile } from '../../interface/careerProfileInterface';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface OutletContext {
   setStatus: (status: number) => void;
@@ -72,7 +72,7 @@ const RegisterProfileCareerPage = () => {
       await instance.delete(`/career/item/${profileCareerId}`);
       alert('항목이 삭제되었습니다.');
       // 삭제 후 쿼리를 무효화하여 최신 데이터를 다시 가져오도록 설정
-      queryClient.invalidateQueries('fetchCareerProfileKey');
+      queryClient.invalidateQueries({ queryKey: ['fetchCareerProfile'] });
     } catch (error) {
       console.error('경력 항목 삭제 중 에러가 발생했습니다.', error);
     }
@@ -84,7 +84,7 @@ const RegisterProfileCareerPage = () => {
       await instance.delete(`/career/certificate/${careerProfileId}`);
       alert('파일이 삭제되었습니다.');
       // 삭제 후 쿼리를 무효화하여 최신 데이터를 다시 가져오도록 설정
-      queryClient.invalidateQueries('fetchCareerProfileKey');
+      queryClient.invalidateQueries({ queryKey: ['fetchCareerProfile'] });
     } catch (e) {
       console.log(e);
       alert('파일 삭제 중 오류가 발생했습니다.');

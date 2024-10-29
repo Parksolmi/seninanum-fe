@@ -15,7 +15,7 @@ import { instance } from '../../api/instance';
 const ViewProfileNari = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
-  const { data: user, isLoading } = useFetchProfile(profileId);
+  const { data: user, isLoading } = useFetchProfile(profileId || '');
 
   const createChatRoom = async () => {
     try {
