@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { instance } from '../api/instance';
 
 interface User {
@@ -7,11 +7,14 @@ interface User {
 }
 
 // 사용자 타입 가져오기
-const getUserType = async () => {
+const getUserType = async (): Promise<User> => {
   const res = await instance.get('/user/userType');
   return res.data;
 };
 
 export const useFetchUserType = () => {
-  return useQuery<User>('userTypeKey', getUserType);
+  return useQuery<User>({
+    queryKey: ['userType'],
+    queryFn: getUserType,
+  });
 };

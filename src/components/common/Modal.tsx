@@ -39,7 +39,7 @@ const Modal = ({
                 disabled={false}
                 children={cancelText}
                 onClick={onCancel}
-                isFixed={false}
+                isBottom={false}
               />
             )}
             <Button
@@ -47,7 +47,7 @@ const Modal = ({
               disabled={false}
               children={confirmText}
               onClick={handleConfirm}
-              isFixed={false}
+              isBottom={false}
             />
           </WrapButton>
         </ModalWrapper>

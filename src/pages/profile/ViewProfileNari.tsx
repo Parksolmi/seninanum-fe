@@ -28,6 +28,7 @@ const ViewProfileNari = () => {
   const { profileId } = useParams<{ profileId: string }>();
   //const { data: user, isLoading } = useFetchProfile(profileId);
   const [recruits, setRecruits] = useState<RecruitProfile[]>([]);
+
   const createChatRoom = async () => {
     try {
       const res = await instance.post('/chatroom/create', {
@@ -76,7 +77,7 @@ const ViewProfileNari = () => {
                   disabled={false}
                   userType={'dong'}
                   onClick={createChatRoom}
-                  isFixed={false}
+                  isBottom={false}
                 >
                   채팅하기
                 </Button>

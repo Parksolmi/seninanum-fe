@@ -11,13 +11,6 @@ export const useLeaveChatRoom = (client, roomId, memberId, opponentId) => {
         }),
       });
 
-      if (localStorage.getItem('staleMessages') !== null) {
-        const staleMessages = JSON.parse(
-          localStorage.getItem('staleMessages') || '[]'
-        );
-        delete staleMessages[roomId];
-        localStorage.setItem('staleMessages', JSON.stringify(staleMessages));
-      }
       window.location.href = '/chat';
     } catch (error) {
       console.log(error);

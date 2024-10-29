@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MessageInput from '../../components/chat/MessageInput';
@@ -7,11 +7,9 @@ import useGroupedMessages from '../../hooks/useGroupedMessages';
 import { Client } from '@stomp/stompjs';
 import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
-import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  useFetchMessagesFromLocal,
-  useFetchMessagesFromServer,
-  useFetchUnreadMessagesFromServer,
+  useCountPages,
+  useFetchMessagesPerPage,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
@@ -58,6 +56,9 @@ const ChatPage = () => {
   const [isMembersFetched, setIsMembersFetched] = useState(false);
   const [file, setFile] = useState(null);
 
+  // 약속 바텀시트 상태
+  const [showMakeSchedule, setShowMakeSchedule] = useState(false);
+
   const [profile, setProfile] = useState<ProfileIds>({
     memberProfile: {
       profileId: '',
@@ -73,13 +74,13 @@ const ChatPage = () => {
     },
   });
 
+  const [currentPage, setCurrentPage] = useState(-1);
+
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
-  const fetchServerMessages = useFetchMessagesFromServer(roomId);
-  const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
-  const [showMakeSchedule, setShowMakeSchedule] = useState(false); // 약속 바텀시트 상태
+  const fetchPagesNum = useCountPages(roomId);
+  const fetchPageMessages = useFetchMessagesPerPage(roomId);
 
   //모달 창
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
@@ -179,6 +180,12 @@ const ChatPage = () => {
     }
   };
 
+  const handleIntersect = useCallback(() => {
+    if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  }, [currentPage]);
+
   // 멤버 ID값, roomStatus 가져오기
   useEffect(() => {
     const fetchProfileIds = async () => {
@@ -247,11 +254,8 @@ const ChatPage = () => {
       newClient.activate();
       setClient(newClient);
 
-      //이전 메세지 목록 불러오기
-      fetchLocalMessages(setMessages);
-      const staleMessages = fetchLocalMessages(setMessages);
-      if (staleMessages.length === 0) fetchServerMessages(setMessages);
-      else fetchServerUnreadMessages(messages, setMessages);
+      // 페이지 수 가져오기
+      fetchPagesNum(setCurrentPage);
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
@@ -263,11 +267,18 @@ const ChatPage = () => {
 
   // 메세지 전송 시
   useEffect(() => {
-    console.log(messages);
+    console.log(messages); //확인용 로그
     setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
-    // const lastMessage = messages.at(-1);
-    if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
+
+  // currentPage가 변경될 때마다 메시지를 가져옴
+  useEffect(() => {
+    if (currentPage >= 0) {
+      console.log('페이지 감소 후 fetch 호출', currentPage);
+      fetchPageMessages(setMessages, currentPage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <Wrapper>
@@ -302,16 +313,13 @@ const ChatPage = () => {
         ) : (
           <>
             <WrapChat>
-              {/* <Notice $userType={profile.memberProfile.userType}>
-                📢 채팅 매너를 지켜주세요! <br />
-                서로를 존중하는 태도가 좋은 대화를 만듭니다.
-              </Notice> */}
               <Messages
                 groupedMessages={groupedMessages}
                 myId={profile.memberProfile.profileId}
                 opponent={profile.opponentProfile}
                 isMenuOpen={isMenuOpen}
                 userType={profile.memberProfile.userType}
+                onIntersect={handleIntersect}
               />
             </WrapChat>
             {roomStatus === 'ACTIVE' && (

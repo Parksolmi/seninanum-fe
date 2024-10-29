@@ -1,5 +1,5 @@
 import { instance } from '../api/instance';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 // User 인터페이스 정의
 interface User {
@@ -10,25 +10,27 @@ interface User {
 }
 
 // 내 프로필 정보
-const getUserProfile = async () => {
+const getUserProfile = async (): Promise<User> => {
   const res = await instance.get<User>(`/user/profile`);
   return res.data;
 };
 export const useFetchMyProfile = () => {
-  return useQuery<User>('fetchMyProfileKey', getUserProfile);
+  return useQuery<User>({
+    queryKey: ['fetchMyProfile'],
+    queryFn: getUserProfile,
+  });
 };
 
-// 남의 프로필 정보
-const getOpponentProfile = async (profileId) => {
+// 상대방 프로필 정보 가져오기 함수
+const getOpponentProfile = async (profileId: string): Promise<User> => {
   const res = await instance.get<User>(`/profile/${profileId}`);
   return res.data;
 };
-export const useFetchProfile = (profileId) => {
-  return useQuery<User>(
-    profileId, // 쿼리 키에 profileId를 포함하여 캐시 관리
-    () => getOpponentProfile(profileId),
-    {
-      enabled: !!profileId, // profileId가 있을 때만 쿼리를 실행
-    }
-  );
+// 프로필 정보를 가져오는 커스텀 훅
+export const useFetchProfile = (profileId: string) => {
+  return useQuery<User>({
+    queryKey: ['profile', profileId],
+    queryFn: () => getOpponentProfile(profileId),
+    enabled: !!profileId,
+  });
 };

@@ -4,8 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { instance } from '../../api/instance';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 import PrevHeader from '../../components/header/PrevHeader';
+import { useToast } from '../../hooks/useToast';
 
 const RegisterProfileCareerAddPage = () => {
   const navigate = useNavigate();
@@ -24,11 +25,20 @@ const RegisterProfileCareerAddPage = () => {
     return startDate <= endDate;
   };
 
+  //토스트 메세지
+  const { showToast: showPeriodError } = useToast(
+    () => (
+      <span>
+        {/* 기간을 다시 입력해주세요. <br /> */}
+        입사일이 퇴사일보다 늦을 수 없습니다.
+      </span>
+    ),
+    'bad-word'
+  );
+
   const addNewCareer = async () => {
     if (!validatePeriod()) {
-      toast.error(
-        '기간을 다시 입력해주세요. (입사일이 퇴사일보다 늦을 수 없습니다.)'
-      );
+      showPeriodError();
       return;
     }
     const newCareer = {
@@ -45,11 +55,15 @@ const RegisterProfileCareerAddPage = () => {
       window.alert('등록되었습니다.');
       navigate(-1);
     } catch (error) {
-      console.error(
-        'Failed to add career',
-        error.response ? error.response.data : error.message
-      );
-      window.alert('등록에 실패했습니다. 다시 시도해주세요.');
+      if (error.response.status === 400) {
+        window.alert('비어있는 값이 있습니다.\n모두 입력해주세요!');
+      } else {
+        window.alert('등록에 실패했습니다.\n다시 시도해주세요.');
+        console.error(
+          'Failed to add career',
+          error.response ? error.response.data : error.message
+        );
+      }
     }
   };
 

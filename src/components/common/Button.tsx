@@ -9,7 +9,7 @@ interface ButtonProps {
   readonly userType: string | null;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset'; // 추가된 타입 속성
-  isFixed?: boolean | null;
+  isBottom?: boolean;
 }
 
 const Button = ({
@@ -18,46 +18,45 @@ const Button = ({
   userType,
   onClick,
   type = 'button',
-  isFixed,
+  isBottom = true,
 }: ButtonProps) => {
   return (
-    <>
-      {isFixed === false ? (
-        <WrapButton>
-          <StyledButton
-            disabled={disabled}
-            $type={userType}
-            onClick={onClick}
-            type={type}
-          >
-            {children}
-          </StyledButton>
-        </WrapButton>
-      ) : (
-        <WrapButtonContainer>
-          <WrapButton>
-            <StyledButton
-              disabled={disabled}
-              $type={userType}
-              onClick={onClick}
-              type={type}
-            >
-              {children}
-            </StyledButton>
-          </WrapButton>
-        </WrapButtonContainer>
-      )}
-    </>
+    <WrapButtonContainer $isBottom={isBottom}>
+      <WrapButton>
+        <StyledButton
+          disabled={disabled}
+          $type={userType}
+          onClick={onClick}
+          type={type}
+        >
+          {children}
+        </StyledButton>
+      </WrapButton>
+    </WrapButtonContainer>
   );
 };
 
-const WrapButtonContainer = styled.div`
+interface WrapButtonContainerProps {
+  $isBottom: boolean;
+}
+
+const WrapButtonContainer = styled.div<WrapButtonContainerProps>`
   background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 2.75rem 1.1rem;
+
+  ${({ $isBottom }) =>
+    $isBottom
+      ? `
+          padding: 1.1rem 1.1rem 2.75rem 1.1rem;
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        `
+      : `
+          display: flex;
+          width: 100%;
+          position: relative;
+        `}
 `;
 
 const WrapButton = styled.div`
