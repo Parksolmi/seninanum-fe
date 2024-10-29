@@ -7,11 +7,9 @@ import useGroupedMessages from '../../hooks/useGroupedMessages';
 import { Client } from '@stomp/stompjs';
 import { instance } from '../../api/instance';
 import { useSendMessage } from '../../hooks/useSendMessage';
-import { saveMessagesToLocal } from '../../hooks/useSaveMessagesToLocal';
 import {
-  useFetchMessagesFromLocal,
-  useFetchMessagesFromServer,
-  useFetchUnreadMessagesFromServer,
+  useCountPages,
+  useFetchMessagesPerPage,
 } from '../../hooks/useFetchMessages';
 import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
@@ -70,12 +68,13 @@ const ChatPage = () => {
     },
   });
 
+  const [currentPage, setCurrentPage] = useState(-1);
+
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLocalMessages = useFetchMessagesFromLocal(roomId);
-  const fetchServerMessages = useFetchMessagesFromServer(roomId);
-  const fetchServerUnreadMessages = useFetchUnreadMessagesFromServer(roomId);
+  const fetchPagesNum = useCountPages(roomId);
+  const fetchPageMessages = useFetchMessagesPerPage(roomId);
 
   //모달 창
   const { openModal: openLeaveModal, closeModal: closeLeaveModal } = useModal(
@@ -219,11 +218,8 @@ const ChatPage = () => {
       newClient.activate();
       setClient(newClient);
 
-      //이전 메세지 목록 불러오기
-      fetchLocalMessages(setMessages);
-      const staleMessages = fetchLocalMessages(setMessages);
-      if (staleMessages.length === 0) fetchServerMessages(setMessages);
-      else fetchServerUnreadMessages(messages, setMessages);
+      // 페이지 수 가져오기
+      fetchPagesNum(setCurrentPage);
 
       // 컴포넌트 언마운트 시 연결 해제
       return () => {
@@ -235,11 +231,14 @@ const ChatPage = () => {
 
   // 메세지 전송 시
   useEffect(() => {
-    console.log(messages);
+    console.log(messages); //확인용 로그
     setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
-    // const lastMessage = messages.at(-1);
-    if (messages.length > 0) saveMessagesToLocal(roomId, messages);
   }, [messages, roomId]);
+
+  useEffect(() => {
+    //메세지 목록 불러오기
+    fetchPageMessages(setMessages, currentPage);
+  }, [currentPage]);
 
   return (
     <Wrapper>
