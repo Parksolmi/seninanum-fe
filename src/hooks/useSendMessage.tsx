@@ -55,6 +55,27 @@ export const useSendMessage = (
     }
   };
 
+  // 약속 잡기 메세지
+  const sendScheduleMessage = (schedule) => {
+    try {
+      const scheduleData = JSON.stringify(schedule);
+      const binaryData = new TextEncoder().encode(scheduleData);
+      console.log('Sending schedule:', schedule);
+      client.publish({
+        destination: `/app/chat/${roomId}`,
+        body: JSON.stringify({
+          chatMessage: binaryData,
+          senderId: memberId,
+          receiverId: opponentId,
+          senderType: 'SCHEDULE',
+        }),
+        headers: { 'content-type': 'application/octet-stream' },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // // 읽음 신호 메세지
   // const sendComeInMessage = () => {
   //   try {
@@ -72,5 +93,5 @@ export const useSendMessage = (
   //   }
   // };
 
-  return { sendTextMessage };
+  return { sendTextMessage, sendScheduleMessage };
 };

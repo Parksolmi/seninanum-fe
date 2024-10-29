@@ -1,50 +1,47 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface DetailCardProps {
+interface ApplicationCardProps {
   type: string;
   title: string;
-  content: string;
-  nickname?: string;
-  age?: string;
   method: string;
   region?: string;
   navigateTo: () => void;
-  isMyProfile?: boolean;
+  // 구인글 관리 권한이 있는 페이지인 경우 삭제하기 버튼을 추가한다.
+  onCancel: () => void;
 }
-
-const DetailCard = ({
+// 동백 지원이력 조회 카드
+const ApplicationCard = ({
   type,
   title,
-  content,
-  nickname,
-  age,
   method,
   region,
   navigateTo,
-  isMyProfile,
-}: DetailCardProps) => {
+  onCancel,
+}: ApplicationCardProps) => {
   return (
     <InputContainer>
       {/* 클릭 가능한 메인 내용 영역 */}
       <ClickableArea onClick={navigateTo}>
-        {!isMyProfile && (
-          <WrapProfile>
-            <ProfileInfo>
-              <span>
-                {nickname} {type === 'dong' ? '동백' : '나리'} | {age}
-              </span>
-            </ProfileInfo>
-          </WrapProfile>
-        )}
-
         <WrapTitle>{title}</WrapTitle>
-        <WrapContent>{content}</WrapContent>
         <WrapTag>
           <Tag $type={type}>{method?.replace('서비스', '')}</Tag>
           {region !== '' && <Tag $type={type}>서울시 {region}</Tag>}
         </WrapTag>
       </ClickableArea>
+
+      {/* 버튼 영역 */}
+      <ManageApplicationButton>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // 부모 클릭 이벤트 방지
+            // 취소 기능 추가
+            onCancel?.();
+          }}
+        >
+          취소하기
+        </button>
+      </ManageApplicationButton>
     </InputContainer>
   );
 };
@@ -65,50 +62,16 @@ const ClickableArea = styled.div`
   gap: 1rem;
 `;
 
-const WrapProfile = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  p {
-    font-size: 1.125rem;
-  }
-  strong {
-    font-size: 1.375rem;
-    font-weight: 700;
-  }
-  span {
-    font-size: 1.25rem;
-  }
-`;
-
 const WrapTitle = styled.div`
   font-size: 1.375rem;
   font-weight: 600;
   line-height: 1.1;
   font-family: NanumSquare;
+
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-`;
-
-const WrapContent = styled.p`
-  font-size: 1.3rem;
-  line-height: 1.4rem;
-  font-family: NanumSquare;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 `;
 
@@ -136,4 +99,39 @@ const Tag = styled.div<tagType>`
   align-items: center;
 `;
 
-export default DetailCard;
+const ManageApplicationButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  span {
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  p {
+    margin-left: 0.3rem;
+    color: #ff314a;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.0375rem;
+  }
+  button {
+    margin-left: auto;
+    color: #5b5b5b;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
+    letter-spacing: 0.025rem;
+    text-decoration-line: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+`;
+
+export default ApplicationCard;

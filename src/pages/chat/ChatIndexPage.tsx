@@ -35,7 +35,12 @@ const ChatIndexPage: React.FC = () => {
     const fetchChatList = async () => {
       try {
         const res = await instance.get('/chatroom/list');
-        setChatList(res.data);
+        const modifiedData = res.data.map((chat) =>
+          chat.senderType === 'SCHEDULE'
+            ? { ...chat, lastMessage: '약속이 공유되었어요.' }
+            : chat
+        );
+        setChatList(modifiedData);
       } catch (error) {
         console.log(error);
       }
@@ -91,7 +96,8 @@ const ChatIndexPage: React.FC = () => {
                         {chat.senderId !== chat.myProfileId ? (
                           <Message>{chat.lastMessage}</Message>
                         ) : (
-                          chat.senderType === 'USER' && (
+                          (chat.senderType === 'USER' ||
+                            chat.senderType === 'SCHEDULE') && (
                             <Message>{chat.lastMessage}</Message>
                           )
                         )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -6,16 +6,28 @@ import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
 import Button from '../../components/common/Button';
 import { calcAge } from '../../utils/calcAge';
 import { SyncLoader } from 'react-spinners';
-import { useFetchProfile } from '../../hooks/useFetchProfile';
 import ReviewRatingBar from '../../components/review/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import DetailCard from '../../components/common/DetailCard';
 import { instance } from '../../api/instance';
 
+interface RecruitProfile {
+  recruitId: number;
+  title: string;
+  content: string;
+  method: string;
+  region: string;
+  nickname: string;
+  gender: string;
+  birthyear: string;
+  profile: string;
+}
+
 const ViewProfileNari = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
-  const { data: user, isLoading } = useFetchProfile(profileId || '');
+  //const { data: user, isLoading } = useFetchProfile(profileId);
+  const [recruits, setRecruits] = useState<RecruitProfile[]>([]);
 
   const createChatRoom = async () => {
     try {
@@ -28,35 +40,50 @@ const ViewProfileNari = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const fetchRecruit = async () => {
+      try {
+        const res = await instance.get(`/recruit/others/${profileId}`);
+        setRecruits(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRecruit();
+  }, [profileId]);
+
   return (
     <>
-      {isLoading ? (
+      {recruits === null ? (
         <WrapLoader>
           <SyncLoader color="var(--Primary-dong)" />
         </WrapLoader>
       ) : (
         <>
           <PrevHeader title={'프로필 조회'} navigateTo={'-1'} />
-          <WrapContent>
-            {user && (
+          {recruits.length > 0 && (
+            <WrapContent>
               <BriefProfileMultiCard
                 type="nari"
-                nickname={user.nickname}
-                gender={user.gender}
-                age={calcAge(user.birthYear)}
-                profile={user.profile}
+                nickname={recruits[0].nickname}
+                gender={recruits[0].gender}
+                age={calcAge(recruits[0].birthyear)}
+                profile={recruits[0].profile}
               />
-            )}
-            <WrapButton>
-              <Button
-                disabled={false}
-                userType={'dong'}
-                onClick={createChatRoom}
-              >
-                채팅하기
-              </Button>
-            </WrapButton>
-          </WrapContent>
+
+              <WrapButton>
+                <Button
+                  disabled={false}
+                  userType={'dong'}
+                  onClick={createChatRoom}
+                  isBottom={false}
+                >
+                  채팅하기
+                </Button>
+              </WrapButton>
+            </WrapContent>
+          )}
 
           <SplitLine />
 
@@ -90,26 +117,22 @@ const ViewProfileNari = () => {
           <SplitThinLine />
           <WrapContentSingle>
             <TitleText>
-              작성구인글 <em>2</em>
+              작성구인글 <em>{recruits ? recruits.length : 0}</em>
             </TitleText>
-            <DetailCard
-              type="nari"
-              title="기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다."
-              content="환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받고 싶습니다."
-              age="50대"
-              method="모두 선택"
-              region="서대문구"
-              navigateTo={() => navigate('/')}
-            />
-            <DetailCard
-              type="nari"
-              title="기후기술 창업대회 공모전 피드백 해주실 전문가 구합니다."
-              content="환경 문제를 어떻게 하면 기후기술로 녹여낼지가 고민입니다. 격주 수요일 저녁에 만나서 피드백 받고 싶습니다."
-              age="50대"
-              method="모두 선택"
-              region="서대문구"
-              navigateTo={() => navigate('/')}
-            />
+            {recruits &&
+              recruits.map((recruit, index) => (
+                <DetailCard
+                  key={index}
+                  type="nari"
+                  title={recruit.title}
+                  content={recruit.content}
+                  method={recruit.method}
+                  region={recruit.region}
+                  navigateTo={() =>
+                    navigate(`/view/recruit/${recruit.recruitId}`)
+                  }
+                />
+              ))}
           </WrapContentSingle>
         </>
       )}

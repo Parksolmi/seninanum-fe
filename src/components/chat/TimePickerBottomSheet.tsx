@@ -4,7 +4,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Button from '../common/Button';
 
-const TimePickerModal = ({ userType, selectedTime, onChange, onClose }) => {
+const TimePickerBottomSheet = ({
+  userType,
+  selectedTime,
+  onChange,
+  onClose,
+}) => {
   const initialPeriod = selectedTime ? selectedTime.split(' ')[0] : '오전';
   const initialHour = selectedTime
     ? parseInt(selectedTime.split(' ')[1].split(':')[0], 10)
@@ -129,6 +134,7 @@ const TimePickerModal = ({ userType, selectedTime, onChange, onClose }) => {
             disabled={false}
             userType={userType}
             onClick={handleConfirmClick} // 선택된 시간 전달
+            isFixed={false}
           />
         </ButtonContainer>
       </ModalContainer>
@@ -218,4 +224,4 @@ const ButtonContainer = styled.div`
   background-color: white;
 `;
 
-export default TimePickerModal;
+export default TimePickerBottomSheet;

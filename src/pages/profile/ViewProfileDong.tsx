@@ -59,7 +59,7 @@ const ViewProfileDong = () => {
           birthYear: res.data.birthyear,
           profile: res.data.profile,
         });
-        setCareers(res.data.careerItems);
+        setCareers(res.data.careerItems || []);
       } catch (error) {
         console.error('경력 프로필 조회에 실패하였습니다.', error);
       }
@@ -78,6 +78,23 @@ const ViewProfileDong = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  // 모든 필드가 비어있는지 체크하는 함수
+  const isProfileEmpty = (profile: CareerProfile | null) => {
+    if (!profile) return true;
+    return (
+      !profile.introduce &&
+      !profile.age &&
+      !profile.field &&
+      !profile.service &&
+      !profile.method &&
+      !profile.region &&
+      !profile.priceType &&
+      !profile.price &&
+      !profile.nickname &&
+      !profile.gender &&
+      !profile.birthYear
+    );
   };
 
   return (
@@ -107,6 +124,7 @@ const ViewProfileDong = () => {
                 disabled={false}
                 userType={'nari'}
                 onClick={createChatRoom}
+                isFixed={false}
               >
                 채팅하기
               </Button>
@@ -115,69 +133,83 @@ const ViewProfileDong = () => {
 
           <SplitLine />
 
-          <WrapContentSingle>
-            <TitleText>분야</TitleText>
-            {careerProfileState.field && (
-              <DetailText>{careerProfileState.field}</DetailText>
-            )}
-          </WrapContentSingle>
+          {isProfileEmpty(careerProfileState) ? (
+            <WrapContentSingle>
+              <DetailText>경력 프로필이 없는 동백입니다.</DetailText>
+            </WrapContentSingle>
+          ) : (
+            <>
+              <WrapContentSingle>
+                <TitleText>분야</TitleText>
+                {careerProfileState.field && (
+                  <DetailText>{careerProfileState.field}</DetailText>
+                )}
+              </WrapContentSingle>
 
-          <WrapContentSingle>
-            <div className="last-content">
-              <TitleText>희망조건</TitleText>
-              <ConditionText>
-                <tbody>
-                  {careerProfileState.method && (
-                    <tr>
-                      <th>활동방식</th>
-                      <td>{careerProfileState.method}</td>
-                    </tr>
-                  )}
+              <WrapContentSingle>
+                <div className="last-content">
+                  <TitleText>희망조건</TitleText>
+                  <ConditionText>
+                    <tbody>
+                      {careerProfileState.method && (
+                        <tr>
+                          <th>활동방식</th>
+                          <td>{careerProfileState.method}</td>
+                        </tr>
+                      )}
 
-                  {careerProfileState.region && (
-                    <tr>
-                      <th>활동지역</th>
-                      <td>서울시 {careerProfileState.region}</td>
-                    </tr>
-                  )}
-                  {careerProfileState.age && (
-                    <tr>
-                      <th>선호연령</th>
-                      <td>{careerProfileState.age}</td>
-                    </tr>
-                  )}
-                  {careerProfileState.priceType &&
-                    careerProfileState.price > 0 && (
-                      <tr>
-                        <th>급여</th>
-                        <td>
-                          {careerProfileState.priceType}{' '}
-                          {careerProfileState.price}원
-                        </td>
-                      </tr>
-                    )}
-                </tbody>
-              </ConditionText>
-            </div>
-          </WrapContentSingle>
-          <WrapContentSingle>
-            <TitleText>경력</TitleText>
-            {careers.map((career) => (
-              <CareerDetail
-                key={career.title}
-                title={career.title}
-                startYear={career.startYear}
-                startMonth={career.startMonth}
-                endYear={career.endYear}
-                endMonth={career.endMonth}
-                content={career.content}
-              />
-            ))}
-          </WrapContentSingle>
-          <WrapContentSingle>
-            <TitleText>제공할 서비스</TitleText>
-            <DetailText>{careerProfileState.service}</DetailText>
-          </WrapContentSingle>
+                      {careerProfileState.region && (
+                        <tr>
+                          <th>활동지역</th>
+                          <td>서울시 {careerProfileState.region}</td>
+                        </tr>
+                      )}
+                      {careerProfileState.age && (
+                        <tr>
+                          <th>선호연령</th>
+                          <td>{careerProfileState.age}</td>
+                        </tr>
+                      )}
+                      {careerProfileState.priceType &&
+                        careerProfileState.price > 0 && (
+                          <tr>
+                            <th>급여</th>
+                            <td>
+                              {careerProfileState.priceType}{' '}
+                              {careerProfileState.price}원
+                            </td>
+                          </tr>
+                        )}
+                    </tbody>
+                  </ConditionText>
+                </div>
+              </WrapContentSingle>
+
+              <WrapContentSingle>
+                <TitleText>경력</TitleText>
+                {careers.length > 0
+                  ? careers.map((career) => (
+                      <CareerDetail
+                        key={career.title}
+                        title={career.title}
+                        startYear={career.startYear}
+                        startMonth={career.startMonth}
+                        endYear={career.endYear}
+                        endMonth={career.endMonth}
+                        content={career.content}
+                      />
+                    ))
+                  : ''}
+              </WrapContentSingle>
+
+              <WrapContentSingle>
+                <TitleText>제공할 서비스</TitleText>
+                {careerProfileState.service && (
+                  <DetailText>{careerProfileState.service}</DetailText>
+                )}
+              </WrapContentSingle>
+            </>
+          )}
         </>
       )}
     </>

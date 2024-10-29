@@ -5,19 +5,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import Button from '../common/Button';
 
-interface DatePickerModalProps {
-  userType: string;
-  selectedDate: Date | null;
-  onChange: (date: Date | null) => void;
-  onClose: () => void;
-}
-
-const DatePickerModal = ({
+const DatePickerBottomSheet = ({
   userType,
   selectedDate,
   onChange,
   onClose,
-}: DatePickerModalProps) => {
+}) => {
   const [internalDate, setInternalDate] = useState<Date | null>(selectedDate);
   const getColorByUserType = (userType: string) => {
     switch (userType) {
@@ -87,6 +80,7 @@ const DatePickerModal = ({
             disabled={!internalDate}
             userType={userType}
             onClick={handleConfirmClick} // 선택된 날짜 전달
+            isFixed={false}
           />
         </ButtonContainer>
       </CustomBox>
@@ -241,4 +235,4 @@ const CustomHeader = styled.div`
   }
 `;
 
-export default DatePickerModal;
+export default DatePickerBottomSheet;

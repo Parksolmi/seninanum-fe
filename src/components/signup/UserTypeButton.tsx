@@ -27,7 +27,6 @@ const UserTypeButton: React.FC<ButtonProps> = ({
       </CharacterImg>
       <UserType $type={types}>
         {types !== null ? (types === 'dong' ? '동백' : '나리') : null}
-        <Badge src={`/assets/common/badge-${types}.png`} />
       </UserType>
       <Content>
         {types === 'dong'
@@ -94,11 +93,6 @@ const UserType = styled.div<{ $type: string }>`
   font-size: 1.5rem;
   font-family: Nanum_Square;
   font-weight: 700;
-`;
-
-const Badge = styled.img`
-  margin-left: 0.3rem;
-  height: 18px;
 `;
 
 const Content = styled.div`

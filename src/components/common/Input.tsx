@@ -48,7 +48,7 @@ const InputBox = styled.input`
 
   &:focus {
     outline: none;
-    border: 1.5px solid var(--Primary-dong);
+    border: 1.5px solid #000;
   }
 `;
 

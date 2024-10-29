@@ -18,6 +18,7 @@ import Modal from '../../components/common/Modal';
 import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
+import MakeSchedule from '../../components/chat/MakeSchedule';
 
 interface Profile {
   profileId: string;
@@ -53,6 +54,10 @@ const ChatPage = () => {
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
+
+  // 약속 바텀시트 상태
+  const [showMakeSchedule, setShowMakeSchedule] = useState(false);
+
   const [profile, setProfile] = useState<ProfileIds>({
     memberProfile: {
       profileId: '',
@@ -98,7 +103,7 @@ const ChatPage = () => {
   );
 
   // 메시지 전송
-  const { sendTextMessage } = useSendMessage(
+  const { sendTextMessage, sendScheduleMessage } = useSendMessage(
     draftMessage,
     setDraftMessage,
     client,
@@ -106,6 +111,7 @@ const ChatPage = () => {
     profile.memberProfile.profileId,
     profile.opponentProfile.profileId
   );
+
   const sendMessage = async () => {
     if (!draftMessage.trim()) return;
 
@@ -132,6 +138,17 @@ const ChatPage = () => {
     profile.memberProfile.profileId,
     profile.opponentProfile.profileId
   );
+
+  // 약속 바텀시트 토글
+  const toggleMakeSchedule = () => {
+    setShowMakeSchedule((prev) => !prev);
+  };
+
+  // 약속 정보 전송
+  const handleScheduleSubmit = (schedule) => {
+    sendScheduleMessage(schedule);
+    toggleMakeSchedule();
+  };
 
   // input 값
   const handleChangeMessage = (e) => {
@@ -243,6 +260,13 @@ const ChatPage = () => {
   return (
     <Wrapper>
       <Container>
+        {showMakeSchedule && (
+          <MakeSchedule
+            opponentNickname={profile.opponentProfile.nickname}
+            onClose={toggleMakeSchedule}
+            onSubmit={handleScheduleSubmit}
+          />
+        )}
         <WrapHeader>
           <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
@@ -285,6 +309,7 @@ const ChatPage = () => {
                 submitHandler={sendMessage}
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
+                openSchedule={toggleMakeSchedule}
               />
             )}
           </>
