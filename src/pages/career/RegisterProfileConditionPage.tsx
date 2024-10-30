@@ -139,7 +139,9 @@ const RegisterProfileConditionPage = () => {
       </h3>
 
       <WrapSection>
-        <div className="title">소개 한마디</div>
+        <div className="title">
+          소개 한마디<Satisfy>필수*</Satisfy>
+        </div>
         <InputService
           name="service"
           onChange={handleOnChange}
@@ -317,6 +319,19 @@ const MethodButton = styled.div<MethodButtonProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const Satisfy = styled.div`
+  display: flex;
+  color: #ff314a;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.025rem;
+  display: inline;
+  margin-left: 0.5rem;
 `;
 
 export default RegisterProfileConditionPage;

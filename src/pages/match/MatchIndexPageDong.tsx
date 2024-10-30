@@ -4,9 +4,6 @@ import CustomizedDongCard from '../../components/match/CustomizedDongCard';
 import FilterButton from './../../components/home/FilterButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
-import SummaryCard from '../../components/common/SummaryCard';
-import ViewMyApplicantsList from './ViewMyApplicantsList';
-import { calcAge } from '../../utils/calcAge';
 import MatchCard from '../../components/match/MatchCard';
 
 interface RecruitCard {
@@ -70,21 +67,22 @@ const MatchIndexPageNari = ({ userType }) => {
       <WrapContentSingle>
         <TitleText>맞춤형 구인글 추천</TitleText>
         <CustomizedCardArea>
-          {matchRecruitList.map((recruit) =>
-            recruit.recommendation ? (
-              <CustomizedDongCard
-                key={recruit.field}
-                field={recruit.field}
-                title={recruit.recommendation.title}
-              />
-            ) : (
-              <CustomizedDongCard
-                key={recruit.field}
-                field={recruit.field}
-                isExist={false}
-              />
-            )
-          )}
+          {matchRecruitList.length > 0 &&
+            matchRecruitList.map((recruit) =>
+              recruit.recommendation ? (
+                <CustomizedDongCard
+                  key={recruit.field}
+                  field={recruit.field}
+                  title={recruit.recommendation.title}
+                />
+              ) : (
+                <CustomizedDongCard
+                  key={recruit.field}
+                  field={recruit.field}
+                  isExist={false}
+                />
+              )
+            )}
         </CustomizedCardArea>
 
         <FilterButton onClick={() => navigate('/match/field')} />

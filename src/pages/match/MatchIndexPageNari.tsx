@@ -99,24 +99,25 @@ const MatchIndexPageNari = ({ userType }) => {
         {activeTab === 1 && (
           <>
             <CustomizedCardArea>
-              {matchDongList.map((matchDong) =>
-                matchDong.recommendation ? (
-                  <CustomizedNariCard
-                    key={matchDong.field}
-                    field={matchDong.field}
-                    profile={matchDong.recommendation.profile}
-                    nickname={matchDong.recommendation.nickname}
-                    age={calcAge(matchDong.recommendation.birthyear)}
-                    gender={matchDong.recommendation.gender}
-                  />
-                ) : (
-                  <CustomizedNariCard
-                    key={matchDong.field}
-                    field={matchDong.field}
-                    isExist={false}
-                  />
-                )
-              )}
+              {matchDongList.length > 0 &&
+                matchDongList.map((matchDong) =>
+                  matchDong.recommendation ? (
+                    <CustomizedNariCard
+                      key={matchDong.field}
+                      field={matchDong.field}
+                      profile={matchDong.recommendation.profile}
+                      nickname={matchDong.recommendation.nickname}
+                      age={calcAge(matchDong.recommendation.birthyear)}
+                      gender={matchDong.recommendation.gender}
+                    />
+                  ) : (
+                    <CustomizedNariCard
+                      key={matchDong.field}
+                      field={matchDong.field}
+                      isExist={false}
+                    />
+                  )
+                )}
             </CustomizedCardArea>
 
             <FilterButton onClick={() => navigate('/match/field')} />

@@ -104,7 +104,8 @@ const RegisterProfileFieldPage = () => {
 
       <WrapSection>
         <div className="title">
-          희망 활동 분야<p>최대 3개까지 선택 가능해요.</p>
+          희망 활동 분야<Satisfy>필수*</Satisfy>
+          <p>최대 3개까지 선택 가능해요.</p>
         </div>
 
         <Category
@@ -186,6 +187,19 @@ const WrapSection = styled.div`
 
 const Gap = styled.div`
   margin-bottom: 8rem;
+`;
+
+const Satisfy = styled.div`
+  display: flex;
+  color: #ff314a;
+  font-family: NanumSquare;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.025rem;
+  display: inline;
+  margin-left: 0.5rem;
 `;
 
 export default RegisterProfileFieldPage;
