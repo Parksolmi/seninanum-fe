@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface CustomizedCardProps {
+interface CustomizedNariCardProps {
   field: string;
   profile?: string;
   nickname?: string;
@@ -10,14 +10,14 @@ interface CustomizedCardProps {
   isExist?: boolean;
 }
 
-const CustomizedCard = ({
+const CustomizedNariCard = ({
   field,
   profile,
   nickname,
   age,
   gender,
   isExist = true,
-}: CustomizedCardProps) => {
+}: CustomizedNariCardProps) => {
   return (
     <>
       {isExist ? (
@@ -144,4 +144,4 @@ const UserTypeText = styled.div`
   font-weight: 400;
 `;
 
-export default CustomizedCard;
+export default CustomizedNariCard;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import CustomizedCard from '../../components/match/CustomizedCard';
+import CustomizedNariCard from '../../components/match/CustomizedNariCard';
 import FilterButton from './../../components/home/FilterButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
@@ -101,7 +101,7 @@ const MatchIndexPageNari = ({ userType }) => {
             <CustomizedCardArea>
               {matchDongList.map((matchDong) =>
                 matchDong.recommendation ? (
-                  <CustomizedCard
+                  <CustomizedNariCard
                     key={matchDong.field}
                     field={matchDong.field}
                     profile={matchDong.recommendation.profile}
@@ -110,7 +110,7 @@ const MatchIndexPageNari = ({ userType }) => {
                     gender={matchDong.recommendation.gender}
                   />
                 ) : (
-                  <CustomizedCard
+                  <CustomizedNariCard
                     key={matchDong.field}
                     field={matchDong.field}
                     isExist={false}
