@@ -63,20 +63,6 @@ const HomeIndexPageDong: React.FC<progressStepProps> = ({ progressStep }) => {
 
       <ContentContainer>
         <CareerProfileProgress progressStep={progressStep} />
-        {/* <TitleText>간편 바로가기</TitleText>
-        <ButtonHorizontal>
-          <ShortcutButton
-            shortcutButtonText={`구인글\n조회하기`}
-            navigateTo={() => navigate('/view/recruit/list')}
-            type={USER_TYPE}
-          />
-          <ShortcutButton
-            navigateTo={() => navigate('/')}
-            shortcutButtonText={`리뷰\n작성하기`}
-            type={USER_TYPE}
-          />
-        </ButtonHorizontal> */}
-
         <TitleText>실시간 구인글을 확인해보세요!</TitleText>
         <NariCardVertical>
           {/* 추후 infinite scroll 적용 */}

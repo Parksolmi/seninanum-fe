@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import CustomizedCard from '../../components/match/CustomizedCard';
+import CustomizedNariCard from '../../components/match/CustomizedNariCard';
 import FilterButton from './../../components/home/FilterButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
 import SummaryCard from '../../components/common/SummaryCard';
 import ViewMyApplicantsList from './ViewMyApplicantsList';
+import { calcAge } from '../../utils/calcAge';
 
 interface CareerCard {
   careerProfileId: number;
@@ -19,15 +20,20 @@ interface CareerCard {
   profile: string;
 }
 
+interface MatchDong {
+  field: string;
+  recommendation: CareerCard;
+}
+
 const MatchIndexPageNari = ({ userType }) => {
   const navigate = useNavigate();
 
   const location = useLocation();
   const [profiles, setProfiles] = useState<CareerCard[]>([]);
+  const [matchDongList, setMatchDongList] = useState<MatchDong[]>([]);
 
-  const [activeTab, setActiveTab] = useState(1); //1.맞춤형 추천, 2.지원자 목록
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
+  // 1.맞춤형 추천, 2.지원자 목록
+  const [activeTab, setActiveTab] = useState(1);
 
   // 필터링 페이지에서 전달된 데이터를 받음
   useEffect(() => {
@@ -59,6 +65,20 @@ const MatchIndexPageNari = ({ userType }) => {
     }
   }, [location.state]);
 
+  // 맞춤형 동백 추천
+  useEffect(() => {
+    const handleMatchDong = async () => {
+      try {
+        const res = await instance.get('/match/dong');
+        setMatchDongList(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    handleMatchDong();
+  }, []);
+
   return (
     <>
       <Tab>
@@ -79,11 +99,27 @@ const MatchIndexPageNari = ({ userType }) => {
         {activeTab === 1 && (
           <>
             <CustomizedCardArea>
-              {/* 수정 */}
-              <CustomizedCard />
-              <CustomizedCard />
-              <CustomizedCard />
+              {matchDongList.length > 0 &&
+                matchDongList.map((matchDong) =>
+                  matchDong.recommendation ? (
+                    <CustomizedNariCard
+                      key={matchDong.field}
+                      field={matchDong.field}
+                      profile={matchDong.recommendation.profile}
+                      nickname={matchDong.recommendation.nickname}
+                      age={calcAge(matchDong.recommendation.birthyear)}
+                      gender={matchDong.recommendation.gender}
+                    />
+                  ) : (
+                    <CustomizedNariCard
+                      key={matchDong.field}
+                      field={matchDong.field}
+                      isExist={false}
+                    />
+                  )
+                )}
             </CustomizedCardArea>
+
             <FilterButton onClick={() => navigate('/match/field')} />
             <WrapDongCards>
               {profiles.length > 0 ? (

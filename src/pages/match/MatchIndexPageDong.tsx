@@ -1,225 +1,143 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import CustomizedDongCard from '../../components/match/CustomizedDongCard';
+import FilterButton from './../../components/home/FilterButton';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
-import ApplicationCard from '../../components/chat/ApplicationCard';
-import { calcAge } from '../../utils/calcAge';
+import MatchCard from '../../components/match/MatchCard';
 
-interface Application {
-  recruitId: number;
+interface RecruitCard {
+  recruitId: string;
   title: string;
-  nickname: string;
-  profile: string;
-}
-interface Volunteers {
-  profileId: string;
-  profile: string;
-  nickname: string;
-  gender: string;
-  birthyear: string;
+  method: string;
+  region: string;
+  field: string;
+  content: string;
+  isApplicate: number;
 }
 
-const MatchIndexPageDong = ({ userType }) => {
+interface MatchRecruit {
+  field: string;
+  recommendation: RecruitCard;
+}
+
+const MatchIndexPageNari = ({ userType }) => {
   const navigate = useNavigate();
-  const [applicationList, setApplicationList] = useState<Application[]>([]);
-  const [volunteers, setVolunteers] = useState<Volunteers[]>([]);
 
-  // profileId로 중복 항목 제거하는 함수
-  const filterUniqueByProfileId = (volunteers: Volunteers[]) => {
-    const seen = new Set(); // 중복 체크용 Set
-    return volunteers.filter((volunteer) => {
-      const isDuplicate = seen.has(volunteer.profileId);
-      seen.add(volunteer.profileId);
-      return !isDuplicate;
-    });
-  };
+  const location = useLocation();
+  const [recruitList, setRecruitList] = useState<RecruitCard[]>([]);
+  const [matchRecruitList, setMatchRecruitList] = useState<MatchRecruit[]>([]);
 
-  // (동백)지원한 구인글 목록 불러오기
+  // 필터링 페이지에서 전달된 데이터를 받음
   useEffect(() => {
-    const fetchApplications = async () => {
-      if (userType !== 'dong') return;
+    if (location.state && location.state.filteredRecruit) {
+      // 필터링된 데이터가 있을 경우 그 데이터를 사용
+      setRecruitList(location.state.filteredRecruit);
+    } else {
+      // 필터링된 데이터가 없을 경우 기본 career/list 데이터를 불러옴
+      const getRecruitList = async () => {
+        try {
+          const res = await instance.get('/recruit/list');
+          setRecruitList(res.data.reverse());
+          console.log(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getRecruitList();
+    }
+  }, [location.state]);
+
+  // 맞춤형 동백 추천
+  useEffect(() => {
+    const handleMatchRecruit = async () => {
       try {
-        const res = await instance.get('application/recruit/list');
-        setApplicationList(res.data);
+        const res = await instance.get('/match/recruit');
+        setMatchRecruitList(res.data);
+        console.log(res.data);
       } catch (error) {
-        console.error('지원한 구인글 조회 중 오류 발생:', error);
+        console.log(error);
       }
     };
-    fetchApplications();
-  }, [userType]);
-
-  // (나리) 지원자 목록 불러오기
-  useEffect(() => {
-    const fetchVolunteers = async () => {
-      if (userType !== 'nari') return;
-
-      try {
-        const res = await instance.get('application/list');
-        const uniqueVolunteers = filterUniqueByProfileId(res.data);
-        setVolunteers(uniqueVolunteers);
-      } catch (error) {
-        console.error('지원자 목록 조회 중 오류 발생:', error);
-      }
-    };
-
-    fetchVolunteers();
-  }, [userType]);
+    handleMatchRecruit();
+  }, []);
 
   return (
     <>
-      <WrapContent>
-        <ApplicationListContainer>
-          <ApplicationTextArea>
-            <div className="leftText">
-              <p>내가 지원한 공고</p>
-              <span>{applicationList.length}</span>
-            </div>
-            <div
-              className="moreButton"
-              onClick={() => navigate(`/manage/myapplication?tab=1`)}
-            >
-              더보기
-              <img src="/assets/common/more-icon.svg" alt="더보기아이콘" />
-            </div>
-          </ApplicationTextArea>
-          <SwipeArea>
-            {applicationList.map((application) => (
-              <ApplicationCard
-                userType="dong"
-                key={application.recruitId}
-                profile={application.profile}
-                nickname={application.nickname}
-                title={application.title}
-                onClick={() =>
-                  navigate(`/view/recruit/${application.recruitId}`)
-                }
-              />
-            ))}
-          </SwipeArea>
-        </ApplicationListContainer>
-
-        {volunteers.length > 0 && (
-          <ApplicationListContainer>
-            <ApplicationTextArea>
-              <div className="content-title">
-                <p>나에게 지원한 동백</p>
-                <span>{volunteers.length}</span>
-              </div>
-              <div
-                className="moreButton"
-                onClick={() => navigate(`/view/myapplicants`)}
-              >
-                더보기
-                <img src="/assets/common/more-icon.svg" alt="더보기아이콘" />
-              </div>
-            </ApplicationTextArea>
-            <SwipeArea>
-              {volunteers.map((volunteer) => (
-                <ApplicationCard
-                  userType="nari"
-                  key={volunteer.profileId}
-                  profile={volunteer.profile}
-                  nickname={volunteer.nickname}
-                  gender={volunteer.gender}
-                  birthyear={calcAge(volunteer.birthyear)}
-                  onClick={() =>
-                    navigate(`/view/dongprofile/${volunteer.profileId}`)
-                  }
+      <WrapContentSingle>
+        <TitleText>맞춤형 구인글 추천</TitleText>
+        <CustomizedCardArea>
+          {matchRecruitList.length > 0 &&
+            matchRecruitList.map((recruit) =>
+              recruit.recommendation ? (
+                <CustomizedDongCard
+                  key={recruit.field}
+                  field={recruit.field}
+                  title={recruit.recommendation.title}
                 />
-              ))}
-            </SwipeArea>
-          </ApplicationListContainer>
-        )}
-      </WrapContent>
-      <SplitLine />
+              ) : (
+                <CustomizedDongCard
+                  key={recruit.field}
+                  field={recruit.field}
+                  isExist={false}
+                />
+              )
+            )}
+        </CustomizedCardArea>
+
+        <FilterButton onClick={() => navigate('/match/field')} />
+        <WrapDongCards>
+          {recruitList.length > 0 ? (
+            recruitList.map((recruit) => (
+              <MatchCard
+                key={recruit.recruitId}
+                type={'nari'}
+                title={recruit.title}
+                content={recruit.content}
+                fields={recruit.field.split(',')}
+                method={recruit.method}
+                region={recruit.region}
+                navigateTo={() =>
+                  navigate(`/view/recruit/${recruit.recruitId}`)
+                }
+                isApplicate={recruit.isApplicate === 1 ? true : false}
+              />
+            ))
+          ) : (
+            <p>추천할 동백님이 없습니다.</p>
+          )}
+        </WrapDongCards>
+      </WrapContentSingle>
     </>
   );
 };
 
-const WrapContent = styled.div`
-  padding: 0.3rem 1.1rem;
-
-  > .content-title {
-    color: #000;
-    font-family: NanumSquare;
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin: 0;
-  }
-`;
-
-const ApplicationListContainer = styled.div`
-  margin-top: 1rem;
+const WrapContentSingle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
 `;
 
-const ApplicationTextArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  .leftText {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  p {
-    color: #000;
-    font-family: NanumSquare;
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin: 0;
-    display: inline;
-  }
-
-  span {
-    color: #5b5b5b;
-    font-family: NanumSquare;
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin-left: 0.3rem;
-  }
-
-  .moreButton {
-    color: #5b5b5b;
-    font-family: NanumSquare;
-    font-size: 1.125rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  img {
-    width: 1rem;
-    height: 1rem;
-  }
+const TitleText = styled.div`
+  font-family: NanumSquare;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06rem;
+  margin-bottom: 1rem;
 `;
 
-const SwipeArea = styled.div`
+const CustomizedCardArea = styled.div`
   display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+`;
+
+const WrapDongCards = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  overflow-x: auto; /* 가로 스크롤 허용 */
-  white-space: nowrap;
-  padding-bottom: 0.5rem;
-  margin-right: -1.1rem;
-  padding-right: 1.1rem; /* 마지막 카드가 잘리지 않도록 여백 추가 */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 `;
 
-const SplitLine = styled.div`
-  width: 100%;
-  height: 0.625rem;
-  background: #ebeceb;
-  margin: 1rem 0;
-`;
-
-export default MatchIndexPageDong;
+export default MatchIndexPageNari;

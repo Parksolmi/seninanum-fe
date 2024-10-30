@@ -10,6 +10,7 @@ interface MessageInputProps {
   setIsMenuOpen;
   openSchedule: () => void;
   onClickImageBtn: (event) => void;
+  setIsSend: (boolean) => void;
 }
 const MessageInput = ({
   value,
@@ -19,10 +20,13 @@ const MessageInput = ({
   setIsMenuOpen,
   openSchedule,
   onClickImageBtn,
+  setIsSend,
 }: MessageInputProps) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler();
+    console.log('전송함');
+    setIsSend(true);
   };
 
   const onClickPlusButton = () => {

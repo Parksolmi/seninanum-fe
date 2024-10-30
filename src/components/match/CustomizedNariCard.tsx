@@ -1,21 +1,56 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CustomizedCard = () => {
+interface CustomizedNariCardProps {
+  field: string;
+  profile?: string;
+  nickname?: string;
+  age?: string;
+  gender?: string;
+  isExist?: boolean;
+}
+
+const CustomizedNariCard = ({
+  field,
+  profile,
+  nickname,
+  age,
+  gender,
+  isExist = true,
+}: CustomizedNariCardProps) => {
   return (
-    <CardContainer>
-      <span>디지털</span>
-      <img src="/assets/common/profile.png" alt="" />
-      <UserInfoArea>
-        <RowArea>
-          <NicknameText>닉네임</NicknameText>
-          <UserTypeText>동백</UserTypeText>
-        </RowArea>
-        <RowArea>
-          <p>60대 | 여성</p>
-        </RowArea>
-      </UserInfoArea>
-    </CardContainer>
+    <>
+      {isExist ? (
+        <CardContainer>
+          <span>{field}</span>
+          <img src={profile} alt="프로필 사진" />
+          <UserInfoArea>
+            <RowArea>
+              <NicknameText>{nickname}</NicknameText>
+              <UserTypeText>동백</UserTypeText>
+            </RowArea>
+            <RowArea>
+              <p>
+                {age} | {gender}
+              </p>
+            </RowArea>
+          </UserInfoArea>
+        </CardContainer>
+      ) : (
+        <CardContainer>
+          <span>{field}</span>
+          <img
+            className="notfound"
+            src={'/assets/character/nari-notfound.png'}
+            alt="프로필 사진 없음"
+          />
+          <UserInfoArea>
+            {field} 분야의 전문가가 <br />
+            아직 없어요.
+          </UserInfoArea>
+        </CardContainer>
+      )}
+    </>
   );
 };
 
@@ -52,6 +87,12 @@ const CardContainer = styled.div`
     height: 3.5rem;
     border-radius: 50%;
   }
+
+  .notfound {
+    width: 3.5rem;
+    padding-left: 0.2rem;
+    object-fit: contain;
+  }
 `;
 
 const UserInfoArea = styled.div`
@@ -59,6 +100,12 @@ const UserInfoArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  color: #5b5b5b;
+  text-align: left;
+  font-family: NanumSquare;
+  font-size: 1.125rem;
+  letter-spacing: 0.03375rem;
 `;
 
 const RowArea = styled.div`
@@ -97,4 +144,4 @@ const UserTypeText = styled.div`
   font-weight: 400;
 `;
 
-export default CustomizedCard;
+export default CustomizedNariCard;
