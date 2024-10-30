@@ -79,6 +79,7 @@ const MatchIndexPageNari = ({ userType }) => {
         {activeTab === 1 && (
           <>
             <CustomizedCardArea>
+              {/* 수정 */}
               <CustomizedCard />
               <CustomizedCard />
               <CustomizedCard />
