@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MyRecruitProgress from '../../components/home/MyRecruitProgress';
 // import ProfileVerticalCard from '../../components/home/ProfileVerticalCard';
@@ -29,7 +29,6 @@ const CARD_TYPE = 'dong';
 
 const HomeIndexPageNari: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [profile, setProfile] = useState<CareerCard[]>([]);
   const [latestRecruit, setLatestRecruit] = useState<RecruitStatusProps | null>(
     null
@@ -63,7 +62,12 @@ const HomeIndexPageNari: React.FC = () => {
         params: { status: '모집중' }, // 모집 중인 최신 구인글
       });
       if (res.data.length > 0) {
-        const latest = res.data[0]; // 가장 최신 구인글 하나
+        const sortedRecruits = res.data.sort(
+          (a, b) => b.recruitId - a.recruitId
+        );
+
+        // 가장 최신 구인글 하나를 기본으로 설정
+        const latest = sortedRecruits[0];
         setLatestRecruit({
           recruitId: latest.recruitId,
           title: latest.title,
@@ -75,36 +79,30 @@ const HomeIndexPageNari: React.FC = () => {
     }
   };
 
-  // 필터링 페이지에서 전달된 데이터를 받음
+  // 동백 프로필 조회
   useEffect(() => {
-    if (location.state && location.state.filteredProfiles) {
-      // 필터링된 데이터가 있을 경우 그 데이터를 사용
-      setProfile(location.state.filteredProfiles);
-    } else {
-      // 필터링된 데이터가 없을 경우 기본 career/list 데이터를 불러옴
-      const getBriefProfile = async () => {
-        try {
-          const res = await instance.get('/career/list');
-          // 중복 제거 로직
-          const uniqueProfiles: CareerCard[] = [];
-          const seenNicknames = new Set<string>();
+    const getBriefProfile = async () => {
+      try {
+        const res = await instance.get('/career/list');
+        // 중복 제거 로직
+        const uniqueProfiles: CareerCard[] = [];
+        const seenNicknames = new Set<string>();
 
-          res.data.forEach((profile: CareerCard) => {
-            if (!seenNicknames.has(profile.nickname)) {
-              seenNicknames.add(profile.nickname);
-              uniqueProfiles.push(profile);
-            }
-          });
+        res.data.forEach((profile: CareerCard) => {
+          if (!seenNicknames.has(profile.nickname)) {
+            seenNicknames.add(profile.nickname);
+            uniqueProfiles.push(profile);
+          }
+        });
 
-          setProfile(uniqueProfiles);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getBriefProfile();
-    }
+        setProfile(uniqueProfiles);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBriefProfile();
     fetchLatestRecruit();
-  }, [location.state]);
+  }, []);
 
   return (
     <>

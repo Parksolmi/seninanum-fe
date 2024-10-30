@@ -6,6 +6,7 @@ interface PrevHeaderProps {
   title?: string;
   navigateTo?: string;
   onModify?: () => void;
+  onWrite?: () => void;
   onClick?: () => void;
   isLine?: boolean;
 }
@@ -14,6 +15,7 @@ const PrevHeader = ({
   title,
   navigateTo,
   onModify,
+  onWrite,
   onClick,
   isLine,
 }: PrevHeaderProps) => {
@@ -38,6 +40,7 @@ const PrevHeader = ({
         <TitleText onClick={onClick}>{title}</TitleText>
       </TitleWrapper>
       {onModify && <ModifyText onClick={onModify}>수정</ModifyText>}
+      {onWrite && <ModifyText onClick={onWrite}>작성</ModifyText>}
     </WrapHeader>
   );
 };

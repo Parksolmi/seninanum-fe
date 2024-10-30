@@ -137,7 +137,7 @@ const Tab = styled.div`
   margin-top: 0.5rem;
   flex-direction: row;
   justify-content: center;
-  gap: 5.2rem;
+  gap: 3rem;
   p {
     color: #414040;
     text-align: center;
