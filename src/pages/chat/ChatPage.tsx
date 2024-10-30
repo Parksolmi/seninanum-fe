@@ -75,6 +75,7 @@ const ChatPage = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(-1);
+  const [isSend, setIsSend] = useState(true);
 
   //수정사항! react-query로 바꾸기
   const [isLoading, setIsLoading] = useState(true);
@@ -320,6 +321,8 @@ const ChatPage = () => {
                 isMenuOpen={isMenuOpen}
                 userType={profile.memberProfile.userType}
                 onIntersect={handleIntersect}
+                isSend={isSend}
+                setIsSend={setIsSend}
               />
             </WrapChat>
             {roomStatus === 'ACTIVE' && (
@@ -331,6 +334,7 @@ const ChatPage = () => {
                 setIsMenuOpen={setIsMenuOpen}
                 openSchedule={toggleMakeSchedule}
                 onClickImageBtn={handleFileChange}
+                setIsSend={setIsSend}
               />
             )}
           </>
