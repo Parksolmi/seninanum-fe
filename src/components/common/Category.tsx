@@ -7,6 +7,7 @@ interface CategoryProps {
   type: 'dong' | 'nari' | null;
   selectedTags: string[];
   onClickTag: (tag: Object) => void;
+  isSingleSelect?: boolean; // 단일 선택 여부
 }
 
 const Category = ({
@@ -15,7 +16,16 @@ const Category = ({
   type,
   selectedTags,
   onClickTag,
+  isSingleSelect = false,
 }: CategoryProps) => {
+  const handleTagClick = (tag: string) => {
+    if (isSingleSelect) {
+      onClickTag(tag); // 단일 선택 시에는 선택된 tag를 바로 전달
+    } else {
+      onClickTag(tag); // 다중 선택 시 기존 로직 유지
+    }
+  };
+
   return (
     <>
       <Label>{label}</Label>
@@ -24,7 +34,7 @@ const Category = ({
           list.map((tag) => (
             <Tag
               key={tag}
-              onClick={() => onClickTag(tag)}
+              onClick={() => handleTagClick(tag)}
               $isSelected={selectedTags.includes(tag)}
               $type={type}
             >

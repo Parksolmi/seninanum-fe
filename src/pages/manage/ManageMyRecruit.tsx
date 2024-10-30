@@ -112,7 +112,11 @@ const ManageMyRecruit = () => {
 
   return (
     <>
-      <PrevHeader title={'구인글 관리'} navigateTo={'/mypage'} />
+      <PrevHeader
+        title={'구인글 관리'}
+        navigateTo={'/mypage'}
+        onWrite={() => navigate('/register/recruit/field')}
+      />
       <WrapContent>
         <Tab>
           <p
@@ -173,7 +177,7 @@ const Tab = styled.div`
   margin-top: 0.5rem;
   flex-direction: row;
   justify-content: center;
-  gap: 5.2rem;
+  gap: 3rem;
   p {
     color: #414040;
     text-align: center;
@@ -193,7 +197,7 @@ const Tab = styled.div`
       display: block;
       width: 7.625rem;
       height: 0.25rem;
-      background-color: #ffaa0e;
+      background-color: #ffd111;
       position: absolute;
       bottom: -0.6rem;
       left: 50%;

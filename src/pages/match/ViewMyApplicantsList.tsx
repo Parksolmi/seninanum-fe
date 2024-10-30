@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PrevHeader from '../../components/header/PrevHeader';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
@@ -35,7 +34,17 @@ const ViewMyApplicantsList = () => {
         const uniqueRecruits = removeDuplicateTitles(
           res.data.map((r: { recruitId: number; title: string }) => r)
         );
-        setRecruits(uniqueRecruits);
+        // 구인글 목록을 최신순으로 정렬
+        const sortedRecruits = uniqueRecruits.sort(
+          (a, b) => b.recruitId - a.recruitId
+        );
+        setRecruits(sortedRecruits);
+
+        // 가장 최신 구인글을 기본값으로 설정
+        if (sortedRecruits.length > 0) {
+          setSelectedRecruit(sortedRecruits[0]);
+          fetchApplicants(sortedRecruits[0].recruitId);
+        }
       } catch (error) {
         console.error('구인글 목록 조회 실패:', error);
       }
@@ -72,10 +81,7 @@ const ViewMyApplicantsList = () => {
   };
 
   return (
-    <WrapContent>
-      <PrevHeader title="지원자 조회" navigateTo={'-1'} />
-
-      {/* 독립적인 드롭다운 */}
+    <>
       <DropdownContainer>
         <SelectedRecruitBox onClick={toggleDropdown}>
           <TextContainer>
@@ -107,44 +113,39 @@ const ViewMyApplicantsList = () => {
 
       <WrapDongCards>
         {applicants.length > 0 ? (
-          applicants.map((applicant) => (
-            <SummaryCard
-              key={applicant.profileId}
-              type="dong"
-              profile={applicant.profile}
-              fields={applicant.field ? applicant.field.split(',') : []}
-              nickname={applicant.nickname}
-              content={applicant.introduce}
-              age={applicant.birthyear}
-              gender={
-                applicant.gender === 'F' || applicant.gender === '여성'
-                  ? '여성'
-                  : '남성'
-              }
-              onClick={() =>
-                navigate(`/view/dongprofile/${applicant.profileId}`)
-              }
-            />
-          ))
+          applicants.map((applicant) =>
+            applicant.profileId ? (
+              <SummaryCard
+                key={applicant.profileId}
+                type="dong"
+                profile={applicant.profile}
+                fields={applicant.field ? applicant.field.split(',') : []}
+                nickname={applicant.nickname}
+                content={applicant.introduce}
+                age={applicant.birthyear}
+                gender={
+                  applicant.gender === 'F' || applicant.gender === '여성'
+                    ? '여성'
+                    : '남성'
+                }
+                onClick={() =>
+                  navigate(`/view/dongprofile/${applicant.profileId}`)
+                }
+              />
+            ) : (
+              `지원자가 아직 없습니다.`
+            )
+          )
         ) : (
-          <p>지원자가 없습니다.</p>
+          <p>구인글이 없습니다.</p>
         )}
       </WrapDongCards>
-    </WrapContent>
+    </>
   );
 };
 
-const WrapContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0 1.1rem;
-  margin-bottom: 1.5rem;
-`;
-
 const DropdownContainer = styled.div`
   position: relative;
-  margin-top: 1rem;
 `;
 
 const SelectedRecruitBox = styled.div`
@@ -179,6 +180,8 @@ const Dropdown = styled.div`
   border-radius: 1.25rem;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  max-height: 13.6rem; //4개만 보이게
+  overflow-y: auto;
 `;
 
 const DropdownItem = styled.div`
@@ -212,6 +215,7 @@ const WrapDongCards = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 1.5rem;
+  white-space: pre;
 `;
 
 export default ViewMyApplicantsList;

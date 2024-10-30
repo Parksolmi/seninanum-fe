@@ -17,7 +17,9 @@ const ExitHeader = ({ navigateTo, userType }) => {
         content={`지금 나가면 \n작성했던 모든 내용이 사라져요.`}
         cancelText={'취소'}
         confirmText={'나가기'}
-        onConfirm={() => navigate(navigateTo)}
+        onConfirm={() =>
+          navigateTo === '-1' ? navigate(-1) : navigate(navigateTo)
+        }
         onCancel={closeLeaveModal}
       />
     )
