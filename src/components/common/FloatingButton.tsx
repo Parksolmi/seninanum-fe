@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FloatingButton = ({ userType }) => {
+const FloatingButton = ({ userType, onClick }) => {
   return (
-    <WrapViewPort>
+    <WrapViewPort onClick={onClick}>
       <Button $userType={userType}>
         글쓰기
         <img src={`/assets/community/pencil_${userType}.png`} alt="write" />

@@ -5,6 +5,7 @@ import FreeBoardCard from '../../components/community/FreeBoardCard';
 import PrevHeader from '../../components/header/PrevHeader';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
 import { parseTime } from '../../utils/formatTime';
+import { useNavigate } from 'react-router-dom';
 
 interface freeBoard {
   freeBoardId: number;
@@ -19,6 +20,7 @@ interface freeBoard {
   nickname: string;
 }
 const FreeCommunityPage = () => {
+  const navigate = useNavigate();
   const { data: user } = useFetchUserType();
   const [freeBoardList, setFreeBoardList] = useState<freeBoard[]>([]);
 
@@ -55,7 +57,10 @@ const FreeCommunityPage = () => {
           createdAt={parseTime(free.createdAt)}
         />
       ))}
-      <FloatingButton userType={user?.userType} />
+      <FloatingButton
+        userType={user?.userType}
+        onClick={() => navigate('/write/freeboard')}
+      />
     </>
   );
 };
