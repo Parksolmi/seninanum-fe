@@ -37,6 +37,10 @@ import MatchIndexPage from './pages/match/MatchIndexPage';
 import ProgressLayoutDong from './layouts/ProgressLayoutDong';
 import ProgressLayoutNari from './layouts/ProgressLayoutNari';
 import RegisterProfileFieldPage from './pages/career/RegisterProfileFieldPage';
+import FreeCommunityPage from './pages/community/FreeCommunityPage';
+import AdviceCommunityPage from './pages/community/AdviceCommunityPage';
+import ViewFreeBorad from './pages/community/ViewFreeBoard';
+import ViewAdviceBoard from './pages/community/ViewAdviceBoard';
 import WriteFreeBoard from './pages/community/WriteFreeBoard';
 import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
 
@@ -130,9 +134,6 @@ const App: React.FC = () => {
         <Route path="/view/myapplicants" element={<ViewMyApplicantsList />} />
         {/* 지원내역 관리 */}
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
-        {/* 게시판 글쓰기 */}
-        <Route path="/write/freeboard" element={<WriteFreeBoard />} />
-        <Route path="/write/adviceboard" element={<WriteAdviceBoard />} />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/match" element={<MatchIndexPage />} />

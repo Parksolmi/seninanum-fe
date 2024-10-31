@@ -56,7 +56,7 @@ const WrapHeader = styled.div<WrapHeaderProp>`
   margin-top: 1.8rem;
   ${(props) =>
     props.$isLine ? 'border-bottom: solid 1px var(--Base-Gray2, #ebeceb);' : ''}
-  padding: 0 1.1rem 0.5rem 1.1rem;
+  padding: 0 1.1rem 1.3rem 1.1rem;
 `;
 
 const BackButton = styled.div`
