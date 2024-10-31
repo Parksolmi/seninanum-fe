@@ -15,7 +15,7 @@ import { SyncLoader } from 'react-spinners';
 import { useLeaveChatRoom } from '../../hooks/useLeaveChatRoom';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
-import { stompBrokerURL } from '../../constants/baseUrl';
+// import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
 import MakeSchedule from '../../components/chat/MakeSchedule';
@@ -230,8 +230,8 @@ const ChatPage = () => {
     if (isMembersFetched) {
       // STOMP 클라이언트 생성
       const newClient = new Client({
-        brokerURL: stompBrokerURL,
-        // brokerURL: 'ws://localhost:3001/meet',
+        // brokerURL: stompBrokerURL,
+        brokerURL: 'ws://localhost:3001/meet',
         connectHeaders: {
           chatRoomId: roomId,
           memberId: profile.memberProfile.profileId,
