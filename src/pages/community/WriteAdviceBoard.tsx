@@ -45,7 +45,7 @@ const WriteAdviceBoard = () => {
     <>
       <WrapContent>
         <ExitBtn>
-          <ExitHeader userType={user?.userType} navigateTo={'/community'} />
+          <ExitHeader userType={user?.userType} navigateTo={'-1'} />
         </ExitBtn>
         <TitleInput
           name="title"
