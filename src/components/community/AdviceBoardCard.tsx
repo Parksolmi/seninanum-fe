@@ -2,21 +2,29 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const AdviceBoardCard = ({ userType }) => {
+const AdviceBoardCard = ({
+  id,
+  userType,
+  title,
+  content,
+  commentCount,
+  createdAt,
+  nickname,
+  writerUserType,
+}) => {
   const navigate = useNavigate();
   return (
-    <CardSection onClick={() => navigate('/view/advice/detail')}>
+    <CardSection onClick={() => navigate(`/view/advice/${id}`)}>
       <WrapCard>
-        <h1>부모님 간섭이 너무 심해요.</h1>
-        <p className="preview">
-          저는 어렸을 때부터 부모님과 사이가 좋은 편이었는데 성인이 된 후 간섭이
-          너무 심해져서 갈등이 깊어지고 있습니다.
-        </p>
+        <h1>{title}</h1>
+        <p className="preview">{content}</p>
         <div className="bottom-status-bar">
           <WrapComment $userType={userType}>
-            <p>답변 10</p>
+            <p>답변 {commentCount}</p>
           </WrapComment>
-          <p className="writer">11:24 | 000동백</p>
+          <p className="writer">
+            {createdAt} | {nickname} {writerUserType}
+          </p>
         </div>
       </WrapCard>
     </CardSection>
@@ -24,7 +32,7 @@ const AdviceBoardCard = ({ userType }) => {
 };
 
 const CardSection = styled.div`
-  padding: 1.3rem 1.1rem;
+  padding: 1.3rem 1.1rem 0 1.1rem;
 `;
 
 const WrapCard = styled.div`

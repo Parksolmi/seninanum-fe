@@ -137,8 +137,11 @@ const App: React.FC = () => {
         <Route path="/community/free" element={<FreeCommunityPage />} />
         <Route path="/community/advice" element={<AdviceCommunityPage />} />
         {/* id로 수정 */}
-        <Route path="/view/free/detail" element={<ViewFreeBorad />} />
-        <Route path="/view/advice/detail" element={<ViewAdviceBoard />} />
+        <Route path="/view/free/:freeBoardId" element={<ViewFreeBorad />} />
+        <Route
+          path="/view/advice/:adviceBoardId"
+          element={<ViewAdviceBoard />}
+        />
 
         {/* 하단 바 메뉴 */}
         <Route element={<NavLayout />}>

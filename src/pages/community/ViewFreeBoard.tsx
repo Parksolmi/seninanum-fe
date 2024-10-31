@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { instance } from '../../api/instance';
 import CommunityInput from '../../components/community/CommunityInput';
 import PrevHeader from '../../components/header/PrevHeader';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
+import { parseTime } from '../../utils/formatTime';
+
+interface freeBoard {
+  freeBoardId: number;
+  profileId: number;
+  title: string;
+  content: string;
+  image: string;
+  likes: number;
+  commentCount: number;
+  createdAt: string;
+  profile: string;
+  nickname: string;
+  userType: string;
+}
 
 const ViewFreeBorad = () => {
   const { data: user } = useFetchUserType();
+  const { freeBoardId } = useParams<{ freeBoardId: string }>();
+  const [freeBoard, setFreeBoard] = useState<freeBoard>();
+
+  useEffect(() => {
+    const fetchFreeBoard = async () => {
+      const res = await instance.get(`/board/free/${freeBoardId}`);
+      setFreeBoard(res.data);
+    };
+
+    fetchFreeBoard();
+  }, [freeBoardId]);
 
   return (
     <>
@@ -16,15 +44,16 @@ const ViewFreeBorad = () => {
       />
       <WrapContent>
         <WrapWriter>
-          <img
-            className="profile"
-            src="/assets/character/dong-notfound.png"
-            alt="프로필"
-          />
+          <img className="profile" src={freeBoard?.profile} alt="프로필" />
           <WrapInfo $userType={user?.userType || ''}>
             <div className="left">
-              <div className="nickname">000 나리</div>
-              <div className="time">08:43</div>
+              <div className="nickname">
+                {freeBoard?.nickname}{' '}
+                {freeBoard?.userType === 'dong' ? '동백' : '나리'}
+              </div>
+              <div className="time">
+                {parseTime(freeBoard?.createdAt || '')}
+              </div>
             </div>
             <div className="right">
               <img
@@ -32,16 +61,13 @@ const ViewFreeBorad = () => {
                 src="/assets/community/like-empty.png"
                 alt="빈하트"
               />
-              <p className="count">1</p>
+              <p className="count">{freeBoard?.likes}</p>
             </div>
           </WrapInfo>
         </WrapWriter>
         <WrapText>
-          <h1 className="title">부모님 생신선물 추천</h1>
-          <p>
-            곧 있으면 어머니 생신이신데 다들 부모님 생신 때 주로 어떤 선물을
-            드리나요?
-          </p>
+          <h1 className="title">{freeBoard?.title}</h1>
+          <p>{freeBoard?.content}</p>
         </WrapText>
       </WrapContent>
       <SplitLine />

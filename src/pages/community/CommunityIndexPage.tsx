@@ -1,68 +1,107 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TitleHeader from '../../components/header/TitleHeader';
 import BoothEventBanner from '../../components/community/BoothEventBanner';
 import TodayTopicBanner from '../../components/community/TodayTopicBanner';
 import { useNavigate } from 'react-router-dom';
+import { instance } from '../../api/instance';
+
+interface freeBoard {
+  freeBoardId: number;
+  profileId: number;
+  title: string;
+  content: string;
+  image: string;
+  likes: number;
+  commentCount: number;
+  createdAt: Date;
+}
+
+interface adviceBoard {
+  adviceBoardId: number;
+  profileId: number;
+  title: string;
+  content: string;
+  commentCount: number;
+  createdAt: Date;
+}
 
 const CommunityIndexPage: React.FC = () => {
   const navigate = useNavigate();
+  const [freeBoardList, setFreeBoardList] = useState<freeBoard[]>([]);
+  const [adviceBoardList, setAdviceBoardList] = useState<adviceBoard[]>([]);
+
+  useEffect(() => {
+    const fetchFreeBoardList = async () => {
+      try {
+        const res = await instance.get('/board/free');
+        setFreeBoardList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchAdviceBoardList = async () => {
+      try {
+        const res = await instance.get('/board/advice');
+        setAdviceBoardList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchFreeBoardList();
+    fetchAdviceBoardList();
+  }, []);
 
   return (
     <>
       <TitleHeader title="소통" isShowAlert={true} />
+      <WrapBanner>
+        <BoothEventBanner />
+        <TodayTopicBanner />
+      </WrapBanner>
+      <SplitLine />
 
-      <>
-        <WrapBanner>
-          <BoothEventBanner />
-          <TodayTopicBanner />
-        </WrapBanner>
-        <SplitLine />
-
-        <WrapCommunity>
-          <WrapSingleCommunity>
-            <div className="title">
-              <h1>자유게시판</h1>
-              <p
-                className="more-button"
-                onClick={() => navigate('/community/free')}
-              >
-                더보기
+      <WrapCommunity>
+        <WrapSingleCommunity>
+          <div className="title">
+            <h1>자유게시판</h1>
+            <p
+              className="more-button"
+              onClick={() => navigate('/community/free')}
+            >
+              더보기
+            </p>
+          </div>
+          <div className="content">
+            {freeBoardList.map((free) => (
+              <p key={free.freeBoardId} className="content-title">
+                {free.title}
               </p>
-            </div>
-            <div className="content">
-              <p className="content-title">우리집 강아지 사진</p>
-              <p className="content-title">
-                은퇴 후 새롭게 도전해보면 좋은 것들 리스트 100
+            ))}
+          </div>
+        </WrapSingleCommunity>
+        <SmallSplitLine />
+        <WrapSingleCommunity>
+          <div className="title">
+            <h1>고민상담</h1>
+            <p
+              className="more-button"
+              onClick={() => navigate('/community/advice')}
+            >
+              더보기
+            </p>
+          </div>
+          <div className="content">
+            {adviceBoardList.map((advice) => (
+              <p key={advice.adviceBoardId} className="content-title">
+                {advice.title}
               </p>
-              <p className="content-title">여행 가서 찍은 사진 공유</p>
-            </div>
-          </WrapSingleCommunity>
-          <SmallSplitLine />
-          <WrapSingleCommunity>
-            <div className="title">
-              <h1>고민상담</h1>
-              <p
-                className="more-button"
-                onClick={() => navigate('/community/advice')}
-              >
-                더보기
-              </p>
-            </div>
-            <div className="content">
-              <p className="content-title">
-                새로운 직장에서 적응이 너무 어려워요..
-              </p>
-              <p className="content-title">
-                인생 선배님들, 인간관계 스트레스 어떻게 해결하시나요?
-              </p>
-              <p className="content-title">
-                결혼을 앞두고 있는데 실질적인 조언이 필요해요
-              </p>
-            </div>
-          </WrapSingleCommunity>
-        </WrapCommunity>
-      </>
+            ))}
+          </div>
+        </WrapSingleCommunity>
+      </WrapCommunity>
     </>
   );
 };
