@@ -120,10 +120,10 @@ const RegisterProfileFieldPage = () => {
       <WrapSection>
         <div className="title">제공할 서비스</div>
         <TextArea
-          name="introduce"
+          name="service"
           inputPlaceholder={`예시)\n문과 수시 입시에 맞춘 전문적인 자기소개서 첨삭 및 세부특기사항 멘토링`}
           onChange={handleOnChange}
-          value={careerProfile?.introduce || ''}
+          value={careerProfile?.service || ''}
         />
         <div className="margin"></div>
       </WrapSection>

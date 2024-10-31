@@ -103,40 +103,4 @@ const UserInfoArea = styled.div`
   }
 `;
 
-const RowArea = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  p {
-    color: #5b5b5b;
-    text-align: center;
-    font-family: NanumSquare;
-    font-size: 1.125rem;
-    letter-spacing: 0.03375rem;
-  }
-`;
-
-const NicknameText = styled.div`
-  color: #000;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 42%;
-`;
-
-const UserTypeText = styled.div`
-  color: #000;
-  text-align: center;
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-weight: 400;
-`;
-
 export default CustomizedDongCard;

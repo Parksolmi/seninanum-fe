@@ -143,10 +143,10 @@ const RegisterProfileConditionPage = () => {
           소개 한마디<Satisfy>필수*</Satisfy>
         </div>
         <InputService
-          name="service"
+          name="introduce"
           onChange={handleOnChange}
           placeholder="짧은 인사로 좋은 인상을 남겨보세요."
-          value={careerProfile.service || ''}
+          value={careerProfile.introduce || ''}
         />
       </WrapSection>
       <WrapSection>
