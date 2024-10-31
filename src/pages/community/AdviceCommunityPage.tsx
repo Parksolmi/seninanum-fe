@@ -6,6 +6,7 @@ import AdviceBoardCard from '../../components/community/AdviceBoardCard';
 import PrevHeader from '../../components/header/PrevHeader';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
 import { parseTime } from '../../utils/formatTime';
+import { useNavigate } from 'react-router-dom';
 
 interface adviceBoard {
   adviceBoardId: number;
@@ -19,6 +20,7 @@ interface adviceBoard {
 }
 
 const AdviceCommunityPage = () => {
+  const navigate = useNavigate();
   const { data: user } = useFetchUserType();
   const [adviceBoardList, setAdviceBoardList] = useState<adviceBoard[]>([]);
 
@@ -51,7 +53,10 @@ const AdviceCommunityPage = () => {
           writerUserType={advice.userType === 'dong' ? '동백' : '나리'}
         />
       ))}
-      <FloatingButton userType={user?.userType} />
+      <FloatingButton
+        userType={user?.userType}
+        onClick={() => navigate('/write/adviceboard')}
+      />
     </>
   );
 };
