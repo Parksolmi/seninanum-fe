@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import TitleHeader from '../../components/header/TitleHeader';
 import BoothEventBanner from '../../components/community/BoothEventBanner';
 import TodayTopicBanner from '../../components/community/TodayTopicBanner';
+import { useNavigate } from 'react-router-dom';
 
 const CommunityIndexPage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <TitleHeader title="소통" isShowAlert={true} />
@@ -20,7 +23,12 @@ const CommunityIndexPage: React.FC = () => {
           <WrapSingleCommunity>
             <div className="title">
               <h1>자유게시판</h1>
-              <p className="more-button">더보기</p>
+              <p
+                className="more-button"
+                onClick={() => navigate('/community/free')}
+              >
+                더보기
+              </p>
             </div>
             <div className="content">
               <p className="content-title">우리집 강아지 사진</p>
@@ -34,7 +42,12 @@ const CommunityIndexPage: React.FC = () => {
           <WrapSingleCommunity>
             <div className="title">
               <h1>고민상담</h1>
-              <p className="more-button">더보기</p>
+              <p
+                className="more-button"
+                onClick={() => navigate('/community/advice')}
+              >
+                더보기
+              </p>
             </div>
             <div className="content">
               <p className="content-title">
