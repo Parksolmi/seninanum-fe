@@ -134,6 +134,19 @@ const App: React.FC = () => {
         <Route path="/view/myapplicants" element={<ViewMyApplicantsList />} />
         {/* 지원내역 관리 */}
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
+
+        {/* 커뮤니티 */}
+        <Route path="/community/free" element={<FreeCommunityPage />} />
+        <Route path="/community/advice" element={<AdviceCommunityPage />} />
+        {/* id로 수정 */}
+        <Route path="/view/free/:freeBoardId" element={<ViewFreeBorad />} />
+        <Route
+          path="/view/advice/:adviceBoardId"
+          element={<ViewAdviceBoard />}
+        />
+        <Route path="/write/freeboard" element={<WriteFreeBoard />} />
+        <Route path="/write/adviceboard" element={<WriteAdviceBoard />} />
+
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/match" element={<MatchIndexPage />} />
