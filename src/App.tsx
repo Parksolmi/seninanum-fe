@@ -41,6 +41,8 @@ import FreeCommunityPage from './pages/community/FreeCommunityPage';
 import AdviceCommunityPage from './pages/community/AdviceCommunityPage';
 import ViewFreeBorad from './pages/community/ViewFreeBoard';
 import ViewAdviceBoard from './pages/community/ViewAdviceBoard';
+import WriteFreeBoard from './pages/community/WriteFreeBoard';
+import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
 
 const App: React.FC = () => {
   return (
@@ -142,8 +144,9 @@ const App: React.FC = () => {
           path="/view/advice/:adviceBoardId"
           element={<ViewAdviceBoard />}
         />
+        <Route path="/write/freeboard" element={<WriteFreeBoard />} />
+        <Route path="/write/adviceboard" element={<WriteAdviceBoard />} />
 
-        {/* 하단 바 메뉴 */}
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/match" element={<MatchIndexPage />} />
