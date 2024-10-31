@@ -2,29 +2,37 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const FreeBoardCard = () => {
+const FreeBoardCard = ({
+  id,
+  title,
+  content,
+  likes,
+  commentCount,
+  userType,
+  nickname,
+  createdAt,
+}) => {
   const navigate = useNavigate();
 
   return (
-    <CardSection onClick={() => navigate('/view/free/detail')}>
+    <CardSection onClick={() => navigate(`/view/free/${id}`)}>
       <WrapCard>
-        <h1>갑작스러운 비가...</h1>
-        <p className="preview">
-          요즘따라 예고 없는 비가 잦은 것 같네요. 다들 우산 잘 챙겨다시고 감기
-          조심하세요! 건강이 최고랍니다.
-        </p>
+        <h1>{title}</h1>
+        <p className="preview">{content}</p>
         <div className="bottom-status-bar">
           <WrapIcon>
             <div className="icon">
               <img src="/assets/community/like.png" alt="좋아요수" />
-              <p className="count">2</p>
+              <p className="count">{likes}</p>
             </div>
             <div className="icon">
               <img src="/assets/community/comment.png" alt="댓글수" />
-              <p className="count">3</p>
+              <p className="count">{commentCount}</p>
             </div>
           </WrapIcon>
-          <p className="writer">11:24 | 000동백</p>
+          <p className="writer">
+            {createdAt} | {nickname} {userType}
+          </p>
         </div>
       </WrapCard>
     </CardSection>
@@ -32,7 +40,7 @@ const FreeBoardCard = () => {
 };
 
 const CardSection = styled.div`
-  padding: 1.3rem 1.1rem;
+  padding: 1.3rem 1.1rem 0 1.1rem;
 `;
 
 const WrapCard = styled.div`
