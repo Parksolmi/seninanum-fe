@@ -402,7 +402,7 @@ const WrapHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 1.8rem 1.1rem 1.1rem 1.1rem;
-
+  justify-content: space-between;
   position: relative;
   background: #ffffff;
   display: flex;
@@ -461,7 +461,6 @@ const LeaveRoomButton = styled.div`
 
 const TitleText = styled.div`
   display: flex;
-  flex: 1;
   justify-content: center;
   font-family: 'NanumSquare';
   font-size: 1.25rem;
