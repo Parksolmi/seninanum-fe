@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -86,13 +86,15 @@ const Messages = memo(
         }
       );
 
-      if (observerRef.current) {
-        observer.observe(observerRef.current);
+      const currentObserverRef = observerRef.current;
+
+      if (currentObserverRef) {
+        observer.observe(currentObserverRef);
       }
 
       return () => {
-        if (observerRef.current) {
-          observer.disconnect();
+        if (currentObserverRef) {
+          observer.unobserve(currentObserverRef);
         }
       };
     }, [onIntersect]);
