@@ -43,7 +43,6 @@ const Messages = memo(
   }: MessagesProps) => {
     const messageRef = useRef<HTMLDivElement | null>(null);
     const observerRef = useRef(null); // Observer를 위한 ref
-    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
     // useEffect(() => {
     //   // 현재 스크롤 위치를 저장
