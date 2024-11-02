@@ -419,6 +419,11 @@ const ArrowIcon = styled.img<{ $showDropdown: boolean }>`
 const DropdownList = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 75.3px;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 `;
 
 const Divider = styled.div`
