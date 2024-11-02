@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -41,55 +41,37 @@ const Messages = memo(
     onIntersect,
     setIsSend,
   }: MessagesProps) => {
-    const messageRef = useRef<HTMLDivElement | null>(null);
+    const messageRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef(null); // Observer를 위한 ref
-    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-    // useEffect(() => {
-    //   // 현재 스크롤 위치를 저장
-    //   const currentScrollPosition = messageRef.current?.scrollTop;
-
-    //   const scrollToBottom = () => {
-    //     if (messageRef.current && isSend) {
-    //       if (isMenuOpen) {
-    //         messageRef.current.scrollTo({
-    //           // top: messageRef.current.scrollHeight,
-    //           top: 0, // 뒤집어진 뷰이므로 top으로 스크롤
-    //           behavior: 'smooth', // 부드러운 스크롤
-    //         });
-    //       } else {
-    //         messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    //       }
-
-    //       if (!isSend && currentScrollPosition !== undefined) {
-    //         messageRef.current.scrollTop = currentScrollPosition;
-    //       }
-    //     }
-
-    //     setTimeout(() => {
-    //       setIsSend(false);
-    //     }, 1000);
-    //   };
-    //   scrollToBottom();
-    // }, [groupedMessages, isSend, isMenuOpen]);
+    // scrollTop : 메세지 전송 시, 메뉴 open 시
+    useEffect(() => {
+      if (messageRef.current) {
+        if (isMenuOpen || isSend) {
+          messageRef.current.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+          setIsSend(false);
+        }
+      }
+    }, [isMenuOpen, isSend, setIsSend]);
 
     useEffect(() => {
-      const currentObserverRef = observerRef.current;
-
       const observer = new IntersectionObserver(
         async ([entry]) => {
-          if (entry.isIntersecting && !isLoading) {
-            setIsLoading(true);
+          if (entry.isIntersecting) {
             await onIntersect();
-            setIsLoading(false);
           }
         },
         {
           root: null,
           rootMargin: '0px',
-          threshold: 1.0,
+          threshold: 0,
         }
       );
+
+      const currentObserverRef = observerRef.current;
 
       if (currentObserverRef) {
         observer.observe(currentObserverRef);
@@ -97,10 +79,10 @@ const Messages = memo(
 
       return () => {
         if (currentObserverRef) {
-          observer.disconnect();
+          observer.unobserve(currentObserverRef);
         }
       };
-    }, [onIntersect, isLoading]);
+    }, [onIntersect]);
 
     return (
       <MessagesWrapper ref={messageRef} $isMenuOpen={isMenuOpen}>
