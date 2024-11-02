@@ -74,33 +74,29 @@ const Messages = memo(
     // }, [groupedMessages, isSend, isMenuOpen]);
 
     useEffect(() => {
-      const currentObserverRef = observerRef.current;
-
       const observer = new IntersectionObserver(
         async ([entry]) => {
-          if (entry.isIntersecting && !isLoading) {
-            setIsLoading(true);
+          if (entry.isIntersecting) {
             await onIntersect();
-            setIsLoading(false);
           }
         },
         {
           root: null,
           rootMargin: '0px',
-          threshold: 1.0,
+          threshold: 0,
         }
       );
 
-      if (currentObserverRef) {
-        observer.observe(currentObserverRef);
+      if (observerRef.current) {
+        observer.observe(observerRef.current);
       }
 
       return () => {
-        if (currentObserverRef) {
+        if (observerRef.current) {
           observer.disconnect();
         }
       };
-    }, [onIntersect, isLoading]);
+    }, [onIntersect]);
 
     return (
       <MessagesWrapper ref={messageRef} $isMenuOpen={isMenuOpen}>

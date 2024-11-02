@@ -33,12 +33,21 @@ export const useCountPages = (roomId) => {
 
 // 페이지 메세지 불러오기
 export const useFetchMessagesPerPage = (roomId) => {
-  const fetchPageMessages = async (setMessages, page) => {
+  const fetchPageMessages = async (setMessages, setCurrentPage, page) => {
     try {
+      if (page < 0) {
+        return [];
+      }
+
       const res = await instance.get(`/chat/message/${roomId}?page=${page}`);
-      console.log(res);
-      if (res.data.messages.length === 0) return [];
+
+      // 받아온 데이터가 없으면 더 이상 로딩하지 않음
+      if (res.data.messages.length === 0) {
+        return [];
+      }
+
       setMessages((prevMessages) => [...res.data.messages, ...prevMessages]);
+      setCurrentPage((prevPage) => prevPage - 1);
     } catch (error) {
       console.log(error);
     }

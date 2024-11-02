@@ -195,12 +195,6 @@ const ChatPage = () => {
     }
   };
 
-  const handleIntersect = useCallback(() => {
-    if (currentPage > 0) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
-  }, [currentPage]);
-
   // 멤버 ID값, roomStatus 가져오기
   useEffect(() => {
     const fetchProfileIds = async () => {
@@ -293,14 +287,11 @@ const ChatPage = () => {
     setLastMessageId(messages?.at(-1)?.chatMessageId ?? null);
   }, [messages, roomId]);
 
-  // currentPage가 변경될 때마다 메시지를 가져옴
-  useEffect(() => {
+  const handleIntersect = () => {
     if (currentPage >= 0) {
-      console.log('페이지 감소 후 fetch 호출', currentPage);
-      fetchPageMessages(setMessages, currentPage);
+      fetchPageMessages(setMessages, setCurrentPage, currentPage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  };
 
   return (
     <Wrapper>
