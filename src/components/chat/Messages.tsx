@@ -41,36 +41,21 @@ const Messages = memo(
     onIntersect,
     setIsSend,
   }: MessagesProps) => {
-    const messageRef = useRef<HTMLDivElement | null>(null);
+    const messageRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef(null); // Observer를 위한 ref
 
-    // useEffect(() => {
-    //   // 현재 스크롤 위치를 저장
-    //   const currentScrollPosition = messageRef.current?.scrollTop;
-
-    //   const scrollToBottom = () => {
-    //     if (messageRef.current && isSend) {
-    //       if (isMenuOpen) {
-    //         messageRef.current.scrollTo({
-    //           // top: messageRef.current.scrollHeight,
-    //           top: 0, // 뒤집어진 뷰이므로 top으로 스크롤
-    //           behavior: 'smooth', // 부드러운 스크롤
-    //         });
-    //       } else {
-    //         messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    //       }
-
-    //       if (!isSend && currentScrollPosition !== undefined) {
-    //         messageRef.current.scrollTop = currentScrollPosition;
-    //       }
-    //     }
-
-    //     setTimeout(() => {
-    //       setIsSend(false);
-    //     }, 1000);
-    //   };
-    //   scrollToBottom();
-    // }, [groupedMessages, isSend, isMenuOpen]);
+    // scrollTop : 메세지 전송 시, 메뉴 open 시
+    useEffect(() => {
+      if (messageRef.current) {
+        if (isMenuOpen || isSend) {
+          messageRef.current.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+          setIsSend(false);
+        }
+      }
+    }, [isMenuOpen, isSend, setIsSend]);
 
     useEffect(() => {
       const observer = new IntersectionObserver(

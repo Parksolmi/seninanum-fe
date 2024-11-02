@@ -25,7 +25,6 @@ const MessageInput = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler();
-    console.log('전송함');
     setIsSend(true);
   };
 
