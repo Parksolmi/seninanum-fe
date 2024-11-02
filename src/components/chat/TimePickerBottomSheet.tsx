@@ -134,7 +134,7 @@ const TimePickerBottomSheet = ({
             disabled={false}
             userType={userType}
             onClick={handleConfirmClick} // 선택된 시간 전달
-            isFixed={false}
+            isBottom={false}
           />
         </ButtonContainer>
       </ModalContainer>
