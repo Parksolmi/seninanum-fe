@@ -20,6 +20,10 @@ import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
 import MakeSchedule from '../../components/chat/MakeSchedule';
 
+interface Recruit {
+  recruitId: number;
+  title: string;
+}
 interface Profile {
   profileId: string;
   userType: string;
@@ -55,6 +59,8 @@ const ChatPage = () => {
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
   const [file, setFile] = useState(null);
+  const [appliedRecruitIds, setAppliedRecruitIds] = useState<Recruit[]>([]);
+  const [showRecruitTitles, setShowRecruitTitles] = useState(false);
 
   // 약속 바텀시트 상태
   const [showMakeSchedule, setShowMakeSchedule] = useState(false);
@@ -136,6 +142,14 @@ const ChatPage = () => {
     }
   };
 
+  const toggleRecruitTitlesModal = () => {
+    setShowRecruitTitles((prev) => !prev);
+  };
+
+  const handleRecruitClick = (recruitId) => {
+    navigate(`/view/recruit/${recruitId}`);
+  };
+
   // 이미지 파일 선택 핸들러
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -186,8 +200,15 @@ const ChatPage = () => {
     const fetchProfileIds = async () => {
       try {
         const response = await instance.get(`/chat/info/${roomId}`);
-        const { memberProfile, opponentProfile, roomStatus } = response.data;
+        const {
+          memberProfile,
+          opponentProfile,
+          roomStatus,
+          appliedRecruitIds,
+        } = response.data;
         setProfile({ memberProfile, opponentProfile });
+        setAppliedRecruitIds(appliedRecruitIds);
+        console.log(appliedRecruitIds);
         setIsMembersFetched(true);
         setRoomStatus(roomStatus);
       } catch (error) {
@@ -286,8 +307,28 @@ const ChatPage = () => {
           <BackButton onClick={handleBackButton}>
             <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
           </BackButton>
+
           {profile.memberProfile.userType === 'dong' ? (
-            <TitleText className="dong">요청글 보러가기</TitleText>
+            appliedRecruitIds.length === 0 ? (
+              <TitleText>{profile.opponentProfile.nickname}</TitleText>
+            ) : appliedRecruitIds.length === 1 ? (
+              <TitleText
+                className="dong"
+                onClick={() =>
+                  handleRecruitClick(appliedRecruitIds[0].recruitId)
+                }
+              >
+                요청글 보러가기
+              </TitleText>
+            ) : (
+              <TitleText onClick={toggleRecruitTitlesModal}>
+                요청글 보러가기
+                <ArrowIcon
+                  $showDropdown={showRecruitTitles}
+                  src="/assets/chat/more-arrow.svg"
+                ></ArrowIcon>
+              </TitleText>
+            )
           ) : (
             <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
           )}
@@ -295,6 +336,22 @@ const ChatPage = () => {
             <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
           </LeaveRoomButton>
         </WrapHeader>
+        {/* 드롭다운 목록 */}
+        {showRecruitTitles && appliedRecruitIds.length > 1 && (
+          <DropdownList>
+            {appliedRecruitIds.map((recruit, index) => (
+              <React.Fragment key={index}>
+                <DropdownItem
+                  key={recruit.recruitId}
+                  onClick={() => handleRecruitClick(recruit.recruitId)}
+                >
+                  {recruit.title}
+                </DropdownItem>
+                {index < appliedRecruitIds.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </DropdownList>
+        )}
         <Split />
         {isLoading ? (
           <WrapLoader>
@@ -350,6 +407,39 @@ const WrapHeader = styled.div`
   background: #ffffff;
   display: flex;
   z-index: 11;
+`;
+
+const ArrowIcon = styled.img<{ $showDropdown: boolean }>`
+  margin-left: 0.5rem;
+  transition: transform 0.3s;
+  transform: ${({ $showDropdown }) =>
+    $showDropdown ? 'rotate(180deg)' : 'rotate(0)'};
+`;
+
+const DropdownList = styled.div`
+  background: #ffffff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const Divider = styled.div`
+  width: 93%;
+  height: 0;
+  border-top: 1.5px solid #ebeceb;
+  margin: auto;
+  align-items: center;
+`;
+
+const DropdownItem = styled.div`
+  padding: 1.25rem 1.6rem;
+  cursor: pointer;
+  overflow: hidden;
+  color: #000;
+  font-size: 1.25rem;
+  text-overflow: ellipsis;
+  font-family: NanumSquare;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const Split = styled.div`
