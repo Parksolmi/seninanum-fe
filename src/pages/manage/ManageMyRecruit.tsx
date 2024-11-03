@@ -7,6 +7,7 @@ import { SyncLoader } from 'react-spinners';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
 import ManageCard from '../../components/mypage/ManageCard';
+import FloatingButton from '../../components/common/FloatingButton';
 
 interface Recruit {
   recruitId: number;
@@ -112,11 +113,7 @@ const ManageMyRecruit = () => {
 
   return (
     <>
-      <PrevHeader
-        title={'구인글 관리'}
-        navigateTo={'/mypage'}
-        onWrite={() => navigate('/register/recruit/field')}
-      />
+      <PrevHeader title={'구인글 관리'} navigateTo={'/mypage'} />
       <WrapContent>
         <Tab>
           <p
@@ -164,6 +161,10 @@ const ManageMyRecruit = () => {
           )}
         </WrapContentSingle>
       </WrapContent>
+      <FloatingButton
+        userType={'nari'}
+        onClick={() => navigate('/register/recruit/field')}
+      />
     </>
   );
 };
