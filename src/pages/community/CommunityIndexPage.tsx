@@ -75,7 +75,7 @@ const CommunityIndexPage: React.FC = () => {
             </p>
           </div>
           <div className="content">
-            {freeBoardList.map((free) => (
+            {freeBoardList.slice(0, 3).map((free) => (
               <p key={free.freeBoardId} className="content-title">
                 {free.title}
               </p>
@@ -94,7 +94,7 @@ const CommunityIndexPage: React.FC = () => {
             </p>
           </div>
           <div className="content">
-            {adviceBoardList.map((advice) => (
+            {adviceBoardList.slice(0, 3).map((advice) => (
               <p key={advice.adviceBoardId} className="content-title">
                 {advice.title}
               </p>
