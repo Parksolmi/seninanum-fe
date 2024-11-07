@@ -1,50 +1,58 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 interface CommunityInputProps {
-  value?;
-  onChangeHandler?;
-  submitHandler?;
+  value?: string;
+  onChangeHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  submitHandler?: () => void;
   userType: string;
+  isSecret?: boolean;
+  setIsSecret?: (value: boolean) => void;
 }
-const CommunityInput = ({
-  value,
-  onChangeHandler,
-  // submitHandler,
-  userType,
-}: CommunityInputProps) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // submitHandler();
-  };
+const CommunityInput = forwardRef<HTMLInputElement, CommunityInputProps>(
+  (
+    { value, onChangeHandler, submitHandler, userType, isSecret, setIsSecret },
+    ref
+  ) => {
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      if (submitHandler) submitHandler();
+    };
 
-  // const onClickSecretButton = () => {
-  //   setIsMenuOpen((prev) => !prev);
-  // };
+    // const onClickSecretButton = () => {
+    //   setIsMenuOpen((prev) => !prev);
+    // };
 
-  return (
-    <>
-      <WrapMessageInput>
-        <MeassageInputContainer>
-          <WrapCheckBox $userType={userType}>
-            <input className="checkbox" type="checkbox" />
-            <p>비밀</p>
-          </WrapCheckBox>
-          <WrapInputForm onSubmit={handleSubmit}>
-            <Input
-              placeholder="댓글을 입력해주세요"
-              value={value}
-              onChange={onChangeHandler}
-            />
-            <WrapButton type="submit">
-              <img src={'/assets/chat/send-icon.png'} alt="보내기" />
-            </WrapButton>
-          </WrapInputForm>
-        </MeassageInputContainer>
-      </WrapMessageInput>
-    </>
-  );
-};
+    return (
+      <>
+        <WrapMessageInput>
+          <MeassageInputContainer>
+            <WrapCheckBox $userType={userType}>
+              <input
+                className="checkbox"
+                type="checkbox"
+                checked={isSecret}
+                onChange={(e) => setIsSecret && setIsSecret(e.target.checked)}
+              />
+              <p>비밀</p>
+            </WrapCheckBox>
+            <WrapInputForm onSubmit={handleSubmit}>
+              <Input
+                placeholder="댓글을 입력해주세요"
+                value={value}
+                onChange={onChangeHandler}
+                ref={ref}
+              />
+              <WrapButton type="submit">
+                <img src={'/assets/chat/send-icon.png'} alt="보내기" />
+              </WrapButton>
+            </WrapInputForm>
+          </MeassageInputContainer>
+        </WrapMessageInput>
+      </>
+    );
+  }
+);
 const WrapMessageInput = styled.div`
   width: 100%;
   position: fixed;
