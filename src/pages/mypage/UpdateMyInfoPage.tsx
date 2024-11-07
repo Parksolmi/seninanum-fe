@@ -9,12 +9,14 @@ import InputText from '../../components/common/InputText';
 import { instance } from '../../api/instance';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
+import { scaleImage } from '../../utils/scaleImage';
 
-interface Inputs {
+// User 인터페이스 정의
+interface User {
   nickname: string;
-  gender: string;
+  gender: '여성' | '남성';
   birthYear: string;
-  profile: File | string;
+  profile: string;
 }
 
 const UpdateMyInfoPage: React.FC = () => {
@@ -32,7 +34,7 @@ const UpdateMyInfoPage: React.FC = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<User>({
     mode: 'onChange',
     defaultValues: {
       nickname: profile?.nickname,
@@ -43,38 +45,67 @@ const UpdateMyInfoPage: React.FC = () => {
   });
 
   // 파일 선택 시 상태에 파일을 저장하고 미리보기 URL을 설정하는 함수
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setPreviewUrl(URL.createObjectURL(file));
-      setValue('profile', file); // profile 필드에 파일을 설정
+      let originalFile = e.target.files[0];
+
+      // 이미지 크기를 50%로 줄임
+      const scaledBlob = await scaleImage({
+        file: originalFile,
+        scale: 0.5,
+        format: originalFile.type,
+        quality: 0.7,
+      });
+
+      // Blob을 File로 변환
+      const inputFile = new File([scaledBlob], originalFile.name, {
+        type: originalFile.type,
+      });
+
+      try {
+        const formData = new FormData();
+        formData.append('image', inputFile);
+
+        const s3Link = await instance.post('/image', formData);
+
+        setPreviewUrl(URL.createObjectURL(inputFile));
+        setValue('profile', s3Link.data);
+      } catch (error) {
+        console.error('수정 실패:', error);
+      }
     }
   };
 
   // 폼 제출 함수
-  const onSubmit = async (data: Inputs) => {
-    const formData = new FormData();
-
-    formData.append('nickname', data.nickname);
-    formData.append('gender', data.gender);
-    formData.append('birthYear', data.birthYear);
-    formData.append('profile', data.profile);
-
-    try {
-      instance.patch('/user/profile', formData);
-      console.log('수정 성공:', data);
-
-      navigate(`/view/myprofile/${user?.userType}`);
-    } catch (error) {
-      console.error('수정 실패:', error);
-    }
+  const onSubmit = async (data: User) => {
+    // formData.append('nickname', data.nickname);
+    // formData.append('gender', data.gender);
+    // formData.append('birthYear', data.birthYear);
+    // if (data.profile instanceof File) {
+    //   console.log('if>>>>>>>', data.profile);
+    //   formData.append('profile', data.profile);
+    // } else {
+    //   console.log('else>>>>>>>', profile?.profile);
+    //   formData.append('profile', profile?.profile || '');
+    // }
+    // try {
+    //   instance.patch('/user/profile', formData);
+    //   console.log('수정 성공:', data);
+    //   navigate(`/view/myprofile/${user?.userType}`);
+    // } catch (error) {
+    //   console.error('수정 실패:', error);
+    // }
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     if (previewUrl) URL.revokeObjectURL(previewUrl);
-  //   };
-  // }, [previewUrl]);
+  // useEffect로 profile 값 변경 시 defaultValues 출력
+  useEffect(() => {
+    console.log('Default values:', {
+      nickname: profile?.nickname,
+      gender: profile?.gender,
+      birthYear: profile?.birthYear,
+      profile: profile?.profile,
+    });
+  }, [profile]);
 
   return (
     <>
