@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
@@ -6,6 +6,8 @@ import CommunityInput from '../../components/community/CommunityInput';
 import PrevHeader from '../../components/header/PrevHeader';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
 import { parseTime } from '../../utils/formatTime';
+import useComment from '../../hooks/useComment';
+import CommentCard from '../../components/community/CommentCard';
 
 interface adviceBoard {
   adviceBoardId: number;
@@ -21,9 +23,17 @@ interface adviceBoard {
 
 const ViewAdviceBoard = () => {
   const { data: user } = useFetchUserType();
-
   const { adviceBoardId } = useParams<{ adviceBoardId: string }>();
   const [adviceBoard, setAdviceBoard] = useState<adviceBoard>();
+  const [commentContent, setCommentContent] = useState('');
+  const [isSecret, setIsSecret] = useState(false);
+  const [replyTo, setReplyTo] = useState<number | null>(null); // 대댓글 대상 댓글 ID
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { comments, fetchComments, addComment } = useComment(
+    'adviceBoard',
+    adviceBoardId
+  );
 
   useEffect(() => {
     const fetchFreeBoard = async () => {
@@ -33,6 +43,28 @@ const ViewAdviceBoard = () => {
 
     fetchFreeBoard();
   }, [adviceBoardId]);
+
+  // 댓글 조회
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  // 댓글 작성
+  const handleCommentSubmit = async () => {
+    if (!commentContent.trim()) return; // 빈 댓글 방지
+    await addComment(commentContent, isSecret ? 1 : 0, replyTo);
+    setCommentContent('');
+    setIsSecret(false);
+    setReplyTo(null);
+  };
+
+  // 답글쓰기 버튼 클릭 시 입력창에 포커스
+  const handleReply = (commentId: number) => {
+    setReplyTo(commentId); // 답글 대상 댓글 설정
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
 
   return (
     <>
@@ -67,9 +99,35 @@ const ViewAdviceBoard = () => {
       </WrapContent>
       <SplitLine />
 
+      <TotalComment $userType={user?.userType || ''}>
+        답변<p>{adviceBoard?.commentCount}</p>
+      </TotalComment>
+
+      {comments.map((comment, index) => (
+        <React.Fragment key={index}>
+          <CommentCard
+            key={comment.id}
+            content={comment.content}
+            createdAt={comment.createdAt}
+            profile={comment.profile}
+            nickname={comment.nickname}
+            userType={comment.userType}
+            parentId={comment.parentId}
+            replies={comment.replies}
+            onReply={() => handleReply(comment.id)} // parentId설정
+          />
+          {index < comments.length - 1 && <Divider />}
+        </React.Fragment>
+      ))}
+      <LastContent />
       <CommunityInput
-        submitHandler={() => {}}
+        ref={inputRef}
+        value={commentContent}
+        submitHandler={handleCommentSubmit}
+        onChangeHandler={(e) => setCommentContent(e.target.value)}
         userType={user?.userType || ''}
+        isSecret={isSecret}
+        setIsSecret={setIsSecret}
       />
     </>
   );
@@ -192,4 +250,37 @@ const SplitLine = styled.div`
   height: 0.8rem;
   margin: 0 0 1.3rem 0;
 `;
+
+interface TotalCommentProp {
+  $userType: string;
+}
+const TotalComment = styled.div<TotalCommentProp>`
+  font-family: NanumSquare;
+  font-size: 1.375rem;
+  font-weight: 700;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  p {
+    margin-left: 0.38rem;
+    color: ${({ $userType }) => ($userType === 'dong' ? '#FF314A' : '#ffaa0e')};
+    font-family: NanumSquare;
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+`;
+
+const Divider = styled.div`
+  border-top: 1.5px solid #ebeceb;
+  width: 93%;
+  height: 0rem;
+  margin: auto;
+  align-items: center;
+`;
+
+const LastContent = styled.div`
+  display: flex;
+  margin-bottom: 120px;
+`;
+
 export default ViewAdviceBoard;
