@@ -40,7 +40,7 @@ const ViewMyProfileNariPage = () => {
       }
     };
     fetchRecruitList();
-  }, []);
+  }, [queryClient]);
 
   return (
     <>
