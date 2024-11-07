@@ -10,7 +10,7 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'LEAVE' | 'COME' | 'SCHEDULE';
+  senderType: 'USER' | 'LEAVE' | 'COME' | 'SCHEDULE' | 'IMAGE';
   senderName?: string;
 }
 interface Profile {
@@ -24,76 +24,136 @@ interface MessageProps {
   message: MessageType;
   isSentByMe: boolean;
   opponent: Profile;
+  viewImage?: () => void;
 }
 
-const Message = memo(({ message, isSentByMe, opponent }: MessageProps) => {
-  const navigate = useNavigate();
+const Message = memo(
+  ({ message, isSentByMe, opponent, viewImage }: MessageProps) => {
+    const navigate = useNavigate();
 
-  switch (message.senderType) {
-    case 'COME':
-    case 'LEAVE':
-      return (
-        <Announcement>
-          <div className="content">{`${opponent.nickname} ${
-            opponent.userType === 'dong' ? '동백' : '나리'
-          }님이 ${message.chatMessage}`}</div>
-        </Announcement>
-      );
-    case 'USER':
-      return isSentByMe ? (
-        <MessageByMe $userType={opponent.userType}>
-          <div className="message-container">
-            <div className="wrapper">
-              <div className="wrapper-top">
-                <div className="read">
-                  {message.unreadCount !== 0 ? message.unreadCount : ''}
-                </div>
-                <div className="message">{message.chatMessage}</div>
-              </div>
-              <div className="time">{parseTime(message.createdAt)}</div>
-            </div>
-          </div>
-        </MessageByMe>
-      ) : (
-        <MessageByOther>
-          <WrapProfile
-            onClick={() => navigate(`/view/nariprofile/${opponent.profileId}`)}
-          >
-            <img src={opponent.profile} alt="profile" />
-          </WrapProfile>
-          <div className="message-section">
-            <div className="nickname">
-              {opponent.nickname}{' '}
-              {opponent.userType === 'dong' ? '동백' : '나리'}
-            </div>
+    switch (message.senderType) {
+      case 'COME':
+      case 'LEAVE':
+        return (
+          <Announcement>
+            <div className="content">{`${opponent.nickname} ${
+              opponent.userType === 'dong' ? '동백' : '나리'
+            }님이 ${message.chatMessage}`}</div>
+          </Announcement>
+        );
+      case 'USER':
+        return isSentByMe ? (
+          <MessageByMe $userType={opponent.userType}>
             <div className="message-container">
               <div className="wrapper">
                 <div className="wrapper-top">
-                  <div className="message">{message.chatMessage}</div>
                   <div className="read">
                     {message.unreadCount !== 0 ? message.unreadCount : ''}
                   </div>
+                  <div className="message">{message.chatMessage}</div>
                 </div>
                 <div className="time">{parseTime(message.createdAt)}</div>
               </div>
             </div>
-          </div>
-        </MessageByOther>
-      );
-    case 'SCHEDULE':
-      const { date, time, place, alertTime } = JSON.parse(message.chatMessage);
-      return (
-        <AlertSchedule
-          date={date}
-          time={time}
-          place={place}
-          alertTime={alertTime}
-        ></AlertSchedule>
-      );
-    default:
-      return null;
+          </MessageByMe>
+        ) : (
+          <MessageByOther>
+            <WrapProfile
+              onClick={() =>
+                navigate(`/view/nariprofile/${opponent.profileId}`)
+              }
+            >
+              <img src={opponent.profile} alt="profile" />
+            </WrapProfile>
+            <div className="message-section">
+              <div className="nickname">
+                {opponent.nickname}{' '}
+                {opponent.userType === 'dong' ? '동백' : '나리'}
+              </div>
+              <div className="message-container">
+                <div className="wrapper">
+                  <div className="wrapper-top">
+                    <div className="message">{message.chatMessage}</div>
+                    <div className="read">
+                      {message.unreadCount !== 0 ? message.unreadCount : ''}
+                    </div>
+                  </div>
+                  <div className="time">{parseTime(message.createdAt)}</div>
+                </div>
+              </div>
+            </div>
+          </MessageByOther>
+        );
+      case 'SCHEDULE':
+        const { date, time, place, alertTime } = JSON.parse(
+          message.chatMessage
+        );
+        return (
+          <AlertSchedule
+            date={date}
+            time={time}
+            place={place}
+            alertTime={alertTime}
+          ></AlertSchedule>
+        );
+      case 'IMAGE':
+        return isSentByMe ? (
+          <MessageByMe $userType={opponent.userType}>
+            <div className="message-container">
+              <div className="wrapper">
+                <div className="wrapper-top">
+                  <div className="read">
+                    {message.unreadCount !== 0 ? message.unreadCount : ''}
+                  </div>
+                  <img
+                    className="message-img"
+                    src={message.chatMessage}
+                    alt="이미지전송"
+                    onClick={viewImage}
+                  />
+                </div>
+                <div className="time">{parseTime(message.createdAt)}</div>
+              </div>
+            </div>
+          </MessageByMe>
+        ) : (
+          <MessageByOther>
+            <WrapProfile
+              onClick={() =>
+                navigate(`/view/nariprofile/${opponent.profileId}`)
+              }
+            >
+              <img src={opponent.profile} alt="profile" />
+            </WrapProfile>
+            <div className="message-section">
+              <div className="nickname">
+                {opponent.nickname}{' '}
+                {opponent.userType === 'dong' ? '동백' : '나리'}
+              </div>
+              <div className="message-container">
+                <div className="wrapper">
+                  <div className="wrapper-top">
+                    <img
+                      className="message-img"
+                      src={message.chatMessage}
+                      alt="이미지전송"
+                      onClick={viewImage}
+                    />
+                    <div className="read">
+                      {message.unreadCount !== 0 ? message.unreadCount : ''}
+                    </div>
+                  </div>
+                  <div className="time">{parseTime(message.createdAt)}</div>
+                </div>
+              </div>
+            </div>
+          </MessageByOther>
+        );
+      default:
+        return null;
+    }
   }
-});
+);
 
 const Announcement = styled.div`
   display: flex;
