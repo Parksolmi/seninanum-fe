@@ -19,6 +19,7 @@ import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
 import MakeSchedule from '../../components/chat/MakeSchedule';
+import { scaleImage } from '../../utils/scaleImage';
 
 interface Recruit {
   recruitId: number;
@@ -151,11 +152,12 @@ const ChatPage = () => {
   };
 
   // 이미지 파일 선택 핸들러
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      sendImageMessage(); // 이미지 전송 함수 호출
+  const handleFileChange = async (file) => {
+    try {
+      setFile(file);
+      sendImageMessage();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -383,6 +385,7 @@ const ChatPage = () => {
                 openSchedule={toggleMakeSchedule}
                 onClickImageBtn={handleFileChange}
                 setIsSend={setIsSend}
+                sendImageMessage={sendImageMessage}
               />
             )}
           </>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { scaleImage } from '../../utils/scaleImage';
 
 interface MessageInputProps {
   value;
@@ -9,8 +10,9 @@ interface MessageInputProps {
   isMenuOpen;
   setIsMenuOpen;
   openSchedule: () => void;
-  onClickImageBtn: (event) => void;
+  onClickImageBtn: (file: File) => void;
   setIsSend: (boolean) => void;
+  sendImageMessage: () => void;
 }
 const MessageInput = ({
   value,
@@ -21,15 +23,44 @@ const MessageInput = ({
   openSchedule,
   onClickImageBtn,
   setIsSend,
+  sendImageMessage,
 }: MessageInputProps) => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files?.[0];
+    // 이미지 크기를 50%로 줄임
+    const scaledBlob = await scaleImage({
+      file: selectedFile,
+      scale: 0.5,
+      format: selectedFile.type,
+      quality: 0.7,
+    });
+
+    // Blob을 File로 변환
+    const inputFile = new File([scaledBlob], selectedFile.name, {
+      type: selectedFile.type,
+    });
+    if (selectedFile) {
+      setPreviewUrl(URL.createObjectURL(inputFile));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitHandler();
+    if (previewUrl) {
+      sendImageMessage();
+      setPreviewUrl(null);
+    } else {
+      submitHandler();
+    }
     setIsSend(true);
   };
 
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
+    setPreviewUrl(null);
   };
 
   return (
@@ -38,11 +69,23 @@ const MessageInput = ({
         <MeassageInputContainer $isMenuOpen={isMenuOpen}>
           <MenuToggle toggle={onClickPlusButton} isOpen={isMenuOpen} />
           <WrapInputForm onSubmit={handleSubmit}>
-            <Input
-              placeholder="메시지를 입력해주세요"
-              value={value}
-              onChange={onChangeHandler}
-            />
+            {previewUrl ? (
+              <ImagePreview>
+                <img
+                  className="icon"
+                  src="/assets/common/page-close.svg"
+                  alt=""
+                  onClick={() => setPreviewUrl(null)}
+                />
+                <img className="select-img" src={previewUrl} alt="" />
+              </ImagePreview>
+            ) : (
+              <Input
+                placeholder="메시지를 입력해주세요"
+                value={value}
+                onChange={onChangeHandler}
+              />
+            )}
             <WrapButton type="submit">
               <img src={'/assets/chat/send-icon.png'} alt="보내기" />
             </WrapButton>
@@ -52,13 +95,17 @@ const MessageInput = ({
           <div>
             <WrapIcon>
               <label htmlFor="fileInput">
-                <img src="/assets/chat/image-icon.png" alt="이미지 전송하기" />
+                <img
+                  src="/assets/chat/image-icon.png"
+                  alt="이미지 전송하기"
+                  onClick={() => fileInputRef.current?.click()}
+                />
               </label>
               <input
                 type="file"
-                id="fileInput"
+                ref={fileInputRef}
                 style={{ display: 'none' }}
-                onChange={onClickImageBtn}
+                onChange={handleFileChange}
               />
             </WrapIcon>
             <p>사진</p>
@@ -126,7 +173,7 @@ const Input = styled.input`
 
 const WrapInputForm = styled.form`
   display: flex;
-  flex: 1;
+  justify-content: space-between;
   align-items: center;
   width: auto;
   padding: 0.5rem 0.7rem;
@@ -188,6 +235,28 @@ const WrapIcon = styled.div`
   flex-shrink: 0;
   border-radius: 0.8125rem;
   background: var(--Base-Gray5, #f7f8f7);
+`;
+
+const ImagePreview = styled.div`
+  display: flex;
+  width: 50%;
+  height: 50%;
+  //position: absolute;
+
+  .select-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .icon {
+    position: fixed;
+    top: 50;
+    background-color: #fff;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export default MessageInput;
