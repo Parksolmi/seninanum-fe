@@ -19,7 +19,7 @@ import { stompBrokerURL } from '../../constants/baseUrl';
 import { checkCurse } from '../../utils/checkCurse';
 import { useToast } from '../../hooks/useToast';
 import MakeSchedule from '../../components/chat/MakeSchedule';
-import { scaleImage } from '../../utils/scaleImage';
+import ImageView from '../../components/chat/ImageView';
 
 interface Recruit {
   recruitId: number;
@@ -59,9 +59,13 @@ const ChatPage = () => {
   const [draftMessage, setDraftMessage] = useState('');
   const groupedMessages = useGroupedMessages(messages);
   const [isMembersFetched, setIsMembersFetched] = useState(false);
-  const [file, setFile] = useState(null);
   const [appliedRecruitIds, setAppliedRecruitIds] = useState<Recruit[]>([]);
   const [showRecruitTitles, setShowRecruitTitles] = useState(false);
+
+  // 이미지 전송
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [imageLink, setImageLink] = useState<string | null>(null);
+  const [isShowImage, setIsShowImage] = useState(false);
 
   // 약속 바텀시트 상태
   const [showMakeSchedule, setShowMakeSchedule] = useState(false);
@@ -116,8 +120,6 @@ const ChatPage = () => {
     useSendMessage(
       draftMessage,
       setDraftMessage,
-      setFile,
-      file,
       client,
       roomId,
       profile.memberProfile.profileId,
@@ -125,7 +127,7 @@ const ChatPage = () => {
     );
 
   const sendMessage = async () => {
-    if (!draftMessage.trim()) return;
+    if (!draftMessage.trim() && !previewUrl) return;
 
     // 욕설 필터링
     const isIncludingBadWord = checkCurse(draftMessage);
@@ -136,8 +138,14 @@ const ChatPage = () => {
     }
 
     try {
-      // STOMP로 메시지 전송
-      await sendTextMessage();
+      if (previewUrl) {
+        console.log('이미지 전송', imageLink);
+        await sendImageMessage(imageLink, setImageLink);
+        setPreviewUrl(null);
+      } else {
+        // STOMP로 메시지 전송
+        await sendTextMessage();
+      }
     } catch (error) {
       console.error('메시지 전송 오류:', error);
     }
@@ -149,16 +157,6 @@ const ChatPage = () => {
 
   const handleRecruitClick = (recruitId) => {
     navigate(`/view/recruit/${recruitId}`);
-  };
-
-  // 이미지 파일 선택 핸들러
-  const handleFileChange = async (file) => {
-    try {
-      setFile(file);
-      sendImageMessage();
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   // 채팅방 나가기
@@ -195,6 +193,12 @@ const ChatPage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // 이미지 크게 보기
+  const viewImage = (src) => {
+    setImageLink(src);
+    setIsShowImage(true);
   };
 
   // 멤버 ID값, roomStatus 가져오기
@@ -296,102 +300,113 @@ const ChatPage = () => {
   };
 
   return (
-    <Wrapper>
-      <Container>
-        {showMakeSchedule && (
-          <MakeSchedule
-            opponentNickname={profile.opponentProfile.nickname}
-            onClose={toggleMakeSchedule}
-            onSubmit={handleScheduleSubmit}
-          />
-        )}
-        <WrapHeader>
-          <BackButton onClick={handleBackButton}>
-            <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
-          </BackButton>
-
-          {profile.memberProfile.userType === 'dong' ? (
-            appliedRecruitIds.length === 0 ? (
-              <TitleText>{profile.opponentProfile.nickname}</TitleText>
-            ) : appliedRecruitIds.length === 1 ? (
-              <TitleText
-                className="dong"
-                onClick={() =>
-                  handleRecruitClick(appliedRecruitIds[0].recruitId)
-                }
-              >
-                요청글 보러가기
-              </TitleText>
-            ) : (
-              <TitleText onClick={toggleRecruitTitlesModal}>
-                요청글 보러가기
-                <ArrowIcon
-                  $showDropdown={showRecruitTitles}
-                  src="/assets/chat/more-arrow.svg"
-                ></ArrowIcon>
-              </TitleText>
-            )
-          ) : (
-            <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
-          )}
-          <LeaveRoomButton onClick={openLeaveModal}>
-            <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
-          </LeaveRoomButton>
-        </WrapHeader>
-        {/* 드롭다운 목록 */}
-        {showRecruitTitles && appliedRecruitIds.length > 1 && (
-          <DropdownList>
-            {appliedRecruitIds.map((recruit, index) => (
-              <React.Fragment key={index}>
-                <DropdownItem
-                  key={recruit.recruitId}
-                  onClick={() => handleRecruitClick(recruit.recruitId)}
-                >
-                  {recruit.title}
-                </DropdownItem>
-                {index < appliedRecruitIds.length - 1 && <Divider />}
-              </React.Fragment>
-            ))}
-          </DropdownList>
-        )}
-        <Split />
-        {isLoading ? (
-          <WrapLoader>
-            <SyncLoader
-              color={`var(--Primary-${profile.memberProfile.userType})`}
-            />
-          </WrapLoader>
-        ) : (
-          <>
-            <WrapChat>
-              <Messages
-                groupedMessages={groupedMessages}
-                myId={profile.memberProfile.profileId}
-                opponent={profile.opponentProfile}
-                isMenuOpen={isMenuOpen}
-                userType={profile.memberProfile.userType}
-                onIntersect={handleIntersect}
-                isSend={isSend}
-                setIsSend={setIsSend}
-              />
-            </WrapChat>
-            {roomStatus === 'ACTIVE' && (
-              <MessageInput
-                value={draftMessage}
-                onChangeHandler={handleChangeMessage}
-                submitHandler={sendMessage}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                openSchedule={toggleMakeSchedule}
-                onClickImageBtn={handleFileChange}
-                setIsSend={setIsSend}
-                sendImageMessage={sendImageMessage}
+    <>
+      {isShowImage ? (
+        <ImageView
+          imgSrc={imageLink}
+          handleCancel={() => setIsShowImage(false)}
+        />
+      ) : (
+        <Wrapper>
+          <Container>
+            {showMakeSchedule && (
+              <MakeSchedule
+                opponentNickname={profile.opponentProfile.nickname}
+                onClose={toggleMakeSchedule}
+                onSubmit={handleScheduleSubmit}
               />
             )}
-          </>
-        )}
-      </Container>
-    </Wrapper>
+            <WrapHeader>
+              <BackButton onClick={handleBackButton}>
+                <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
+              </BackButton>
+
+              {profile.memberProfile.userType === 'dong' ? (
+                appliedRecruitIds.length === 0 ? (
+                  <TitleText>{profile.opponentProfile.nickname}</TitleText>
+                ) : appliedRecruitIds.length === 1 ? (
+                  <TitleText
+                    className="dong"
+                    onClick={() =>
+                      handleRecruitClick(appliedRecruitIds[0].recruitId)
+                    }
+                  >
+                    요청글 보러가기
+                  </TitleText>
+                ) : (
+                  <TitleText onClick={toggleRecruitTitlesModal}>
+                    요청글 보러가기
+                    <ArrowIcon
+                      $showDropdown={showRecruitTitles}
+                      src="/assets/chat/more-arrow.svg"
+                    ></ArrowIcon>
+                  </TitleText>
+                )
+              ) : (
+                <TitleText>{profile.opponentProfile.nickname} 동백</TitleText>
+              )}
+              <LeaveRoomButton onClick={openLeaveModal}>
+                <img src={'/assets/chat/exit-icon.png'} alt="나가기" />
+              </LeaveRoomButton>
+            </WrapHeader>
+            {/* 드롭다운 목록 */}
+            {showRecruitTitles && appliedRecruitIds.length > 1 && (
+              <DropdownList>
+                {appliedRecruitIds.map((recruit, index) => (
+                  <React.Fragment key={index}>
+                    <DropdownItem
+                      key={recruit.recruitId}
+                      onClick={() => handleRecruitClick(recruit.recruitId)}
+                    >
+                      {recruit.title}
+                    </DropdownItem>
+                    {index < appliedRecruitIds.length - 1 && <Divider />}
+                  </React.Fragment>
+                ))}
+              </DropdownList>
+            )}
+            <Split />
+            {isLoading ? (
+              <WrapLoader>
+                <SyncLoader
+                  color={`var(--Primary-${profile.memberProfile.userType})`}
+                />
+              </WrapLoader>
+            ) : (
+              <>
+                <WrapChat>
+                  <Messages
+                    groupedMessages={groupedMessages}
+                    myId={profile.memberProfile.profileId}
+                    opponent={profile.opponentProfile}
+                    isMenuOpen={isMenuOpen}
+                    userType={profile.memberProfile.userType}
+                    onIntersect={handleIntersect}
+                    isSend={isSend}
+                    setIsSend={setIsSend}
+                    viewImage={viewImage}
+                  />
+                </WrapChat>
+                {roomStatus === 'ACTIVE' && (
+                  <MessageInput
+                    value={draftMessage}
+                    onChangeHandler={handleChangeMessage}
+                    submitHandler={sendMessage}
+                    isMenuOpen={isMenuOpen}
+                    setIsMenuOpen={setIsMenuOpen}
+                    openSchedule={toggleMakeSchedule}
+                    setIsSend={setIsSend}
+                    previewUrl={previewUrl}
+                    setPreviewUrl={setPreviewUrl}
+                    setImageLink={setImageLink}
+                  />
+                )}
+              </>
+            )}
+          </Container>
+        </Wrapper>
+      )}
+    </>
   );
 };
 

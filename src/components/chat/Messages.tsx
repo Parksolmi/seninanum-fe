@@ -28,6 +28,7 @@ interface MessagesProps {
   isSend: boolean;
   onIntersect: () => void;
   setIsSend: (boolean) => void;
+  viewImage: (string) => void;
 }
 
 const Messages = memo(
@@ -40,6 +41,7 @@ const Messages = memo(
     isSend,
     onIntersect,
     setIsSend,
+    viewImage,
   }: MessagesProps) => {
     const messageRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef(null); // Observer를 위한 ref
@@ -100,6 +102,7 @@ const Messages = memo(
                       message={message}
                       isSentByMe={message.senderId === myId}
                       opponent={opponent}
+                      viewImage={viewImage}
                     />
                   </MessageWrapper>
                 ))}

@@ -24,7 +24,7 @@ interface MessageProps {
   message: MessageType;
   isSentByMe: boolean;
   opponent: Profile;
-  viewImage?: () => void;
+  viewImage: (string) => void;
 }
 
 const Message = memo(
@@ -109,7 +109,7 @@ const Message = memo(
                     className="message-img"
                     src={message.chatMessage}
                     alt="이미지전송"
-                    onClick={viewImage}
+                    onClick={() => viewImage(message.chatMessage)}
                   />
                 </div>
                 <div className="time">{parseTime(message.createdAt)}</div>
@@ -137,7 +137,7 @@ const Message = memo(
                       className="message-img"
                       src={message.chatMessage}
                       alt="이미지전송"
-                      onClick={viewImage}
+                      onClick={() => viewImage(message.chatMessage)}
                     />
                     <div className="read">
                       {message.unreadCount !== 0 ? message.unreadCount : ''}
@@ -221,6 +221,11 @@ const MessageByMe = styled.div<MessageProp>`
         display: flex;
         flex-direction: row;
         align-items: end;
+
+        .message-img {
+          width: 13rem;
+          border-radius: 1rem;
+        }
 
         > .read {
           color: var(--Base-Deep-Gray, #5b5b5b);

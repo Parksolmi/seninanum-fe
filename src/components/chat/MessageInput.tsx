@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { MenuToggle } from './MenuToggle';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { scaleImage } from '../../utils/scaleImage';
+import { instance } from '../../api/instance';
 
 interface MessageInputProps {
   value;
@@ -10,9 +11,10 @@ interface MessageInputProps {
   isMenuOpen;
   setIsMenuOpen;
   openSchedule: () => void;
-  onClickImageBtn: (file: File) => void;
   setIsSend: (boolean) => void;
-  sendImageMessage: () => void;
+  previewUrl: any;
+  setPreviewUrl: (any) => void;
+  setImageLink: (string) => void;
 }
 const MessageInput = ({
   value,
@@ -21,45 +23,55 @@ const MessageInput = ({
   isMenuOpen,
   setIsMenuOpen,
   openSchedule,
-  onClickImageBtn,
   setIsSend,
-  sendImageMessage,
+  previewUrl,
+  setPreviewUrl,
+  setImageLink,
 }: MessageInputProps) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e) => {
-    const selectedFile = e.target.files?.[0];
-    // 이미지 크기를 50%로 줄임
-    const scaledBlob = await scaleImage({
-      file: selectedFile,
-      scale: 0.5,
-      format: selectedFile.type,
-      quality: 0.7,
-    });
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files?.[0];
+      // 이미지 크기를 50%로 줄임
+      const scaledBlob = await scaleImage({
+        file: selectedFile,
+        scale: 0.5,
+        format: selectedFile.type,
+        quality: 0.7,
+      });
 
-    // Blob을 File로 변환
-    const inputFile = new File([scaledBlob], selectedFile.name, {
-      type: selectedFile.type,
-    });
-    if (selectedFile) {
-      setPreviewUrl(URL.createObjectURL(inputFile));
+      // Blob을 File로 변환
+      const inputFile = new File([scaledBlob], selectedFile.name, {
+        type: selectedFile.type,
+      });
+
+      try {
+        const formData = new FormData();
+        formData.append('image', inputFile);
+
+        const s3Link = await instance.post('/image', formData);
+
+        setPreviewUrl(URL.createObjectURL(inputFile));
+        setImageLink(s3Link.data);
+      } catch (error) {
+        console.error('수정 실패:', error);
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (previewUrl) {
-      sendImageMessage();
-      setPreviewUrl(null);
-    } else {
-      submitHandler();
-    }
+    await submitHandler();
     setIsSend(true);
   };
 
   const onClickPlusButton = () => {
     setIsMenuOpen((prev) => !prev);
+    setPreviewUrl(null);
+  };
+
+  const deleteImage = () => {
     setPreviewUrl(null);
   };
 
@@ -72,12 +84,16 @@ const MessageInput = ({
             {previewUrl ? (
               <ImagePreview>
                 <img
-                  className="icon"
+                  className="x-button"
                   src="/assets/common/page-close.svg"
                   alt=""
-                  onClick={() => setPreviewUrl(null)}
+                  onClick={deleteImage}
                 />
-                <img className="select-img" src={previewUrl} alt="" />
+                <img
+                  className="image-preview"
+                  src={previewUrl}
+                  alt="미리보기"
+                />
               </ImagePreview>
             ) : (
               <Input
@@ -173,6 +189,7 @@ const Input = styled.input`
 
 const WrapInputForm = styled.form`
   display: flex;
+  flex: 1;
   justify-content: space-between;
   align-items: center;
   width: auto;
@@ -243,13 +260,13 @@ const ImagePreview = styled.div`
   height: 50%;
   //position: absolute;
 
-  .select-img {
+  .image-preview {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
   }
 
-  .icon {
+  .x-button {
     position: fixed;
     top: 50;
     background-color: #fff;

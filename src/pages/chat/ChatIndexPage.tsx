@@ -35,11 +35,14 @@ const ChatIndexPage: React.FC = () => {
     const fetchChatList = async () => {
       try {
         const res = await instance.get('/chatroom/list');
-        const modifiedData = res.data.map((chat) =>
-          chat.senderType === 'SCHEDULE'
-            ? { ...chat, lastMessage: '약속이 공유되었어요.' }
-            : chat
-        );
+        const modifiedData = res.data.map((chat) => {
+          if (chat.senderType === 'SCHEDULE') {
+            return { ...chat, lastMessage: '약속이 공유되었어요.' };
+          } else if (chat.senderType === 'IMAGE') {
+            return { ...chat, lastMessage: '이미지를 전송하였습니다.' };
+          }
+          return chat;
+        });
         setChatList(modifiedData);
       } catch (error) {
         console.log(error);
@@ -97,7 +100,8 @@ const ChatIndexPage: React.FC = () => {
                           <Message>{chat.lastMessage}</Message>
                         ) : (
                           (chat.senderType === 'USER' ||
-                            chat.senderType === 'SCHEDULE') && (
+                            chat.senderType === 'SCHEDULE' ||
+                            chat.senderType === 'IMAGE') && (
                             <Message>{chat.lastMessage}</Message>
                           )
                         )}

@@ -1,62 +1,26 @@
-// import { instance } from '../api/instance';
-
-import { instance } from '../api/instance';
-
 export const useSendMessage = (
   draftMessage,
   setDraftMessage,
-  setFile,
-  file,
   client,
   roomId,
   memberId,
   opponentId
 ) => {
-  // // 이미지 전송
-  // const sendImageMessage = async () => {
-  //   //S3 url 받기
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   const response = await instance.post('/image', formData);
-  //   try {
-  //     client.publish({
-  //       destination: `/app/chat/${roomId}`,
-  //       body: JSON.stringify({
-  //         chatMessage: response.data.imageUrl,
-  //         senderId: opponentMemberId,
-  //         receiverId: myMemberId,
-  //         publishType: 'IMAGE',
-  //       }),
-  //     });
-
-  //     setDraftMessage('');
-  //     setFile(null);
-  //   } catch (error) {
-  //     showWaitToast();
-  //   }
-  // };
-
-  const sendImageMessage = async () => {
-    //S3 url 받기
-
-    const formData = new FormData();
-    formData.append('file', file);
-
+  const sendImageMessage = async (image, setImage) => {
     try {
-      const response = await instance.post('/image', formData);
-      const imageUrl = response.data.imageUrl; // 서버에서 받은 이미지 URL
-
+      const binaryData = new TextEncoder().encode(image);
       client.publish({
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify({
-          chatMessage: imageUrl,
+          chatMessage: binaryData,
           senderId: memberId,
           receiverId: opponentId,
           senderType: 'IMAGE',
         }),
+        headers: { 'content-type': 'application/octet-stream' },
       });
 
-      setFile(null); // 파일 전송 후 초기화
+      setImage(null); // 이미지 전송 후 초기화
     } catch (error) {
       console.error('Image upload error:', error);
     }
