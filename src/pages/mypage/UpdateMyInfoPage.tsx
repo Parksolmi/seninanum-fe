@@ -22,7 +22,6 @@ const UpdateMyInfoPage: React.FC = () => {
 
   const { data: user } = useFetchUserType();
   const { data: profile } = useFetchMyProfile();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     profile?.profile || null
   );
@@ -45,7 +44,7 @@ const UpdateMyInfoPage: React.FC = () => {
 
   // 파일 선택 시 상태에 파일을 저장하고 미리보기 URL을 설정하는 함수
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setPreviewUrl(URL.createObjectURL(file));
       setValue('profile', file); // profile 필드에 파일을 설정
@@ -59,24 +58,23 @@ const UpdateMyInfoPage: React.FC = () => {
     formData.append('nickname', data.nickname);
     formData.append('gender', data.gender);
     formData.append('birthYear', data.birthYear);
+    formData.append('profile', data.profile);
 
-    if (selectedFile) {
-      formData.append('profile', data.profile);
-    }
     try {
       instance.patch('/user/profile', formData);
       console.log('수정 성공:', data);
+
       navigate(`/view/myprofile/${user?.userType}`);
     } catch (error) {
       console.error('수정 실패:', error);
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (previewUrl) URL.revokeObjectURL(previewUrl);
+  //   };
+  // }, [previewUrl]);
 
   return (
     <>

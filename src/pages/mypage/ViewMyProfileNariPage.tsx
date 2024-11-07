@@ -11,6 +11,7 @@ import { calcAge } from '../../utils/calcAge';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import { instance } from '../../api/instance';
 import { SyncLoader } from 'react-spinners';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Recruit {
   recruitId: number;
@@ -25,8 +26,11 @@ const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
   const { data: user, isLoading } = useFetchMyProfile();
 
+  const queryClient = useQueryClient();
+
   const [recruitList, setRecruitList] = useState<Recruit[]>([]);
   useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['fetchMyProfile'] });
     const fetchRecruitList = async () => {
       try {
         const res = await instance.get('/recruit/mylist');
