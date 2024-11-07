@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import Button from '../../components/common/Button';
@@ -78,7 +78,6 @@ const UpdateMyInfoPage: React.FC = () => {
 
   // 폼 제출 함수
   const onSubmit = async (data: User) => {
-    console.log(data);
     try {
       instance.patch('/user/profile', {
         nickname: data.nickname,
@@ -86,22 +85,12 @@ const UpdateMyInfoPage: React.FC = () => {
         birthYear: data.birthYear,
         profile: data.profile,
       });
-      console.log('수정 성공:', data);
+
       navigate(`/view/myprofile/${user?.userType}`);
     } catch (error) {
       console.error('수정 실패:', error);
     }
   };
-
-  // useEffect로 profile 값 변경 시 defaultValues 출력
-  useEffect(() => {
-    console.log('Default values:', {
-      nickname: profile?.nickname,
-      gender: profile?.gender,
-      birthYear: profile?.birthYear,
-      profile: profile?.profile,
-    });
-  }, [profile]);
 
   return (
     <>
