@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import Button from '../../components/common/Button';
@@ -14,7 +14,7 @@ interface Inputs {
   nickname: string;
   gender: string;
   birthYear: string;
-  profile: string;
+  profile: File | string;
 }
 
 const UpdateMyInfoPage: React.FC = () => {
@@ -22,9 +22,16 @@ const UpdateMyInfoPage: React.FC = () => {
 
   const { data: user } = useFetchUserType();
   const { data: profile } = useFetchMyProfile();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    profile?.profile || null
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     mode: 'onChange',
@@ -36,26 +43,40 @@ const UpdateMyInfoPage: React.FC = () => {
     },
   });
 
-  const updateMyInfo = async (data: Inputs) => {
-    try {
-      const res = await instance.patch('/user/profile', {
-        nickname: data.nickname,
-        gender: data.gender,
-        birthYear: data.birthYear,
-        profile: data.profile,
-      });
+  // 파일 선택 시 상태에 파일을 저장하고 미리보기 URL을 설정하는 함수
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setPreviewUrl(URL.createObjectURL(file));
+      setValue('profile', file); // profile 필드에 파일을 설정
+    }
+  };
 
-      console.log('수정 성공:', res.data);
+  // 폼 제출 함수
+  const onSubmit = async (data: Inputs) => {
+    const formData = new FormData();
+
+    formData.append('nickname', data.nickname);
+    formData.append('gender', data.gender);
+    formData.append('birthYear', data.birthYear);
+
+    if (selectedFile) {
+      formData.append('profile', data.profile);
+    }
+    try {
+      instance.patch('/user/profile', formData);
+      console.log('수정 성공:', data);
       navigate(`/view/myprofile/${user?.userType}`);
     } catch (error) {
       console.error('수정 실패:', error);
     }
   };
 
-  // 폼 제출 함수
-  const onSubmit = (data: Inputs) => {
-    updateMyInfo(data);
-  };
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   return (
     <>
@@ -72,63 +93,66 @@ const UpdateMyInfoPage: React.FC = () => {
             <p>동백님에게 보여지는 정보예요.</p>
           </WrapText>
         )}
+
         {profile && (
-          <>
+          <WrapFrom onSubmit={handleSubmit(onSubmit)}>
             <ProfileImgaeArea>
               <WrapProfile>
-                <img src={profile.profile} alt="profile" />
+                <img src={previewUrl || profile.profile} alt="profile" />
               </WrapProfile>
               <CameraIcon
                 src={`/assets/home/edit-image.svg`}
                 alt="camera"
-              ></CameraIcon>
+                onClick={() => fileInputRef.current?.click()}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                accept="image/*"
+                onChange={handleFileSelect}
+              />
             </ProfileImgaeArea>
 
-            <WrapFrom onSubmit={handleSubmit(onSubmit)}>
-              <InputText
-                userType={user?.userType || null}
-                label="이름/닉네임"
-                placeholder="이름 혹은 닉네임을 입력해주세요."
-                defaultValue={profile.nickname ? profile.nickname : ''}
-                register={register('nickname', {
-                  required: '이름/닉네임은 필수입니다.',
-                  validate: (value) =>
-                    value.length < 5 || '5자리 이하로 지어주세요!',
-                })}
-              />
-              <Toggle
-                userType={user?.userType || null}
-                label="성별"
-                options={['남성', '여성']}
-                register={register('gender', {
-                  required: '성별은 필수입니다.',
-                })}
-                defaultValue={profile.gender}
-              />
-              <InputText
-                userType={user?.userType || null}
-                label="출생년도"
-                placeholder="예시) 1876"
-                register={register('birthYear', {
-                  required: '출생년도는 필수입니다.',
-                  validate: (value) =>
-                    /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
-                })}
-                defaultValue={profile.birthYear}
-              />
-              <WrapButtonContainer>
-                <WrapButton>
-                  <Button
-                    type="submit"
-                    disabled={Object.keys(errors).length > 0}
-                    userType={user?.userType || null}
-                  >
-                    수정완료하기
-                  </Button>
-                </WrapButton>
-              </WrapButtonContainer>
-            </WrapFrom>
-          </>
+            <InputText
+              userType={user?.userType || null}
+              label="이름/닉네임"
+              placeholder="이름 혹은 닉네임을 입력해주세요."
+              defaultValue={profile.nickname ? profile.nickname : ''}
+              register={register('nickname', {
+                required: '이름/닉네임은 필수입니다.',
+                validate: (value) =>
+                  value.length < 5 || '5자리 이하로 지어주세요!',
+              })}
+            />
+            <Toggle
+              userType={user?.userType || null}
+              label="성별"
+              options={['남성', '여성']}
+              register={register('gender', {
+                required: '성별은 필수입니다.',
+              })}
+              defaultValue={profile.gender}
+            />
+            <InputText
+              userType={user?.userType || null}
+              label="출생년도"
+              placeholder="예시) 1876"
+              register={register('birthYear', {
+                required: '출생년도는 필수입니다.',
+                validate: (value) =>
+                  /^[0-9]{4}$/.test(value) || '4자리 숫자를 입력하세요!',
+              })}
+              defaultValue={profile.birthYear}
+            />
+            <Button
+              type="submit"
+              disabled={Object.keys(errors).length > 0}
+              userType={user?.userType || null}
+            >
+              수정완료하기
+            </Button>
+          </WrapFrom>
         )}
       </WrapContent>
     </>
@@ -190,21 +214,6 @@ const WrapFrom = styled.form`
   flex-direction: column;
   gap: 2rem;
   margin-top: 2rem;
-`;
-
-const WrapButtonContainer = styled.div`
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.1rem 4rem 1.1rem;
-`;
-
-const WrapButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
 `;
 
 export default UpdateMyInfoPage;
