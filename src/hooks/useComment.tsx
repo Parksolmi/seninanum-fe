@@ -1,5 +1,5 @@
 import { instance } from '../api/instance';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface Comment {
   id: number;
@@ -17,16 +17,16 @@ const useComment = (boardType, postId) => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   // 댓글 조회
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await instance.get(
         `/board/${boardType}/${postId}/comments`
       );
       setComments(response.data.comments);
     } catch (err) {
-      console.error('댓글 조회 중 에러가 발생했습니다.');
+      console.error('댓글 조회 중 에러가 발생했습니다.', err);
     }
-  };
+  }, [boardType, postId]);
 
   // 댓글 작성
   const addComment = async (content, isSecret = 0, parentId) => {
