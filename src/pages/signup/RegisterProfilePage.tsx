@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserState from '../../store/userSignupState';
@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import PrevHeader from '../../components/header/PrevHeader';
+import { scaleImage } from '../../utils/scaleImage';
 
 interface Inputs {
   nickname: string;
@@ -18,7 +19,11 @@ interface Inputs {
 const RegisterProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { userState } = useUserState();
+  const { userState, setUserState } = useUserState();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    userState?.profile || null
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -27,6 +32,38 @@ const RegisterProfilePage: React.FC = () => {
   } = useForm<Inputs>({
     mode: 'onChange',
   });
+
+  // 파일 선택 시 상태에 파일을 저장하고 미리보기 URL을 설정하는 함수
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      let originalFile = e.target.files[0];
+
+      // 이미지 크기를 50%로 줄임
+      const scaledBlob = await scaleImage({
+        file: originalFile,
+        scale: 0.5,
+        format: originalFile.type,
+        quality: 0.7,
+      });
+
+      // Blob을 File로 변환
+      const inputFile = new File([scaledBlob], originalFile.name, {
+        type: originalFile.type,
+      });
+
+      try {
+        const formData = new FormData();
+        formData.append('image', inputFile);
+
+        const s3Link = await instance.post('/image', formData);
+
+        setPreviewUrl(URL.createObjectURL(inputFile));
+        setUserState({ profile: s3Link.data });
+      } catch (error) {
+        console.error('수정 실패:', error);
+      }
+    }
+  };
 
   //회원가입
   const onSubmit = async (data) => {
@@ -66,8 +103,27 @@ const RegisterProfilePage: React.FC = () => {
               <br />
               상대에게 좋은 인상을 줄 수 있어요!
             </p>
-            <img className="profile" src={userState.profile} alt="profile" />
+            <WrapImage>
+              <img
+                className="profile"
+                src={previewUrl || userState.profile}
+                alt="profile"
+              />
+              <CameraIcon
+                src={`/assets/home/edit-image.svg`}
+                alt="camera"
+                onClick={() => fileInputRef.current?.click()}
+              />
+            </WrapImage>
           </WrapImageInput>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            accept="image/*"
+            onChange={handleFileSelect}
+          />
 
           <InputText
             userType={userState.userType}
@@ -183,6 +239,19 @@ const InputSubmit = styled.input<{ $userType: string }>`
         ? `var(--Primary-dong)`
         : `var(--Primary-nari)`
       : '#EBECEB'};
+`;
+
+const WrapImage = styled.div`
+  display: flex;
+  width: 6.8rem;
+  position: relative;
+`;
+
+const CameraIcon = styled.img`
+  position: absolute;
+  right: 0;
+  bottom: 0%;
+  z-index: 5;
 `;
 
 export default RegisterProfilePage;
