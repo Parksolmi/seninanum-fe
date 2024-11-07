@@ -78,23 +78,19 @@ const UpdateMyInfoPage: React.FC = () => {
 
   // 폼 제출 함수
   const onSubmit = async (data: User) => {
-    // formData.append('nickname', data.nickname);
-    // formData.append('gender', data.gender);
-    // formData.append('birthYear', data.birthYear);
-    // if (data.profile instanceof File) {
-    //   console.log('if>>>>>>>', data.profile);
-    //   formData.append('profile', data.profile);
-    // } else {
-    //   console.log('else>>>>>>>', profile?.profile);
-    //   formData.append('profile', profile?.profile || '');
-    // }
-    // try {
-    //   instance.patch('/user/profile', formData);
-    //   console.log('수정 성공:', data);
-    //   navigate(`/view/myprofile/${user?.userType}`);
-    // } catch (error) {
-    //   console.error('수정 실패:', error);
-    // }
+    console.log(data);
+    try {
+      instance.patch('/user/profile', {
+        nickname: data.nickname,
+        gender: data.gender,
+        birthYear: data.birthYear,
+        profile: data.profile,
+      });
+      console.log('수정 성공:', data);
+      navigate(`/view/myprofile/${user?.userType}`);
+    } catch (error) {
+      console.error('수정 실패:', error);
+    }
   };
 
   // useEffect로 profile 값 변경 시 defaultValues 출력
