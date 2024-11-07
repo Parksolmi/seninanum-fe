@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PrevHeader from '../../components/header/PrevHeader';
 import BriefProfileMultiCard from '../../components/view/BriefProfileMultiCard';
@@ -9,11 +9,17 @@ import { calcTotalCareer } from '../../utils/calcTotalCareer';
 import { calcAge } from '../../utils/calcAge';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import { useFetchCareerProfile } from '../../hooks/useCareerProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
   const { data: user } = useFetchMyProfile();
   const { data: careerProfile } = useFetchCareerProfile();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['fetchMyProfile'] });
+  }, [queryClient]);
 
   return (
     <>
