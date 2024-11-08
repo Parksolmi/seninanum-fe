@@ -33,7 +33,7 @@ const ViewFreeBorad = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { comments, fetchComments, addComment } = useComment(
-    'freeBoard',
+    'free',
     freeBoardId
   );
 

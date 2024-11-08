@@ -97,7 +97,6 @@ interface WrapInfoProp {
 }
 
 const WrapContent = styled.div<WrapInfoProp>`
-  /* padding: 1.1rem 1.1rem; */
   padding: ${({ $isReply }) =>
     $isReply ? '0.2rem 0rem 0rem 1rem' : '1.1rem 1.1rem'};
   display: flex;

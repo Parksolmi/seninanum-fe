@@ -31,7 +31,7 @@ const ViewAdviceBoard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { comments, fetchComments, addComment } = useComment(
-    'adviceBoard',
+    'advice',
     adviceBoardId
   );
 
