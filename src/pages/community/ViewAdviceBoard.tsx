@@ -31,7 +31,7 @@ const ViewAdviceBoard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { comments, fetchComments, addComment } = useComment(
-    'adviceBoard',
+    'advice',
     adviceBoardId
   );
 
@@ -51,7 +51,7 @@ const ViewAdviceBoard = () => {
 
   // 댓글 작성
   const handleCommentSubmit = async () => {
-    if (!commentContent.trim()) return; // 빈 댓글 방지
+    if (!commentContent.trim()) return;
     await addComment(commentContent, isSecret ? 1 : 0, replyTo);
     setCommentContent('');
     setIsSecret(false);
@@ -60,7 +60,7 @@ const ViewAdviceBoard = () => {
 
   // 답글쓰기 버튼 클릭 시 입력창에 포커스
   const handleReply = (commentId: number) => {
-    setReplyTo(commentId); // 답글 대상 댓글 설정
+    setReplyTo(commentId);
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);

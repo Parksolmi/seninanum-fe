@@ -36,9 +36,8 @@ const useComment = (boardType, postId) => {
         isSecret,
         parentId,
       });
-      // 새 댓글 추가 후 fetchComments 호출하여 전체 댓글 업데이트
       await fetchComments();
-      return response.data; // 필요 시 호출하는 컴포넌트에서 활용 가능
+      return response.data;
     } catch (error) {
       console.error('댓글 작성에 실패했습니다.', error);
     }
