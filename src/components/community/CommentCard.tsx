@@ -98,7 +98,8 @@ interface WrapInfoProp {
 
 const WrapContent = styled.div<WrapInfoProp>`
   /* padding: 1.1rem 1.1rem; */
-  padding: ${({ $isReply }) => ($isReply ? '0.2rem 0rem' : '1.1rem 1.1rem')};
+  padding: ${({ $isReply }) =>
+    $isReply ? '0.2rem 0rem 0rem 1rem' : '1.1rem 1.1rem'};
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -200,7 +201,7 @@ const WrapText = styled.div<WrapTextProp>`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  padding-left: ${({ $isReply }) => ($isReply ? '1.8rem' : '')};
+  //padding-left: ${({ $isReply }) => ($isReply ? '1.8rem' : '')};
   p {
     color: #000;
     font-family: NanumSquare;
