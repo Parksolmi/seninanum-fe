@@ -46,6 +46,8 @@ const ViewFreeBorad = () => {
     fetchFreeBoard();
   }, [freeBoardId]);
 
+  const imgArray = freeBoard?.image ? freeBoard.image.split(',') : [];
+
   // 댓글 조회
   useEffect(() => {
     fetchComments();
@@ -102,6 +104,13 @@ const ViewFreeBorad = () => {
           <h1 className="title">{freeBoard?.title}</h1>
           <p>{freeBoard?.content}</p>
         </WrapText>
+        {imgArray.length > 0 && (
+          <WrapImage>
+            {imgArray.map((img, index) => (
+              <img key={index} src={img} alt="이미지" />
+            ))}
+          </WrapImage>
+        )}
       </WrapContent>
       <SplitLine />
 
@@ -245,6 +254,19 @@ const WrapText = styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.075rem;
+  }
+`;
+
+const WrapImage = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  img {
+    /* width: 20rem;
+    height: 20rem; */
+    object-fit: cover;
+    flex-shrink: 0;
   }
 `;
 
