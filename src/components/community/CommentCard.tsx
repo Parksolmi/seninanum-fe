@@ -77,7 +77,7 @@ const CommentCard = ({
           </div>
         </WrapInfo>
         {isPostOwner && (
-          <PostOwner>
+          <PostOwner $cardType={cardType || ''}>
             <p>작성자</p>
           </PostOwner>
         )}
@@ -138,7 +138,7 @@ const CommentCard = ({
 
 interface WrapInfoProp {
   $cardType: string;
-  $isReply: boolean;
+  $isReply?: boolean;
 }
 
 const WrapContent = styled.div<WrapInfoProp>`
@@ -238,16 +238,17 @@ const WrapInfo = styled.div`
   }
 `;
 
-const PostOwner = styled.div`
+const PostOwner = styled.div<WrapInfoProp>`
   width: 6rem;
   height: 1.875rem;
   border-radius: 0.25rem;
-  background: #ffefc1;
+  background: ${({ $cardType }) =>
+    $cardType === 'dong' ? '#FFEDF0' : '#ffefc1'};
   display: flex;
   align-items: center;
   justify-content: center;
   p {
-    color: #464646;
+    color: ${({ $cardType }) => ($cardType === 'dong' ? '#FF314A' : '#464646')};
     text-align: center;
     font-family: NanumSquare;
     font-size: 1.25rem;
