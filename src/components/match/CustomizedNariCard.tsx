@@ -86,6 +86,8 @@ const CardContainer = styled.div`
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
   }
 
   .notfound {
@@ -133,7 +135,7 @@ const NicknameText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 42%;
+  max-width: 50%;
 `;
 
 const UserTypeText = styled.div`
