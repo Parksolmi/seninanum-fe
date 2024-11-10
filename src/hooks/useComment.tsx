@@ -7,6 +7,9 @@ interface Comment {
   content: string;
   isSecret: boolean;
   parentId: number | null;
+  isPostOwner: boolean;
+  likes: number;
+  liked: number;
   createdAt: string;
   profile: string;
   nickname: string;

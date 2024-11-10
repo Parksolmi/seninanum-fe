@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
+import { instance } from '../../api/instance';
 
 interface Comment {
   id: number;
@@ -8,36 +9,63 @@ interface Comment {
   content: string;
   isSecret: boolean;
   parentId: number | null;
+  likes: number;
+  liked: number;
+  isPostOwner: boolean;
   createdAt: string;
   profile: string;
   nickname: string;
   userType: string;
+  //cardType:string;
   replies: Comment[];
 }
 
 interface CommentCardProps {
+  id: number;
   content: string;
   createdAt: string;
+  likes: number;
+  liked: number;
+  isPostOwner: boolean;
   profile: string;
   nickname: string;
   userType: string;
+  cardType: string;
   parentId: number | null;
   replies: Comment[];
   onReply: () => void;
 }
 
 const CommentCard = ({
+  id,
   content,
   createdAt,
+  likes,
+  liked,
+  isPostOwner,
   profile,
   nickname,
   userType,
+  cardType,
   parentId,
   replies,
   onReply,
 }: CommentCardProps) => {
+  const [likesCount, setLikesCount] = useState(likes);
+  const [isLiked, setIsLiked] = useState(liked === 0 ? false : true);
+
+  // 좋아요 등록/취소 함수
+  const handleLike = async () => {
+    try {
+      await instance.post(`/board/comment/${id}/like`);
+      setIsLiked(!isLiked);
+      setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
+    } catch (error) {
+      console.error('좋아요 처리에 실패했습니다.', error);
+    }
+  };
   return (
-    <WrapContent $userType={userType || ''} $isReply={!!parentId}>
+    <WrapContent $cardType={cardType || ''} $isReply={!!parentId}>
       <WrapWriter>
         <img className="profile" src={profile} alt="프로필" />
         <WrapInfo>
@@ -48,6 +76,11 @@ const CommentCard = ({
             <div className="time">{parseTime(createdAt || '')}</div>
           </div>
         </WrapInfo>
+        {isPostOwner && (
+          <PostOwner $cardType={cardType || ''}>
+            <p>작성자</p>
+          </PostOwner>
+        )}
       </WrapWriter>
       <WrapText $isReply={!!parentId}>
         <p>{content}</p>
@@ -64,12 +97,19 @@ const CommentCard = ({
             <p className="comment-text">답글쓰기</p>
           </div>
         )}
-        <div className="bottom-right">
+        <div className="bottom-right" onClick={handleLike}>
           <img
             className="like-button"
-            src="/assets/community/like-empty.png"
+            src={
+              isLiked
+                ? cardType === 'dong'
+                  ? '/assets/community/like-filled-dong.png'
+                  : '/assets/community/like-filled-nari.png'
+                : '/assets/community/like-empty.png'
+            }
             alt="빈하트"
           />
+          <span className="count">{likesCount}</span>
         </div>
       </WrapBottom>
 
@@ -77,12 +117,17 @@ const CommentCard = ({
         replies.map((reply) => (
           <CommentCard
             key={reply.id}
+            id={reply.id}
             content={reply.content}
             createdAt={reply.createdAt}
             profile={reply.profile}
             nickname={reply.nickname}
             userType={reply.userType}
+            cardType={cardType}
             parentId={reply.parentId}
+            likes={reply.likes}
+            liked={reply.liked}
+            isPostOwner={reply.isPostOwner}
             replies={reply.replies}
             onReply={onReply}
           />
@@ -92,8 +137,8 @@ const CommentCard = ({
 };
 
 interface WrapInfoProp {
-  $userType: string;
-  $isReply: boolean;
+  $cardType: string;
+  $isReply?: boolean;
 }
 
 const WrapContent = styled.div<WrapInfoProp>`
@@ -111,8 +156,8 @@ const WrapContent = styled.div<WrapInfoProp>`
       width: 1.3rem;
     }
     .count {
-      color: ${({ $userType }) =>
-        $userType === 'dong'
+      color: ${({ $cardType }) =>
+        $cardType === 'dong'
           ? 'var(--Dong-main, #FF314A)'
           : 'var(--Nari-2, var(--Primary-nari, #ffaa0e))'};
       text-align: right;
@@ -122,6 +167,7 @@ const WrapContent = styled.div<WrapInfoProp>`
       font-weight: 700;
       line-height: normal;
       letter-spacing: 0.03375rem;
+      margin-left: 0.2rem;
     }
   }
 
@@ -189,6 +235,23 @@ const WrapInfo = styled.div`
       line-height: normal;
       letter-spacing: 0.03375rem;
     }
+  }
+`;
+
+const PostOwner = styled.div<WrapInfoProp>`
+  width: 6rem;
+  height: 1.875rem;
+  border-radius: 0.25rem;
+  background: ${({ $cardType }) =>
+    $cardType === 'dong' ? '#FFEDF0' : '#ffefc1'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p {
+    color: ${({ $cardType }) => ($cardType === 'dong' ? '#FF314A' : '#464646')};
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.25rem;
   }
 `;
 

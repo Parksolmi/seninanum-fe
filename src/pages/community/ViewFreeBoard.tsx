@@ -21,6 +21,7 @@ interface freeBoard {
   profile: string;
   nickname: string;
   userType: string;
+  liked: number;
 }
 
 const ViewFreeBorad = () => {
@@ -31,6 +32,8 @@ const ViewFreeBorad = () => {
   const [isSecret, setIsSecret] = useState(false);
   const [replyTo, setReplyTo] = useState<number | null>(null); // 대댓글 대상 댓글 ID
   const inputRef = useRef<HTMLInputElement>(null);
+  const [likesCount, setLikesCount] = useState<number>(0);
+  const [isLiked, setIsLiked] = useState(false);
 
   const { comments, fetchComments, addComment } = useComment(
     'free',
@@ -41,6 +44,8 @@ const ViewFreeBorad = () => {
     const fetchFreeBoard = async () => {
       const res = await instance.get(`/board/free/${freeBoardId}`);
       setFreeBoard(res.data);
+      setLikesCount(res.data.likes);
+      setIsLiked(res.data.liked === 1);
     };
 
     fetchFreeBoard();
@@ -70,6 +75,17 @@ const ViewFreeBorad = () => {
     }, 0);
   };
 
+  // 좋아요 등록/취소 함수
+  const handleLike = async () => {
+    try {
+      await instance.post(`/board/free/${freeBoardId}/like`);
+      setIsLiked(!isLiked);
+      setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
+    } catch (error) {
+      console.error('좋아요 처리에 실패했습니다.', error);
+    }
+  };
+
   return (
     <>
       <PrevHeader
@@ -90,13 +106,19 @@ const ViewFreeBorad = () => {
                 {parseTime(freeBoard?.createdAt || '')}
               </div>
             </div>
-            <div className="right">
+            <div className="right" onClick={handleLike}>
               <img
                 className="like-button"
-                src="/assets/community/like-empty.png"
+                src={
+                  isLiked
+                    ? user?.userType === 'dong'
+                      ? '/assets/community/like-filled-dong.png'
+                      : '/assets/community/like-filled-nari.png'
+                    : '/assets/community/like-empty.png'
+                }
                 alt="빈하트"
               />
-              <p className="count">{freeBoard?.likes}</p>
+              <p className="count">{likesCount}</p>
             </div>
           </WrapInfo>
         </WrapWriter>
@@ -122,12 +144,17 @@ const ViewFreeBorad = () => {
         <React.Fragment key={index}>
           <CommentCard
             key={comment.id}
+            id={comment.id}
             content={comment.content}
             createdAt={comment.createdAt}
             profile={comment.profile}
             nickname={comment.nickname}
             userType={comment.userType}
+            cardType={user?.userType || ''}
             parentId={comment.parentId}
+            likes={comment.likes}
+            liked={comment.liked}
+            isPostOwner={comment.isPostOwner}
             replies={comment.replies}
             onReply={() => handleReply(comment.id)} // parentId설정
           />

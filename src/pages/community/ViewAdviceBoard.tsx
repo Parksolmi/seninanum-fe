@@ -107,12 +107,17 @@ const ViewAdviceBoard = () => {
         <React.Fragment key={index}>
           <CommentCard
             key={comment.id}
+            id={comment.id}
             content={comment.content}
             createdAt={comment.createdAt}
             profile={comment.profile}
             nickname={comment.nickname}
             userType={comment.userType}
+            cardType={user?.userType || ''}
             parentId={comment.parentId}
+            likes={comment.likes}
+            liked={comment.liked}
+            isPostOwner={comment.isPostOwner}
             replies={comment.replies}
             onReply={() => handleReply(comment.id)} // parentId설정
           />
