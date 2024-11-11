@@ -74,7 +74,7 @@ const AdminLoginPage = () => {
         />
       </WrapInput>
       <Button disabled={isDisabled} onClick={handleLogin} userType={'dong'}>
-        접속하기
+        로그인
       </Button>
     </WrapContent>
   );
