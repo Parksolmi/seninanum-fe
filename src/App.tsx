@@ -43,6 +43,7 @@ import ViewFreeBorad from './pages/community/ViewFreeBoard';
 import ViewAdviceBoard from './pages/community/ViewAdviceBoard';
 import WriteFreeBoard from './pages/community/WriteFreeBoard';
 import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
+import AdminLoginPage from './pages/signup/AdminLoginPage';
 
 const App: React.FC = () => {
   return (
@@ -55,6 +56,7 @@ const App: React.FC = () => {
         <Route path="/signup/policy" element={<AgreePolicyPage />} />
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/signup/complete" element={<CompleteSignupPage />} />
+        <Route path="/signup/admin" element={<AdminLoginPage />} />
 
         <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SignupIndexPage = () => {
@@ -15,6 +16,7 @@ const SignupIndexPage = () => {
     window.location.href = kakaoURL;
   };
 
+  const navigate = useNavigate();
   return (
     <WrapContent>
       <WrapLogo>
@@ -32,6 +34,10 @@ const SignupIndexPage = () => {
           />
         </div>
       </WrapLogo>
+      {/* 관리자 계정 버튼 */}
+      <AdminButton onClick={() => navigate('/signup/admin')}>
+        관리자 계정으로 접속하기
+      </AdminButton>
       <KakaoButton onClick={handleLogin}>
         <img src="/assets/signIn/kakao-icon.png" alt="kakao-logo" />
         카카오톡으로 시작하기
@@ -101,6 +107,33 @@ const KakaoButton = styled.button`
   img {
     width: 1.5rem;
   }
+`;
+
+const AdminButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  width: 100%;
+  /* border: 4px solid #fff293; */
+  border: none;
+  background-color: #ff314a;
+  border-radius: 0.625rem;
+
+  height: 3.75rem;
+  font-family: 'NanumSquareR';
+
+  color: var(--Base-Black, #fff);
+  text-align: center;
+  font-family: NanumSquare;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 6.25rem;
+  margin-bottom: -4rem;
 `;
 
 export default SignupIndexPage;

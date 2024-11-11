@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  register: any;
+  register?: any;
   error?: string;
   readonly userType: string | null;
 }
