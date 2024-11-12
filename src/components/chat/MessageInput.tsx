@@ -53,6 +53,7 @@ const MessageInput = ({
         const s3Link = await instance.post('/image', formData);
 
         setPreviewUrl(URL.createObjectURL(inputFile));
+        setIsMenuOpen(false);
         setImageLink(s3Link.data);
       } catch (error) {
         console.error('수정 실패:', error);
@@ -85,7 +86,7 @@ const MessageInput = ({
               <ImagePreview>
                 <img
                   className="x-button"
-                  src="/assets/common/page-close.svg"
+                  src="/assets/chat/cancel.png"
                   alt=""
                   onClick={deleteImage}
                 />
@@ -259,6 +260,7 @@ const ImagePreview = styled.div`
   width: 50%;
   height: 50%;
   //position: absolute;
+  position: relative;
 
   .image-preview {
     max-width: 100%;
@@ -267,12 +269,15 @@ const ImagePreview = styled.div`
   }
 
   .x-button {
-    position: fixed;
+    position: absolute;
     top: 50;
-    background-color: #fff;
+    right: 0;
+    width: 35px;
+    /* background-color: #fff; */
     border-radius: 100%;
     align-items: center;
     justify-content: center;
+    padding: 0.3rem;
   }
 `;
 
