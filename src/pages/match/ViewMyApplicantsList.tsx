@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { instance } from '../../api/instance';
 import SummaryCard from '../../components/common/SummaryCard';
+import NotFoundNari from '../../components/NotFound/NotFoundNari';
 
 interface Applicant {
   profileId: number;
@@ -137,7 +138,10 @@ const ViewMyApplicantsList = () => {
             )
           )
         ) : (
-          <p>구인글이 없습니다.</p>
+          <NotFoundNari
+            title="구인글이 없습니다."
+            content="구인글을 작성해서 전문가를 찾아보세요!"
+          />
         )}
       </WrapDongCards>
     </>

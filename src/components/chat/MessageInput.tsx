@@ -128,7 +128,11 @@ const MessageInput = ({
             <p>사진</p>
           </div>
           <div>
-            <WrapIcon>
+            <WrapIcon
+              onClick={() => {
+                alert('서비스 준비중입니다!');
+              }}
+            >
               <img src="/assets/chat/won-icon.png" alt="송금하기" />
             </WrapIcon>
             <p>송금</p>

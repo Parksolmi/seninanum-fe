@@ -66,9 +66,9 @@ const MatchIndexPageNari = ({ userType }) => {
     <>
       <WrapContentSingle>
         <TitleText>맞춤형 구인글 추천</TitleText>
-        <CustomizedCardArea>
-          {matchRecruitList.length > 0 &&
-            matchRecruitList.map((recruit) =>
+        {matchRecruitList.length > 0 ? (
+          <CustomizedCardArea>
+            {matchRecruitList.map((recruit) =>
               recruit.recommendation ? (
                 <CustomizedDongCard
                   key={recruit.field}
@@ -83,7 +83,18 @@ const MatchIndexPageNari = ({ userType }) => {
                 />
               )
             )}
-        </CustomizedCardArea>
+          </CustomizedCardArea>
+        ) : (
+          <WrapContent>
+            <img src="/assets/character/dong-notfound.png" alt="not found" />
+            <div>
+              <p>
+                경력프로필을 작성하기 전에는 <br />
+                맞춤형 동백을 추천받을 수 없어요!
+              </p>
+            </div>
+          </WrapContent>
+        )}
 
         <FilterButton onClick={() => navigate('/match/field')} />
         <WrapDongCards>
@@ -138,6 +149,29 @@ const WrapDongCards = styled.div`
   gap: 1rem;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+`;
+
+const WrapContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  img {
+    width: 8rem;
+  }
+
+  p {
+    color: #393939;
+    text-align: center;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.4375rem; /* 127.778% */
+    letter-spacing: 0.07875rem;
+  }
 `;
 
 export default MatchIndexPageNari;
