@@ -130,7 +130,7 @@ const WrapCommunity = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 0 1.1rem;
+  padding: 0 1.1rem 3rem 1.1rem;
 `;
 
 const WrapSingleCommunity = styled.div`
