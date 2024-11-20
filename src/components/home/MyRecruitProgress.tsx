@@ -118,13 +118,16 @@ const MoreIconBox = styled.div`
 `;
 
 const RecruitTitleText = styled.div`
-  width: 21rem;
+  width: 20rem;
   font-family: Nanum_Square;
   font-size: 1.125rem;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const TextBox = styled.div`
