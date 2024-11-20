@@ -46,7 +46,9 @@ const RegisterRecruitFieldPage = () => {
   }, [setRecruitState, selectedTags]);
 
   useEffect(() => {
-    setStatus(1);
+    if (setStatus) {
+      setTimeout(() => setStatus(1), 0); // 비동기 호출로 렌더링 충돌 방지
+    }
   }, [setStatus]);
 
   return (

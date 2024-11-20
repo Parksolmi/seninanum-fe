@@ -8,6 +8,7 @@ import useModal from '../../hooks/useModal';
 import Modal from '../../components/common/Modal';
 import ManageCard from '../../components/mypage/ManageCard';
 import FloatingButton from '../../components/common/FloatingButton';
+import useRecruitState from '../../store/recruitState';
 
 interface Recruit {
   recruitId: number;
@@ -21,7 +22,7 @@ interface Recruit {
 
 const ManageMyRecruit = () => {
   const navigate = useNavigate();
-
+  const { setRecruitState } = useRecruitState();
   const [activeTab, setActiveTab] = useState(1); //1.모집중, 2.마감
   const [recruitList, setRecruitList] = useState<Recruit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,20 +57,23 @@ const ManageMyRecruit = () => {
     )
   );
 
-  // 상태 별 API 호출 함수(useCallback으로 메모이제이션)
-  // useEffect(() => {
-  //   const fetchRecruitList = async () => {
-  //     try {
-  //       const res = await instance.get('/recruit/mylist');
-  //       setRecruitList(res.data);
-  //     } catch (err) {
-  //       setError(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchRecruitList();
-  // }, []);
+  // recruitState 초기화 후 페이지 이동 함수
+  const handleRecruitNavigation = () => {
+    // recruitState 초기화
+    setRecruitState({
+      recruitId: '',
+      title: '',
+      content: '',
+      price: 0,
+      priceType: '',
+      method: '',
+      region: '',
+      field: '',
+    });
+
+    // 페이지 이동
+    navigate('/register/recruit/field');
+  };
 
   const fetchRecruitList = useCallback(async (status: string) => {
     setLoading(true);
@@ -161,10 +165,7 @@ const ManageMyRecruit = () => {
           )}
         </WrapContentSingle>
       </WrapContent>
-      <FloatingButton
-        userType={'nari'}
-        onClick={() => navigate('/register/recruit/field')}
-      />
+      <FloatingButton userType={'nari'} onClick={handleRecruitNavigation} />
     </>
   );
 };
