@@ -172,10 +172,26 @@ const ChatPage = () => {
     setShowMakeSchedule((prev) => !prev);
   };
 
+  // 약속 데이터 추가, 리뷰 데이터 생성
+  const AddScheduleData = async (schedule) => {
+    try {
+      await instance.post('/schedule', {
+        memberId: profile.memberProfile.profileId,
+        opponentId: profile.opponentProfile.profileId,
+        date: schedule.date, // 날짜 (ISO 형식)
+        time: schedule.time, // 시간
+        place: schedule.place, // 장소
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // 약속 정보 전송
   const handleScheduleSubmit = (schedule) => {
     sendScheduleMessage(schedule);
     toggleMakeSchedule();
+    AddScheduleData(schedule);
   };
 
   // input 값
