@@ -90,7 +90,7 @@ const RegisterNewReview = () => {
                     : '매너있게 활동에 임했나요?'
                 }`}</span>
                 <div className="character-box">
-                  {['supergreat', 'good', 'notgood'].map((rating, index) => (
+                  {['notgood', 'good', 'supergreat'].map((rating, index) => (
                     <RatingOption
                       key={rating}
                       onClick={() => handleRatingClick(index)}
@@ -126,7 +126,7 @@ const RegisterNewReview = () => {
                     : '협의된 내용에 대해 잘 지켰나요?'
                 }`}</span>
                 <div className="character-box">
-                  {['supergreat', 'good', 'notgood'].map((rating, index) => (
+                  {['notgood', 'good', 'supergreat'].map((rating, index) => (
                     <RatingOption
                       key={rating}
                       onClick={() => handleRating2Click(index)}

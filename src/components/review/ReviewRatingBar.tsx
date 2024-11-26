@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface reviewRationgProps {
-  userType: 'dong' | 'nari';
+  userType: string;
   title: string;
   superGreat: string;
   good: string;
@@ -75,7 +75,7 @@ const ReviewRatingBox = styled.div`
 `;
 
 interface userTypeProps {
-  $userType: 'dong' | 'nari';
+  $userType: string;
 }
 const ReviewRatingContainer = styled.div<userTypeProps>`
   gap: 1.5rem;

@@ -19,7 +19,7 @@ const WrittenReviewListBox = ({
   content,
 }: WrittenReviewListBoxProps) => {
   const [, month, day] = scheduleDate.split('T')[0].split('-');
-  const ratingLabels = ['최고예요', '좋아요', '별로예요'];
+  const ratingLabels = ['별로예요', '좋아요', '최고예요'];
   return (
     <>
       <WrapContainer $userType={userType}>

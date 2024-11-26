@@ -10,6 +10,7 @@ import ReviewRatingBar from '../../components/review/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import DetailCard from '../../components/common/DetailCard';
 import { instance } from '../../api/instance';
+import useFetchReviews from '../../hooks/useFetchReviews';
 
 interface RecruitProfile {
   recruitId: number;
@@ -27,6 +28,7 @@ const ViewProfileNari = () => {
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
   //const { data: user, isLoading } = useFetchProfile(profileId);
+  const { reviews, ratingCounts, totalReviews } = useFetchReviews(profileId);
   const [recruits, setRecruits] = useState<RecruitProfile[]>([]);
 
   const createChatRoom = async () => {
@@ -87,32 +89,45 @@ const ViewProfileNari = () => {
 
           <SplitLine />
 
-          <WrapContentSingle>
-            <TitleText>
-              리뷰 <em>5</em>
-            </TitleText>
-            <div className="review">
+          <WrapReviewSingle>
+            <MoreIcon>
+              <TitleText>
+                다른 동백들의 리뷰 <em>{totalReviews}</em>
+              </TitleText>
+              <img
+                src="/assets/common/right-arrow.svg"
+                alt=""
+                onClick={() => navigate('/view/review')}
+              />
+            </MoreIcon>
+
+            <ReviewRatingBarWrapper>
               <ReviewRatingBar
                 userType="dong"
                 title="활동 매너"
-                superGreat="3"
-                good="2"
-                notGood="0"
+                superGreat={ratingCounts.rating1[2]}
+                good={ratingCounts.rating1[1]}
+                notGood={ratingCounts.rating1[0]}
               />
               <ReviewRatingBar
                 userType="dong"
                 title="협의 사항 준수"
-                superGreat="3"
-                good="2"
-                notGood="0"
+                superGreat={ratingCounts.rating2[2]}
+                good={ratingCounts.rating2[1]}
+                notGood={ratingCounts.rating2[0]}
               />
-            </div>
-            <div className="review">
-              <ReviewSummaryCard />
-              <ReviewSummaryCard />
-              <ReviewSummaryCard />
-            </div>
-          </WrapContentSingle>
+            </ReviewRatingBarWrapper>
+
+            {/* 리뷰 3개만 렌더링 */}
+            {reviews.slice(0, 3).map((review) => (
+              <ReviewSummaryCard
+                key={review.reviewId}
+                profile={review.reviewerProfile || '/assets/common/profile.png'}
+                nickname={review.reviewerNickname || '익명'}
+                content={review.content || '리뷰 내용 없음'}
+              />
+            ))}
+          </WrapReviewSingle>
 
           <SplitThinLine />
           <WrapContentSingle>
@@ -157,6 +172,31 @@ const SplitLine = styled.div`
   height: 0.8rem;
   margin: 1.2rem 0;
 `;
+
+const WrapReviewSingle = styled.div`
+  padding: 0rem 1.1rem;
+`;
+
+const MoreIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  img {
+    width: 0.5375rem;
+    height: 0.9125rem;
+    flex-shrink: 0;
+  }
+`;
+
+const ReviewRatingBarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
 const SplitThinLine = styled.div`
   background: #ebeceb;
   height: 0.3rem;
@@ -202,7 +242,7 @@ const TitleText = styled.div`
   text-align: start;
 
   em {
-    color: var(--Primary-dong);
+    color: var(--Primary-dong, #ff314a);
   }
 `;
 
