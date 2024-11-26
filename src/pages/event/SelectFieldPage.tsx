@@ -36,6 +36,9 @@ const SelectFieldPage = () => {
         />
       </WrapHeader>
       <WrapContent>
+        <h1>
+          먼저 노하우를 받고 싶은 <br /> 분야를 선택하세요!
+        </h1>
         <StyledSlider {...sliderSettings}>
           {EVENT_FIELD_LIST.map((field) => (
             <FieldAssetArray field={field}></FieldAssetArray>
@@ -64,6 +67,17 @@ const WrapContent = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  h1 {
+    color: #000;
+    text-align: center;
+    font-family: 'NanumSquare';
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 7rem;
+  }
 `;
 
 const StyledButton = styled.div`
@@ -93,7 +107,7 @@ const StyledButton = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
-  margin-top: 10rem;
+  margin-top: 3rem;
 
   .slick-list {
     //크기조정

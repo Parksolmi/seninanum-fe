@@ -1,30 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import DrawResult from '../../components/event/DrawResult';
 import ExitHeader from '../../components/header/ExitHeader';
 
 const DrawPage = () => {
   const navigate = useNavigate();
 
+  const [isResultShow, setIsResultShow] = useState(false);
+
   return (
     <>
-      <PrevButton onClick={() => navigate(-1)}>
-        <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
-      </PrevButton>
-      <WrapExitHeader>
-        <ExitHeader
-          navigateTo="/community"
-          userType={'dong'}
-          backgroundColor="#f0e0c9"
-        />
-      </WrapExitHeader>
-      <WrapContent>
-        <WrapImage>
-          <Shadow />
-          <MachineImg src="/assets/event/drawMachine.png" alt="뽑기 기계" />
-        </WrapImage>
-        <StyledButton children="노하우 뽑기" />
-      </WrapContent>
+      {isResultShow ? (
+        <DrawResult color="#E8334A" name="교육" />
+      ) : (
+        <>
+          <PrevButton onClick={() => navigate(-1)}>
+            <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
+          </PrevButton>
+          <WrapExitHeader>
+            <ExitHeader
+              navigateTo="/community"
+              userType={'dong'}
+              backgroundColor="#f0e0c9"
+            />
+          </WrapExitHeader>
+          <WrapContent>
+            <WrapImage>
+              <Shadow />
+              <MachineImg src="/assets/event/drawMachine.png" alt="뽑기 기계" />
+            </WrapImage>
+            <StyledButton
+              children="노하우 뽑기"
+              onClick={() => setIsResultShow(true)}
+            />
+          </WrapContent>
+        </>
+      )}{' '}
     </>
   );
 };
@@ -77,7 +89,7 @@ const MachineImg = styled.img`
   width: 100%;
 
   position: relative;
-  z-index: 1;
+  z-index: 9;
   margin-top: 4rem;
 `;
 
