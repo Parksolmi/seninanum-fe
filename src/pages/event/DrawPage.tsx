@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import DrawResult from '../../components/event/DrawResult';
 import ExitHeader from '../../components/header/ExitHeader';
+// import { SyncLoader } from 'react-spinners';
 
 const DrawPage = () => {
   const navigate = useNavigate();
-
   const [isResultShow, setIsResultShow] = useState(false);
 
   return (
@@ -23,6 +23,7 @@ const DrawPage = () => {
               navigateTo="/community"
               userType={'dong'}
               backgroundColor="#f0e0c9"
+              content=""
             />
           </WrapExitHeader>
           <WrapContent>
@@ -43,14 +44,14 @@ const DrawPage = () => {
 
 const WrapExitHeader = styled.div`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.3rem;
   z-index: 99;
 `;
 const PrevButton = styled.div`
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 1.5rem;
+  left: 1.3rem;
   z-index: 99;
 
   img {

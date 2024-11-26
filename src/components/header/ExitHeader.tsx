@@ -5,7 +5,12 @@ import StopWritingButton from '../../components/common/StopWritingButton';
 import Modal from '../../components/common/Modal';
 import useModal from '../../hooks/useModal';
 
-const ExitHeader = ({ navigateTo, userType, backgroundColor = 'white' }) => {
+const ExitHeader = ({
+  navigateTo,
+  userType,
+  backgroundColor = 'white',
+  content = `지금 나가면 \n작성했던 모든 내용이 사라져요.`,
+}) => {
   const navigate = useNavigate();
 
   // 모달
@@ -14,7 +19,7 @@ const ExitHeader = ({ navigateTo, userType, backgroundColor = 'white' }) => {
       <Modal
         userType={userType}
         title={'정말 나가시겠습니까?'}
-        content={`지금 나가면 \n작성했던 모든 내용이 사라져요.`}
+        content={content}
         cancelText={'취소'}
         confirmText={'나가기'}
         onConfirm={() =>

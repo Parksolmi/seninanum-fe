@@ -33,6 +33,7 @@ const SelectFieldPage = () => {
           navigateTo="/community"
           userType={'dong'}
           backgroundColor="#f0e0c9"
+          content=""
         />
       </WrapHeader>
       <WrapContent>
@@ -55,8 +56,8 @@ const SelectFieldPage = () => {
 
 const WrapHeader = styled.div`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.3rem;
   z-index: 99;
 `;
 const WrapContent = styled.div`
