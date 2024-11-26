@@ -10,11 +10,15 @@ import { calcAge } from '../../utils/calcAge';
 import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import { useFetchCareerProfile } from '../../hooks/useCareerProfile';
 import { useQueryClient } from '@tanstack/react-query';
+import useFetchReviews from '../../hooks/useFetchReviews';
+import ReviewRatingBar from '../../components/review/ReviewRatingBar';
+import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 
 const ViewMyProfileDongPage = () => {
   const navigate = useNavigate();
   const { data: user } = useFetchMyProfile();
   const { data: careerProfile } = useFetchCareerProfile();
+  const { reviews, ratingCounts, totalReviews } = useFetchReviews();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -147,10 +151,49 @@ const ViewMyProfileDongPage = () => {
               </Button>
             </WrapButton>
           </WrapContent>
-
-          <WrapContentSingle />
         </>
       )}
+      <SplitLine />
+      {/* 리뷰 */}
+      <WrapReviewSingle>
+        <MoreIcon>
+          <TitleText>
+            리뷰 <span>{totalReviews}</span>
+          </TitleText>
+          <img
+            src="/assets/common/right-arrow.svg"
+            alt=""
+            onClick={() => navigate('/view/review')}
+          />
+        </MoreIcon>
+
+        <ReviewRatingBarWrapper>
+          <ReviewRatingBar
+            userType="dong"
+            title="활동 태도"
+            superGreat={ratingCounts.rating1[2]}
+            good={ratingCounts.rating1[1]}
+            notGood={ratingCounts.rating1[0]}
+          />
+          <ReviewRatingBar
+            userType="dong"
+            title="전문성"
+            superGreat={ratingCounts.rating2[2]}
+            good={ratingCounts.rating2[1]}
+            notGood={ratingCounts.rating2[0]}
+          />
+        </ReviewRatingBarWrapper>
+
+        {/* 리뷰 3개만 렌더링 */}
+        {reviews.slice(0, 3).map((review) => (
+          <ReviewSummaryCard
+            key={review.reviewId}
+            profile={review.reviewerProfile || '/assets/common/profile.png'}
+            nickname={review.reviewerNickname || '익명'}
+            content={review.content || '리뷰 내용 없음'}
+          />
+        ))}
+      </WrapReviewSingle>
     </>
   );
 };
@@ -209,6 +252,10 @@ const TitleText = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
   text-align: start;
+
+  span {
+    color: var(--Primary-dong, #ff314a);
+  }
 `;
 
 const DetailText = styled.div`
@@ -237,9 +284,33 @@ const ConditionText = styled.table`
   }
 `;
 
+const WrapReviewSingle = styled.div`
+  padding: 0rem 1.1rem;
+  margin-bottom: 2rem;
+`;
+
+const MoreIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  img {
+    width: 0.5375rem;
+    height: 0.9125rem;
+    flex-shrink: 0;
+  }
+`;
+
+const ReviewRatingBarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
 const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1rem;
 `;
 export default ViewMyProfileDongPage;

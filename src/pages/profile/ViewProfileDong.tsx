@@ -9,6 +9,9 @@ import { SyncLoader } from 'react-spinners';
 import CareerDetail from '../../components/common/CareerDetail';
 // import { useCreateChatRoom } from '../../hooks/useCreateChatRoom';
 import { instance } from '../../api/instance';
+import useFetchReviews from '../../hooks/useFetchReviews';
+import ReviewRatingBar from '../../components/review/ReviewRatingBar';
+import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 
 interface CareerProfile {
   introduce: string;
@@ -38,6 +41,7 @@ const ViewProfileDong = () => {
   const navigate = useNavigate();
 
   const { profileId } = useParams<{ profileId: string }>();
+  const { reviews, ratingCounts, totalReviews } = useFetchReviews(profileId);
   const [careerProfileState, setCareerProfileState] =
     useState<CareerProfile | null>(null);
   const [careers, setCareers] = useState<CareerItem[]>([]);
@@ -210,6 +214,46 @@ const ViewProfileDong = () => {
               </WrapContentSingle>
             </>
           )}
+          <SplitLine />
+          <WrapReviewSingle>
+            <MoreIcon>
+              <TitleText>
+                다른 나리들의 리뷰 <span>{totalReviews}</span>
+              </TitleText>
+              <img
+                src="/assets/common/right-arrow.svg"
+                alt=""
+                onClick={() => navigate('/view/review')}
+              />
+            </MoreIcon>
+
+            <ReviewRatingBarWrapper>
+              <ReviewRatingBar
+                userType="nari"
+                title="활동 태도"
+                superGreat={ratingCounts.rating1[2]}
+                good={ratingCounts.rating1[1]}
+                notGood={ratingCounts.rating1[0]}
+              />
+              <ReviewRatingBar
+                userType="nari"
+                title="전문성"
+                superGreat={ratingCounts.rating2[2]}
+                good={ratingCounts.rating2[1]}
+                notGood={ratingCounts.rating2[0]}
+              />
+            </ReviewRatingBarWrapper>
+
+            {/* 리뷰 3개만 렌더링 */}
+            {reviews.slice(0, 3).map((review) => (
+              <ReviewSummaryCard
+                key={review.reviewId}
+                profile={review.reviewerProfile || '/assets/common/profile.png'}
+                nickname={review.reviewerNickname || '익명'}
+                content={review.content || '리뷰 내용 없음'}
+              />
+            ))}
+          </WrapReviewSingle>
         </>
       )}
     </>
@@ -244,10 +288,13 @@ const TitleText = styled.div`
   text-align: center;
   font-family: NanumSquare;
   font-size: 1.5rem;
-  font-style: normal;
   font-weight: 700;
   line-height: normal;
   text-align: start;
+
+  span {
+    color: var(--Primary-Deep-nari);
+  }
 `;
 const DetailText = styled.div`
   color: var(--Base-Deep-Gray, #5b5b5b);
@@ -293,6 +340,31 @@ const WrapButton = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+`;
+
+const WrapReviewSingle = styled.div`
+  padding: 0rem 1.1rem;
+  margin-bottom: 2rem;
+`;
+
+const MoreIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  img {
+    width: 0.5375rem;
+    height: 0.9125rem;
+    flex-shrink: 0;
+  }
+`;
+
+const ReviewRatingBarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 export default ViewProfileDong;

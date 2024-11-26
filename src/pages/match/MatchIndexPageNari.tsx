@@ -109,6 +109,11 @@ const MatchIndexPageNari = ({ userType }) => {
                       nickname={matchDong.recommendation.nickname}
                       age={calcAge(matchDong.recommendation.birthyear)}
                       gender={matchDong.recommendation.gender}
+                      onClick={() =>
+                        navigate(
+                          `/view/dongprofile/${matchDong.recommendation.profileId}`
+                        )
+                      }
                     />
                   ) : (
                     <CustomizedNariCard

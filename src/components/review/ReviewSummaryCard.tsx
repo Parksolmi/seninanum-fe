@@ -1,19 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ReviewSummaryCard = () => {
+interface reviewSummaryProps {
+  profile: string;
+  nickname: string;
+  content: string;
+}
+
+const ReviewSummaryCard: React.FC<reviewSummaryProps> = ({
+  profile,
+  nickname,
+  content,
+}) => {
   return (
     <SummaryCardContainer>
       <WrapProfile>
-        <img src="/assets/common/profile.png" alt="profile" />
+        <img src={profile} alt="profile" />
       </WrapProfile>
       <ReviewSummaryText>
-        <p>닉네임</p>
-        <div className="summaryText">
-          동백이 작성한 리뷰입니다. 동백이 작성한 리뷰입니다. 동백이 작성한
-          리뷰입니다. 동백이 작성한 리뷰입니다.동백이 작성한 리뷰입니다.동백이
-          작성한 리뷰입니다.
-        </div>
+        <p>{nickname}</p>
+        <div className="summaryText">{content}</div>
       </ReviewSummaryText>
     </SummaryCardContainer>
   );
@@ -28,6 +34,7 @@ const SummaryCardContainer = styled.div`
   padding: 0.6rem;
   display: flex;
   align-items: center;
+  margin-bottom: 0.75rem;
 `;
 
 const WrapProfile = styled.div`

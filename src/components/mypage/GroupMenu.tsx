@@ -13,12 +13,12 @@ const GroupMenu: React.FC<GroupMenuProps> = ({ userType }) => {
     <>
       <WrapGroupMenu>
         <h3 className="group-title">나의 활동</h3>
-        <div className="menu" onClick={() => navigate('/')}>
-          <div>받은 리뷰 조회</div>
+        <div className="menu" onClick={() => navigate('/view/review')}>
+          <div>리뷰 조회</div>
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
-        <div className="menu" onClick={() => navigate('/')}>
-          <div>작성한 리뷰 조회</div>
+        <div className="menu" onClick={() => navigate('/write/review')}>
+          <div>리뷰 작성</div>
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
         {userType === 'nari' ? (

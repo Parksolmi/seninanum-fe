@@ -44,6 +44,9 @@ import ViewAdviceBoard from './pages/community/ViewAdviceBoard';
 import WriteFreeBoard from './pages/community/WriteFreeBoard';
 import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
 import AdminLoginPage from './pages/signup/AdminLoginPage';
+import ViewMyReviewPage from './pages/review/ViewMyReviewPage';
+import WriteReviewPage from './pages/review/WriteReviewPage';
+import RegisterNewReview from './pages/review/RegisterNewReview';
 
 const App: React.FC = () => {
   return (
@@ -148,7 +151,13 @@ const App: React.FC = () => {
         />
         <Route path="/write/freeboard" element={<WriteFreeBoard />} />
         <Route path="/write/adviceboard" element={<WriteAdviceBoard />} />
-
+        {/* 리뷰 */}
+        <Route path="/view/review" element={<ViewMyReviewPage />} />
+        <Route path="/write/review" element={<WriteReviewPage />} />
+        <Route
+          path="/register/review/:scheduleId/:targetId"
+          element={<RegisterNewReview />}
+        />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/match" element={<MatchIndexPage />} />
