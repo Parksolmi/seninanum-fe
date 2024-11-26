@@ -44,6 +44,8 @@ import ViewAdviceBoard from './pages/community/ViewAdviceBoard';
 import WriteFreeBoard from './pages/community/WriteFreeBoard';
 import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
 import AdminLoginPage from './pages/signup/AdminLoginPage';
+import DrawPage from './pages/event/DrawPage';
+import SelectFieldPage from './pages/event/SelectFieldPage';
 
 const App: React.FC = () => {
   return (
@@ -156,6 +158,9 @@ const App: React.FC = () => {
           <Route path="/community" element={<CommunityIndexPage />} />
           <Route path="/mypage" element={<MyIndexPage />} />
         </Route>
+
+        <Route path="/community/event" element={<SelectFieldPage />}></Route>
+        <Route path="/community/event/draw" element={<DrawPage />}></Route>
       </Routes>
     </>
   );

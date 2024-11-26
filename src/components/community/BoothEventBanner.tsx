@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const BoothEventBanner = () => {
+const BoothEventBanner = ({ onClick }) => {
   return (
-    <WrapBanner>
+    <WrapBanner onClick={onClick}>
       <div className="title">전시 부스 이벤트</div>
       <p>노하우를 뽑아보세요!</p>
     </WrapBanner>

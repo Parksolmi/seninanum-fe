@@ -5,7 +5,7 @@ import StopWritingButton from '../../components/common/StopWritingButton';
 import Modal from '../../components/common/Modal';
 import useModal from '../../hooks/useModal';
 
-const ExitHeader = ({ navigateTo, userType }) => {
+const ExitHeader = ({ navigateTo, userType, backgroundColor = 'white' }) => {
   const navigate = useNavigate();
 
   // 모달
@@ -28,7 +28,7 @@ const ExitHeader = ({ navigateTo, userType }) => {
   return (
     <>
       <ButtonWrap onClick={openLeaveModal}>
-        <StopWritingButton />
+        <StopWritingButton backgroundColor={backgroundColor} />
       </ButtonWrap>
     </>
   );

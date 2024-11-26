@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 import React from 'react';
 
-const StopWritingButton = () => {
+const StopWritingButton = ({ backgroundColor }) => {
   return (
-    <ButtonBox>
+    <ButtonBox $backgroundColor={backgroundColor}>
       <ButtonText>나가기</ButtonText>
       <ButtonIcon src="/assets/home/recruit-exit.svg" />
     </ButtonBox>
   );
 };
 
-const ButtonBox = styled.div`
+const ButtonBox = styled.div<{ $backgroundColor: string }>`
   width: 100%;
   height: 2.2rem;
   border-radius: 12.5rem;
   border: 1px solid #7f7f7f;
-  background: #fff;
+  background: ${({ $backgroundColor }) => $backgroundColor};
   display: flex;
   flex-direction: row;
   padding-top: 0.5rem;
