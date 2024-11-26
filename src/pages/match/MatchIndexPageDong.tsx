@@ -7,7 +7,7 @@ import { instance } from '../../api/instance';
 import MatchCard from '../../components/match/MatchCard';
 
 interface RecruitCard {
-  recruitId?: string;
+  recruitId?: number;
   title: string;
   method: string;
   region: string;
@@ -34,7 +34,7 @@ const MatchIndexPageNari = ({ userType }) => {
       // 필터링된 데이터가 있을 경우 그 데이터를 사용
       setRecruitList(location.state.filteredRecruit);
     } else {
-      // 필터링된 데이터가 없을 경우 기본 career/list 데이터를 불러옴
+      // 필터링된 데이터가 없을 경우 기본 recruit/list 데이터를 불러옴
       const getRecruitList = async () => {
         try {
           const res = await instance.get('/recruit/list');
@@ -101,7 +101,7 @@ const MatchIndexPageNari = ({ userType }) => {
           </WrapContent>
         )}
 
-        <FilterButton onClick={() => navigate('/match/field')} />
+        <FilterButton onClick={() => navigate('/match/filter/dong')} />
         <WrapDongCards>
           {recruitList.length > 0 ? (
             recruitList.map((recruit) => (

@@ -47,6 +47,7 @@ import AdminLoginPage from './pages/signup/AdminLoginPage';
 import ViewMyReviewPage from './pages/review/ViewMyReviewPage';
 import WriteReviewPage from './pages/review/WriteReviewPage';
 import RegisterNewReview from './pages/review/RegisterNewReview';
+import MatchFilterDongPage from './pages/filter/MatchFilterDongPage';
 
 const App: React.FC = () => {
   return (
@@ -107,7 +108,9 @@ const App: React.FC = () => {
           element={<RegisterProfileCertificatePage />}
         />
         {/* 매칭 상세조건 조회 */}
-        <Route path="/match/field" element={<MatchFilterNariPage />} />
+        <Route path="/match/filter/nari" element={<MatchFilterNariPage />} />
+        <Route path="/match/filter/dong" element={<MatchFilterDongPage />} />
+
         {/* 프로필 조회 */}
         <Route
           path="/view/dongprofile/:profileId" //수정 필요
