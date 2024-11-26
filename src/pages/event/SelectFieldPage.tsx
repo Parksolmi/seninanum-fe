@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../../components/header/ExitHeader';
@@ -8,26 +8,6 @@ import Slider from 'react-slick';
 
 const SelectFieldPage = () => {
   const navigate = useNavigate();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlide = EVENT_FIELD_LIST.length;
-
-  const handleBeforeChange = (oldIdx, newIdx) => {
-    setCurrentSlide(newIdx);
-  };
-
-  const CustomPrevArrow = (props) => {
-    const { onClick } = props;
-    return <PrevBtn onClick={onClick}></PrevBtn>;
-  };
-
-  const CustomNextArrow = (props) => {
-    const { onClick } = props;
-    return (
-      <NextBtn onClick={onClick}>
-        <PrevBtnImg src="/assets/common/back-icon.svg" />
-      </NextBtn>
-    );
-  };
 
   const sliderSettings = {
     dots: true,
@@ -36,7 +16,6 @@ const SelectFieldPage = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
-    beforeChange: handleBeforeChange, // 슬라이드 변경 전 호출
     centerMode: true, // 중앙에 카드가 오게 하여 겹치도록 설정
     centerPadding: '15%', // 좌우 카드의 겹침 정도를 조정
     appendDots: (dots: React.ReactNode) => (
@@ -111,35 +90,6 @@ const StyledButton = styled.div`
   transform: translateX(-50%); /* 가운데 정렬 */
 
   background-color: var(--Primary-dong);
-`;
-
-const PrevBtn = styled.div`
-  background-color: red;
-  width: 1;
-  height: 0%;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-const NextBtn = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  transform: rotate(180deg);
-`;
-const PrevBtnImg = styled.img`
-  color: #000;
-  text-align: center;
-  align-items: center;
-  font-family: NanumSquare;
-  font-size: 22px;
-  font-weight: 400;
 `;
 
 const StyledSlider = styled(Slider)`
