@@ -1,4 +1,4 @@
-export const eventFieldList = [
+export const EVENT_FIELD_LIST = [
   {
     color: '#E4991B',
     name: '돌봄',
@@ -35,7 +35,7 @@ export const eventFieldList = [
     content: [],
   },
   {
-    color: '#CA80B4',
+    color: '#EC74A1',
     name: '법률',
     content: [],
   },

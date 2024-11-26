@@ -1,12 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import FieldCard from '../../components/event/FieldCard';
 import ExitHeader from '../../components/header/ExitHeader';
-import { eventFieldList } from '../../constants/eventFieldList';
+import { EVENT_FIELD_LIST } from '../../constants/eventFieldList';
+import FieldAssetArray from '../../components/event/FieldAssetArray';
+import Slider from 'react-slick';
 
 const SelectFieldPage = () => {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlide = EVENT_FIELD_LIST.length;
+
+  const handleBeforeChange = (oldIdx, newIdx) => {
+    setCurrentSlide(newIdx);
+  };
+
+  const CustomPrevArrow = (props) => {
+    const { onClick } = props;
+    return <PrevBtn onClick={onClick}></PrevBtn>;
+  };
+
+  const CustomNextArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <NextBtn onClick={onClick}>
+        <PrevBtnImg src="/assets/common/back-icon.svg" />
+      </NextBtn>
+    );
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    beforeChange: handleBeforeChange, // 슬라이드 변경 전 호출
+    centerMode: true, // 중앙에 카드가 오게 하여 겹치도록 설정
+    centerPadding: '15%', // 좌우 카드의 겹침 정도를 조정
+    appendDots: (dots: React.ReactNode) => (
+      <CustomDots>
+        <ul> {dots} </ul>
+      </CustomDots>
+    ),
+    dotsClass: 'dots_custom',
+  };
 
   return (
     <>
@@ -18,13 +57,11 @@ const SelectFieldPage = () => {
         />
       </WrapHeader>
       <WrapContent>
-        <WrapImage>
-          {eventFieldList.map((field) => (
-            <ScrollItem key={field.name}>
-              <FieldCard color={field.color} field={field.name} />
-            </ScrollItem>
+        <StyledSlider {...sliderSettings}>
+          {EVENT_FIELD_LIST.map((field) => (
+            <FieldAssetArray field={field}></FieldAssetArray>
           ))}
-        </WrapImage>
+        </StyledSlider>
         <StyledButton
           children="선택"
           onClick={() => navigate('/community/event/draw')}
@@ -49,36 +86,6 @@ const WrapContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const WrapImage = styled.div`
-  width: 100%;
-  height: 85%;
-  display: flex;
-  justify-content: flex-start; /* 스크롤 시작점 */
-  align-items: center;
-  position: relative;
-
-  overflow-x: auto;
-  white-space: nowrap;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* 스크롤바 색상 */
-    border-radius: 4px;
-  }
-`;
-
-const ScrollItem = styled.div`
-  display: inline-block; /* 가로로 나열되도록 설정 */
-  width: 200px; /* 각 아이템 너비 */
-  height: 200px;
-  margin-right: 1rem; /* 아이템 간격 */
-`;
 
 const StyledButton = styled.div`
   display: flex;
@@ -98,9 +105,104 @@ const StyledButton = styled.div`
 
   border-radius: 0.875rem;
 
-  margin: 0 auto;
+  position: fixed;
+  left: 50%;
+  bottom: 3rem;
+  transform: translateX(-50%); /* 가운데 정렬 */
 
   background-color: var(--Primary-dong);
+`;
+
+const PrevBtn = styled.div`
+  background-color: red;
+  width: 1;
+  height: 0%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+const NextBtn = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transform: rotate(180deg);
+`;
+const PrevBtnImg = styled.img`
+  color: #000;
+  text-align: center;
+  align-items: center;
+  font-family: NanumSquare;
+  font-size: 22px;
+  font-weight: 400;
+`;
+
+const StyledSlider = styled(Slider)`
+  margin-top: 10rem;
+
+  .slick-list {
+    //크기조정
+    width: 100%;
+    height: 120%;
+    margin: 0 auto;
+  }
+  .slick-track {
+    display: flex;
+    align-items: center;
+  }
+
+  .slick-loading .slick-list {
+    background: #fff url('./ajax-loader.gif') center center no-repeat;
+  }
+  .slick-prev:before,
+  .slick-next:before {
+    display: none;
+  }
+
+  .slick-center {
+    transform: scale(1.2); /* 중앙 카드에 대한 scale 적용 */
+    transition: transform 0.5s ease-in-out; /* 부드러운 scale 변화 */
+  }
+
+  .dots_custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dots_custom li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 5px;
+  }
+
+  .dots_custom li button {
+    border: none;
+    background: #fff;
+    color: transparent;
+    display: block;
+    height: 12px;
+    width: 12px;
+    border-radius: 100%;
+  }
+
+  .dots_custom li.slick-active button {
+    background-color: #a89172;
+  }
+`;
+
+const CustomDots = styled.div`
+  width: 100%;
+  position: relative;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default SelectFieldPage;

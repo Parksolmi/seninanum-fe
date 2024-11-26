@@ -15,7 +15,7 @@ const WrapCard = styled.div<{ $color }>`
   justify-content: center;
 
   width: 13rem;
-  height: 20rem;
+  height: 18rem;
   background-color: ${({ $color }) => $color};
   border-radius: 0.625rem;
 
@@ -31,7 +31,7 @@ const Line = styled.div`
   border: 4px solid #fff;
   border-radius: 0.625rem;
   width: 12rem;
-  height: 19rem;
+  height: 17rem;
 
   color: #fff;
   font-family: NanumSquare_ac;
