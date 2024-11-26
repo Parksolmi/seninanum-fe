@@ -8,6 +8,7 @@ interface CustomizedNariCardProps {
   age?: string;
   gender?: string;
   isExist?: boolean;
+  onClick?: () => void;
 }
 
 const CustomizedNariCard = ({
@@ -17,11 +18,12 @@ const CustomizedNariCard = ({
   age,
   gender,
   isExist = true,
+  onClick,
 }: CustomizedNariCardProps) => {
   return (
     <>
       {isExist ? (
-        <CardContainer>
+        <CardContainer onClick={onClick}>
           <span>{field}</span>
           <img src={profile} alt="프로필 사진" />
           <UserInfoArea>

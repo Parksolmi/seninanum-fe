@@ -7,7 +7,7 @@ import { instance } from '../../api/instance';
 import MatchCard from '../../components/match/MatchCard';
 
 interface RecruitCard {
-  recruitId: string;
+  recruitId?: string;
   title: string;
   method: string;
   region: string;
@@ -74,6 +74,11 @@ const MatchIndexPageNari = ({ userType }) => {
                   key={recruit.field}
                   field={recruit.field}
                   title={recruit.recommendation.title}
+                  onClick={() =>
+                    navigate(
+                      `/view/recruit/${recruit.recommendation.recruitId}`
+                    )
+                  }
                 />
               ) : (
                 <CustomizedDongCard

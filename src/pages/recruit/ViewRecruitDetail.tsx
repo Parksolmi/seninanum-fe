@@ -22,6 +22,7 @@ interface Recruit {
   price: number;
   priceType: string;
   gender: string;
+  profile: string;
   field: string;
   createdAt: string;
   hasApplied: number;
@@ -126,6 +127,7 @@ const ViewRecruitDetail = () => {
               <TitleText>작성자</TitleText>
               <BriefProfileCard
                 type="nari"
+                profile={recruit.profile}
                 gender={recruit.gender}
                 age={calcAge(recruit.birthyear)}
                 nickname={recruit.nickname}
