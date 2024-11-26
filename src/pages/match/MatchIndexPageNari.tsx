@@ -125,7 +125,7 @@ const MatchIndexPageNari = ({ userType }) => {
                 )}
             </CustomizedCardArea>
 
-            <FilterButton onClick={() => navigate('/match/field')} />
+            <FilterButton onClick={() => navigate('/match/filter/nari')} />
             <WrapDongCards>
               {profiles.length > 0 ? (
                 profiles.map((profileItem) => (
