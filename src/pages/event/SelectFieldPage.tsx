@@ -114,6 +114,8 @@ const StyledButton = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
+  margin: 2rem 0;
+
   .slick-list {
     //크기조정
     width: 100%;
