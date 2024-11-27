@@ -118,8 +118,6 @@ const StyledButton = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
-  margin-top: 3rem;
-
   .slick-list {
     //크기조정
     width: 100%;
@@ -145,6 +143,7 @@ const StyledSlider = styled(Slider)`
   }
 
   .dots_custom {
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -161,8 +160,8 @@ const StyledSlider = styled(Slider)`
     background: #fff;
     color: transparent;
     display: block;
-    height: 12px;
-    width: 12px;
+    min-height: 10px;
+    min-width: 10px;
     border-radius: 100%;
   }
 
