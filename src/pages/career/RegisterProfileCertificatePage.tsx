@@ -41,7 +41,7 @@ const RegisterProfileCertificatePage = () => {
     // FormData 객체 생성
     const formData = new FormData();
     formData.append('pdfFile', file);
-    formData.append('profileId', careerProfileId);
+    formData.append('careerProfileId', careerProfileId);
 
     try {
       setButtonDisabled(true); //버튼 연타 방지
