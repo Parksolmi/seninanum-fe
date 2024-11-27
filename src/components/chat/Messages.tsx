@@ -9,7 +9,14 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'LEAVE' | 'COME' | 'SCHEDULE' | 'IMAGE';
+  senderType:
+    | 'USER'
+    | 'LEAVE'
+    | 'COME'
+    | 'SCHEDULE'
+    | 'IMAGE'
+    | 'PAY_REQUEST'
+    | 'PAY_RESPONSE';
   senderName?: string; // senderName은 optional로 설정
 }
 interface Profile {
@@ -29,6 +36,7 @@ interface MessagesProps {
   onIntersect: () => void;
   setIsSend: (boolean) => void;
   viewImage: (string) => void;
+  sendPayResponseMessage;
 }
 
 const Messages = memo(
@@ -42,6 +50,7 @@ const Messages = memo(
     onIntersect,
     setIsSend,
     viewImage,
+    sendPayResponseMessage,
   }: MessagesProps) => {
     const messageRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef(null); // Observer를 위한 ref
@@ -103,6 +112,7 @@ const Messages = memo(
                       isSentByMe={message.senderId === myId}
                       opponent={opponent}
                       viewImage={viewImage}
+                      sendPayResponseMessage={sendPayResponseMessage}
                     />
                   </MessageWrapper>
                 ))}

@@ -4,8 +4,8 @@ import Button from './Button';
 
 interface ModalProps {
   userType: string;
-  title: string;
-  content: string;
+  title: string | React.ReactNode;
+  content: string | React.ReactNode;
   cancelText: string;
   confirmText: string;
   onConfirm: (id?: number) => void;

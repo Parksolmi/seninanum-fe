@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { parseTime } from '../../utils/formatTime';
 import AlertSchedule from './AlertSchedule';
+import PayRequest from './PayRequest';
+import PayResponse from './PayResponse';
 
 interface MessageType {
   chatMessageId: number;
@@ -10,7 +12,14 @@ interface MessageType {
   chatMessage: string;
   unreadCount: number;
   createdAt: string;
-  senderType: 'USER' | 'LEAVE' | 'COME' | 'SCHEDULE' | 'IMAGE';
+  senderType:
+    | 'USER'
+    | 'LEAVE'
+    | 'COME'
+    | 'SCHEDULE'
+    | 'IMAGE'
+    | 'PAY_REQUEST'
+    | 'PAY_RESPONSE';
   senderName?: string;
 }
 interface Profile {
@@ -25,10 +34,17 @@ interface MessageProps {
   isSentByMe: boolean;
   opponent: Profile;
   viewImage: (string) => void;
+  sendPayResponseMessage;
 }
 
 const Message = memo(
-  ({ message, isSentByMe, opponent, viewImage }: MessageProps) => {
+  ({
+    message,
+    isSentByMe,
+    opponent,
+    viewImage,
+    sendPayResponseMessage,
+  }: MessageProps) => {
     const navigate = useNavigate();
 
     switch (message.senderType) {
@@ -139,6 +155,102 @@ const Message = memo(
                       alt="이미지전송"
                       onClick={() => viewImage(message.chatMessage)}
                     />
+                    <div className="read">
+                      {message.unreadCount !== 0 ? message.unreadCount : ''}
+                    </div>
+                  </div>
+                  <div className="time">{parseTime(message.createdAt)}</div>
+                </div>
+              </div>
+            </div>
+          </MessageByOther>
+        );
+      case 'PAY_REQUEST':
+        return isSentByMe ? (
+          <MessageByMe $userType={opponent.userType}>
+            <div className="message-container">
+              <div className="wrapper">
+                <div className="wrapper-top">
+                  <div className="read">
+                    {message.unreadCount !== 0 ? message.unreadCount : ''}
+                  </div>
+                  <PayRequest
+                    isSentByMe={isSentByMe}
+                    pay={message.chatMessage}
+                    onClick={() => sendPayResponseMessage(message.chatMessage)}
+                  />
+                </div>
+                <div className="time">{parseTime(message.createdAt)}</div>
+              </div>
+            </div>
+          </MessageByMe>
+        ) : (
+          <MessageByOther>
+            <WrapProfile
+              onClick={() =>
+                navigate(`/view/nariprofile/${opponent.profileId}`)
+              }
+            >
+              <img src={opponent.profile} alt="profile" />
+            </WrapProfile>
+            <div className="message-section">
+              <div className="nickname">
+                {opponent.nickname}{' '}
+                {opponent.userType === 'dong' ? '동백' : '나리'}
+              </div>
+              <div className="message-container">
+                <div className="wrapper">
+                  <div className="wrapper-top">
+                    <PayRequest
+                      isSentByMe={isSentByMe}
+                      pay={message.chatMessage}
+                      onClick={() =>
+                        sendPayResponseMessage(message.chatMessage)
+                      }
+                    />
+                    <div className="read">
+                      {message.unreadCount !== 0 ? message.unreadCount : ''}
+                    </div>
+                  </div>
+                  <div className="time">{parseTime(message.createdAt)}</div>
+                </div>
+              </div>
+            </div>
+          </MessageByOther>
+        );
+      case 'PAY_RESPONSE':
+        return isSentByMe ? (
+          <MessageByMe $userType={opponent.userType}>
+            <div className="message-container">
+              <div className="wrapper">
+                <div className="wrapper-top">
+                  <div className="read">
+                    {message.unreadCount !== 0 ? message.unreadCount : ''}
+                  </div>
+                  <PayResponse pay={message.chatMessage} />
+                </div>
+                <div className="time">{parseTime(message.createdAt)}</div>
+              </div>
+            </div>
+          </MessageByMe>
+        ) : (
+          <MessageByOther>
+            <WrapProfile
+              onClick={() =>
+                navigate(`/view/nariprofile/${opponent.profileId}`)
+              }
+            >
+              <img src={opponent.profile} alt="profile" />
+            </WrapProfile>
+            <div className="message-section">
+              <div className="nickname">
+                {opponent.nickname}{' '}
+                {opponent.userType === 'dong' ? '동백' : '나리'}
+              </div>
+              <div className="message-container">
+                <div className="wrapper">
+                  <div className="wrapper-top">
+                    <PayResponse pay={message.chatMessage} />
                     <div className="read">
                       {message.unreadCount !== 0 ? message.unreadCount : ''}
                     </div>
@@ -309,6 +421,11 @@ const MessageByOther = styled.div`
           display: flex;
           flex-direction: row;
           align-items: end;
+
+          .message-img {
+            width: 13rem;
+            border-radius: 1rem;
+          }
 
           > .message {
             width: fit-content;

@@ -116,15 +116,20 @@ const ChatPage = () => {
   );
 
   // 메시지 전송
-  const { sendImageMessage, sendTextMessage, sendScheduleMessage } =
-    useSendMessage(
-      draftMessage,
-      setDraftMessage,
-      client,
-      roomId,
-      profile.memberProfile.profileId,
-      profile.opponentProfile.profileId
-    );
+  const {
+    sendImageMessage,
+    sendTextMessage,
+    sendScheduleMessage,
+    sendPayRequestMessage,
+    sendPayResponseMessage,
+  } = useSendMessage(
+    draftMessage,
+    setDraftMessage,
+    client,
+    roomId,
+    profile.memberProfile.profileId,
+    profile.opponentProfile.profileId
+  );
 
   const sendMessage = async () => {
     if (!draftMessage.trim() && !previewUrl) return;
@@ -401,10 +406,12 @@ const ChatPage = () => {
                     isSend={isSend}
                     setIsSend={setIsSend}
                     viewImage={viewImage}
+                    sendPayResponseMessage={sendPayResponseMessage}
                   />
                 </WrapChat>
                 {roomStatus === 'ACTIVE' && (
                   <MessageInput
+                    userType={profile.memberProfile.userType}
                     value={draftMessage}
                     onChangeHandler={handleChangeMessage}
                     submitHandler={sendMessage}
@@ -415,6 +422,7 @@ const ChatPage = () => {
                     previewUrl={previewUrl}
                     setPreviewUrl={setPreviewUrl}
                     setImageLink={setImageLink}
+                    sendPayRequestMessage={sendPayRequestMessage}
                   />
                 )}
               </>
@@ -489,6 +497,7 @@ const Split = styled.div`
 const BackButton = styled.div`
   img {
     width: 0.8rem;
+    margin-right: 1rem;
   }
 `;
 

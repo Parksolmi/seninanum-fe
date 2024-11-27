@@ -68,6 +68,44 @@ export const useSendMessage = (
     }
   };
 
+  // 송금 요청 메세지
+  const sendPayRequestMessage = (pay) => {
+    try {
+      const binaryData = new TextEncoder().encode(pay);
+      client.publish({
+        destination: `/app/chat/${roomId}`,
+        body: JSON.stringify({
+          chatMessage: binaryData,
+          senderId: memberId,
+          receiverId: opponentId,
+          senderType: 'PAY_REQUEST',
+        }),
+        headers: { 'content-type': 'application/octet-stream' },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 송금 받음 메세지
+  const sendPayResponseMessage = (pay) => {
+    try {
+      const binaryData = new TextEncoder().encode(pay);
+      client.publish({
+        destination: `/app/chat/${roomId}`,
+        body: JSON.stringify({
+          chatMessage: binaryData,
+          senderId: memberId,
+          receiverId: opponentId,
+          senderType: 'PAY_RESPONSE',
+        }),
+        headers: { 'content-type': 'application/octet-stream' },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // // 읽음 신호 메세지
   // const sendComeInMessage = () => {
   //   try {
@@ -85,5 +123,11 @@ export const useSendMessage = (
   //   }
   // };
 
-  return { sendImageMessage, sendTextMessage, sendScheduleMessage };
+  return {
+    sendImageMessage,
+    sendTextMessage,
+    sendScheduleMessage,
+    sendPayRequestMessage,
+    sendPayResponseMessage,
+  };
 };

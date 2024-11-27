@@ -40,6 +40,10 @@ const ChatIndexPage: React.FC = () => {
             return { ...chat, lastMessage: '약속이 공유되었어요.' };
           } else if (chat.senderType === 'IMAGE') {
             return { ...chat, lastMessage: '이미지를 전송하였습니다.' };
+          } else if (chat.senderType === 'PAY_REQUEST') {
+            return { ...chat, lastMessage: '송금을 요청하였습니다.' };
+          } else if (chat.senderType === 'PAY_RESPONSE') {
+            return { ...chat, lastMessage: '송금요청에 응답하였습니다.' };
           }
           return chat;
         });
@@ -101,7 +105,9 @@ const ChatIndexPage: React.FC = () => {
                         ) : (
                           (chat.senderType === 'USER' ||
                             chat.senderType === 'SCHEDULE' ||
-                            chat.senderType === 'IMAGE') && (
+                            chat.senderType === 'IMAGE' ||
+                            chat.senderType === 'PAY_REQUEST' ||
+                            chat.senderType === 'PAY_RESPONSE') && (
                             <Message>{chat.lastMessage}</Message>
                           )
                         )}

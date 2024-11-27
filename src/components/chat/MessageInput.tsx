@@ -3,6 +3,8 @@ import { MenuToggle } from './MenuToggle';
 import React, { useRef } from 'react';
 import { scaleImage } from '../../utils/scaleImage';
 import { instance } from '../../api/instance';
+import useModal from '../../hooks/useModal';
+import PayModal from '../common/PayModal';
 
 interface MessageInputProps {
   value;
@@ -15,7 +17,10 @@ interface MessageInputProps {
   previewUrl: any;
   setPreviewUrl: (any) => void;
   setImageLink: (string) => void;
+  userType: string;
+  sendPayRequestMessage;
 }
+
 const MessageInput = ({
   value,
   onChangeHandler,
@@ -27,6 +32,8 @@ const MessageInput = ({
   previewUrl,
   setPreviewUrl,
   setImageLink,
+  userType,
+  sendPayRequestMessage,
 }: MessageInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,6 +82,22 @@ const MessageInput = ({
   const deleteImage = () => {
     setPreviewUrl(null);
   };
+
+  // 모달
+  const { openModal: openRequestPayModal, closeModal: closeRequestPayModal } =
+    useModal((id) => (
+      <PayModal
+        userType={userType}
+        title={'송금요청'}
+        confirmText={'요청하기'}
+        onConfirm={(value) => {
+          sendPayRequestMessage(value); // input 값을 전달
+          closeRequestPayModal();
+          setIsMenuOpen(false);
+        }}
+        onCancel={closeRequestPayModal}
+      />
+    ));
 
   return (
     <>
@@ -128,11 +151,7 @@ const MessageInput = ({
             <p>사진</p>
           </div>
           <div>
-            <WrapIcon
-              onClick={() => {
-                alert('서비스 준비중입니다!');
-              }}
-            >
+            <WrapIcon onClick={openRequestPayModal}>
               <img src="/assets/chat/won-icon.png" alt="송금하기" />
             </WrapIcon>
             <p>송금</p>
