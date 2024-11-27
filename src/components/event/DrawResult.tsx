@@ -5,7 +5,7 @@ import ResultCardBack from './ResultCardBack';
 import { motion } from 'framer-motion';
 import ResultCardFront from './ResultCardFront';
 
-const DrawResult = ({ color, name }) => {
+const DrawResult = ({ selected }) => {
   const navigate = useNavigate();
 
   const [flip, setFlip] = useState(true);
@@ -13,7 +13,7 @@ const DrawResult = ({ color, name }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setFlip(false);
-    }, 500);
+    }, 1000);
 
     // 컴포넌트 언마운트 시 타이머 클리어
     return () => clearTimeout(timer);
@@ -37,7 +37,7 @@ const DrawResult = ({ color, name }) => {
               animate={{ rotateY: flip ? 0 : 180 }}
               className="front"
             >
-              <ResultCardFront color={color} field={name} />
+              <ResultCardFront color={selected.color} name={selected.name} />
             </motion.div>
             <motion.div
               initial={{ rotateY: 180 }}
@@ -46,7 +46,12 @@ const DrawResult = ({ color, name }) => {
               transition={{ duration: 0.7 }}
               className="back"
             >
-              <ResultCardBack color={color} field={name} />
+              <ResultCardBack
+                color={selected.color}
+                name={selected.name}
+                nickname={selected.content[0].nickname}
+                knowhow={selected.content[0].knowhow}
+              />
             </motion.div>
           </motion.div>
         </motion.div>

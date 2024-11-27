@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ResultCardFront = ({ color, field }) => {
+const ResultCardFront = ({ color, name }) => {
   return (
     <>
       <WrapCard $color={color}>
-        <Line>{field}</Line>
+        <Line>{name}</Line>
       </WrapCard>
     </>
   );

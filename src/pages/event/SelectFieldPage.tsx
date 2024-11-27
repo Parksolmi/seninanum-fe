@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ExitHeader from '../../components/header/ExitHeader';
 import { EVENT_FIELD_LIST } from '../../constants/eventFieldList';
 import FieldAssetArray from '../../components/event/FieldAssetArray';
 import Slider from 'react-slick';
+import { useEventSelectedField } from '../../store/eventSelectField';
 
 const SelectFieldPage = () => {
   const navigate = useNavigate();
+  const { setSelectedIndex } = useEventSelectedField();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const handleBeforeChange = (oldIdx, newIdx) => {
+    setCurrentSlide(newIdx);
+  };
+
+  const handleSelectField = () => {
+    setSelectedIndex(currentSlide);
+    navigate('/community/event/draw');
+  };
 
   const sliderSettings = {
     dots: true,
@@ -16,8 +28,9 @@ const SelectFieldPage = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
-    centerMode: true, // 중앙에 카드가 오게 하여 겹치도록 설정
-    centerPadding: '15%', // 좌우 카드의 겹침 정도를 조정
+    centerMode: true,
+    centerPadding: '15%',
+    beforeChange: handleBeforeChange, // 슬라이드 변경 전 호출
     appendDots: (dots: React.ReactNode) => (
       <CustomDots>
         <ul> {dots} </ul>
@@ -45,10 +58,7 @@ const SelectFieldPage = () => {
             <FieldAssetArray field={field}></FieldAssetArray>
           ))}
         </StyledSlider>
-        <StyledButton
-          children="선택"
-          onClick={() => navigate('/community/event/draw')}
-        />
+        <StyledButton children="선택" onClick={handleSelectField} />
       </WrapContent>
     </>
   );

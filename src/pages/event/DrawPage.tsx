@@ -1,46 +1,100 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import DrawResult from '../../components/event/DrawResult';
 import ExitHeader from '../../components/header/ExitHeader';
-// import { SyncLoader } from 'react-spinners';
+import Lottie from 'react-lottie-player';
+import drawAnimation from '../../components/lottie/drawAnimation.json';
+import { motion } from 'framer-motion';
+import DrawResult from '../../components/event/DrawResult';
+import { useEventSelectedField } from '../../store/eventSelectField';
+import { EVENT_FIELD_LIST } from '../../constants/eventFieldList';
 
 const DrawPage = () => {
   const navigate = useNavigate();
+
+  const { selectedIndex } = useEventSelectedField();
   const [isResultShow, setIsResultShow] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showResultComponent, setShowResultComponent] = useState(false);
+
+  const handleDrawButton = () => {
+    setIsPlaying(true);
+  };
+
+  const handleCompleteAnimation = () => {
+    setIsResultShow(true);
+  };
 
   return (
     <>
-      {isResultShow ? (
-        <DrawResult color="#E8334A" name="교육" />
-      ) : (
-        <>
-          <PrevButton onClick={() => navigate(-1)}>
-            <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
-          </PrevButton>
-          <WrapExitHeader>
-            <ExitHeader
-              navigateTo="/community"
-              userType={'dong'}
-              backgroundColor="#f0e0c9"
-              content=""
-            />
-          </WrapExitHeader>
-          <WrapContent>
-            <WrapImage>
-              <Shadow />
-              <MachineImg src="/assets/event/drawMachine.png" alt="뽑기 기계" />
-            </WrapImage>
-            <StyledButton
-              children="노하우 뽑기"
-              onClick={() => setIsResultShow(true)}
-            />
-          </WrapContent>
-        </>
-      )}{' '}
+      {isResultShow && (
+        <ResultBall
+          initial={{ scale: 0 }}
+          animate={{ rotate: 360, scale: 1 }}
+          transition={{
+            type: 'spring',
+            stiffness: 260,
+            damping: 20,
+          }}
+          onAnimationComplete={() => setShowResultComponent(true)}
+        >
+          <img
+            className="ball"
+            src={`/assets/event/${EVENT_FIELD_LIST[selectedIndex].name}.png`}
+            alt="공"
+          />
+        </ResultBall>
+      )}
+      {showResultComponent && (
+        <DrawResult selected={EVENT_FIELD_LIST[selectedIndex]} />
+      )}
+      <>
+        <PrevButton onClick={() => navigate(-1)}>
+          <img src={'/assets/common/back-icon.svg'} alt="뒤로가기" />
+        </PrevButton>
+        <WrapExitHeader>
+          <ExitHeader
+            navigateTo="/community"
+            userType={'dong'}
+            backgroundColor="#f0e0c9"
+            content=""
+          />
+        </WrapExitHeader>
+        <WrapContent>
+          <WrapImage>
+            <Shadow />
+            {/* <MachineImg src="/assets/event/drawMachine.png" alt="뽑기 기계" /> */}
+            <WrapLottie>
+              <Lottie
+                animationData={drawAnimation}
+                play={isPlaying} // 재생 상태에 따라 동작
+                style={{ width: 300, height: 500 }}
+                loop={false}
+                onComplete={handleCompleteAnimation}
+              />
+            </WrapLottie>
+          </WrapImage>
+          <StyledButton children="노하우 뽑기" onClick={handleDrawButton} />
+        </WrapContent>
+      </>
     </>
   );
 };
+
+const ResultBall = styled(motion.div)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  img {
+    width: 250px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
 
 const WrapExitHeader = styled.div`
   position: absolute;
@@ -86,8 +140,11 @@ const Shadow = styled.div`
   z-index: 0;
 `;
 
-const MachineImg = styled.img`
+const WrapLottie = styled.div`
   width: 100%;
+
+  display: flex;
+  justify-content: center;
 
   position: relative;
   z-index: 9;

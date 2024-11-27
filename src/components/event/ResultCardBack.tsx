@@ -3,20 +3,20 @@ import styled from 'styled-components';
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
 
-const ResultCardBack = ({ color, field }) => {
+const ResultCardBack = ({ color, name, nickname, knowhow }) => {
   const { width, height } = useWindowSize();
 
   return (
     <>
       <Confetti width={width} height={height} recycle={false} />
       <WrapCard $color={color}>
-        <Line>{field}</Line>
+        <Line>{name}</Line>
         <ProfileSection>
           <WrapImg $color={color}>
             <img src="/assets/event/profile.png" alt="프로필 사진" />
           </WrapImg>
-          <h1 className="nickname">000 동백</h1>
-          <p className="introduction">40년 집밥 마스터의 자취생 건강 레시피</p>
+          <h1 className="nickname">{nickname} 동백</h1>
+          <p className="introduction">{knowhow}</p>
         </ProfileSection>
       </WrapCard>
     </>
