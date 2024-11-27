@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface BriefProfileCardProps {
-  // profile: string;
+  profile: string;
   type: string;
   nickname?: string;
   // age: string;
@@ -14,7 +14,7 @@ interface BriefProfileCardProps {
 }
 
 const BriefProfileCard = ({
-  // profile,
+  profile,
   type,
   nickname,
   // age,
@@ -27,7 +27,7 @@ const BriefProfileCard = ({
   return (
     <WrapProfile onClick={onClick}>
       <ProfileGroup>
-        <ProfileImg src={'/assets/common/profile.png'} alt="profile" />
+        <ProfileImg src={profile} alt="profile" />
         <ProfileInfo>
           <span>
             {nickname} {type === 'dong' ? '동백' : '나리'}{' '}
@@ -65,6 +65,8 @@ const ProfileGroup = styled.div`
 const ProfileImg = styled.img`
   border-radius: 50%;
   width: 3.4375rem;
+  height: 3.4375rem;
+  object-fit: cover;
 `;
 const ProfileInfo = styled.div`
   display: flex;

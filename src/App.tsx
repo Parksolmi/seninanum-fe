@@ -46,6 +46,10 @@ import WriteAdviceBoard from './pages/community/WriteAdviceBoard';
 import AdminLoginPage from './pages/signup/AdminLoginPage';
 import DrawPage from './pages/event/DrawPage';
 import SelectFieldPage from './pages/event/SelectFieldPage';
+import ViewMyReviewPage from './pages/review/ViewMyReviewPage';
+import WriteReviewPage from './pages/review/WriteReviewPage';
+import RegisterNewReview from './pages/review/RegisterNewReview';
+import MatchFilterDongPage from './pages/filter/MatchFilterDongPage';
 
 const App: React.FC = () => {
   return (
@@ -106,7 +110,9 @@ const App: React.FC = () => {
           element={<RegisterProfileCertificatePage />}
         />
         {/* 매칭 상세조건 조회 */}
-        <Route path="/match/field" element={<MatchFilterNariPage />} />
+        <Route path="/match/filter/nari" element={<MatchFilterNariPage />} />
+        <Route path="/match/filter/dong" element={<MatchFilterDongPage />} />
+
         {/* 프로필 조회 */}
         <Route
           path="/view/dongprofile/:profileId" //수정 필요
@@ -150,7 +156,13 @@ const App: React.FC = () => {
         />
         <Route path="/write/freeboard" element={<WriteFreeBoard />} />
         <Route path="/write/adviceboard" element={<WriteAdviceBoard />} />
-
+        {/* 리뷰 */}
+        <Route path="/view/review" element={<ViewMyReviewPage />} />
+        <Route path="/write/review" element={<WriteReviewPage />} />
+        <Route
+          path="/register/review/:scheduleId/:targetId"
+          element={<RegisterNewReview />}
+        />
         <Route element={<NavLayout />}>
           <Route path="/home" element={<HomeIndexPage />} />
           <Route path="/match" element={<MatchIndexPage />} />

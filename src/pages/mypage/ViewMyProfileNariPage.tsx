@@ -12,6 +12,7 @@ import { useFetchMyProfile } from '../../hooks/useFetchProfile';
 import { instance } from '../../api/instance';
 import { SyncLoader } from 'react-spinners';
 import { useQueryClient } from '@tanstack/react-query';
+import useFetchReviews from '../../hooks/useFetchReviews';
 
 interface Recruit {
   recruitId: number;
@@ -25,6 +26,7 @@ interface Recruit {
 const ViewMyProfileNariPage = () => {
   const navigate = useNavigate();
   const { data: user, isLoading } = useFetchMyProfile();
+  const { reviews, ratingCounts, totalReviews } = useFetchReviews();
 
   const queryClient = useQueryClient();
 
@@ -70,29 +72,45 @@ const ViewMyProfileNariPage = () => {
       </WrapContent>
 
       <SplitLine />
-      <WrapContentSingle>
-        <TitleText>
-          리뷰 <span>2</span>
-        </TitleText>
+      <WrapReviewSingle>
+        <MoreIcon>
+          <TitleText>
+            리뷰 <span>{totalReviews}</span>
+          </TitleText>
+          <img
+            src="/assets/common/right-arrow.svg"
+            alt=""
+            onClick={() => navigate('/view/review')}
+          />
+        </MoreIcon>
+
         <ReviewRatingBarWrapper>
           <ReviewRatingBar
             userType="nari"
             title="활동 매너"
-            superGreat="6"
-            good="0"
-            notGood="0"
+            superGreat={ratingCounts.rating1[2]}
+            good={ratingCounts.rating1[1]}
+            notGood={ratingCounts.rating1[0]}
           />
           <ReviewRatingBar
             userType="nari"
             title="협의 사항 준수"
-            superGreat="6"
-            good="0"
-            notGood="0"
+            superGreat={ratingCounts.rating2[2]}
+            good={ratingCounts.rating2[1]}
+            notGood={ratingCounts.rating2[0]}
           />
         </ReviewRatingBarWrapper>
 
-        <ReviewSummaryCard />
-      </WrapContentSingle>
+        {/* 리뷰 3개만 렌더링 */}
+        {reviews.slice(0, 3).map((review) => (
+          <ReviewSummaryCard
+            key={review.reviewId}
+            profile={review.reviewerProfile || '/assets/common/profile.png'}
+            nickname={review.reviewerNickname || '익명'}
+            content={review.content || '리뷰 내용 없음'}
+          />
+        ))}
+      </WrapReviewSingle>
       <SplitLine />
 
       <WrapContentSingle>
@@ -145,12 +163,30 @@ const ReviewRatingBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 const SplitLine = styled.div`
   background: #ebeceb;
   height: 0.8rem;
   margin: 1.3rem 0;
+`;
+
+const WrapReviewSingle = styled.div`
+  padding: 0rem 1.1rem;
+`;
+
+const MoreIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  img {
+    width: 0.5375rem;
+    height: 0.9125rem;
+    flex-shrink: 0;
+  }
 `;
 
 const WrapContentSingle = styled.div`

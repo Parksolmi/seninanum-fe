@@ -5,17 +5,19 @@ interface CustomizedDongCardProps {
   field: string;
   title?: string;
   isExist?: boolean;
+  onClick?: () => void;
 }
 
 const CustomizedDongCard = ({
   field,
   title,
   isExist = true,
+  onClick,
 }: CustomizedDongCardProps) => {
   return (
     <>
       {isExist ? (
-        <CardContainer>
+        <CardContainer onClick={onClick}>
           <span>{field}</span>
           <UserInfoArea className="title">{title}</UserInfoArea>
         </CardContainer>

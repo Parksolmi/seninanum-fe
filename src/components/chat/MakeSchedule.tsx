@@ -199,6 +199,7 @@ const SingleCategorytBox = styled.div`
 const SingleInputArea = styled.div`
   display: flex;
   gap: 1rem;
+
   p {
     color: #414040;
     text-align: right;
@@ -213,6 +214,7 @@ const SingleInputArea = styled.div`
   input {
     all: unset;
     box-sizing: border-box;
+    width: 180px;
     color: #414040;
     text-align: right;
     font-family: NanumSquare;

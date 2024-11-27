@@ -129,6 +129,7 @@ const ViewMyRecruitDetail = () => {
                   <BriefProfileCard
                     key={applicant.profileId}
                     type="dong"
+                    profile={applicant.profile}
                     gender={applicant.gender}
                     age={calcAge(applicant.birthyear)}
                     nickname={applicant.nickname}

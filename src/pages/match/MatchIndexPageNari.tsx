@@ -109,6 +109,11 @@ const MatchIndexPageNari = ({ userType }) => {
                       nickname={matchDong.recommendation.nickname}
                       age={calcAge(matchDong.recommendation.birthyear)}
                       gender={matchDong.recommendation.gender}
+                      onClick={() =>
+                        navigate(
+                          `/view/dongprofile/${matchDong.recommendation.profileId}`
+                        )
+                      }
                     />
                   ) : (
                     <CustomizedNariCard
@@ -120,7 +125,7 @@ const MatchIndexPageNari = ({ userType }) => {
                 )}
             </CustomizedCardArea>
 
-            <FilterButton onClick={() => navigate('/match/field')} />
+            <FilterButton onClick={() => navigate('/match/filter/nari')} />
             <WrapDongCards>
               {profiles.length > 0 ? (
                 profiles.map((profileItem) => (
