@@ -108,7 +108,7 @@ const StyledButton = styled.div`
   position: fixed;
   left: 50%;
   bottom: 3rem;
-  transform: translateX(-50%); /* 가운데 정렬 */
+  transform: translateX(-50%);
 
   background-color: var(--Primary-dong);
 `;
@@ -147,6 +147,7 @@ const StyledSlider = styled(Slider)`
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
+    margin-top: 1rem;
   }
 
   /* dots_custom 클래스 내 li 요소에 강제 적용 */
