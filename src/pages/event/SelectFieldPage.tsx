@@ -31,11 +31,7 @@ const SelectFieldPage = () => {
     centerMode: true,
     centerPadding: '15%',
     beforeChange: handleBeforeChange, // 슬라이드 변경 전 호출
-    appendDots: (dots: React.ReactNode) => (
-      <CustomDots>
-        <ul> {dots} </ul>
-      </CustomDots>
-    ),
+    appendDots: (dots: React.ReactNode) => <CustomDots>{dots}</CustomDots>,
     dotsClass: 'dots_custom',
   };
 
@@ -146,40 +142,45 @@ const StyledSlider = styled(Slider)`
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap; /* 줄바꿈 방지 */
-    gap: 5px; /* dot 간 간격 */
-    overflow: hidden; /* 넘치는 부분 숨기기 */
-    width: 100%; /* 부모 컨테이너 크기 강제 지정 */
-    max-width: 300px; /* 최대 크기 설정 (필요 시 조정) */
-    margin: 0 auto; /* 중앙 정렬 */
+    flex-wrap: nowrap;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
   }
 
+  /* dots_custom 클래스 내 li 요소에 강제 적용 */
   .dots_custom li {
-    list-style: none;
-    display: inline-block;
-    margin: 0 5px;
+    list-style: none !important;
+    display: inline-block !important;
+    width: 15px !important;
+    height: 15px !important;
+    margin: 0 5px !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   .dots_custom li button {
-    border: none;
-    background: #fff;
-    color: transparent;
-    display: block;
-    height: 10px;
-    width: 10px;
-    aspect-ratio: 1; /* 정원 비율 유지 */
-    border-radius: 50%;
+    border: none !important;
+    background: #ffffff !important;
+    color: transparent !important;
+    width: 10px !important;
+    height: 10px !important;
+    aspect-ratio: 1 !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .dots_custom li.slick-active button {
-    background-color: #a89172;
+    background-color: #a89172 !important;
   }
 `;
 
 const CustomDots = styled.div`
   width: 100%;
   position: relative;
-  margin-top: 0.5rem;
+  width: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
