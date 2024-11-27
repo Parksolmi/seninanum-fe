@@ -160,9 +160,9 @@ const StyledSlider = styled(Slider)`
     background: #fff;
     color: transparent;
     display: block;
-    min-height: 10px;
-    min-width: 10px;
-    border-radius: 100%;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
   }
 
   .dots_custom li.slick-active button {
