@@ -143,10 +143,15 @@ const StyledSlider = styled(Slider)`
   }
 
   .dots_custom {
-    flex-wrap: nowrap; /* 줄바꿈 방지 */
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+    gap: 5px; /* dot 간 간격 */
+    overflow: hidden; /* 넘치는 부분 숨기기 */
+    width: 100%; /* 부모 컨테이너 크기 강제 지정 */
+    max-width: 300px; /* 최대 크기 설정 (필요 시 조정) */
+    margin: 0 auto; /* 중앙 정렬 */
   }
 
   .dots_custom li {
@@ -162,6 +167,7 @@ const StyledSlider = styled(Slider)`
     display: block;
     height: 10px;
     width: 10px;
+    aspect-ratio: 1; /* 정원 비율 유지 */
     border-radius: 50%;
   }
 
