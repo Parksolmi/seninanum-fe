@@ -93,24 +93,4 @@ const WrapText = styled.div`
   }
 `;
 
-const Button = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 6rem;
-  height: 2.57719rem;
-  flex-shrink: 0;
-  border-radius: 1.25rem;
-  border: 2px solid var(--Dong-main, #ff314a);
-  background: #fff;
-
-  color: var(--Dong-main, #ff314a);
-  font-family: NanumSquare;
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
-`;
-
 export default PayResponse;
