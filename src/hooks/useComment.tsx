@@ -8,6 +8,7 @@ interface Comment {
   isSecret: boolean;
   parentId: number | null;
   isPostOwner: boolean;
+  isMyComment: boolean;
   likes: number;
   liked: number;
   createdAt: string;
@@ -46,6 +47,18 @@ const useComment = (boardType, postId) => {
     }
   };
 
-  return { comments, fetchComments, addComment };
+  // 댓글 삭제
+  const deleteComment = async (commentId: number) => {
+    try {
+      await instance.delete(
+        `/board/${boardType}/${postId}/comment/${commentId}`
+      );
+      await fetchComments();
+    } catch (error) {
+      console.error('댓글 삭제에 실패했습니다.', error);
+    }
+  };
+
+  return { comments, fetchComments, addComment, deleteComment };
 };
 export default useComment;

@@ -8,6 +8,8 @@ interface PrevHeaderProps {
   onModify?: () => void;
   onClick?: () => void;
   isLine?: boolean;
+  isCommunity?: boolean;
+  onDelete?: () => void;
 }
 
 const PrevHeader = ({
@@ -16,6 +18,8 @@ const PrevHeader = ({
   onModify,
   onClick,
   isLine,
+  isCommunity,
+  onDelete,
 }: PrevHeaderProps) => {
   const navigate = useNavigate();
 
@@ -24,6 +28,13 @@ const PrevHeader = ({
       navigate(-1); // 브라우저 이전 페이지로 이동
     } else if (navigateTo) {
       navigate(navigateTo); // 그 외 다른 경로로 이동
+    }
+  };
+
+  const handleToggleDelete = (e: React.MouseEvent) => {
+    const deleteButton = (e.target as HTMLElement).nextElementSibling;
+    if (deleteButton) {
+      deleteButton.classList.toggle('active');
     }
   };
 
@@ -38,6 +49,19 @@ const PrevHeader = ({
         <TitleText onClick={onClick}>{title}</TitleText>
       </TitleWrapper>
       {onModify && <ModifyText onClick={onModify}>수정</ModifyText>}
+      {isCommunity && (
+        <>
+          <img
+            className="hamburger"
+            src="/assets/community/burger-button-big.svg"
+            alt="햄버거버튼"
+            onClick={handleToggleDelete}
+          />
+          <div className="del" onClick={onDelete}>
+            삭제하기
+          </div>
+        </>
+      )}
     </WrapHeader>
   );
 };
@@ -54,6 +78,39 @@ const WrapHeader = styled.div<WrapHeaderProp>`
   ${(props) =>
     props.$isLine ? 'border-bottom: solid 1px var(--Base-Gray2, #ebeceb);' : ''}
   padding: 0 1.1rem 1.3rem 1.1rem;
+
+  .hamburger {
+    display: block;
+    margin-bottom: auto;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1rem;
+    margin-left: 0.3rem;
+  }
+
+  .del {
+    display: none;
+    z-index: 10;
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    width: 8rem;
+    height: 2.5rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 2.5rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: '#000';
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .del.active {
+    display: block;
+  }
 `;
 
 const BackButton = styled.div`

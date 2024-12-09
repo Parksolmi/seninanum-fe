@@ -18,6 +18,7 @@ interface freeBoard {
   createdAt: string;
   userType: string;
   nickname: string;
+  hasImage: boolean;
 }
 const FreeCommunityPage = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const FreeCommunityPage = () => {
           userType={free.userType === 'dong' ? '동백' : '나리'}
           nickname={free.nickname}
           createdAt={parseTime(free.createdAt)}
+          hasImage={free.hasImage}
         />
       ))}
       <FloatingButton

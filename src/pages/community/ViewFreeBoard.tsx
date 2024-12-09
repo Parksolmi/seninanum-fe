@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import CommunityInput from '../../components/community/CommunityInput';
@@ -22,6 +22,7 @@ interface freeBoard {
   nickname: string;
   userType: string;
   liked: number;
+  isMyPost: boolean;
 }
 
 const ViewFreeBorad = () => {
@@ -34,8 +35,9 @@ const ViewFreeBorad = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [likesCount, setLikesCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
 
-  const { comments, fetchComments, addComment } = useComment(
+  const { comments, fetchComments, addComment, deleteComment } = useComment(
     'free',
     freeBoardId
   );
@@ -86,12 +88,29 @@ const ViewFreeBorad = () => {
     }
   };
 
+  // 댓글 삭제
+  const handleDeleteComment = (commentId: number) => {
+    deleteComment(commentId);
+  };
+
+  // 게시글 삭제
+  const handleDeletePost = async () => {
+    try {
+      await instance.delete(`/board/free/${freeBoardId}`);
+      navigate('/community/free');
+    } catch (error) {
+      console.error('게시글 삭제에 실패했습니다.', error);
+    }
+  };
+
   return (
     <>
       <PrevHeader
         title={'자유게시판'}
         navigateTo={'/community/free'}
         isLine={true}
+        isCommunity={freeBoard?.isMyPost}
+        onDelete={handleDeletePost}
       />
       <WrapContent>
         <WrapWriter>
@@ -112,8 +131,8 @@ const ViewFreeBorad = () => {
                 src={
                   isLiked
                     ? user?.userType === 'dong'
-                      ? '/assets/community/like-filled-dong.png'
-                      : '/assets/community/like-filled-nari.png'
+                      ? '/assets/community/like-filled-dong.svg'
+                      : '/assets/community/like-filled-nari.svg'
                     : '/assets/community/like-empty.png'
                 }
                 alt="빈하트"
@@ -155,8 +174,12 @@ const ViewFreeBorad = () => {
             likes={comment.likes}
             liked={comment.liked}
             isPostOwner={comment.isPostOwner}
+            isMyComment={comment.isMyComment}
             replies={comment.replies}
             onReply={() => handleReply(comment.id)} // parentId설정
+            onDelete={(id) => {
+              handleDeleteComment(id);
+            }}
           />
           {index < comments.length - 1 && <Divider />}
         </React.Fragment>

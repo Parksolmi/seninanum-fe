@@ -11,13 +11,17 @@ const FreeBoardCard = ({
   userType,
   nickname,
   createdAt,
+  hasImage,
 }) => {
   const navigate = useNavigate();
 
   return (
     <CardSection onClick={() => navigate(`/view/free/${id}`)}>
       <WrapCard>
-        <h1>{title}</h1>
+        <div>
+          <h1>{title}</h1>
+          {hasImage && <img src="/assets/community/pre-image.svg" alt="" />}
+        </div>
         <p className="preview">{content}</p>
         <div className="bottom-status-bar">
           <WrapIcon>
@@ -51,6 +55,11 @@ const WrapCard = styled.div`
   border-bottom: 1px solid #d9d9d9;
   padding-bottom: 1.2rem;
 
+  div {
+    display: flex;
+    flex-direction: row;
+  }
+
   h1 {
     color: var(--Base-Black, #000);
     font-family: NanumSquare;
@@ -58,6 +67,7 @@ const WrapCard = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-right: 0.5rem;
   }
 
   .preview {
