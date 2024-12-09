@@ -12,6 +12,7 @@ interface Comment {
   likes: number;
   liked: number;
   isPostOwner: boolean;
+  isMyComment: boolean;
   createdAt: string;
   profile: string;
   nickname: string;
@@ -27,6 +28,7 @@ interface CommentCardProps {
   likes: number;
   liked: number;
   isPostOwner: boolean;
+  isMyComment: boolean;
   profile: string;
   nickname: string;
   userType: string;
@@ -34,6 +36,7 @@ interface CommentCardProps {
   parentId: number | null;
   replies: Comment[];
   onReply: () => void;
+  onDelete: (id) => void;
 }
 
 const CommentCard = ({
@@ -43,6 +46,7 @@ const CommentCard = ({
   likes,
   liked,
   isPostOwner,
+  isMyComment,
   profile,
   nickname,
   userType,
@@ -50,10 +54,17 @@ const CommentCard = ({
   parentId,
   replies,
   onReply,
+  onDelete,
 }: CommentCardProps) => {
   const [likesCount, setLikesCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked === 0 ? false : true);
 
+  const handleToggleDelete = (e: React.MouseEvent) => {
+    const deleteButton = (e.target as HTMLElement).nextElementSibling;
+    if (deleteButton) {
+      deleteButton.classList.toggle('active');
+    }
+  };
   // 좋아요 등록/취소 함수
   const handleLike = async () => {
     try {
@@ -64,6 +75,7 @@ const CommentCard = ({
       console.error('좋아요 처리에 실패했습니다.', error);
     }
   };
+
   return (
     <WrapContent $cardType={cardType || ''} $isReply={!!parentId}>
       <WrapWriter>
@@ -80,6 +92,24 @@ const CommentCard = ({
           <PostOwner $cardType={cardType || ''}>
             <p>작성자</p>
           </PostOwner>
+        )}
+        {isMyComment && (
+          <>
+            <img
+              className="hamburger"
+              src="/assets/community/burger-button-small.svg"
+              alt="햄버거버튼"
+              onClick={handleToggleDelete}
+            />
+            <div
+              className="del"
+              onClick={() => {
+                onDelete(id);
+              }}
+            >
+              삭제하기
+            </div>
+          </>
         )}
       </WrapWriter>
       <WrapText $isReply={!!parentId}>
@@ -103,8 +133,8 @@ const CommentCard = ({
             src={
               isLiked
                 ? cardType === 'dong'
-                  ? '/assets/community/like-filled-dong.png'
-                  : '/assets/community/like-filled-nari.png'
+                  ? '/assets/community/like-filled-dong.svg'
+                  : '/assets/community/like-filled-nari.svg'
                 : '/assets/community/like-empty.png'
             }
             alt="빈하트"
@@ -128,8 +158,12 @@ const CommentCard = ({
             likes={reply.likes}
             liked={reply.liked}
             isPostOwner={reply.isPostOwner}
+            isMyComment={reply.isMyComment}
             replies={reply.replies}
             onReply={onReply}
+            onDelete={(replyId) => {
+              onDelete(replyId);
+            }}
           />
         ))}
     </WrapContent>
@@ -191,6 +225,7 @@ const WrapContent = styled.div<WrapInfoProp>`
 
 const WrapWriter = styled.div`
   display: flex;
+  position: relative;
 
   .profile {
     width: 3rem;
@@ -199,6 +234,38 @@ const WrapWriter = styled.div`
 
     background: gray; //임시
     object-fit: cover;
+  }
+
+  .hamburger {
+    display: block;
+    margin-bottom: auto;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1rem;
+    margin-left: 0.3rem;
+  }
+
+  .del {
+    display: none;
+    z-index: 10;
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    width: 8rem;
+    height: 2.5rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 2.5rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: '#000';
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+  }
+
+  .del.active {
+    display: block;
   }
 `;
 

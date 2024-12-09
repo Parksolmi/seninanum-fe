@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import CommunityInput from '../../components/community/CommunityInput';
@@ -19,6 +19,7 @@ interface adviceBoard {
   profile: string;
   nickname: string;
   userType: string;
+  isMyPost: boolean;
 }
 
 const ViewAdviceBoard = () => {
@@ -29,8 +30,9 @@ const ViewAdviceBoard = () => {
   const [isSecret, setIsSecret] = useState(false);
   const [replyTo, setReplyTo] = useState<number | null>(null); // 대댓글 대상 댓글 ID
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
-  const { comments, fetchComments, addComment } = useComment(
+  const { comments, fetchComments, addComment, deleteComment } = useComment(
     'advice',
     adviceBoardId
   );
@@ -66,12 +68,29 @@ const ViewAdviceBoard = () => {
     }, 0);
   };
 
+  // 댓글 삭제
+  const handleDeleteComment = (commentId: number) => {
+    deleteComment(commentId);
+  };
+
+  // 게시글 삭제
+  const handleDeletePost = async () => {
+    try {
+      await instance.delete(`/board/advice/${adviceBoardId}`);
+      navigate('/community/advice');
+    } catch (error) {
+      console.error('게시글 삭제에 실패했습니다.', error);
+    }
+  };
+
   return (
     <>
       <PrevHeader
         title={'고민상담'}
         navigateTo={'/community/advice'}
         isLine={true}
+        isCommunity={adviceBoard?.isMyPost}
+        onDelete={handleDeletePost}
       />
 
       <WrapContent>
@@ -118,8 +137,10 @@ const ViewAdviceBoard = () => {
             likes={comment.likes}
             liked={comment.liked}
             isPostOwner={comment.isPostOwner}
+            isMyComment={comment.isMyComment}
             replies={comment.replies}
             onReply={() => handleReply(comment.id)} // parentId설정
+            onDelete={() => handleDeleteComment(comment.id)}
           />
           {index < comments.length - 1 && <Divider />}
         </React.Fragment>
