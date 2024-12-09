@@ -97,7 +97,7 @@ const ViewProfileNari = () => {
               <img
                 src="/assets/common/right-arrow.svg"
                 alt=""
-                onClick={() => navigate('/view/review')}
+                onClick={() => navigate(`/view/review?profileId=${profileId}`)}
               />
             </MoreIcon>
 

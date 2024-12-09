@@ -5,13 +5,17 @@ import ReviewRatingBar from '../../components/review/ReviewRatingBar';
 import ReviewSummaryCard from '../../components/review/ReviewSummaryCard';
 import { useFetchUserType } from '../../hooks/useFetchUserType';
 import useFetchReviews from '../../hooks/useFetchReviews';
+import { useLocation } from 'react-router-dom';
 
 const ViewMyReviewPage = () => {
   const { data: user } = useFetchUserType();
-  const { reviews, ratingCounts, totalReviews } = useFetchReviews();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const profileId = searchParams.get('profileId') || undefined;
+  const { reviews, ratingCounts, totalReviews } = useFetchReviews(profileId);
   return (
     <>
-      <PrevHeader title={'리뷰 조회'} navigateTo={'/mypage'} />
+      <PrevHeader title={'리뷰 조회'} navigateTo={'-1'} />
       <WrapContent>
         <TitleText $userType={user?.userType || ''}>
           리뷰 <span>{totalReviews}</span>
