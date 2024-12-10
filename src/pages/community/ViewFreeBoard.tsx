@@ -185,15 +185,18 @@ const ViewFreeBorad = () => {
         </React.Fragment>
       ))}
       <LastContent />
-      <CommunityInput
-        ref={inputRef}
-        value={commentContent}
-        submitHandler={handleCommentSubmit}
-        onChangeHandler={(e) => setCommentContent(e.target.value)}
-        userType={user?.userType || ''}
-        isSecret={isSecret}
-        setIsSecret={setIsSecret}
-      />
+      <WrapMessageInput>
+        <CommunityInput
+          ref={inputRef}
+          value={commentContent}
+          submitHandler={handleCommentSubmit}
+          onChangeHandler={(e) => setCommentContent(e.target.value)}
+          userType={user?.userType || ''}
+          isSecret={isSecret}
+          setIsSecret={setIsSecret}
+          placeholder={'댓글을 입력해주세요'}
+        />
+      </WrapMessageInput>
     </>
   );
 };
@@ -356,6 +359,12 @@ const Divider = styled.div`
 const LastContent = styled.div`
   display: flex;
   margin-bottom: 120px;
+`;
+
+const WrapMessageInput = styled.div`
+  width: 100%;
+  position: fixed;
+  bottom: 0;
 `;
 
 export default ViewFreeBorad;

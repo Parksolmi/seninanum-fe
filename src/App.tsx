@@ -50,6 +50,8 @@ import ViewMyReviewPage from './pages/review/ViewMyReviewPage';
 import WriteReviewPage from './pages/review/WriteReviewPage';
 import RegisterNewReview from './pages/review/RegisterNewReview';
 import MatchFilterDongPage from './pages/filter/MatchFilterDongPage';
+import TopicCommunityPage from './pages/community/TopicCommunityPage';
+import AdminRegisterTodayTopicPage from './pages/community/AdminRegisterTodayTopicPage';
 
 const App: React.FC = () => {
   return (
@@ -63,7 +65,6 @@ const App: React.FC = () => {
         <Route path="/signup/profile" element={<RegisterProfilePage />} />
         <Route path="/signup/complete" element={<CompleteSignupPage />} />
         <Route path="/signup/admin" element={<AdminLoginPage />} />
-
         <Route path="/walkthrough" element={<WalkThroughIndexPage />} />
         {/* 구인글 등록 */}
         <Route path="/register/recruit" element={<ProgressLayoutNari />}>
@@ -112,7 +113,6 @@ const App: React.FC = () => {
         {/* 매칭 상세조건 조회 */}
         <Route path="/match/filter/nari" element={<MatchFilterNariPage />} />
         <Route path="/match/filter/dong" element={<MatchFilterDongPage />} />
-
         {/* 프로필 조회 */}
         <Route
           path="/view/dongprofile/:profileId" //수정 필요
@@ -124,7 +124,6 @@ const App: React.FC = () => {
         />
         {/* 채팅 */}
         <Route path="/chatroom/:chatRoomId" element={<ChatPage />} />
-
         {/* 마이페이지 */}
         <Route
           path="/view/myprofile/dong"
@@ -144,8 +143,8 @@ const App: React.FC = () => {
         <Route path="/view/myapplicants" element={<ViewMyApplicantsList />} />
         {/* 지원내역 관리 */}
         <Route path="/manage/myapplication" element={<ManageMyApplication />} />
-
         {/* 커뮤니티 */}
+        <Route path="/community/todaytopic" element={<TopicCommunityPage />} />
         <Route path="/community/free" element={<FreeCommunityPage />} />
         <Route path="/community/advice" element={<AdviceCommunityPage />} />
         {/* id로 수정 */}
@@ -170,9 +169,13 @@ const App: React.FC = () => {
           <Route path="/community" element={<CommunityIndexPage />} />
           <Route path="/mypage" element={<MyIndexPage />} />
         </Route>
-
-        <Route path="/community/event" element={<SelectFieldPage />}></Route>
-        <Route path="/community/event/draw" element={<DrawPage />}></Route>
+        <Route path="/community/event" element={<SelectFieldPage />} />
+        <Route path="/community/event/draw" element={<DrawPage />} />
+        //관리자 페이지
+        <Route
+          path="/admin/todaytopic/tlslsksna"
+          element={<AdminRegisterTodayTopicPage />}
+        />
       </Routes>
     </>
   );

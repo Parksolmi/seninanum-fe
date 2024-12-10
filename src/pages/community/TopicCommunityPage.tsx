@@ -8,6 +8,8 @@ import { useFetchUserType } from '../../hooks/useFetchUserType';
 import { parseTime } from '../../utils/formatTime';
 import useComment from '../../hooks/useComment';
 import CommentCard from '../../components/community/CommentCard';
+import TodayTopic from '../../components/community/TodayTopic';
+import Dropdown from '../../components/common/DropDown';
 
 interface adviceBoard {
   adviceBoardId: number;
@@ -22,106 +24,86 @@ interface adviceBoard {
   isMyPost: boolean;
 }
 
-const ViewAdviceBoard = () => {
-  const { data: user } = useFetchUserType();
-  const { adviceBoardId } = useParams<{ adviceBoardId: string }>();
-  const [adviceBoard, setAdviceBoard] = useState<adviceBoard>();
-  const [commentContent, setCommentContent] = useState('');
-  const [isSecret, setIsSecret] = useState(false);
-  const [replyTo, setReplyTo] = useState<number | null>(null); // 대댓글 대상 댓글 ID
-  const inputRef = useRef<HTMLInputElement>(null);
+const TopicCommunityPage = () => {
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { comments, fetchComments, addComment, deleteComment } = useComment(
-    'advice',
-    adviceBoardId
-  );
+  const { data: user } = useFetchUserType();
+  // const topicBoardId = '????';
+  // const [adviceBoard, setAdviceBoard] = useState<adviceBoard>();
+  // const [commentContent, setCommentContent] = useState('');
+  // // const [isSecret, setIsSecret] = useState(false);
+  // const [replyTo, setReplyTo] = useState<number | null>(null); // 대댓글 대상 댓글 ID
 
-  useEffect(() => {
-    const fetchFreeBoard = async () => {
-      const res = await instance.get(`/board/advice/${adviceBoardId}`);
-      setAdviceBoard(res.data);
-    };
+  // const { comments, fetchComments, addComment, deleteComment } = useComment(
+  //   'advice',
+  //   topicBoardId
+  // );
 
-    fetchFreeBoard();
-  }, [adviceBoardId]);
+  // useEffect(() => {
+  //   const fetchFreeBoard = async () => {
+  //     const res = await instance.get(`/board/advice/${adviceBoardId}`);
+  //     setAdviceBoard(res.data);
+  //   };
+
+  //   fetchFreeBoard();
+  // }, [adviceBoardId]);
 
   // 댓글 조회
-  useEffect(() => {
-    fetchComments();
-  }, [fetchComments]);
+  // useEffect(() => {
+  //   fetchComments();
+  // }, [fetchComments]);
 
   // 댓글 작성
   const handleCommentSubmit = async () => {
-    if (!commentContent.trim()) return;
-    await addComment(commentContent, isSecret ? 1 : 0, replyTo);
-    setCommentContent('');
-    setIsSecret(false);
-    setReplyTo(null);
+    // if (!commentContent.trim()) return;
+    // await addComment(commentContent, isSecret ? 1 : 0, replyTo);
+    // setCommentContent('');
+    // setIsSecret(false);
+    // setReplyTo(null);
   };
 
   // 답글쓰기 버튼 클릭 시 입력창에 포커스
-  const handleReply = (commentId: number) => {
-    setReplyTo(commentId);
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
-  };
+  // const handleReply = (commentId: number) => {
+  //   setReplyTo(commentId);
+  //   setTimeout(() => {
+  //     inputRef.current?.focus();
+  //   }, 0);
+  // };
 
   // 댓글 삭제
-  const handleDeleteComment = (commentId: number) => {
-    deleteComment(commentId);
-  };
-
-  // 게시글 삭제
-  const handleDeletePost = async () => {
-    try {
-      await instance.delete(`/board/advice/${adviceBoardId}`);
-      navigate('/community/advice');
-    } catch (error) {
-      console.error('게시글 삭제에 실패했습니다.', error);
-    }
-  };
+  // const handleDeleteComment = (commentId: number) => {
+  //   deleteComment(commentId);
+  // };
 
   return (
     <>
       <PrevHeader
-        title={'고민상담'}
-        navigateTo={'/community/advice'}
+        title={'오늘의 주제'}
+        navigateTo={'/community'}
         isLine={true}
-        isCommunity={adviceBoard?.isMyPost}
-        onDelete={handleDeletePost}
       />
 
       <WrapContent>
-        <WrapWriter>
-          <img className="profile" src={adviceBoard?.profile} alt="프로필" />
-          <WrapInfo $userType={user?.userType || ''}>
-            <div className="left">
-              <div className="nickname">
-                {adviceBoard?.nickname}{' '}
-                {adviceBoard?.userType === 'dong' ? '동백' : '나리'}
-              </div>
-              <div className="time">
-                {parseTime(adviceBoard?.createdAt || '')}
-              </div>
-            </div>
-            <div className="right">
-              <div className="chat-button">채팅하기</div>
-            </div>
-          </WrapInfo>
-        </WrapWriter>
-        <WrapText>
-          <h1 className="title">{adviceBoard?.title}</h1>
-          <p>{adviceBoard?.content}</p>
-        </WrapText>
+        <TodayTopic userType={user?.userType || ''} />
       </WrapContent>
+      <CommunityInput
+        ref={inputRef}
+        // value={commentContent}
+        submitHandler={handleCommentSubmit}
+        // onChangeHandler={(e) => setCommentContent(e.target.value)}
+        userType={user?.userType || ''}
+        secretVisible={false}
+        placeholder={'자유롭게 입력해주세요'}
+        isBottom={false}
+      />
+
       <SplitLine />
 
       <TotalComment $userType={user?.userType || ''}>
-        댓글<p>{adviceBoard?.commentCount}</p>
+        댓글<p>{/* {adviceBoard?.commentCount} */}</p>
       </TotalComment>
-
+      {/* 
       {comments.map((comment, index) => (
         <React.Fragment key={index}>
           <CommentCard
@@ -144,20 +126,8 @@ const ViewAdviceBoard = () => {
           />
           {index < comments.length - 1 && <Divider />}
         </React.Fragment>
-      ))}
+      ))} */}
       <LastContent />
-      <WrapMessageInput>
-        <CommunityInput
-          ref={inputRef}
-          value={commentContent}
-          submitHandler={handleCommentSubmit}
-          onChangeHandler={(e) => setCommentContent(e.target.value)}
-          userType={user?.userType || ''}
-          isSecret={isSecret}
-          setIsSecret={setIsSecret}
-          placeholder={'댓글을 입력해주세요'}
-        />
-      </WrapMessageInput>
     </>
   );
 };
@@ -312,10 +282,4 @@ const LastContent = styled.div`
   margin-bottom: 120px;
 `;
 
-const WrapMessageInput = styled.div`
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-`;
-
-export default ViewAdviceBoard;
+export default TopicCommunityPage;
