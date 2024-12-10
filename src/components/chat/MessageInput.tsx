@@ -145,6 +145,7 @@ const MessageInput = ({
                 type="file"
                 ref={fileInputRef}
                 style={{ display: 'none' }}
+                accept="image/*" // 이미지만 허용
                 onChange={handleFileChange}
               />
             </WrapIcon>
