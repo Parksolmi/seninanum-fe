@@ -20,7 +20,7 @@ const AdviceBoardCard = ({
         <p className="preview">{content}</p>
         <div className="bottom-status-bar">
           <WrapComment $userType={userType}>
-            <p>답변 {commentCount}</p>
+            <p>댓글 {commentCount}</p>
           </WrapComment>
           <p className="writer">
             {createdAt} | {nickname} {writerUserType}

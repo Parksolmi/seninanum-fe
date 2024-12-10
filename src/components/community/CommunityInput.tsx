@@ -8,10 +8,23 @@ interface CommunityInputProps {
   userType: string;
   isSecret?: boolean;
   setIsSecret?: (value: boolean) => void;
+  secretVisible?: boolean;
+  placeholder: string;
+  isBottom?: boolean;
 }
 const CommunityInput = forwardRef<HTMLInputElement, CommunityInputProps>(
   (
-    { value, onChangeHandler, submitHandler, userType, isSecret, setIsSecret },
+    {
+      value,
+      onChangeHandler,
+      submitHandler,
+      userType,
+      isSecret,
+      setIsSecret,
+      secretVisible = true,
+      placeholder,
+      isBottom = true,
+    },
     ref
   ) => {
     const handleSubmit = (e: React.FormEvent) => {
@@ -25,47 +38,45 @@ const CommunityInput = forwardRef<HTMLInputElement, CommunityInputProps>(
 
     return (
       <>
-        <WrapMessageInput>
-          <MeassageInputContainer>
-            <WrapCheckBox $userType={userType}>
-              <input
-                className="checkbox"
-                type="checkbox"
-                checked={isSecret}
-                onChange={(e) => setIsSecret && setIsSecret(e.target.checked)}
-              />
-              <p>비밀</p>
-            </WrapCheckBox>
-            <WrapInputForm onSubmit={handleSubmit}>
-              <Input
-                placeholder="댓글을 입력해주세요"
-                value={value}
-                onChange={onChangeHandler}
-                ref={ref}
-              />
-              <WrapButton type="submit">
-                <img src={'/assets/chat/send-icon.png'} alt="보내기" />
-              </WrapButton>
-            </WrapInputForm>
-          </MeassageInputContainer>
-        </WrapMessageInput>
+        <MeassageInputContainer $isBottom={isBottom}>
+          <WrapCheckBox $userType={userType}>
+            {secretVisible && (
+              <>
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={isSecret}
+                  onChange={(e) => setIsSecret && setIsSecret(e.target.checked)}
+                />
+                <p>비밀</p>
+              </>
+            )}
+          </WrapCheckBox>
+          <WrapInputForm onSubmit={handleSubmit}>
+            <Input
+              placeholder={placeholder}
+              value={value}
+              onChange={onChangeHandler}
+              ref={ref}
+            />
+            <WrapButton type="submit">
+              <img src={'/assets/chat/send-icon.png'} alt="보내기" />
+            </WrapButton>
+          </WrapInputForm>
+        </MeassageInputContainer>
       </>
     );
   }
 );
-const WrapMessageInput = styled.div`
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-`;
 
-const MeassageInputContainer = styled.div`
+const MeassageInputContainer = styled.div<{ $isBottom: boolean }>`
   display: flex;
   gap: 0.3rem;
   align-items: center;
   background: #ffffff;
   box-shadow: 0px -2px 3px rgba(150, 150, 150, 0.2);
-  padding: 1.1rem 1.1rem 2rem 1.1rem;
+  padding: ${({ $isBottom }) =>
+    $isBottom ? '1.1rem 1.1rem 2rem 1.1rem;' : '1.1rem'};
 `;
 
 const Input = styled.input`

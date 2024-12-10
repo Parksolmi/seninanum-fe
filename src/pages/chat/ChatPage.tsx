@@ -360,7 +360,7 @@ const ChatPage = () => {
                     <ArrowIcon
                       $showDropdown={showRecruitTitles}
                       src="/assets/chat/more-arrow.svg"
-                    ></ArrowIcon>
+                    />
                   </TitleText>
                 )
               ) : (

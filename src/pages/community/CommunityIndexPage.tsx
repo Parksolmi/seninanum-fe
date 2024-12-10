@@ -59,7 +59,7 @@ const CommunityIndexPage: React.FC = () => {
       <TitleHeader title="소통" isShowAlert={true} />
       <WrapBanner>
         <BoothEventBanner onClick={() => navigate('/community/event')} />
-        <TodayTopicBanner />
+        <TodayTopicBanner onClick={() => navigate('/community/todaytopic')} />
       </WrapBanner>
       <SplitLine />
 

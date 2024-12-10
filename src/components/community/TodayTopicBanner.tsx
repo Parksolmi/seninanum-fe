@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TodayTopicBanner = () => {
+const TodayTopicBanner = ({ onClick }) => {
   return (
-    <WrapBanner>
+    <WrapBanner onClick={onClick}>
       <div className="title">오늘의 주제</div>
       <p>
         20대에 꼭 이뤄야하는 건 <br />

@@ -114,7 +114,9 @@ const ViewFreeBorad = () => {
       />
       <WrapContent>
         <WrapWriter>
-          <img className="profile" src={freeBoard?.profile} alt="프로필" />
+          <div className="profile">
+            <img src={freeBoard?.profile} alt="프로필" />
+          </div>
           <WrapInfo $userType={user?.userType || ''}>
             <div className="left">
               <div className="nickname">
@@ -185,15 +187,18 @@ const ViewFreeBorad = () => {
         </React.Fragment>
       ))}
       <LastContent />
-      <CommunityInput
-        ref={inputRef}
-        value={commentContent}
-        submitHandler={handleCommentSubmit}
-        onChangeHandler={(e) => setCommentContent(e.target.value)}
-        userType={user?.userType || ''}
-        isSecret={isSecret}
-        setIsSecret={setIsSecret}
-      />
+      <WrapMessageInput>
+        <CommunityInput
+          ref={inputRef}
+          value={commentContent}
+          submitHandler={handleCommentSubmit}
+          onChangeHandler={(e) => setCommentContent(e.target.value)}
+          userType={user?.userType || ''}
+          isSecret={isSecret}
+          setIsSecret={setIsSecret}
+          placeholder={'댓글을 입력해주세요'}
+        />
+      </WrapMessageInput>
     </>
   );
 };
@@ -211,10 +216,21 @@ const WrapWriter = styled.div`
   .profile {
     width: 3rem;
     height: 3rem;
-    border-radius: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+    border-radius: 50%; /* 원 모양 유지 */
+    background: gray; /* 임시 배경 */
+    overflow: hidden; /* 내부 이미지가 넘치지 않도록 설정 */
+    position: relative;
 
-    background: gray; //임시
-    object-fit: cover;
+    img {
+      width: 100%; /* 이미지가 컨테이너를 채우도록 설정 */
+      height: 100%; /* 이미지가 컨테이너를 채우도록 설정 */
+      object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+      position: absolute; /* 이미지를 컨테이너 안에서 위치 고정 */
+      top: 0;
+      left: 0;
+    }
   }
 `;
 
@@ -356,6 +372,12 @@ const Divider = styled.div`
 const LastContent = styled.div`
   display: flex;
   margin-bottom: 120px;
+`;
+
+const WrapMessageInput = styled.div`
+  width: 100%;
+  position: fixed;
+  bottom: 0;
 `;
 
 export default ViewFreeBorad;
