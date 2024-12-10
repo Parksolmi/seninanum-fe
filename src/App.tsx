@@ -171,7 +171,8 @@ const App: React.FC = () => {
         </Route>
         <Route path="/community/event" element={<SelectFieldPage />} />
         <Route path="/community/event/draw" element={<DrawPage />} />
-        //관리자 페이지
+
+        {/* 관리자 페이지 */}
         <Route
           path="/admin/todaytopic/tlslsksna"
           element={<AdminRegisterTodayTopicPage />}

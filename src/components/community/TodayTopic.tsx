@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface TodayTopic {
+interface TodayTopicProps {
   userType: string;
+  topic: string;
 }
 
-const TodayTopic = ({ userType }: TodayTopic) => {
+const TodayTopic = ({ userType, topic }: TodayTopicProps) => {
   return (
     <WrapContent $userType={userType}>
       <h1>Q</h1>
-      <p>
-        20대 때 꼭 이뤄야하는 것은
-        <br /> 뭐라고 생각하시나요?
-      </p>
+      <p>{topic}</p>
     </WrapContent>
   );
 };
@@ -26,7 +24,7 @@ const WrapContent = styled.div<{ $userType: string }>`
     $userType === 'dong' ? 'white' : 'var(--Nari-Nari-Text)'};
   border-radius: 0.9375rem;
 
-  padding: 1.3rem;
+  padding: 1.3rem 2rem;
 
   display: flex;
   justify-content: center;
