@@ -90,9 +90,6 @@ const Message = memo(
                 <div className="wrapper">
                   <div className="wrapper-top">
                     <div className="message">{message.chatMessage}</div>
-                    <div className="read">
-                      {message.unreadCount !== 0 ? message.unreadCount : ''}
-                    </div>
                   </div>
                   <div className="time">{parseTime(message.createdAt)}</div>
                 </div>
@@ -155,9 +152,6 @@ const Message = memo(
                       alt="이미지전송"
                       onClick={() => viewImage(message.chatMessage)}
                     />
-                    <div className="read">
-                      {message.unreadCount !== 0 ? message.unreadCount : ''}
-                    </div>
                   </div>
                   <div className="time">{parseTime(message.createdAt)}</div>
                 </div>
@@ -208,9 +202,6 @@ const Message = memo(
                         sendPayResponseMessage(message.chatMessage)
                       }
                     />
-                    <div className="read">
-                      {message.unreadCount !== 0 ? message.unreadCount : ''}
-                    </div>
                   </div>
                   <div className="time">{parseTime(message.createdAt)}</div>
                 </div>
@@ -251,9 +242,6 @@ const Message = memo(
                 <div className="wrapper">
                   <div className="wrapper-top">
                     <PayResponse pay={message.chatMessage} />
-                    <div className="read">
-                      {message.unreadCount !== 0 ? message.unreadCount : ''}
-                    </div>
                   </div>
                   <div className="time">{parseTime(message.createdAt)}</div>
                 </div>
@@ -319,7 +307,7 @@ const MessageByMe = styled.div<MessageProp>`
     justify-content: flex-end;
     align-items: end;
     gap: 0.5rem;
-    max-width: 80%;
+    max-width: 65vw;
 
     > .wrapper {
       display: flex;
@@ -415,6 +403,7 @@ const MessageByOther = styled.div`
       gap: 0.5rem;
       position: relative;
       flex-grow: 1;
+      max-width: 60vw;
 
       > .wrapper {
         > .wrapper-top {
