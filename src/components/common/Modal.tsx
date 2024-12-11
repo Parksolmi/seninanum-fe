@@ -10,6 +10,9 @@ interface ModalProps {
   confirmText: string;
   onConfirm: (id?: number) => void;
   onCancel?: () => void;
+  hasInput?: boolean;
+  onChange?: (e) => void;
+  value?: number;
 }
 
 const Modal = ({
@@ -20,6 +23,9 @@ const Modal = ({
   confirmText,
   onConfirm,
   onCancel,
+  hasInput,
+  onChange,
+  value,
 }: ModalProps) => {
   const handleConfirm = () => {
     onConfirm();
@@ -32,6 +38,15 @@ const Modal = ({
         <ModalWrapper>
           <h3 className="title">{title}</h3>
           <p className="content">{content}</p>
+          {hasInput && (
+            <input
+              type="text"
+              placeholder="01012345678"
+              value={value}
+              onChange={onChange}
+              maxLength={11}
+            />
+          )}
           <WrapButton>
             {onCancel && (
               <Button
@@ -106,6 +121,21 @@ const ModalWrapper = styled.div`
     font-size: 1.125rem;
     margin-bottom: 1.5rem;
     white-space: pre-line;
+  }
+
+  input {
+    width: calc(100% - 2rem);
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #000;
+    outline: none;
+    margin-bottom: 1rem;
+
+    &::placeholder {
+      color: var(--Base-Gray, #aaa);
+    }
   }
 `;
 
