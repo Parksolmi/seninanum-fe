@@ -57,7 +57,7 @@ const WrapContent = styled.div`
   padding: 0 1.1rem;
 `;
 const Title = styled.div`
-  margin-top: 4rem;
+  margin-top: 3.5rem;
   margin-bottom: 2rem;
   font-family: 'NanumSquareR';
   font-size: 1.375rem;
