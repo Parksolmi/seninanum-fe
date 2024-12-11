@@ -16,8 +16,6 @@ const SignupIndexPage = () => {
     window.location.href = kakaoURL;
   };
 
-  const navigate = useNavigate();
-
   return (
     <WrapContent>
       <WrapLogo>
@@ -36,9 +34,9 @@ const SignupIndexPage = () => {
         </div>
       </WrapLogo>
       {/* 관리자 계정 버튼 */}
-      <AdminButton onClick={() => navigate('/signup/admin')}>
+      {/* <AdminButton onClick={() => navigate('/signup/admin')}>
         관리자 계정으로 접속하기
-      </AdminButton>
+      </AdminButton> */}
       <KakaoButton onClick={handleLogin}>
         <img src="/assets/signIn/kakao-icon.png" alt="kakao-logo" />
         카카오톡으로 시작하기

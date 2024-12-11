@@ -25,6 +25,7 @@ const FreeCommunityPage = () => {
   const navigate = useNavigate();
   const { data: user } = useFetchUserType();
   const [freeBoardList, setFreeBoardList] = useState<freeBoard[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchFreeBoardList = async () => {
@@ -39,6 +40,11 @@ const FreeCommunityPage = () => {
     fetchFreeBoardList();
   }, []);
 
+  // 검색 결과 필터링
+  const filteredBoardList = freeBoardList.filter((free) =>
+    free.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <PrevHeader
@@ -50,7 +56,7 @@ const FreeCommunityPage = () => {
         <input placeholder="제목으로 게시물을 찾아보세요!" />
         <img src="/assets/community/search.png" alt="검색" />
       </WrapInput>
-      {freeBoardList.map((free) => (
+      {filteredBoardList.map((free) => (
         <FreeBoardCard
           key={free.freeBoardId}
           id={free.freeBoardId}
