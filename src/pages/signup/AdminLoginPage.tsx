@@ -24,32 +24,32 @@ const AdminLoginPage = () => {
   };
 
   const validateCredentials = (inputId, inputPassword) => {
-    if (
-      (inputId === ADMIN.dong.id && inputPassword === ADMIN.dong.password) ||
-      (inputId === ADMIN.nari.id && inputPassword === ADMIN.nari.password)
-    ) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
+    const isValid = Object.values(ADMIN).some(
+      (admin) => admin.id === inputId && admin.password === inputPassword
+    );
+
+    setIsDisabled(!isValid);
   };
 
   const handleLogin = async () => {
     try {
-      let userId;
-      if (id === ADMIN.dong.id && password === ADMIN.dong.password) {
-        userId = ADMIN.dong.userId;
-      } else if (id === ADMIN.nari.id && password === ADMIN.nari.password) {
-        userId = ADMIN.nari.userId;
-      }
+      const matchedAdmin = Object.values(ADMIN).find(
+        (admin) => admin.id === id && admin.password === password
+      );
 
-      // 로그인 API 호출
-      const userState = await login(userId);
+      if (matchedAdmin) {
+        const userId = matchedAdmin.userId;
 
-      if (userState === 'LOGIN') {
-        navigate('/home');
+        // 로그인 API 호출
+        const userState = await login(userId);
+
+        if (userState === 'LOGIN') {
+          navigate('/home');
+        } else {
+          console.log('로그인에 실패했습니다. 다시 시도해 주세요.');
+        }
       } else {
-        console.log('로그인에 실패했습니다. 다시 시도해 주세요.');
+        console.log('아이디 또는 비밀번호가 잘못되었습니다.');
       }
     } catch (err) {
       console.error(err);

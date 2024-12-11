@@ -320,6 +320,8 @@ const WrapText = styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.075rem;
+    white-space: pre-line;
+    width: 100%;
   }
 `;
 

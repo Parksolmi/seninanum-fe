@@ -70,6 +70,13 @@ const WrapCard = styled.div`
     margin-right: 0.5rem;
   }
 
+  img {
+    display: flex;
+    flex-direction: column;
+    width: 21px;
+    height: 21px;
+  }
+
   .preview {
     color: #5b5b5b;
     font-family: NanumSquare;
