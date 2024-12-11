@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { instance } from '../../api/instance';
 import FloatingButton from '../../components/common/FloatingButton';
 import FreeBoardCard from '../../components/community/FreeBoardCard';
@@ -45,6 +46,10 @@ const FreeCommunityPage = () => {
         navigateTo={'/community'}
         isLine={true}
       />
+      <WrapInput>
+        <input placeholder="제목으로 게시물을 찾아보세요!" />
+        <img src="/assets/community/search.png" alt="검색" />
+      </WrapInput>
       {freeBoardList.map((free) => (
         <FreeBoardCard
           key={free.freeBoardId}
@@ -66,4 +71,53 @@ const FreeCommunityPage = () => {
     </>
   );
 };
+
+const WrapInput = styled.div`
+  display: flex;
+  flex: 1;
+  margin: 1.1rem 1.3rem 0 1.3rem;
+  align-items: center;
+
+  border-radius: 0.625rem;
+  border: 1px solid var(--Base-Gray, #8e8e8e);
+  background: #fff;
+
+  input {
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    padding: 0.5rem 0.5rem 0.3rem 0.5rem;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 0.625rem;
+
+    color: #000;
+    font-family: NanumSquare;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.03375rem;
+
+    &::placeholder {
+      color: #000;
+      font-family: NanumSquare;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.03375rem;
+      opacity: 0.5;
+    }
+  }
+
+  img {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+`;
+
 export default FreeCommunityPage;

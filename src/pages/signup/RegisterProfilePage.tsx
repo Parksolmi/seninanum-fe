@@ -9,11 +9,13 @@ import Toggle from '../../components/signup/Toggle';
 import InputText from '../../components/common/InputText';
 import PrevHeader from '../../components/header/PrevHeader';
 import { scaleImage } from '../../utils/scaleImage';
+import Button from '../../components/common/Button';
 
 interface Inputs {
   nickname: string;
   gender: string;
   birthYear: string;
+  telNum: string;
 }
 
 const RegisterProfilePage: React.FC = () => {
@@ -75,6 +77,7 @@ const RegisterProfilePage: React.FC = () => {
         gender: data.gender,
         birthYear: data.birthYear,
         profile: userState.profile,
+        telNum: data.telNum,
       });
 
       navigate('/signup/complete', {
@@ -156,11 +159,28 @@ const RegisterProfilePage: React.FC = () => {
             })}
             error={errors.birthYear?.message}
           />
-          <InputSubmit
-            $userType={userState.userType}
-            type="submit"
-            value="완료하기"
+
+          <InputText
+            userType={userState.userType}
+            label="전화번호"
+            placeholder="예) 01012341234"
+            register={register('telNum', {
+              validate: (value) => {
+                const trimmedValue = value.replace(/\s|-/g, ''); // 공백과 - 제거
+                return (
+                  /^010[0-9]{8}$/.test(trimmedValue) ||
+                  '전화번호를 입력해주세요'
+                );
+              },
+            })}
+            error={errors.telNum?.message}
+          />
+
+          <Button
             disabled={!isValid}
+            userType={userState.userType}
+            children="완료하기"
+            type="submit"
           />
         </WrapFrom>
       </WrapContent>
@@ -170,9 +190,10 @@ const RegisterProfilePage: React.FC = () => {
 
 const WrapContent = styled.div`
   padding: 0 1.1rem;
+  margin-bottom: 10rem;
 `;
 const Title = styled.div`
-  margin-top: 4rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
   font-family: 'NanumSquareR';
   font-size: 1.375rem;
@@ -210,35 +231,6 @@ const WrapImageInput = styled.div`
     object-fit: cover;
     background-color: lightgray;
   }
-`;
-
-const InputSubmit = styled.input<{ $userType: string }>`
-  position: fixed;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: 2.12rem;
-
-  height: 3.7rem;
-  text-align: center;
-  font-size: 1.375rem;
-  font-weight: 800;
-  border: none;
-  border-radius: 0.625rem;
-
-  transition: background-color 0.5s ease;
-
-  &:disabled {
-    background-color: #d9d9d9;
-    color: #333333;
-  }
-
-  color: ${({ $userType }) => ($userType === null ? '#5B5B5B' : '#ffffff')};
-  background-color: ${({ $userType }) =>
-    $userType !== null
-      ? $userType === 'dong'
-        ? `var(--Primary-dong)`
-        : `var(--Primary-nari)`
-      : '#EBECEB'};
 `;
 
 const WrapImage = styled.div`
