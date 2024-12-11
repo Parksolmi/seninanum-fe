@@ -54,4 +54,9 @@ export const ADMIN = {
     password: 'admin1234',
     userId: 1121,
   },
+  dong12: {
+    id: '1122',
+    password: 'admin1234',
+    userId: 1122,
+  },
 };
