@@ -9,6 +9,8 @@ const DrawResult = ({ selected }) => {
   const navigate = useNavigate();
 
   const [flip, setFlip] = useState(true);
+  const randomIndex = Math.floor(Math.random() * selected.content.length);
+  const randomContent = selected.content[randomIndex];
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +52,7 @@ const DrawResult = ({ selected }) => {
                 color={selected.color}
                 name={selected.name}
                 nickname={selected.content[0].nickname}
-                knowhow={selected.content[0].knowhow}
+                knowhow={randomContent.knowhow}
               />
             </motion.div>
           </motion.div>
