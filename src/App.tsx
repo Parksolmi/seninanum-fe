@@ -52,6 +52,7 @@ import RegisterNewReview from './pages/review/RegisterNewReview';
 import MatchFilterDongPage from './pages/filter/MatchFilterDongPage';
 import TopicCommunityPage from './pages/community/TopicCommunityPage';
 import AdminRegisterTodayTopicPage from './pages/community/AdminRegisterTodayTopicPage';
+import ManageAccountPage from './pages/mypage/ManageAccountPage';
 
 const App: React.FC = () => {
   return (
@@ -171,6 +172,9 @@ const App: React.FC = () => {
         </Route>
         <Route path="/community/event" element={<SelectFieldPage />} />
         <Route path="/community/event/draw" element={<DrawPage />} />
+
+        {/* 계정관리 페이지 */}
+        <Route path="/mypage/manage" element={<ManageAccountPage />} />
 
         {/* 관리자 페이지 */}
         <Route

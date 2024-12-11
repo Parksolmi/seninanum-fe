@@ -38,15 +38,15 @@ const GroupMenu: React.FC<GroupMenuProps> = ({ userType }) => {
       </WrapGroupMenu>
       <WrapGroupMenu>
         <h3 className="group-title">기타</h3>
-        <div className="menu" onClick={() => navigate('/')}>
+        <div className="menu" onClick={() => navigate('/mypage/manage')}>
           <div>계정 관리</div>
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
-        <div className="menu" onClick={() => navigate('/')}>
+        <div className="menu">
           <div>1:1 문의하기</div>
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
-        <div className="menu" onClick={() => navigate('/')}>
+        <div className="menu">
           <div>앱 버전</div>
           <div className="version">1.0.0</div>
         </div>
