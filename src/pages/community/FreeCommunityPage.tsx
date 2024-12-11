@@ -53,7 +53,11 @@ const FreeCommunityPage = () => {
         isLine={true}
       />
       <WrapInput>
-        <input placeholder="제목으로 게시물을 찾아보세요!" />
+        <input
+          placeholder="제목으로 게시물을 찾아보세요!"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <img src="/assets/community/search.png" alt="검색" />
       </WrapInput>
       {filteredBoardList.map((free) => (

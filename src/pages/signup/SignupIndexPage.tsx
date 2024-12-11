@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SignupIndexPage = () => {
@@ -108,31 +107,31 @@ const KakaoButton = styled.button`
   }
 `;
 
-const AdminButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+// const AdminButton = styled.button`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 1rem;
 
-  width: 100%;
-  /* border: 4px solid #fff293; */
-  border: none;
-  background-color: #ff314a;
-  border-radius: 0.625rem;
+//   width: 100%;
+//   /* border: 4px solid #fff293; */
+//   border: none;
+//   background-color: #ff314a;
+//   border-radius: 0.625rem;
 
-  height: 3.75rem;
-  font-family: 'NanumSquareR';
+//   height: 3.75rem;
+//   font-family: 'NanumSquareR';
 
-  color: var(--Base-Black, #fff);
-  text-align: center;
-  font-family: NanumSquare;
-  font-size: 1.375rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+//   color: var(--Base-Black, #fff);
+//   text-align: center;
+//   font-family: NanumSquare;
+//   font-size: 1.375rem;
+//   font-style: normal;
+//   font-weight: 700;
+//   line-height: normal;
 
-  margin-top: 6.25rem;
-  margin-bottom: -4rem;
-`;
+//   margin-top: 6.25rem;
+//   margin-bottom: -4rem;
+// `;
 
 export default SignupIndexPage;
