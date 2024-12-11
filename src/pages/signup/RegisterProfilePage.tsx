@@ -77,6 +77,7 @@ const RegisterProfilePage: React.FC = () => {
         gender: data.gender,
         birthYear: data.birthYear,
         profile: userState.profile,
+        telNum: data.telNum,
       });
 
       navigate('/signup/complete', {
