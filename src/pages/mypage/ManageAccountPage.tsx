@@ -51,7 +51,7 @@ const ManageAccountPage = () => {
     const sanitizedTel = tel.replace(/[^0-9]/g, ''); // 숫자만 추출
     //console.log('전화번호:', sanitizedTel);
     try {
-      await instance.post('/dropout', { sanitizedTel });
+      await instance.post('/auth/dropout', { telNum: sanitizedTel });
       navigate('/');
     } catch (error) {
       console.error('회원 탈퇴에 실패했습니다.', error);
