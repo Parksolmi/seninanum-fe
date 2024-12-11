@@ -115,24 +115,27 @@ const StyledSlider = styled(Slider)`
   }
 
   .dots_custom li {
-    list-style: none;
-    display: inline-block;
-    margin: 0 10px;
+    list-style: none !important;
+    display: inline-block !important;
+    margin: 0 10px !important;
   }
 
   .dots_custom li button {
-    border: none;
-    background: #d9d9d9;
-    color: transparent;
-    display: block;
-    height: 12px;
-    width: 12px;
-    border-radius: 100%;
+    border: none !important;
+    background: #d9d9d9 !important;
+    color: transparent !important;
+    display: block !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .dots_custom li.slick-active button {
     background-color: ${({ $userType }) =>
-      $userType === 'dong' ? '#ff314a' : '#FFD111'};
+      $userType === 'dong' ? '#ff314a' : '#FFD111'} !important;
   }
 `;
 const TitleArea = styled.div`
