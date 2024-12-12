@@ -120,6 +120,7 @@ const TopicCommunityPage = () => {
               replies={comment.replies}
               onReply={() => handleReply(comment.id)} // parentId설정
               onDelete={() => handleDeleteComment(comment.id)}
+              isTodayTopic={true}
             />
             {index < comments.length - 1 && <Divider />}
           </React.Fragment>

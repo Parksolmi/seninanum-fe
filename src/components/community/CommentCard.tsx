@@ -37,6 +37,7 @@ interface CommentCardProps {
   replies: Comment[];
   onReply: () => void;
   onDelete: (id) => void;
+  isTodayTopic?: boolean;
 }
 
 const CommentCard = ({
@@ -55,6 +56,7 @@ const CommentCard = ({
   replies,
   onReply,
   onDelete,
+  isTodayTopic = false,
 }: CommentCardProps) => {
   const [likesCount, setLikesCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked === 0 ? false : true);
@@ -90,7 +92,7 @@ const CommentCard = ({
             <div className="time">{parseTime(createdAt || '')}</div>
           </div>
         </WrapInfo>
-        {isPostOwner && (
+        {isPostOwner && !isTodayTopic && (
           <PostOwner $cardType={cardType || ''}>
             <p>작성자</p>
           </PostOwner>
