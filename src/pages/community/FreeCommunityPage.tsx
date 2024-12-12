@@ -60,20 +60,22 @@ const FreeCommunityPage = () => {
         />
         <img src="/assets/community/search.png" alt="검색" />
       </WrapInput>
-      {filteredBoardList.map((free) => (
-        <FreeBoardCard
-          key={free.freeBoardId}
-          id={free.freeBoardId}
-          title={free.title}
-          content={free.content}
-          likes={free.likes}
-          commentCount={free.commentCount}
-          userType={free.userType === 'dong' ? '동백' : '나리'}
-          nickname={free.nickname}
-          createdAt={parseTime(free.createdAt)}
-          hasImage={free.hasImage}
-        />
-      ))}
+      <WrapCards>
+        {filteredBoardList.map((free) => (
+          <FreeBoardCard
+            key={free.freeBoardId}
+            id={free.freeBoardId}
+            title={free.title}
+            content={free.content}
+            likes={free.likes}
+            commentCount={free.commentCount}
+            userType={free.userType === 'dong' ? '동백' : '나리'}
+            nickname={free.nickname}
+            createdAt={parseTime(free.createdAt)}
+            hasImage={free.hasImage}
+          />
+        ))}
+      </WrapCards>
       <FloatingButton
         userType={user?.userType}
         onClick={() => navigate('/write/freeboard')}
@@ -128,6 +130,10 @@ const WrapInput = styled.div`
     width: 1.7rem;
     height: 1.7rem;
   }
+`;
+
+const WrapCards = styled.div`
+  margin-bottom: 7rem;
 `;
 
 export default FreeCommunityPage;

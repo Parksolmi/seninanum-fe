@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { instance } from '../../api/instance';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import FloatingButton from '../../components/common/FloatingButton';
 import AdviceBoardCard from '../../components/community/AdviceBoardCard';
 import PrevHeader from '../../components/header/PrevHeader';
@@ -40,19 +40,21 @@ const AdviceCommunityPage = () => {
   return (
     <>
       <PrevHeader title={'고민상담'} navigateTo={'/community'} isLine={true} />
-      {adviceBoardList.map((advice) => (
-        <AdviceBoardCard
-          key={advice.adviceBoardId}
-          id={advice.adviceBoardId}
-          title={advice.title}
-          content={advice.content}
-          commentCount={advice.commentCount}
-          createdAt={parseTime(advice.createdAt)}
-          userType={user?.userType}
-          nickname={advice.nickname}
-          writerUserType={advice.userType === 'dong' ? '동백' : '나리'}
-        />
-      ))}
+      <WrapCards>
+        {adviceBoardList.map((advice) => (
+          <AdviceBoardCard
+            key={advice.adviceBoardId}
+            id={advice.adviceBoardId}
+            title={advice.title}
+            content={advice.content}
+            commentCount={advice.commentCount}
+            createdAt={parseTime(advice.createdAt)}
+            userType={user?.userType}
+            nickname={advice.nickname}
+            writerUserType={advice.userType === 'dong' ? '동백' : '나리'}
+          />
+        ))}
+      </WrapCards>
       <FloatingButton
         userType={user?.userType}
         onClick={() => navigate('/write/adviceboard')}
@@ -60,4 +62,8 @@ const AdviceCommunityPage = () => {
     </>
   );
 };
+
+const WrapCards = styled.div`
+  margin-bottom: 7rem;
+`;
 export default AdviceCommunityPage;
