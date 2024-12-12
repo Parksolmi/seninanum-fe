@@ -43,8 +43,15 @@ const GroupMenu: React.FC<GroupMenuProps> = ({ userType }) => {
           <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
         </div>
         <div className="menu">
-          <div>1:1 문의하기</div>
-          <img src="/assets/common/arrow-gray.png" alt="계정 관리" />
+          <a
+            className="menu border"
+            href="https://open.kakao.com/o/s7nUfI4g"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <div>1:1 문의하기</div>
+            <img src="/assets/common/arrow-gray.png" alt="문의하기" />
+          </a>
         </div>
         <div className="menu">
           <div>앱 버전</div>
@@ -94,6 +101,14 @@ const WrapGroupMenu = styled.div`
       font-family: NanumSquare;
       font-size: 1.125rem;
       font-weight: 400;
+    }
+
+    a {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      color: black;
+      text-decoration-line: none;
     }
   }
 `;
